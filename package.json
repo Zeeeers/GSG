@@ -1,0 +1,68 @@
+{
+	"name": "gsg-inversiones",
+	"version": "0.0.10",
+	"author": {
+		"name": "Joshua Ortiz.",
+		"email": "joshua@clyc.me"
+	},
+	"license": "UNLICENSED",
+	"private": true,
+	"scripts": {
+		"lint": "next lint --dir pages --dir components --dir common --dir services --dir hooks --dir forms --dir stores",
+		"dev": "next dev",
+		"start": "next start",
+		"build": "next build",
+		"commit": "git-cz",
+		"release": "standard-version"
+	},
+	"dependencies": {
+		"@chakra-ui/react": "^1.6.4",
+		"@clyc/api-wrapper": "^3.19.7",
+		"@clyc/next-route-manager": "^1.8.2",
+		"@clyc/optimized-image": "^4.0.11",
+		"@clyc/select": "^1.3.6",
+		"@emotion/react": "^11.4.0",
+		"@emotion/styled": "^11.3.0",
+		"@hookform/resolvers": "^2.6.0",
+		"@types/is-url": "^1.2.30",
+		"apisauce": "^2.1.1",
+		"axios": "^0.21.1",
+		"dayjs": "^1.10.5",
+		"framer-motion": "^4.1.17",
+		"image-extensions": "^1.1.0",
+		"is-hotkey": "^0.2.0",
+		"is-url": "^1.2.4",
+		"next": "^11.0.1",
+		"next-i18next": "^8.5.1",
+		"next-seo": "^4.26.0",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-easy-crop": "^4.0.2",
+		"react-hook-form": "^7.9.0",
+		"react-icons": "^4.2.0",
+		"react-player": "^2.9.0",
+		"slate": "^0.73.0",
+		"slate-history": "^0.66.0",
+		"slate-react": "^0.73.0",
+		"swr": "^0.5.6",
+		"zod": "^3.2.0",
+		"zustand": "^3.5.5"
+	},
+	"devDependencies": {
+		"@types/node": "^14.17.4",
+		"@types/react": "^17.0.11",
+		"commitizen": "^4.2.4",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^7.29.0",
+		"eslint-config-next": "^11.0.1",
+		"eslint-config-prettier": "^8.3.0",
+		"prettier": "^2.3.2",
+		"standard-version": "^9.3.0",
+		"typescript": "4.3.4"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
+}
