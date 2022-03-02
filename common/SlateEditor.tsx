@@ -147,15 +147,15 @@ const SlateEditor = forwardRef<Props, 'div'>(
                     }}
                 >
                     <Flex justify="start" p={4} bg="background.alpha.75">
-                        <MarkButton format="bold" icon={FaBold} />
-                        <MarkButton format="italic" icon={FaItalic} />
-                        <MarkButton format="underline" icon={FaUnderline} />
-                        <MarkButton format="code" icon={FaCode} />
-                        <BlockButton format="heading-one" icon={FaHeading} />
-                        <BlockButton format="heading-two" icon={FaFont} />
-                        <BlockButton format="block-quote" icon={FaQuoteRight} />
-                        <BlockButton format="numbered-list" icon={FaListOl} />
-                        <BlockButton format="bulleted-list" icon={FaListUl} />
+                        <MarkButton title="Negrita" format="bold" icon={FaBold} />
+                        <MarkButton title="Cursiva" format="italic" icon={FaItalic} />
+                        <MarkButton title="Subrayado" format="underline" icon={FaUnderline} />
+                        <MarkButton title="Destacado" format="code" icon={FaCode} />
+                        <BlockButton title="Título 1" format="heading-one" icon={FaHeading} />
+                        <BlockButton title="Título 2" format="heading-two" icon={FaFont} />
+                        <BlockButton title="Cita" format="block-quote" icon={FaQuoteRight} />
+                        <BlockButton title="Lista Enumerada" format="numbered-list" icon={FaListOl} />
+                        <BlockButton title="Lista con Viñetas" format="bulleted-list" icon={FaListUl} />
                         <LinkButton />
                         <RemoveLinkButton />
                         <InsertImageButton onOpen={onOpenImage} />
@@ -645,7 +645,7 @@ const Leaf = ({ attributes, children, leaf }: { leaf: CustomText; children: JSX.
     return <span {...attributes}>{children}</span>;
 };
 
-const BlockButton = ({ format, icon }: { format: IFormat; icon: IconType }) => {
+const BlockButton = ({ format, icon, title }: { format: IFormat; icon: IconType; title: string }) => {
     const editor = useSlate();
     return (
         <Button
@@ -654,6 +654,7 @@ const BlockButton = ({ format, icon }: { format: IFormat; icon: IconType }) => {
             textColor="primary.400"
             size="md"
             mr={2}
+            title={title}
             onMouseDown={(event) => {
                 event.preventDefault();
                 toggleBlock(editor, format);
@@ -664,7 +665,7 @@ const BlockButton = ({ format, icon }: { format: IFormat; icon: IconType }) => {
     );
 };
 
-const MarkButton = ({ format, icon }: { format: IFormat; icon: IconType }) => {
+const MarkButton = ({ format, icon, title }: { format: IFormat; icon: IconType; title: string }) => {
     const editor = useSlate();
     return (
         <Button
@@ -672,6 +673,7 @@ const MarkButton = ({ format, icon }: { format: IFormat; icon: IconType }) => {
             variant="ghost"
             textColor="primary.400"
             size="md"
+            title={title}
             mr={2}
             onMouseDown={(event) => {
                 event.preventDefault();
@@ -685,7 +687,14 @@ const MarkButton = ({ format, icon }: { format: IFormat; icon: IconType }) => {
 
 const InsertImageButton = ({ onOpen }: { onOpen(): void }) => {
     return (
-        <Button variant="ghost" textColor="primary.400" size="md" mr={2} onClick={() => onOpen()}>
+        <Button
+            title="Agregar Imagen"
+            variant="ghost"
+            textColor="primary.400"
+            size="md"
+            mr={2}
+            onClick={() => onOpen()}
+        >
             <Icon as={FaImage} />
         </Button>
     );
@@ -693,7 +702,7 @@ const InsertImageButton = ({ onOpen }: { onOpen(): void }) => {
 
 const InsertVideoButton = ({ onOpen }: { onOpen(): void }) => {
     return (
-        <Button variant="ghost" textColor="primary.400" size="md" mr={2} onClick={() => onOpen()}>
+        <Button title="Agregar Video" variant="ghost" textColor="primary.400" size="md" mr={2} onClick={() => onOpen()}>
             <Icon as={FaYoutube} />
         </Button>
     );
@@ -708,6 +717,7 @@ const LinkButton = () => {
             size="md"
             mr={2}
             isActive={isLinkActive(editor)}
+            title="Agregar Link"
             onMouseDown={(event) => {
                 event.preventDefault();
                 const url = window.prompt('Ingresa el Link:');
@@ -730,6 +740,7 @@ const RemoveLinkButton = () => {
             size="md"
             mr={2}
             isActive={isLinkActive(editor)}
+            title="Quitar Link"
             onMouseDown={() => {
                 if (isLinkActive(editor)) {
                     unwrapLink(editor);
