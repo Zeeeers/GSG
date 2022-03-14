@@ -1,36 +1,31 @@
 // Dependencies
 import { Text, Box, Stack, Image, Button } from '@chakra-ui/react';
+import { Gsg } from 'services/api/types/Gsg';
 // Types
-interface Props {}
+interface Props {
+    project: Gsg;
+}
 
 // Component
-const ExplorerCard: React.FC<Props> = ({}) => {
+const ExplorerCard: React.FC<Props> = ({ project }) => {
     return (
         <Box w="332px" rounded="8px" shadow="lg" overflow="hidden">
-            <Image
-                src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=847&q=80"
-                alt="cover"
-                objectFit="cover"
-                w="full"
-                h="165px"
-                roundedTop="18px"
-            />
+            <Image src={project.main_image} alt="cover" objectFit="cover" w="full" h="165px" roundedTop="18px" />
             <Box px="20px" py="18px">
                 <Stack spacing="5px">
                     <Text fontSize="md" fontWeight="medium">
-                        Unum Health
+                        {project.title}
                     </Text>
                     <Text fontSize="sm" fontWeight="normal" lineHeight="5">
-                        Unum Health is a Software-as-a-Service (SaaS) company offering innovative solutions to simplify
-                        operations, communications, and experience in the home care industry.
+                        {project.description}
                     </Text>
                 </Stack>
                 <Stack spacing="5px" mt="10px">
                     <Text fontSize="xs" fontWeight="normal" color="gray.400">
-                        Levantamiento buscado
+                        {project.business_name}
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold">
-                        $100.000.000
+                        {project.finance_goal}
                     </Text>
                 </Stack>
                 <Box textAlign="center" mt="13px">
