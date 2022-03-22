@@ -48,6 +48,8 @@ import {
 import isHotkey from 'is-hotkey';
 import isUrl from 'is-url';
 import { IconType } from 'react-icons/lib';
+import { uploadImage } from 'services/api/lib/projectImages/projectImages.calls';
+import { AuthManager } from '@clyc/next-route-manager';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModalBase64'));
@@ -67,6 +69,7 @@ const HOTKEYS: IHOTKEYS = {
 };
 
 type CustomText = { text: string; bold?: boolean; italic?: boolean; code?: boolean; underline?: boolean };
+
 type IFormat =
     | 'bold'
     | 'italic'
@@ -87,6 +90,7 @@ interface CustomElement {
     type: IFormat;
     children: CustomText[];
     url?: string;
+    id?: number;
 }
 
 declare module 'slate' {
@@ -104,12 +108,10 @@ interface Props extends BoxProps {
     isSavingChanges?: boolean;
     placeholder?: string;
     handleEditChapter(values: Array<Descendant>, chapter_id?: string): void;
-    uploadImage(baseImg: string, chapter_id?: string): Promise<string | undefined>;
-    chapter_id?: string;
 }
 
 const SlateEditor = forwardRef<Props, 'div'>(
-    ({ initialValues, handleEditChapter, placeholder, uploadImage, chapter_id, isSavingChanges, ...props }, ref) => {
+    ({ initialValues, handleEditChapter, placeholder, isSavingChanges, ...props }, ref) => {
         const [value, setValue] = useState<Descendant[]>(
             initialValues ?? [
                 {
@@ -161,7 +163,9 @@ const SlateEditor = forwardRef<Props, 'div'>(
                         <InsertImageButton onOpen={onOpenImage} />
                         <InsertVideoButton onOpen={onOpenVideo} />
                     </Flex>
+
                     <Flex w="full" h="1.5px" bg="gray.alpha.48" />
+
                     <Box p={4}>
                         <Editable
                             renderElement={renderElement}
@@ -184,25 +188,31 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                 size="lg"
                                 isLoading={isSavingChanges}
                                 loadingText="Guardando cambios"
-                                onClick={() => handleEditChapter(value, chapter_id)}
+                                onClick={() => handleEditChapter(value)}
                             >
                                 Guardar cambios
                             </Button>
                         </Flex>
                     </Box>
                 </Slate>
+
                 <Modal isOpen={isOpenImage} onClose={onCloseImage}>
                     <ModalOverlay />
+
                     <ModalContent>
                         <ModalHeader>Insertar imagen</ModalHeader>
+
                         <ModalCloseButton />
+
                         <ModalBody py={4}>
                             {baseImg === '' && (
                                 <Button variant="outline" w="full" h="fit-content" py={0}>
                                     <VStack w="full" spacing={3} align="center" py={6}>
                                         <Icon as={FaFileImage} fontSize="3xl" />
+
                                         <Flex>Sube o arrastra una imagen</Flex>
                                     </VStack>
+
                                     <Input
                                         w="inherit"
                                         h="full"
@@ -226,7 +236,9 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                     />
                                 </Button>
                             )}
-                            <Image src={croppedImg} alt="a" />
+
+                            {croppedImg && <Image src={croppedImg} alt="a" />}
+
                             {croppedImg !== '' && (
                                 <Flex mt={4} w="full" justify="flex-end">
                                     <Button
@@ -234,9 +246,22 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                         loadingText="Subiendo imagen"
                                         onClick={async () => {
                                             setIsUploadingImg(true);
-                                            const url = await uploadImage(croppedImg!, chapter_id);
-                                            if (url) {
-                                                insertImage(editor, url);
+
+                                            const token = new AuthManager({
+                                                cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+                                            }).token;
+
+                                            const { data: imageData, ok: imageOk } = await uploadImage({
+                                                image: baseImg!,
+                                                token: token,
+                                            });
+
+                                            if (imageOk) {
+                                                insertImage(
+                                                    editor,
+                                                    imageData?.data.image.image!,
+                                                    imageData?.data.image.id,
+                                                );
                                                 setBaseImg('');
                                                 setCroppedImg('');
                                                 onCloseImage();
@@ -256,9 +281,12 @@ const SlateEditor = forwardRef<Props, 'div'>(
                 {isOpenVideo && (
                     <Modal isOpen={isOpenVideo} onClose={onCloseVideo}>
                         <ModalOverlay />
+
                         <ModalContent>
                             <ModalHeader>Insertar Video</ModalHeader>
+
                             <ModalCloseButton />
+
                             <ModalBody>
                                 <FormControl name="video_url" isInvalid={!!videoUrlError} mb={4}>
                                     <FormLabel>Url del video</FormLabel>
@@ -380,9 +408,9 @@ const isImageUrl = (url: string) => {
     return imageExtensions.includes(ext);
 };
 
-const insertImage = (editor: Editor, url: string) => {
+const insertImage = (editor: Editor, url: string, id?: number) => {
     const text = { text: '' };
-    const image: CustomElement = { type: 'image', url, children: [text] };
+    const image: CustomElement = { type: 'image', url, id, children: [text] };
     Transforms.insertNodes(editor, image);
     // Space for edit after image
     const space: CustomElement = {
@@ -567,20 +595,26 @@ const ImageCustomElement = ({
 }) => {
     const selected = useSelected();
     const focused = useFocused();
+
+    useEffect(() => {
+        console.log('Mount');
+        return () => {
+            console.log('Unmount', element);
+        };
+    }, [element]);
+
     return (
-        <div {...attributes}>
-            <div contentEditable={false}>
-                <Image
-                    src={element.url}
-                    alt="a"
-                    d="block"
-                    maxW="100%"
-                    maxH="20em"
-                    boxShadow={selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}
-                />
-            </div>
+        <figure {...attributes} contentEditable={false}>
+            <Image
+                src={element.url}
+                alt="a"
+                d="block"
+                maxW="100%"
+                maxH="20em"
+                boxShadow={selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}
+            />
             {children}
-        </div>
+        </figure>
     );
 };
 
@@ -609,6 +643,7 @@ const VideoCustomElement = ({
                         <Flex position="relative" zIndex={1}>
                             <ReactPlayer url={element.url} width="100%" height="100%" controls />
                         </Flex>
+
                         {children}
                     </>
                 </AspectRatio>
