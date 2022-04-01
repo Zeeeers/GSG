@@ -69,16 +69,6 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                     Mi perfil
                 </MenuItem>
 
-                <MenuItem
-                    fontWeight="semibold"
-                    onClick={() => {
-                        router.push('/profile/organization');
-                    }}
-                >
-                    <Icon as={FaBuilding} mr={4} />
-                    Mi organización
-                </MenuItem>
-
                 <MenuDivider />
 
                 <MenuItem

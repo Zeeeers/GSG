@@ -51,7 +51,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
             });
 
             if (!isPyme) {
-                router.push((router.query.redirect_to as string) ?? '/home');
+                router.push((router.query.redirect_to as string) ?? '/profile');
             }
             setIsLoggingIn(false);
             afterLogin && afterLogin();
@@ -66,7 +66,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
         if (router.query.redirect_to as string) {
             router.prefetch(router.query.redirect_to as string);
         } else {
-            router.prefetch('/home');
+            router.prefetch('/explorer');
         }
     }, [router]);
 

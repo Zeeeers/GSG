@@ -3,10 +3,31 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, HStack, Skeleton, Text, useMediaQuery } from '@chakra-ui/react';
+import {
+    Box,
+    HStack,
+    Skeleton,
+    Text,
+    useMediaQuery,
+    Modal,
+    ModalOverlay,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    Heading,
+    VStack,
+    FormControl,
+    FormLabel,
+    Input,
+    Stack,
+    Link as ChakraLink,
+} from '@chakra-ui/react';
 import Image from '@clyc/optimized-image/components/chakraImage';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
+import InputPassword from 'common/inputPassword';
+import LoginForm from 'components/login/loginForm';
 
 // Types
 const UserMenu = dynamic(() => import('./menu/desktop'));
@@ -20,6 +41,7 @@ const Navbar: React.FC = () => {
     const { data: user, isValidating: isValidatingUser } = useUser();
     const [isMenuAvailable, setIsMenuAvailable] = useState(false);
     const [isTablet] = useMediaQuery('(min-width: 48em)');
+    const [isOpen, onClose] = useState(false);
 
     // Handlers
     const handleLogOut = async () => {
@@ -28,7 +50,7 @@ const Navbar: React.FC = () => {
             domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
             secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
         });
-        router.push('/login');
+        router.push('/explorer');
     };
 
     console.log(user, isValidatingUser);
@@ -87,9 +109,21 @@ const Navbar: React.FC = () => {
 
                 {user === undefined ? (
                     isValidatingUser === false ? (
-                        <Link href="/login" passHref>
-                            <Button>Ingresar</Button>
-                        </Link>
+                        <HStack spacing="24px">
+                            <Button>¿Eres empresa? levantar capital</Button>
+                            <Button
+                                onClick={() => onClose(true)}
+                                variant="solid"
+                                _focus={{ outline: 'none' }}
+                                aria-label="Buscar"
+                                textColor="white"
+                                py="10px"
+                                px="16px"
+                                w="106px"
+                            >
+                                Ingresar
+                            </Button>
+                        </HStack>
                     ) : (
                         <Skeleton w={24} h={4} bg="gray.500" />
                     )
@@ -101,6 +135,22 @@ const Navbar: React.FC = () => {
             </HStack>
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
+
+            <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+                <ModalOverlay />
+                <ModalContent rounded="2xl" py={'30px'} px="20px">
+                    <ModalHeader fontSize="4xl" d="flex" alignItems="center" pb={0}>
+                        Ingresar
+                    </ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody mb={6} pt={0}>
+                        <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
+                            Comienza a invertir en nuestros proyectos{' '}
+                        </Text>
+                        <LoginForm />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     );
 };
