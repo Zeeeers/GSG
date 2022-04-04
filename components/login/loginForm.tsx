@@ -71,8 +71,8 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
     }, [router]);
 
     return (
-        <Stack as="form" direction="column" spacing={4} mt={4} onSubmit={handleSubmit(handleLogin)}>
-            <FormControl id="email" isInvalid={!!errors.email} my={4}>
+        <Stack as="form" direction="column" spacing="17px" mt="23px" onSubmit={handleSubmit(handleLogin)}>
+            <FormControl id="email" isInvalid={!!errors.email}>
                 <FormLabel fontSize="md" fontWeight="semibold">
                     Correo electrónico
                 </FormLabel>
@@ -82,7 +82,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
                 <FormErrorMessage fontWeight={'semibold'}>{errors.email?.message}</FormErrorMessage>
             </FormControl>
 
-            <FormControl id="password" isInvalid={!!errors.password} my={4}>
+            <FormControl id="password" isInvalid={!!errors.password}>
                 <FormLabel fontSize="md" fontWeight="semibold">
                     Contraseña
                 </FormLabel>
@@ -96,7 +96,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
 
             <Stack w="full">
                 <Button
-                    mt={8}
+                    mt="17px"
                     type="submit"
                     variant="solid"
                     isLoading={isLoggingIn}

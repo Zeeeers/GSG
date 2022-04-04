@@ -9,7 +9,7 @@
 	"private": true,
 	"scripts": {
 		"lint": "next lint --dir pages --dir components --dir common --dir services --dir hooks --dir forms --dir stores",
-		"dev": "next dev",
+		"dev": "next dev -p 3002",
 		"start": "next start",
 		"build": "next build",
 		"commit": "git-cz",

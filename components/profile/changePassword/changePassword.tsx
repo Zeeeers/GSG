@@ -80,31 +80,31 @@ const ChangePassword: React.FC = () => {
             onSubmit={handleSubmit(handleChangePassword)}
         >
             <FormControl id="password" isInvalid={!!errors.password?.message}>
-                <FormLabel fontSize="lg" fontWeight="bold">
+                <FormLabel fontSize="md" fontWeight="medium">
                     Contraseña actual
                 </FormLabel>
 
-                <InputPassword {...register('password')} fontWeight="semibold" size="md" />
+                <InputPassword {...register('password')} fontWeight="normal" size="md" />
 
                 <FormErrorMessage fontWeight="semibold">{errors.password?.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl id="newPassword" isInvalid={!!errors.newPassword}>
-                <FormLabel fontSize="lg" fontWeight="bold">
+                <FormLabel fontSize="md" fontWeight="medium">
                     Nueva contraseña
                 </FormLabel>
 
-                <InputPassword {...register('newPassword')} fontWeight="semibold" size="md" />
+                <InputPassword {...register('newPassword')} fontWeight="normal" size="md" />
 
                 <FormErrorMessage fontWeight="semibold">{errors.newPassword?.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl id="confirmPassword" isInvalid={!!errors.confirmPassword}>
-                <FormLabel fontSize="lg" fontWeight="bold">
+                <FormLabel fontSize="md" fontWeight="medium">
                     Confirmar contraseña
                 </FormLabel>
 
-                <InputPassword {...register('confirmPassword')} fontWeight="semibold" size="md" />
+                <InputPassword {...register('confirmPassword')} fontWeight="normal" size="md" />
 
                 <FormErrorMessage fontWeight="semibold">{errors.confirmPassword?.message}</FormErrorMessage>
             </FormControl>

@@ -9,6 +9,7 @@ import Navbar from 'layouts/main/navbar';
 import ProfileHeader from 'components/profile/header';
 import InfoSkeleton from 'components/profile/infoForm/infoForm.skeleton';
 import PassSkeleton from 'components/profile/changePassword/changePassword.skeleton';
+import OdsTab from 'components/profile/ods/odsTab';
 
 // Dynamic
 const InfoForm = dynamic(() => import('components/profile/infoForm/infoForm'), { loading: () => <InfoSkeleton /> });
@@ -26,24 +27,28 @@ const UserProfile: NextPage = () => {
             <Navbar />
 
             <HStack mt={{ lg: 12 }}>
-                <Container maxW="7xl" p={4}>
+                <Container maxW="4xl" px="37px" py="40px" rounded="xl" shadow={'md'}>
                     <ProfileHeader />
 
-                    <Tabs mt={4} isLazy>
-                        <TabList borderBottom="2px" overflowX="auto" overflowY="hidden" pb={0.9}>
+                    <Tabs mt="33px" isLazy>
+                        <TabList borderBottom="0" overflowX="auto" overflowY="hidden" pb={0.9}>
                             <Tab px={10} whiteSpace="nowrap">
-                                <Icon as={FaUser} fontSize="lg" mr={4} />
-                                Información
+                                Perfil
                             </Tab>
                             <Tab px={10} whiteSpace="nowrap">
-                                <Icon as={FaLock} fontSize="lg" mr={4} />
-                                Cambiar contraseña
+                                Interéses
+                            </Tab>
+                            <Tab px={10} whiteSpace="nowrap">
+                                Contraseña
                             </Tab>
                         </TabList>
 
                         <TabPanels>
                             <TabPanel>
                                 <InfoForm />
+                            </TabPanel>
+                            <TabPanel>
+                                <OdsTab />
                             </TabPanel>
                             <TabPanel>
                                 <PassForm />

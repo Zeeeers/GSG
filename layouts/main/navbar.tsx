@@ -15,18 +15,13 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    Heading,
     VStack,
-    FormControl,
-    FormLabel,
-    Input,
-    Stack,
     Link as ChakraLink,
+    Flex,
 } from '@chakra-ui/react';
 import Image from '@clyc/optimized-image/components/chakraImage';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
-import InputPassword from 'common/inputPassword';
 import LoginForm from 'components/login/loginForm';
 
 // Types
@@ -136,9 +131,9 @@ const Navbar: React.FC = () => {
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+            <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
                 <ModalOverlay />
-                <ModalContent rounded="2xl" py={'30px'} px="20px">
+                <ModalContent rounded="2xl" pt={'30px'} px="10px">
                     <ModalHeader fontSize="4xl" d="flex" alignItems="center" pb={0}>
                         Ingresar
                     </ModalHeader>
@@ -148,6 +143,25 @@ const Navbar: React.FC = () => {
                             Comienza a invertir en nuestros proyectos{' '}
                         </Text>
                         <LoginForm />
+
+                        <Flex flexDirection={'column'} alignItems={'center'}>
+                            <Link href="/recovery" passHref>
+                                <Button
+                                    variant="link"
+                                    transitionProperty="all"
+                                    transitionDuration={'slow'}
+                                    colorScheme="primary"
+                                >
+                                    Olvidé mi contraseña
+                                </Button>
+                            </Link>
+                            <VStack spacing="7px" mt="36px">
+                                <Text fontSize={'md'} fontWeight={'semibold'}>
+                                    ¿No tienes cuenta?
+                                </Text>
+                                <Button>Solicitar una invitación</Button>
+                            </VStack>
+                        </Flex>
                     </ModalBody>
                 </ModalContent>
             </Modal>

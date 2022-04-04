@@ -58,19 +58,9 @@ const ProfileHeader: React.FC = () => {
 
     return (
         <VStack as="header" alignItems="start">
-            <Heading as="h1" fontSize={{ base: 'lg', lg: 'xl' }} fontWeight="semibold">
-                Perfil de usuario
+            <Heading as="h1" fontSize={{ base: 'lg', lg: '4xl' }} fontWeight="medium">
+                Cuenta
             </Heading>
-
-            {user ? (
-                <EditableTitle
-                    fontSize={{ base: '4xl', lg: '6xl' }}
-                    defaultValue={user.name}
-                    onSubmit={handleUpdateName}
-                />
-            ) : (
-                <Skeleton h={12} w={80} rounded="16px" />
-            )}
         </VStack>
     );
 };
