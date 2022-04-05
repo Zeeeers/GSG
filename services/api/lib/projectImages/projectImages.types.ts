@@ -1,5 +1,6 @@
 // Dependencies
 import { ApiResponse } from 'apisauce';
+import { ProjectImage } from '../../types/ProjectImage';
 
 // Upload Image
 export interface UploadImageRequest {
@@ -11,12 +12,21 @@ export interface UploadImageResponse {
     status: boolean;
     message: string;
     data: {
-        image: {
-            created_at: string;
-            id: number;
-            image: string;
-        };
+        image: ProjectImage;
     };
 }
 
 export type UploadImageCall = (payload: UploadImageRequest) => Promise<ApiResponse<UploadImageResponse>>;
+
+// Delete Image
+export interface DeleteImageRequest {
+    token: string;
+    imageId: number;
+}
+
+export interface DeleteImageResponse {
+    status: boolean;
+    message: string;
+}
+
+export type DeleteImageCall = (payload: DeleteImageRequest) => Promise<ApiResponse<DeleteImageResponse>>;

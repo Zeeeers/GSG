@@ -1,11 +1,17 @@
 // Dependencies
 import { api, pymeHeaders } from '../../config';
 import ENDPOINT from './projectImages.endpoints';
-import { UploadImageCall, UploadImageResponse } from './projectImages.types';
+import { DeleteImageCall, UploadImageCall, UploadImageResponse, DeleteImageResponse } from './projectImages.types';
 
-// AUTH
+// Project images
 export const uploadImage: UploadImageCall = async ({ image, token }) => {
     const response = await api.post<UploadImageResponse>(ENDPOINT.UPLOAD, { image }, pymeHeaders(token));
+
+    return response;
+};
+
+export const deleteImage: DeleteImageCall = async ({ imageId, token }) => {
+    const response = await api.delete<DeleteImageResponse>(ENDPOINT.DELETE, { id: imageId }, pymeHeaders(token));
 
     return response;
 };
@@ -13,6 +19,7 @@ export const uploadImage: UploadImageCall = async ({ image, token }) => {
 // Global
 const ProjectImagesCalls = {
     uploadImage,
+    deleteImage,
 };
 
 // Export

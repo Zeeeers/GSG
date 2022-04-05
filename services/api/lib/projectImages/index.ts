@@ -1,1 +1,1 @@
-export { default as projectImages, uploadImage } from './projectImages.calls';
+export { default as projectImages, uploadImage, deleteImage } from './projectImages.calls';
