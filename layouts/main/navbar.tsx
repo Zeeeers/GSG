@@ -31,8 +31,6 @@ const Navbar: React.FC = () => {
         router.push('/login');
     };
 
-    console.log(user, isValidatingUser);
-
     // Effects
     useEffect(() => {
         router.prefetch('/login');
