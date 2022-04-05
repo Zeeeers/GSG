@@ -48,8 +48,9 @@ import {
 import isHotkey from 'is-hotkey';
 import isUrl from 'is-url';
 import { IconType } from 'react-icons/lib';
-import { uploadImage } from 'services/api/lib/projectImages/projectImages.calls';
+import { uploadImage, deleteImage } from 'services/api/lib/projectImages/projectImages.calls';
 import { AuthManager } from '@clyc/next-route-manager';
+import { useCreateGsgProjectStore } from '../../stores/createGsgProject';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModalBase64'));
@@ -107,19 +108,21 @@ interface Props extends BoxProps {
     initialValues?: Array<Descendant>;
     isSavingChanges?: boolean;
     placeholder?: string;
-    handleEditChapter(values: Array<Descendant>, chapter_id?: string): void;
+    handleSaveField(values: Array<Descendant>): void;
 }
 
 const SlateEditor = forwardRef<Props, 'div'>(
-    ({ initialValues, handleEditChapter, placeholder, isSavingChanges, ...props }, ref) => {
+    ({ initialValues, handleSaveField, placeholder, isSavingChanges, ...props }, ref) => {
         const [value, setValue] = useState<Descendant[]>(
             initialValues ?? [
                 {
                     type: 'paragraph',
-                    children: [{ text: '' }],
+                    children: [{ text: ' ' }],
                 },
             ],
         );
+        const images = useCreateGsgProjectStore((state) => state.images);
+        const updateImages = useCreateGsgProjectStore((state) => state.updateImages);
         const renderElement = useCallback((props) => <Element {...props} />, []);
         const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
         const editor = useMemo(() => withLinks(withImages(withHistory(withReact(createEditor())))), []);
@@ -148,24 +151,6 @@ const SlateEditor = forwardRef<Props, 'div'>(
                         setValue(value);
                     }}
                 >
-                    <Flex justify="start" p={4} bg="background.alpha.75">
-                        <MarkButton title="Negrita" format="bold" icon={FaBold} />
-                        <MarkButton title="Cursiva" format="italic" icon={FaItalic} />
-                        <MarkButton title="Subrayado" format="underline" icon={FaUnderline} />
-                        <MarkButton title="Destacado" format="code" icon={FaCode} />
-                        <BlockButton title="Título 1" format="heading-one" icon={FaHeading} />
-                        <BlockButton title="Título 2" format="heading-two" icon={FaFont} />
-                        <BlockButton title="Cita" format="block-quote" icon={FaQuoteRight} />
-                        <BlockButton title="Lista Enumerada" format="numbered-list" icon={FaListOl} />
-                        <BlockButton title="Lista con Viñetas" format="bulleted-list" icon={FaListUl} />
-                        <LinkButton />
-                        <RemoveLinkButton />
-                        <InsertImageButton onOpen={onOpenImage} />
-                        <InsertVideoButton onOpen={onOpenVideo} />
-                    </Flex>
-
-                    <Flex w="full" h="1.5px" bg="gray.alpha.48" />
-
                     <Box p={4}>
                         <Editable
                             renderElement={renderElement}
@@ -183,17 +168,35 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                 });
                             }}
                         />
-                        <Flex w="full" justify="flex-end" mt={8}>
-                            <Button
-                                size="lg"
-                                isLoading={isSavingChanges}
-                                loadingText="Guardando cambios"
-                                onClick={() => handleEditChapter(value)}
-                            >
-                                Guardar cambios
-                            </Button>
-                        </Flex>
                     </Box>
+
+                    <Flex justify="center" p={4} bg="background.alpha.75">
+                        <MarkButton title="Negrita" format="bold" icon={FaBold} />
+                        <MarkButton title="Cursiva" format="italic" icon={FaItalic} />
+                        <MarkButton title="Subrayado" format="underline" icon={FaUnderline} />
+                        <MarkButton title="Destacado" format="code" icon={FaCode} />
+                        <BlockButton title="Título 1" format="heading-one" icon={FaHeading} />
+                        <BlockButton title="Título 2" format="heading-two" icon={FaFont} />
+                        <BlockButton title="Cita" format="block-quote" icon={FaQuoteRight} />
+                        <BlockButton title="Lista Enumerada" format="numbered-list" icon={FaListOl} />
+                        <BlockButton title="Lista con Viñetas" format="bulleted-list" icon={FaListUl} />
+                        <LinkButton />
+                        <RemoveLinkButton />
+                        <InsertImageButton onOpen={onOpenImage} />
+                        <InsertVideoButton onOpen={onOpenVideo} />
+                    </Flex>
+
+                    <Flex w="full" justify="center" pb={4}>
+                        <Button
+                            variant="solid"
+                            size="sm"
+                            isLoading={isSavingChanges}
+                            loadingText="Guardando cambios"
+                            onClick={() => handleSaveField(value)}
+                        >
+                            Guardar cambios
+                        </Button>
+                    </Flex>
                 </Slate>
 
                 <Modal isOpen={isOpenImage} onClose={onCloseImage}>
@@ -262,6 +265,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                                     imageData?.data.image.image!,
                                                     imageData?.data.image.id,
                                                 );
+                                                updateImages([...images, imageData?.data.image.id!]);
                                                 setBaseImg('');
                                                 setCroppedImg('');
                                                 onCloseImage();
@@ -584,6 +588,13 @@ const Element = (props: { element: CustomElement; children: JSX.Element; attribu
     }
 };
 
+const handleDeleteImage = async (id: number) => {
+    await deleteImage({
+        imageId: id,
+        token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+    });
+};
+
 const ImageCustomElement = ({
     attributes,
     children,
@@ -595,13 +606,15 @@ const ImageCustomElement = ({
 }) => {
     const selected = useSelected();
     const focused = useFocused();
+    const images = useCreateGsgProjectStore((state) => state.images);
+    const updateImages = useCreateGsgProjectStore((state) => state.updateImages);
 
     useEffect(() => {
-        console.log('Mount');
         return () => {
-            console.log('Unmount', element);
+            updateImages(images.filter((image) => image !== element.id));
+            handleDeleteImage(element.id!);
         };
-    }, [element]);
+    }, [element, images, updateImages]);
 
     return (
         <figure {...attributes} contentEditable={false}>
