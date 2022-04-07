@@ -1,1 +1,1 @@
-export { useGsg, default as gsg } from './gsg.calls';
+export { useGsg, default as gsg, getGsgProject, getMyGsgProject } from './gsg.calls';

@@ -41,6 +41,7 @@ interface CustomElement {
     type: IFormat;
     children: CustomText[];
     url?: string;
+    id?: number;
 }
 
 declare module 'slate' {
@@ -183,20 +184,19 @@ const ImageCustomElement = ({
     const selected = useSelected();
     const focused = useFocused();
     return (
-        <div {...attributes}>
-            <div contentEditable={false}>
-                <Image
-                    src={element.url}
-                    alt="al"
-                    d="block"
-                    maxW="100%"
-                    maxH="20em"
-                    my={'0.2rem'}
-                    boxShadow={selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}
-                />
-            </div>
+        <figure {...attributes} contentEditable={false}>
+            <Image
+                src={element.url}
+                alt="al"
+                d="block"
+                maxW="100%"
+                maxH="20em"
+                my={'0.2rem'}
+                boxShadow={selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}
+            />
+
             {children}
-        </div>
+        </figure>
     );
 };
 
