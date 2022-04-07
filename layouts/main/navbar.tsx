@@ -3,26 +3,12 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import {
-    Box,
-    HStack,
-    Skeleton,
-    Text,
-    useMediaQuery,
-    Modal,
-    ModalOverlay,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    VStack,
-    Link as ChakraLink,
-    Flex,
-} from '@chakra-ui/react';
+import { Box, HStack, Skeleton, Text, useMediaQuery, Link as ChakraLink, useDisclosure } from '@chakra-ui/react';
 import Image from '@clyc/optimized-image/components/chakraImage';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
-import LoginForm from 'components/login/loginForm';
+import LoginModal from 'components/login/loginModal';
+import LoginOrgaModal from 'components/organizationModals/loginOrgaModal';
 
 // Types
 const UserMenu = dynamic(() => import('./menu/desktop'));
@@ -32,11 +18,13 @@ const MobileMenu = dynamic(() => import('./menu/mobile/menu'));
 // Component
 const Navbar: React.FC = () => {
     // States
-    const router = useRouter();
-    const { data: user, isValidating: isValidatingUser } = useUser();
     const [isMenuAvailable, setIsMenuAvailable] = useState(false);
     const [isTablet] = useMediaQuery('(min-width: 48em)');
-    const [isOpen, onClose] = useState(false);
+    const router = useRouter();
+    const { data: user, isValidating: isValidatingUser } = useUser();
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenOrgaLogin, onOpen: onOpenOrgaLogin, onClose: onCloseOrgaLogin } = useDisclosure();
 
     // Handlers
     const handleLogOut = async () => {
@@ -105,9 +93,9 @@ const Navbar: React.FC = () => {
                 {user === undefined ? (
                     isValidatingUser === false ? (
                         <HStack spacing="24px">
-                            <Button>¿Eres empresa? levantar capital</Button>
+                            <Button onClick={() => onOpenOrgaLogin()}>¿Eres empresa? levantar capital</Button>
                             <Button
-                                onClick={() => onClose(true)}
+                                onClick={onOpen}
                                 variant="solid"
                                 _focus={{ outline: 'none' }}
                                 aria-label="Buscar"
@@ -131,40 +119,8 @@ const Navbar: React.FC = () => {
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
-                <ModalOverlay />
-                <ModalContent rounded="2xl" pt={'30px'} px="10px">
-                    <ModalHeader fontSize="4xl" d="flex" alignItems="center" pb={0}>
-                        Ingresar
-                    </ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody mb={6} pt={0}>
-                        <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
-                            Comienza a invertir en nuestros proyectos{' '}
-                        </Text>
-                        <LoginForm />
-
-                        <Flex flexDirection={'column'} alignItems={'center'}>
-                            <Link href="/recovery" passHref>
-                                <Button
-                                    variant="link"
-                                    transitionProperty="all"
-                                    transitionDuration={'slow'}
-                                    colorScheme="primary"
-                                >
-                                    Olvidé mi contraseña
-                                </Button>
-                            </Link>
-                            <VStack spacing="7px" mt="36px">
-                                <Text fontSize={'md'} fontWeight={'semibold'}>
-                                    ¿No tienes cuenta?
-                                </Text>
-                                <Button>Solicitar una invitación</Button>
-                            </VStack>
-                        </Flex>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+            <LoginModal isOpen={isOpen} onClose={onClose} />
+            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} />
         </>
     );
 };

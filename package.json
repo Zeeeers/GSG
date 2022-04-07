@@ -20,6 +20,7 @@
 		"@clyc/api-wrapper": "^3.19.7",
 		"@clyc/next-route-manager": "^1.8.2",
 		"@clyc/optimized-image": "^4.0.11",
+		"@clyc/options": "^2.0.4",
 		"@clyc/select": "^1.3.6",
 		"@emotion/react": "^11.4.0",
 		"@emotion/styled": "^11.3.0",

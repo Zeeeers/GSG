@@ -5,20 +5,14 @@ import {
     ModalContent,
     ModalHeader,
     Button,
-    Heading,
-    useDisclosure,
     Flex,
     ModalBody,
     ModalCloseButton,
-    Stack,
     VStack,
+    Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-
-// Dynamic
-const RegisterModal = dynamic(() => import('components/public/registerModal'));
-const LoginModal = dynamic(() => import('components/public/loginModal'));
+import LoginForm from './loginForm';
 
 // Types
 interface Props {
@@ -28,55 +22,42 @@ interface Props {
 
 // Component
 const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
-    // States
-    const { isOpen: registerIsOpen, onOpen: registerOnOpen, onClose: registerOnClose } = useDisclosure();
-    const { isOpen: loginIsOpen, onOpen: loginOnOpen, onClose: loginOnClose } = useDisclosure();
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
                 <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Ingresa</ModalHeader>
+                <ModalContent rounded="2xl" pt={'30px'} px="10px">
+                    <ModalHeader fontSize="4xl" d="flex" alignItems="center" pb={0}>
+                        Ingresar
+                    </ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
-                        <Stack direction={{ base: 'column', md: 'row' }} spacing={6} w="full" mb={6}>
-                            <VStack w="full" spacing={3} justifyContent="space-between">
-                                <Heading textAlign="center" fontSize="lg">
-                                    Quiero resolver desafíos e importantes problemas de innovación.
-                                </Heading>
-                                <Flex w="full" px={6}>
-                                    <Button w="full" variant="solid" colorScheme="secondary" onClick={loginOnOpen}>
-                                        Emprendedor
-                                    </Button>
-                                </Flex>
+                    <ModalBody mb={6} pt={0}>
+                        <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
+                            Comienza a invertir en nuestros proyectos{' '}
+                        </Text>
+                        <LoginForm />
+
+                        <Flex flexDirection={'column'} alignItems={'center'}>
+                            <Link href="/recovery" passHref>
+                                <Button
+                                    variant="link"
+                                    transitionProperty="all"
+                                    transitionDuration={'slow'}
+                                    colorScheme="primary"
+                                >
+                                    Olvidé mi contraseña
+                                </Button>
+                            </Link>
+                            <VStack spacing="7px" mt="36px">
+                                <Text fontSize={'md'} fontWeight={'semibold'}>
+                                    ¿No tienes cuenta?
+                                </Text>
+                                <Button>Solicitar una invitación</Button>
                             </VStack>
-                            <VStack w="full" spacing={3} justifyContent="space-between">
-                                <Heading textAlign="center" fontSize="lg">
-                                    Tengo desafíos de innovación por resolver.
-                                </Heading>
-                                <Flex w="full" px={6}>
-                                    <Link href="/login" passHref>
-                                        <Button w="full" variant="solid" colorScheme="primary">
-                                            Convocante
-                                        </Button>
-                                    </Link>
-                                </Flex>
-                            </VStack>
-                        </Stack>
+                        </Flex>
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            {registerIsOpen ? <RegisterModal isOpen={registerIsOpen} onClose={registerOnClose} /> : <></>}
-            {loginIsOpen ? (
-                <LoginModal
-                    isOpen={loginIsOpen}
-                    onClose={loginOnClose}
-                    registerOnOpen={registerOnOpen}
-                    closeModalAfterLogin={false}
-                />
-            ) : (
-                <></>
-            )}
         </>
     );
 };

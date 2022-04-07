@@ -1,6 +1,6 @@
 // Dependencies
 import { Organization } from 'services/api/types/Organization';
-import useSWR, { responseInterface } from 'swr';
+import useSWR, { SWRResponse } from 'swr';
 import { api, headers, pymeHeaders } from '../../config';
 import ENDPOINT from './organization.endpoints';
 import {
@@ -37,7 +37,7 @@ const organizationFetcher = async (endpoint: string, isPyme?: boolean) => {
     return data?.organization;
 };
 
-export const useOrganization = (isPyme?: boolean): responseInterface<Organization | undefined, unknown> => {
+export const useOrganization = (isPyme?: boolean): SWRResponse<Organization | undefined, unknown> => {
     return useSWR([ENDPOINT.BASE, isPyme], organizationFetcher);
 };
 

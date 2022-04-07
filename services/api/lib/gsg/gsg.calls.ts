@@ -1,7 +1,7 @@
 // Dependencies
 import { api } from '../../config';
 import { GetAllGsgResponse } from './gsg.types';
-import useSWR, { responseInterface } from 'swr';
+import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
 
 // READ
@@ -10,7 +10,7 @@ const gsgAllFetcher = async (endpoint: string) => {
     return data;
 };
 
-export const useGsg = (): responseInterface<GetAllGsgResponse | undefined, unknown> => {
+export const useGsg = (): SWRResponse<GetAllGsgResponse | undefined, unknown> => {
     return useSWR([ENDPOINT.BASE], gsgAllFetcher);
 };
 
