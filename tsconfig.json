@@ -22,6 +22,6 @@
         "strict": true,
         "strictFunctionTypes": false
     },
-    "include": ["**/*.ts", "**/*.tsx"],
+    "include": ["**/*.ts", "**/*.tsx", "pages/projectDetail"],
     "exclude": ["node_modules"]
 }
