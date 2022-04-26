@@ -105,7 +105,7 @@ const Explorer: NextPage = ({}) => {
                 <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
                     {/* Validation of existing projects (temporary) */}
-                    {gsg?.data.projects === [] ? (
+                    {gsg?.data?.projects === [] ? (
                         <SimpleGrid w="full" columns={3} spacing="37px">
                             {gsg?.data?.projects.map((project) => (
                                 <ExplorerCard key={project.id} project={project} />
