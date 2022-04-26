@@ -13,17 +13,7 @@ const SelectOds = () => {
                 label: quality.name,
                 value: quality.id,
                 leftElement: (
-                    <Image
-                        src={quality.icon.image}
-                        alt={quality.icon.name}
-                        tWidth={50}
-                        tHeight={50}
-                        fitIn
-                        w={6}
-                        h={6}
-                        objectFit="contain"
-                        mr={3}
-                    />
+                    <Image src={quality.icon.image} alt={quality.icon.name} w={4} h={4} objectFit="contain" mr={3} />
                 ),
             }))}
         />
