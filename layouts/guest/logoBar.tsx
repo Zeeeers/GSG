@@ -13,22 +13,19 @@ const LogoBar: React.FC = ({ children }) => {
             h={'100vh'}
             width={{ base: 'full', lg: 5 / 12 }}
             p={8}
-            bgColor="white.base"
+            bgColor="gray.900"
         >
             <Link href="/" passHref>
                 <HStack spacing={3} alignItems="center" cursor="pointer">
-                    <Image
-                        src={`https://skala-chile.s3.us-east-2.amazonaws.com/img/logos/logo-azul.svg`}
-                        alt={'Skala Chile'}
-                        h={7}
-                        tHeight={50}
-                        tWidth={120}
-                        fitIn
-                        cursor={'pointer'}
-                    />
-
-                    <Text fontSize="3xl" fontWeight="bold" color="primary.500" pt={1} cursor="pointer">
-                        Inversiones
+                    <Text
+                        fontSize="3xl"
+                        textAlign="start"
+                        fontWeight="bold"
+                        color="primary.500"
+                        pt={1}
+                        cursor="pointer"
+                    >
+                        Match
                     </Text>
                 </HStack>
             </Link>

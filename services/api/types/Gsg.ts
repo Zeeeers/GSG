@@ -3,10 +3,12 @@ export interface Gsg {
     id: number;
     title: string;
     description: string;
+    status: string;
     finance_goal: number;
     end_date: string;
     business_name: string;
     business_web: string;
+    qualities: Array<String>;
     impact_what: string;
     impact_who: string;
     impact_how_much: string;

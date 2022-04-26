@@ -25,7 +25,7 @@ const NavbarFilter: React.FC<Props> = ({}) => {
     });
 
     return (
-        <Wrap spacing="6px">
+        <Wrap spacing="12px">
             {itemsNavbarFilter?.map((item, index) => (
                 <CheckCard
                     key={`${index}-explorerFilter`}
@@ -36,12 +36,12 @@ const NavbarFilter: React.FC<Props> = ({}) => {
                     px={'16px'}
                     py={'8px'}
                     rounded="16px"
-                    bg="gray.50"
-                    textColor="black"
+                    bg="gray.700"
+                    textColor="white"
                     fontWeight="normal"
                     fontSize="md"
-                    _hover={{ bg: 'gray.300' }}
-                    _checked={{ bg: 'primary.500', textColor: 'white.base', _hover: { bg: 'primary.600' } }}
+                    _hover={{ bg: 'gray.600' }}
+                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
                     {...getCheckboxProps({ value: item })}
                 >
                     <Text>{item}</Text>

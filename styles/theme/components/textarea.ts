@@ -27,8 +27,8 @@ const sizes = {
 
 const defaultProps = {
     size: 'md',
-    variant: 'filled',
-    colorSchema: 'primary',
+    variant: 'solid',
+    colorSchema: 'white',
 };
 
 const textAreaTheme = {

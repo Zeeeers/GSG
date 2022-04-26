@@ -2,7 +2,6 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
 import {
-    Box,
     Container,
     Flex,
     Heading,
@@ -18,6 +17,7 @@ import {
     HStack,
     VStack,
     SimpleGrid,
+    Stack,
 } from '@chakra-ui/react';
 import { FaChevronUp, FaChevronDown, FaSearch } from 'react-icons/fa';
 import NavbarFilter from 'components/explorer/navbarFilter/navbarFilter';
@@ -35,16 +35,21 @@ const Explorer: NextPage = ({}) => {
         <>
             <Navbar />
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="50px">
-                <Flex>
-                    <Heading fontSize="4xl" fontWeight="medium" w="full" textAlign="left">
-                        Proyectos de inversión
+                <Stack
+                    justify={'space-between'}
+                    direction={{ base: 'column', md: 'row' }}
+                    justifyContent="end"
+                    w="full"
+                >
+                    <Heading fontSize={{ base: '2xl', md: '4xl' }} fontWeight="bold" w="full" textAlign="left">
+                        PROYECTOS DE INVERSIÓN
                     </Heading>
-                    <Box>
-                        <HStack spacing="20px">
+                    <Stack spacing="13px" direction={{ base: 'column-reverse', md: 'row' }} w="full">
+                        <HStack spacing="20px" w="full" justifyContent="end">
                             <Menu>
                                 {({ isOpen }) => (
                                     <>
-                                        <MenuButton as={Button} w="194px">
+                                        <MenuButton as={Button} w={{ base: 'full', lg: '194px' }}>
                                             <Flex
                                                 justifyContent="space-between"
                                                 w="full"
@@ -58,7 +63,7 @@ const Explorer: NextPage = ({}) => {
                                                 <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
                                             </Flex>
                                         </MenuButton>
-                                        <MenuList w="194px">
+                                        <MenuList w={{ base: 'full', md: '194px' }}>
                                             <MenuOptionGroup
                                                 value={orderBy}
                                                 onChange={(e: '[id,asc]' | '[id,desc]') => setOrderBy(e)}
@@ -74,31 +79,30 @@ const Explorer: NextPage = ({}) => {
                                     </>
                                 )}
                             </Menu>
-
-                            <Box>
-                                <HStack spacing="4px" w="full">
-                                    <Input h="40px" w="184px" placeholder="Buscar..." />
-                                    <Button
-                                        variant="solid"
-                                        _focus={{ outline: 'none' }}
-                                        aria-label="Buscar"
-                                        textColor="white"
-                                        py="10px"
-                                        px="16px"
-                                        w="106px"
-                                    >
-                                        <HStack w="full" spacing="10px">
-                                            <Icon as={FaSearch} />
-                                            <Text>Buscar</Text>
-                                        </HStack>
-                                    </Button>
-                                </HStack>
-                            </Box>
                         </HStack>
-                    </Box>
-                </Flex>
 
-                <VStack mt="40px" align="start" spacing="36px">
+                        <HStack spacing="9px" w="full">
+                            <Input w={{ base: 'full', md: '184px' }} variant="outline" placeholder="Buscar..." />
+                            <Button
+                                variant="solid"
+                                bg="gray.600"
+                                _focus={{ outline: 'none' }}
+                                aria-label="Buscar"
+                                textColor="white"
+                                py="10px"
+                                px="16px"
+                                w="110px"
+                            >
+                                <HStack w="full" spacing="10px">
+                                    <Icon as={FaSearch} />
+                                    <Text>Buscar</Text>
+                                </HStack>
+                            </Button>
+                        </HStack>
+                    </Stack>
+                </Stack>
+
+                <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
                     {/* Validation of existing projects (temporary) */}
                     {gsg?.data.projects === [] ? (

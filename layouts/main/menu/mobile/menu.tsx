@@ -3,6 +3,7 @@ import { Box, Button, Divider, HStack, Icon, Slide, Text, VStack } from '@chakra
 import Link from 'next/link';
 import { FaBuilding, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { useMobileMenuStore } from 'stores/mainNav';
+import { useUser } from '../../../../services/api/lib/user';
 
 // Types
 interface Props {
@@ -14,10 +15,11 @@ const MobileUserMenu: React.FC<Props> = ({ onLogOut }) => {
     // States
     const isOpen = useMobileMenuStore((c) => c.isOpen);
     const onToggle = useMobileMenuStore((s) => s.onToggle);
+    const { data } = useUser();
 
     return (
         <Slide in={isOpen} direction="left" style={{ zIndex: 30 }}>
-            <VStack h="full" w="full" bgColor="white.base">
+            <VStack h="full" w="full" bgColor="white">
                 <Box py={8} zIndex={0} />
 
                 <Link href="/profile" passHref>

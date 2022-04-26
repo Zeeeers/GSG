@@ -26,8 +26,8 @@ const UserProfile: NextPage = () => {
 
             <Navbar />
 
-            <HStack mt={{ lg: 12 }}>
-                <Container maxW="4xl" px="37px" py="40px" rounded="xl" shadow={'md'}>
+            <HStack mt={{ lg: 12 }} px={{ base: '25px' }} py={{ base: '50px' }}>
+                <Container maxW="4xl" px="37px" py="40px" rounded="xl" shadow={'md'} bg={'gray.700'}>
                     <ProfileHeader />
 
                     <Tabs mt="33px" isLazy>

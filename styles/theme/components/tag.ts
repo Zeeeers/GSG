@@ -6,6 +6,7 @@ type Dict = Record<string, any>;
 
 const baseStyleContainer = {
     fontWeight: 'medium',
+
     lineHeight: 1.2,
     outline: 0,
     _focus: {
@@ -96,7 +97,7 @@ const variants = {
 const defaultProps = {
     size: 'lg',
     variant: 'subtle',
-    colorScheme: 'primary',
+    colorScheme: 'red',
 };
 
 const tagTheme = {

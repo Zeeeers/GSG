@@ -4,8 +4,8 @@ const styles: Styles = {
     global: {
         body: {
             fontFamily: 'body',
-            color: 'gray.800',
-            bg: 'white.base',
+            color: 'gray.50',
+            bg: 'gray.900',
             transitionProperty: 'background-color',
             transitionDuration: 'normal',
             lineHeight: 'base',

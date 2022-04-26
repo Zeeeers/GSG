@@ -2,7 +2,7 @@ type Dict = Record<string, any>;
 
 const baseStyle = {
     lineHeight: '1.2',
-    borderRadius: '2xl',
+    borderRadius: 'md',
     fontWeight: 'medium',
     transitionProperty: 'common',
     transitionDuration: 'normal',
@@ -61,7 +61,7 @@ function variantOutline({ colorScheme: c }: Dict) {
     return {
         border: '1px solid',
         borderColor: `gray.300`,
-        color: 'gray.600',
+        color: 'gray.50',
         bg: `transparent`,
         _hover: {
             borderColor: `${c}.500`,
@@ -78,7 +78,7 @@ function variantOutline({ colorScheme: c }: Dict) {
 
 function variantSolid({ colorScheme: c }: Dict) {
     const disabledStyles = {
-        bg: 'gray.alpha.32',
+        bg: 'blackAlpha.32',
         color: 'gray.700',
         cursor: 'not-allowed',
         boxShadow: 'none',
@@ -89,7 +89,7 @@ function variantSolid({ colorScheme: c }: Dict) {
             bg: `gray.200`,
             color: `gray.700`,
             _hover: {
-                bg: `gray.alpha.8`,
+                bg: `blackAlpha.50`,
                 _disabled: disabledStyles,
             },
             _active: {
@@ -104,7 +104,7 @@ function variantSolid({ colorScheme: c }: Dict) {
 
     if (c === 'control') {
         return {
-            bg: `white.base`,
+            bg: `white`,
             color: `gray.700`,
             _hover: {
                 bg: `gray.100`,
@@ -114,7 +114,7 @@ function variantSolid({ colorScheme: c }: Dict) {
                 bg: `gray.300`,
             },
             _focus: {
-                bg: `white.base`,
+                bg: `white`,
                 boxShadow: 'outline',
             },
             _disabled: disabledStyles,
@@ -123,7 +123,7 @@ function variantSolid({ colorScheme: c }: Dict) {
 
     return {
         bg: `${c}.500`,
-        color: 'white.base',
+        color: 'white',
         _hover: {
             bg: `${c}.400`,
             _disabled: disabledStyles,
@@ -188,10 +188,11 @@ const sizes = {
         px: 6,
     },
     md: {
-        h: 10,
+        h: '32px',
         minW: 10,
-        fontSize: 'md',
-        px: 4,
+        fontSize: 'sm',
+        py: '6px',
+        px: '12px',
     },
     sm: {
         h: 8,
@@ -209,8 +210,8 @@ const sizes = {
 
 const defaultProps = {
     variant: 'outline',
-    size: 'md',
-    colorScheme: 'primary',
+    sizes: 'md',
+    colorScheme: 'teal',
 };
 
 const buttonTheme = {

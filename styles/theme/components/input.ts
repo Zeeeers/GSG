@@ -5,6 +5,7 @@ const parts = ['field', 'addon'];
 const baseStyle = {
     field: {
         width: '100%',
+        color: 'gray.700',
         minWidth: 0,
         outline: 0,
         position: 'relative',
@@ -19,21 +20,21 @@ const size = {
         h: 14,
         fontSize: 'xl',
         px: 4,
-        borderRadius: '2xl',
+        borderRadius: 'md',
     },
 
     lg: {
         h: 12,
         fontSize: 'lg',
         px: 4,
-        borderRadius: '2xl',
+        borderRadius: 'md',
     },
 
     md: {
-        h: 10,
+        h: 8,
         fontSize: 'md',
-        px: 4,
-        borderRadius: '2xl',
+        px: '16px',
+        borderRadius: 'md',
     },
 
     sm: {
@@ -119,13 +120,13 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
         field: {
             border: '1px solid',
             borderColor: 'gray.300',
-            bg: 'gray.100',
+            bg: 'white',
             transitionProperty: 'common',
             transitionDuration: 'slower',
             color: 'gray.700',
             fontWeight: 'medium',
             _placeholder: {
-                color: 'gray.500',
+                color: 'gray.100',
                 fontWeight: 'regular',
             },
             _hover: {
@@ -133,7 +134,7 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
             },
 
             _focus: {
-                bg: 'transparent',
+                bg: 'white',
                 borderColor: `${c}.500`,
             },
 
@@ -154,7 +155,7 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
         addon: {
             border: '2px solid',
             borderColor: 'transparent',
-            bg: 'gray.100',
+            bg: 'teal.400',
         },
     };
 }
@@ -246,9 +247,9 @@ const variants = {
 };
 
 const defaultProps = {
-    size: 'lg',
-    variant: 'outline',
-    colorScheme: 'primary',
+    size: 'md',
+    variant: 'filled',
+    colorScheme: 'gray',
 };
 
 const inputTheme = {

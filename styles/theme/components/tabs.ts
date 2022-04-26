@@ -178,7 +178,7 @@ function variantLine({ colorScheme: c, orientation }: Dict) {
                 borderTopRadius: '2xl',
             },
             _selected: {
-                color: `${c}.500`,
+                color: `${c}.200`,
                 borderColor: 'currentColor',
             },
             _disabled: {
@@ -207,7 +207,7 @@ function variantEnclosed(props: Dict) {
             _selected: {
                 color: mode(`${c}.600`, `${c}.300`)(props),
                 borderColor: 'inherit',
-                borderBottomColor: mode(`white.base`, `gray.800`)(props),
+                borderBottomColor: mode(`white`, `gray.800`)(props),
             },
         },
         tablist: {
@@ -230,7 +230,7 @@ function variantEnclosedColored(props: Dict) {
                 marginEnd: '-1px',
             },
             _selected: {
-                bg: mode(`white.base`, 'gray.800')(props),
+                bg: mode(`white`, 'gray.800')(props),
                 color: mode(`${c}.600`, `${c}.300`)(props),
                 borderColor: 'inherit',
                 borderTopColor: 'currentColor',
@@ -266,7 +266,7 @@ function variantSolidRounded({ colorScheme: c }: Dict) {
             fontWeight: 'semibold',
             color: 'gray.600',
             _selected: {
-                color: `white.base`,
+                color: `white`,
                 bg: `${c}.600`,
             },
         },
@@ -290,7 +290,7 @@ const variants = {
 const defaultProps = {
     size: 'md',
     variant: 'line',
-    colorScheme: 'primary',
+    colorScheme: 'teal',
 };
 
 const tabsTheme = {

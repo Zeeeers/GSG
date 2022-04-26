@@ -10,9 +10,8 @@ function baseStyleField(props: Record<string, any>) {
         appearance: 'none',
         paddingBottom: '1px',
         lineHeight: 'normal',
-        '> option, > optgroup': {
-            bg: mode('white.base', 'gray.700')(props),
-        },
+        bg: 'gray.900',
+        color: 'white',
     };
 }
 
@@ -21,7 +20,7 @@ const baseStyleIcon = {
     height: '100%',
     insetEnd: '0.5rem',
     position: 'relative',
-    color: 'currentColor',
+    color: 'gray.200',
     fontSize: '1.25rem',
     _disabled: {
         opacity: 0.5,

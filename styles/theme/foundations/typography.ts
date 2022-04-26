@@ -42,8 +42,8 @@ const typography = {
     },
 
     fonts: {
-        heading: `'Manrope', sans-serif`,
-        body: `'Manrope', sans-serif`,
+        heading: `'Barlow', sans-serif`,
+        body: `'Barlow', sans-serif`,
     },
 
     fontSizes: {

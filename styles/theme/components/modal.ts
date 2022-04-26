@@ -1,7 +1,7 @@
 const parts = ['overlay', 'dialogContainer', 'dialog', 'header', 'closeButton', 'body', 'footer'];
 
 const baseStyleOverlay = {
-    bg: 'black.alpha.32',
+    bg: 'blackAlpha.100',
     zIndex: 'modal',
 };
 
@@ -20,7 +20,7 @@ function baseStyleDialogContainer({ isCentered, scrollBehavior }: Dict) {
 function baseStyleDialog({ scrollBehavior }: Dict) {
     return {
         borderRadius: 'md',
-        bg: 'white.base',
+        bg: 'gray.900',
         color: 'inherit',
         my: '3.75rem',
         zIndex: 'modal',

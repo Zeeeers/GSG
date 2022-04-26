@@ -34,7 +34,6 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                 _hover={{
                     backgroundColor: 'gray.100',
                 }}
-                rightIcon={<Icon as={FaChevronDown} fontSize="sm" color={'black.base'} />}
                 size={'lg'}
                 px={6}
             >
@@ -52,7 +51,7 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                         color={'white.base'}
                     />
 
-                    <Text as="span" fontWeight="semibold" color="black.base">
+                    <Text as="span" fontWeight="normal" color="white.base">
                         {user?.name}
                     </Text>
                 </HStack>
@@ -65,7 +64,6 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                         router.push('/profile');
                     }}
                 >
-                    <Icon as={FaUser} mr={4} />
                     Mi perfil
                 </MenuItem>
 
@@ -79,7 +77,6 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                         setIsLoggingOut(false);
                     }}
                 >
-                    <Icon as={FaSignOutAlt} mr={4} />
                     Cerrar sesión
                 </MenuItem>
             </MenuList>

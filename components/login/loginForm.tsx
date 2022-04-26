@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
+import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage, Text } from '@chakra-ui/react';
 import InputPassword from 'common/inputPassword';
 import { loginSchema, ILoginData } from 'forms/login';
 
@@ -71,7 +71,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
     }, [router]);
 
     return (
-        <Stack as="form" direction="column" spacing="17px" mt="23px" onSubmit={handleSubmit(handleLogin)}>
+        <Stack as="form" w="full" direction="column" spacing="17px" mt="23px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
                 <FormLabel fontSize="md" fontWeight="semibold">
                     Correo electrónico

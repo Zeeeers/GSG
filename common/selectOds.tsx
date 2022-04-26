@@ -1,5 +1,4 @@
-import { Controller } from 'react-hook-form';
-import { FormControl, FormErrorMessage, FormLabel, Image } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { Select } from '@clyc/options';
 import { useQualityList } from 'services/api/lib/qualities';
 const SelectOds = () => {
@@ -7,8 +6,8 @@ const SelectOds = () => {
     return (
         <Select
             isMulti
-            variant="outline"
             placeholder=""
+            variant="filled"
             closeMenuOnSelect={false}
             options={data?.qualities?.map((quality) => ({
                 label: quality.name,

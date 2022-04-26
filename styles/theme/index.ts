@@ -8,7 +8,7 @@ const direction = 'ltr' as ThemeDirection;
 
 const config: ThemeConfig = {
     useSystemColorMode: false,
-    initialColorMode: 'light',
+    initialColorMode: 'dark',
     cssVarPrefix: 'skala',
 };
 

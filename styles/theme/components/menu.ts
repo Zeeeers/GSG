@@ -1,14 +1,15 @@
 const parts = ['item', 'command', 'list', 'button', 'groupTitle', 'divider'];
 
 const baseStyleList = {
-    bg: `white.base`,
+    bg: `gray.600`,
     boxShadow: `sm`,
     color: 'inherit',
     minW: '3xs',
     py: '2',
     zIndex: 1,
-    borderRadius: 'lg',
+    borderRadius: '2xl',
     borderWidth: '1px',
+    borderColor: 'gray.600',
 };
 
 const baseStyleItem = {
@@ -18,13 +19,13 @@ const baseStyleItem = {
     transitionDuration: 'ultra-fast',
     transitionTimingFunction: 'ease-in',
     _focus: {
-        bg: `gray.100`,
+        bg: `gray.500`,
     },
     _active: {
-        bg: `gray.200`,
+        bg: `gray.500`,
     },
     _expanded: {
-        bg: `gray.100`,
+        bg: `gray.500`,
     },
     _disabled: {
         opacity: 0.4,
@@ -46,7 +47,7 @@ const baseStyleCommand = {
 const baseStyleDivider = {
     border: 0,
     borderBottom: '1px solid',
-    borderColor: 'gray.300',
+    borderColor: 'gray.600',
     my: '0.5rem',
     opacity: 0.6,
 };

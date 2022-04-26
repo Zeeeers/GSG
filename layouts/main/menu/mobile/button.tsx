@@ -13,7 +13,9 @@ const MobileUserMenuButton: React.FC = () => {
         <IconButton
             icon={<Icon as={isOpen ? FaTimes : FaBars} />}
             aria-label="Menu de usuario"
-            rounded="full"
+            rounded="6px"
+            px="8px"
+            py="8px"
             onClick={() => onToggle()}
         />
     );

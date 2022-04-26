@@ -8,7 +8,7 @@ import Image from '@clyc/optimized-image/components/chakraImage';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
 import LoginModal from 'components/login/loginModal';
-import LoginOrgaModal from 'components/organizationModals/loginOrgaModal';
+import LoginOrgaModal from 'components/organization/loginOrgaModal';
 
 // Types
 const UserMenu = dynamic(() => import('./menu/desktop'));
@@ -56,34 +56,21 @@ const Navbar: React.FC = () => {
                 py={2}
                 px={{ base: 4, lg: 8 }}
                 justifyContent="space-between"
-                bgColor="white.base"
+                bgColor={{ base: 'gray.700', md: 'transparent' }}
                 position="fixed"
                 top={0}
                 zIndex={40}
             >
-                <Link href="/home" passHref>
+                <Link href="/" passHref>
                     <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
-                        <Image
-                            src={`https://skala-chile.s3.us-east-2.amazonaws.com/img/logos/logo-azul.svg`}
-                            alt={'Skala Chile'}
-                            h={{ base: 5, md: 6, lg: 7 }}
-                            w={'auto'}
-                            tHeight={50}
-                            tWidth={120}
-                            fitIn
-                            cursor={'pointer'}
-                            userSelect="none"
-                        />
-
                         <Text
                             fontSize={{ base: 'xl', md: '2xl', lg: '3xl' }}
                             fontWeight="bold"
-                            color="primary.500"
                             pt={1}
                             cursor="pointer"
                             userSelect="none"
                         >
-                            Inversiones
+                            MATCH
                         </Text>
                     </HStack>
                 </Link>

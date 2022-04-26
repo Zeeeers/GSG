@@ -2,7 +2,7 @@ const baseStyle = {
     fontSize: 'md',
     lineHeight: 4,
     marginEnd: 3,
-    mb: 2,
+    mb: 3,
     fontWeight: 'semibold',
     transitionProperty: 'common',
     transitionDuration: 'normal',

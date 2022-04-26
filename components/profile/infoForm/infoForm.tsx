@@ -24,28 +24,20 @@ const InfoForm: React.FC = () => {
 
     return user ? (
         <>
-            <Flex justifyContent={'space-between'} mt="60px">
-                <Stack direction={'row'}>
-                    <VStack>
-                        <Avatar
-                            size="lg"
-                            name={organization?.name ?? 'Skala'}
-                            src={organization?.image}
-                            alt={organization?.name ?? ''}
-                            tHeight={100}
-                            tWidth={100}
-                            mr={2}
-                            icon={<></>}
-                            bgColor={organization?.image ? 'transparent' : 'primary.500'}
-                            color={'white.base'}
-                        />
+            <Flex justifyContent={{ base: 'center', md: 'space-between' }} alignItems="center" mt="60px">
+                <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'center'}>
+                    <Avatar
+                        size={'lg'}
+                        name={organization?.name ?? 'GSG'}
+                        src={organization?.image}
+                        tHeight={100}
+                        tWidth={100}
+                        mr={2}
+                        bgColor={organization?.image ? 'transparent' : 'primary.500'}
+                        color={'white'}
+                    />
 
-                        <Text fontSize={'xs'} fontWeight={'semibold'}>
-                            Cambiar foto perfil
-                        </Text>
-                    </VStack>
-
-                    <VStack alignItems={'start'} spacing={0}>
+                    <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0}>
                         <Text fontSize={'xl'} fontWeight={'medium'}>
                             {user?.name}
                         </Text>
@@ -54,19 +46,17 @@ const InfoForm: React.FC = () => {
                         </Text>
                     </VStack>
                 </Stack>
-
-                <Button>Editar mis datos</Button>
             </Flex>
 
-            <VStack alignItems={'start'} mt="22px">
+            <VStack alignItems={{ base: 'center', md: 'start' }} mt="50px">
                 <Text fontSize={'lg'} fontWeight={'medium'}>
                     Notificaciones
                 </Text>
                 <FormControl orientation="vertical">
-                    <HStack>
+                    <HStack alignItems={{ base: 'center', md: 'start' }}>
                         <Checkbox />
                         <FormLabel fontSize={'sm'} fontWeight="medium">
-                            Deseo rercibir correos con proyectos rerlacionados con mis intereses
+                            Deseo rercibir correos con proyectos relacionados con mis intereses
                         </FormLabel>
                     </HStack>
                 </FormControl>
