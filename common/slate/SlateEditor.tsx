@@ -292,7 +292,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
                             <ModalCloseButton />
 
                             <ModalBody>
-                                <FormControl name="video_url" isInvalid={!!videoUrlError} mb={4}>
+                                <FormControl id="video_url" isInvalid={!!videoUrlError} mb={4}>
                                     <FormLabel>Url del video</FormLabel>
 
                                     <Input

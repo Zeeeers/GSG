@@ -33,6 +33,7 @@ import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 import UploadButton from 'common/uploadButton';
 import { useState } from 'react';
 import AddMembersModal from 'components/project/addMembersModal';
+import { Descendant } from 'slate';
 
 // Page
 const Index: NextPage = () => {
@@ -43,6 +44,7 @@ const Index: NextPage = () => {
     const members = useCreateGsgProjectStore((s) => s.members);
     const setMember = useCreateGsgProjectStore((s) => s.setMember);
     const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
+    const [contenido, setContenido] = useState<Descendant[]>();
 
     const {
         register,
@@ -63,6 +65,10 @@ const Index: NextPage = () => {
         },
         resolver: zodResolver(projectSchema),
     });
+
+    const handleEditField = (values: Descendant[]) => {
+        setContenido(values);
+    };
 
     const proyectDescription = watch('description', project.description ?? '');
 
@@ -145,7 +151,7 @@ const Index: NextPage = () => {
                             <FormControl id="finance_goal" isInvalid={!!errors.finance_goal}>
                                 <FormLabel>Capital a levantar</FormLabel>
                                 <InputGroup>
-                                    <InputLeftAddon children="$" />
+                                    <InputLeftAddon>$</InputLeftAddon>
                                     <Input {...register('finance_goal')} type="number" />
                                 </InputGroup>
                                 <FormHelperText>Ingresa el monto</FormHelperText>
@@ -165,7 +171,7 @@ const Index: NextPage = () => {
                             <FormControl id="business_web" isInvalid={!!errors.business_web}>
                                 <FormLabel>Sitio web</FormLabel>
                                 <InputGroup>
-                                    <InputLeftAddon children="www." />
+                                    <InputLeftAddon>www.</InputLeftAddon>
                                     <Input {...register('business_web')} />
                                 </InputGroup>
                             </FormControl>
@@ -178,7 +184,7 @@ const Index: NextPage = () => {
                         </Text>
                         <FormControl>
                             <FormLabel>De manera más detallada cuéntanos respecto a tu proyecto</FormLabel>
-                            <SlateEditor />
+                            <SlateEditor handleSaveField={handleEditField} />
                         </FormControl>
                     </VStack>
 
