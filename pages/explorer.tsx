@@ -107,7 +107,7 @@ const Explorer: NextPage = ({}) => {
                     {/* Validation of existing projects (temporary) */}
                     {gsg?.data.projects === [] ? (
                         <SimpleGrid w="full" columns={3} spacing="37px">
-                            {gsg?.data.projects.map((project) => (
+                            {gsg?.data?.projects.map((project) => (
                                 <ExplorerCard key={project.id} project={project} />
                             ))}
                         </SimpleGrid>

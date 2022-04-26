@@ -8,7 +8,7 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"scripts": {
-		"lint": "next lint --dir pages --dir components --dir common --dir services --dir hooks --dir forms --dir stores",
+		"lint": "next lint --dir pages --dir components --dir common --dir services --dir hooks --dir forms --dir stores --dir layouts",
 		"dev": "next dev -p 3002",
 		"start": "next start",
 		"build": "next build",

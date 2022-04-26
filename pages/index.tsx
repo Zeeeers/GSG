@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { NextPage } from 'next';
 import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';
 import { BsPlus } from 'react-icons/bs';
@@ -22,7 +23,6 @@ import {
     useDisclosure,
     VStack,
     Stack,
-    Flex,
 } from '@chakra-ui/react';
 import SlateEditor from 'common/slate/SlateEditor';
 import SelectOds from 'common/selectOds';
@@ -36,9 +36,10 @@ import AddMembersModal from 'components/project/addMembersModal';
 import { Descendant } from 'slate';
 
 // Page
+
 const Index: NextPage = () => {
     const [baseImg, setBaseImg] = useState<string>();
-    const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
+    const { onOpen: onCropperOpen } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const project = useCreateGsgProjectStore((s) => s.project);
     const members = useCreateGsgProjectStore((s) => s.members);
@@ -49,7 +50,7 @@ const Index: NextPage = () => {
     const {
         register,
         formState: { errors },
-        handleSubmit,
+
         watch,
     } = useForm<IProjectForm>({
         defaultValues: {

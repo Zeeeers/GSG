@@ -19,10 +19,10 @@ import {
 import { IRegisterSkalaForm, registerSkalaSchema } from 'forms/registerSkala';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Avatar from '@clyc/optimized-image/components/chakraAvatar';
+//import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRegisterSkalaStore } from 'stores/registerSkala';
 import InputPassword from 'common/inputPassword';
-import UploadButton from 'common/uploadButton';
+//import UploadButton from 'common/uploadButton';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModal'));
@@ -33,9 +33,9 @@ const ErrorNotification = dynamic(() => import('common/notifications/error'));
 const RegisterForm: React.FC = () => {
     // States
     const { isOpen: isTermsOpen, onOpen: onTermsOpen, onClose: onTermsClose } = useDisclosure();
-    const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
+    const { isOpen: isCropperOpen, onClose: onCropperClose } = useDisclosure();
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-    const [baseImg, setBaseImg] = useState<string>();
+    const [baseImg] = useState<string>();
     const setRegisterData = useRegisterSkalaStore((state) => state.updateFormValues);
     const setRegisterStatus = useRegisterSkalaStore((state) => state.updateStatus);
     const {

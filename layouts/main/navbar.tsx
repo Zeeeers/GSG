@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, HStack, Skeleton, Text, useMediaQuery, Link as ChakraLink, useDisclosure } from '@chakra-ui/react';
-import Image from '@clyc/optimized-image/components/chakraImage';
+import { HStack, Text, useMediaQuery, useDisclosure, Img, Container } from '@chakra-ui/react';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
 import LoginModal from 'components/login/loginModal';
@@ -21,7 +20,7 @@ const Navbar: React.FC = () => {
     const [isMenuAvailable, setIsMenuAvailable] = useState(false);
     const [isTablet] = useMediaQuery('(min-width: 48em)');
     const router = useRouter();
-    const { data: user, isValidating: isValidatingUser } = useUser();
+    const { data: user, mutate } = useUser();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenOrgaLogin, onOpen: onOpenOrgaLogin, onClose: onCloseOrgaLogin } = useDisclosure();
@@ -34,6 +33,7 @@ const Navbar: React.FC = () => {
             secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
         });
         router.push('/explorer');
+        mutate();
     };
 
     // Effects
@@ -47,60 +47,51 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <Box py={8} zIndex={0} />
-
-            <HStack
-                as="nav"
-                shadow="sm"
-                w={'full'}
-                py={2}
-                px={{ base: 4, lg: 8 }}
-                justifyContent="space-between"
+            <Container
+                maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
                 bgColor={{ base: 'gray.700', md: 'transparent' }}
-                position="fixed"
-                top={0}
-                zIndex={40}
+                py={{ base: '15px', md: '20px' }}
             >
-                <Link href="/" passHref>
-                    <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
-                        <Text
-                            fontSize={{ base: 'xl', md: '2xl', lg: '3xl' }}
-                            fontWeight="bold"
-                            pt={1}
-                            cursor="pointer"
-                            userSelect="none"
-                        >
-                            MATCH
-                        </Text>
-                    </HStack>
-                </Link>
-
-                {user === undefined ? (
-                    isValidatingUser === false ? (
-                        <HStack spacing="24px">
-                            <Button onClick={() => onOpenOrgaLogin()}>¿Eres empresa? levantar capital</Button>
-                            <Button
-                                onClick={onOpen}
-                                variant="solid"
-                                _focus={{ outline: 'none' }}
-                                aria-label="Buscar"
-                                textColor="white"
-                                py="10px"
-                                px="16px"
-                                w="106px"
+                <HStack as="nav" shadow="sm" w="full" justifyContent="space-between" top={0} zIndex={40}>
+                    <Link href="/explorer" passHref>
+                        <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
+                            <Img src="/images/logo_match_blanco.png" />
+                            <Text
+                                fontSize={{ base: 'xl', md: '2xl', lg: '3xl' }}
+                                fontWeight="bold"
+                                pt={1}
+                                cursor="pointer"
+                                userSelect="none"
                             >
-                                Ingresar
-                            </Button>
+                                MATCH
+                            </Text>
                         </HStack>
+                    </Link>
+                    {user === undefined ? (
+                        isTablet ? (
+                            <HStack spacing="24px">
+                                <Button onClick={() => onOpenOrgaLogin()}>¿Eres empresa? levantar capital</Button>
+                                <Button
+                                    onClick={onOpen}
+                                    variant="solid"
+                                    _focus={{ outline: 'none' }}
+                                    aria-label="Buscar"
+                                    textColor="white"
+                                    py="10px"
+                                    px="16px"
+                                    w="106px"
+                                >
+                                    Ingresar
+                                </Button>
+                            </HStack>
+                        ) : (
+                            <MobileButton />
+                        )
                     ) : (
-                        <Skeleton w={24} h={4} bg="gray.500" />
-                    )
-                ) : isTablet ? (
-                    <UserMenu onLogOut={handleLogOut} />
-                ) : (
-                    <MobileButton />
-                )}
-            </HStack>
+                        <UserMenu onLogOut={handleLogOut} />
+                    )}
+                </HStack>
+            </Container>
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 

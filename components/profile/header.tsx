@@ -1,23 +1,23 @@
 // Dependencies
-import dynamic from 'next/dynamic';
-import { Heading, Skeleton, useToast, VStack } from '@chakra-ui/react';
-import { useUser } from 'services/api/lib/user';
-import SuccessNotification from 'common/notifications/success';
-import ErrorNotification from 'common/notifications/error';
+//import dynamic from 'next/dynamic';
+import { Heading, VStack } from '@chakra-ui/react';
+//import { useUser } from 'services/api/lib/user';
+//import SuccessNotification from 'common/notifications/success';
+//import ErrorNotification from 'common/notifications/error';
 
 // Dynamic
-const EditableTitle = dynamic(() => import('common/editableTitle'), {
+/*const EditableTitle = dynamic(() => import('common/editableTitle'), {
     loading: () => <Skeleton h={12} w={80} rounded="16px" />,
-});
+});*/
 
 // Component
 const ProfileHeader: React.FC = () => {
     // States
-    const { data: user } = useUser();
-    const toast = useToast();
+    //const { data: user } = useUser();
+    //const toast = useToast();
 
     // Handlers
-    const handleUpdateName = async (value: string) => {
+    /*const handleUpdateName = async (value: string) => {
         const userApi = import('services/api/lib/user');
         const manager = import('@clyc/next-route-manager/libs/AuthManager');
 
@@ -54,7 +54,7 @@ const ProfileHeader: React.FC = () => {
                 ),
             });
         }
-    };
+    };*/
 
     return (
         <VStack as="header" alignItems="start">

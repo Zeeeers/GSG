@@ -1,7 +1,7 @@
 import { Button, FormControl, FormLabel, Input, Stack, Textarea } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IMember, memberSchema } from 'forms/project';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 
@@ -11,7 +11,7 @@ const AddMembersForm = () => {
     const {
         register,
         reset,
-        formState: { errors },
+
         handleSubmit,
     } = useForm<IMember>({
         defaultValues: {

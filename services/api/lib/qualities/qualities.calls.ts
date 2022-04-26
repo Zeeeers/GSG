@@ -1,10 +1,9 @@
 // Dependencies
 
 import useSWR, { SWRResponse } from 'swr';
-import { api, pymeHeaders } from '../../config';
+import { api } from '../../config';
 import ENDPOINT from './qualities.endpoints';
-import { GetQualityListResponse, GetQualityResponse } from './qualities.types';
-import { Quality } from 'services/api/types/Quality';
+import { GetQualityListResponse } from './qualities.types';
 
 // READ
 const qualityAllFetcher = async (endpoint: string) => {

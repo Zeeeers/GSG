@@ -1,9 +1,9 @@
 // Dependencies
-import { Box, Button, Divider, HStack, Icon, Slide, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Icon, Slide, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FaBuilding, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { useMobileMenuStore } from 'stores/mainNav';
-import { useUser } from '../../../../services/api/lib/user';
+//import { useUser } from '../../../../services/api/lib/user';
 
 // Types
 interface Props {
@@ -15,11 +15,11 @@ const MobileUserMenu: React.FC<Props> = ({ onLogOut }) => {
     // States
     const isOpen = useMobileMenuStore((c) => c.isOpen);
     const onToggle = useMobileMenuStore((s) => s.onToggle);
-    const { data } = useUser();
+    //const { data: user } = useUser();
 
     return (
         <Slide in={isOpen} direction="left" style={{ zIndex: 30 }}>
-            <VStack h="full" w="full" bgColor="white">
+            <VStack h="full" w="full" bgColor="gray.700">
                 <Box py={8} zIndex={0} />
 
                 <Link href="/profile" passHref>
@@ -29,6 +29,7 @@ const MobileUserMenu: React.FC<Props> = ({ onLogOut }) => {
                         px={4}
                         justifyContent="left"
                         variant="ghost"
+                        color="white"
                         w="full"
                         rounded="none"
                         onClick={onToggle}
@@ -40,32 +41,13 @@ const MobileUserMenu: React.FC<Props> = ({ onLogOut }) => {
                     </HStack>
                 </Link>
 
-                <Link href="/profile/organization" passHref>
-                    <HStack
-                        as={Button}
-                        spacing={4}
-                        px={4}
-                        justifyContent="left"
-                        variant="ghost"
-                        w="full"
-                        rounded="none"
-                        onClick={onToggle}
-                    >
-                        <Icon as={FaBuilding} />
-                        <Text fontWeight="semibold" fontSize="xl">
-                            Perfil de organización
-                        </Text>
-                    </HStack>
-                </Link>
-
-                <Divider />
-
                 <HStack
                     as={Button}
                     spacing={4}
                     px={4}
                     justifyContent="left"
                     variant="ghost"
+                    color="white"
                     w="full"
                     rounded="none"
                     onClick={() => {

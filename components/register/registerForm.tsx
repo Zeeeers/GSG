@@ -5,7 +5,6 @@ import {
     FormControl,
     FormLabel,
     FormErrorMessage,
-    HStack,
     VStack,
     Input,
     Heading,
@@ -22,6 +21,7 @@ import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRegisterStore } from 'stores/register';
 import InputPassword from 'common/inputPassword';
 import UploadButton from 'common/uploadButton';
+import Link from 'next/link';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModal'));
@@ -92,28 +92,31 @@ const RegisterForm: React.FC = () => {
             <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
                 <VStack my={8} spacing={8}>
                     <FormControl id="logo" isInvalid={!!errors.logo}>
-                        <FormLabel>Logo de la organización</FormLabel>
+                        <FormLabel fontSize="24px">CREAR ORGANIZACIÓN</FormLabel>
 
-                        <HStack mt={4} spacing={8}>
-                            <Avatar
-                                tHeight={100}
-                                tWidth={100}
-                                alt={watch().organizationName}
-                                size="2xl"
-                                src={watch().logo}
-                                icon={<></>}
-                                shadow="lg"
-                                bgColor={'primary.300'}
-                                textColor={'white.base'}
-                                name={watch().organizationName === '' ? 'Skala' : watch().organizationName}
-                            />
+                        <VStack alignItems="start" justifyContent="center" mt="25px">
+                            <VStack spacing={3}>
+                                <Avatar
+                                    tHeight={100}
+                                    tWidth={100}
+                                    alt={watch().organizationName}
+                                    size="2xl"
+                                    src={watch().logo}
+                                    icon={<></>}
+                                    shadow="lg"
+                                    bgColor={'gray.700'}
+                                    border="2px"
+                                    borderColor="white"
+                                    borderStyle="dashed"
+                                    textColor={'white'}
+                                    name={watch().organizationName ? 'GSG' : watch().organizationName}
+                                />
 
-                            <Input type="hidden" {...register('logo')} />
+                                <Input type="hidden" {...register('logo')} />
 
-                            <VStack align="start" spacing={4}>
                                 <UploadButton
-                                    variant="solid"
-                                    colorScheme="basic"
+                                    variant="ghost"
+                                    colorScheme="white"
                                     fontWeight="bold"
                                     ml={-2}
                                     onChange={async (e) => {
@@ -129,11 +132,9 @@ const RegisterForm: React.FC = () => {
                                     Subir logo
                                 </UploadButton>
 
-                                <FormHelperText fontWeight="semibold">Imagen JPG o PNG cuadrada</FormHelperText>
-
                                 <FormErrorMessage fontWeight={'semibold'}>{errors.logo?.message}</FormErrorMessage>
                             </VStack>
-                        </HStack>
+                        </VStack>
                     </FormControl>
 
                     <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
@@ -146,7 +147,7 @@ const RegisterForm: React.FC = () => {
                 </VStack>
 
                 <Heading as="h2" size="2xl" mt={8} mb={4} fontWeight="bold">
-                    Tus datos personales
+                    INFORMACIÓN DEL USUARIO
                 </Heading>
 
                 <VStack align="start" spacing={8} mb={16}>
@@ -206,9 +207,16 @@ const RegisterForm: React.FC = () => {
                         isLoading={isCreatingAccount}
                         isDisabled={!watch().termsCheck}
                         mb={8}
+                        w="full"
                     >
                         Crear cuenta
                     </Button>
+
+                    <Link href="/login" passHref>
+                        <Button type="button" w="full" variant="ghost">
+                            Ya tengo cuenta
+                        </Button>
+                    </Link>
                 </VStack>
             </form>
 

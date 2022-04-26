@@ -1,17 +1,5 @@
 // Dependencies
-import {
-    Avatar,
-    Button,
-    Checkbox,
-    Flex,
-    FormControl,
-    FormLabel,
-    HStack,
-    Input,
-    Stack,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
+import { Avatar, Checkbox, Flex, FormControl, FormLabel, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { useUser } from 'services/api/lib/user';
 import { useOrganization } from 'services/api/lib/organization';
 import InfoSkeleton from './infoForm.skeleton';
@@ -30,8 +18,8 @@ const InfoForm: React.FC = () => {
                         size={'lg'}
                         name={organization?.name ?? 'GSG'}
                         src={organization?.image}
-                        tHeight={100}
-                        tWidth={100}
+                        height={100}
+                        width={100}
                         mr={2}
                         bgColor={organization?.image ? 'transparent' : 'primary.500'}
                         color={'white'}

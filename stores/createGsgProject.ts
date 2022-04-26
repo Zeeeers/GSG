@@ -1,5 +1,4 @@
 // Dependencies
-import AddMembersForm from 'components/project/addMembersForm';
 import { IMember } from 'forms/project';
 import { Gsg } from 'services/api/types/Gsg';
 import create from 'zustand';

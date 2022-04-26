@@ -2,13 +2,13 @@
 import { Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { useCheckboxGroup } from '@chakra-ui/checkbox';
 import CheckCard from 'common/checkCard';
-import { useState } from 'react';
+//import { useState } from 'react';
 // Types
 interface Props {}
 
 // Component
 const NavbarFilter: React.FC<Props> = ({}) => {
-    const [filters, setFilters] = useState([]);
+    //const [filters, setFilters] = useState([]);
 
     const itemsNavbarFilter = [
         'CORFO',

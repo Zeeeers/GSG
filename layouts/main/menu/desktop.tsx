@@ -1,9 +1,8 @@
 // Dependencies
-import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FaBuilding, FaChevronDown, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
 

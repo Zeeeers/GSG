@@ -1,7 +1,7 @@
 // Dependencies
 import Link from 'next/link';
-import { Flex, HStack, Text } from '@chakra-ui/react';
-import Image from '@clyc/optimized-image/components/chakraImage';
+import { Flex, HStack, Img, Text } from '@chakra-ui/react';
+//import Image from '@clyc/optimized-image/components/chakraImage';
 
 // Component
 const LogoBar: React.FC = ({ children }) => {
@@ -12,11 +12,12 @@ const LogoBar: React.FC = ({ children }) => {
             left={0}
             h={'100vh'}
             width={{ base: 'full', lg: 5 / 12 }}
-            p={8}
+            p={{ base: '25px', md: 20 }}
             bgColor="gray.900"
         >
-            <Link href="/" passHref>
-                <HStack spacing={3} alignItems="center" cursor="pointer">
+            <Link href="/explorer" passHref>
+                <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
+                    <Img src="/images/logo_match_blanco.png" />
                     <Text
                         fontSize="3xl"
                         textAlign="start"
@@ -25,7 +26,7 @@ const LogoBar: React.FC = ({ children }) => {
                         pt={1}
                         cursor="pointer"
                     >
-                        Match
+                        MATCH
                     </Text>
                 </HStack>
             </Link>

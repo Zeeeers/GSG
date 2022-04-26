@@ -1,10 +1,9 @@
-import { mode } from '@chakra-ui/theme-tools';
 import { mergeWith as merge } from '@chakra-ui/utils';
 import Input from './input';
 
 const parts = ['field', 'icon'];
 
-function baseStyleField(props: Record<string, any>) {
+function baseStyleField() {
     return {
         ...Input.baseStyle.field,
         appearance: 'none',
@@ -27,8 +26,8 @@ const baseStyleIcon = {
     },
 };
 
-const baseStyle = (props: Record<string, any>) => ({
-    field: baseStyleField(props),
+const baseStyle = () => ({
+    field: baseStyleField(),
     icon: baseStyleIcon,
 });
 

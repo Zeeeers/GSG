@@ -17,6 +17,7 @@ const MobileUserMenuButton: React.FC = () => {
             px="8px"
             py="8px"
             onClick={() => onToggle()}
+            zIndex={60}
         />
     );
 };

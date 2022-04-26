@@ -5,7 +5,6 @@ import {
     FormControl,
     FormLabel,
     FormErrorMessage,
-    HStack,
     VStack,
     Input,
     InputLeftAddon,
@@ -20,13 +19,12 @@ import {
     Flex,
 } from '@chakra-ui/react';
 import { IRegisterSkalaForm, registerSkalaSchema } from 'forms/registerSkala';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRegisterSkalaStore } from 'stores/registerSkala';
 import InputPassword from 'common/inputPassword';
 import UploadButton from 'common/uploadButton';
-import { formatRUT } from 'services/text';
 import { Text } from '@chakra-ui/layout';
 
 // Dynamic
@@ -49,7 +47,6 @@ const RegisterForm: React.FC = () => {
     const setStepOneError = useRegisterSkalaStore((state) => state.setStepOneError);
     const {
         register,
-        control,
         formState: { errors },
         handleSubmit,
         watch,
@@ -131,8 +128,7 @@ const RegisterForm: React.FC = () => {
                     <VStack mb={8} spacing={8}>
                         <FormControl id="logo" isInvalid={!!errors.logo}>
                             <FormLabel>Logo de la organización</FormLabel>
-
-                            <HStack mt={4} spacing={8}>
+                            <VStack justifyContent="center" mt={4} spacing={8}>
                                 <Avatar
                                     tHeight={100}
                                     tWidth={100}
@@ -145,9 +141,7 @@ const RegisterForm: React.FC = () => {
                                     textColor={'white.base'}
                                     name={watch().organizationName === '' ? 'Skala' : watch().organizationName}
                                 />
-
                                 <Input type="hidden" {...register('logo')} />
-
                                 <VStack align="start" spacing={4}>
                                     <UploadButton
                                         variant="solid"
@@ -167,11 +161,9 @@ const RegisterForm: React.FC = () => {
                                         Subir logo
                                     </UploadButton>
 
-                                    <FormHelperText fontWeight="semibold">Imagen JPG o PNG cuadrada</FormHelperText>
-
                                     <FormErrorMessage fontWeight={'semibold'}>{errors.logo?.message}</FormErrorMessage>
                                 </VStack>
-                            </HStack>
+                            </VStack>
                         </FormControl>
 
                         <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
@@ -302,33 +294,6 @@ const RegisterForm: React.FC = () => {
                             <FormErrorMessage fontWeight={'semibold'}>
                                 {errors.organizationAddress?.message}
                             </FormErrorMessage>
-                        </FormControl>
-
-                        <FormControl id="idNumber" isInvalid={!!errors.idNumber}>
-                            <FormLabel>
-                                Número Identificador Nacional o RUT Personal
-                                <Text as="span" textColor="danger.500" ml={1}>
-                                    *
-                                </Text>
-                            </FormLabel>
-
-                            <Controller
-                                name="idNumber"
-                                control={control}
-                                render={({ field: { onChange, ...field } }) => (
-                                    <Input
-                                        size="md"
-                                        {...field}
-                                        onChange={(e) =>
-                                            onChange(
-                                                e.target.value.length <= 1 ? e.target.value : formatRUT(e.target.value),
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.idNumber?.message}</FormErrorMessage>
                         </FormControl>
                     </VStack>
 

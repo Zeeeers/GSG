@@ -1,5 +1,4 @@
 // Dependencies
-import { GenericAPIErrorResponse, GenericAPIResponse } from '@clyc/api-wrapper/dist/types';
 import { ApiResponse } from 'apisauce';
 import { Quality } from '../../types/Quality';
 

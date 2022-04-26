@@ -2,8 +2,7 @@
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { NextSeo } from 'next-seo';
-import { Container, HStack, Icon, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { FaLock, FaUser } from 'react-icons/fa';
+import { Container, HStack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
 import Navbar from 'layouts/main/navbar';
 import ProfileHeader from 'components/profile/header';

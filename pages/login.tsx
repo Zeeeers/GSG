@@ -3,14 +3,12 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { NextSeo } from 'next-seo';
-import { Button, Flex, Heading, Stack, Text, useMediaQuery, VStack } from '@chakra-ui/react';
+import { Button, Flex, Heading, Img, Stack, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
 import LogoBar from 'layouts/guest/logoBar';
 import LoginForm from 'components/login/loginForm';
-import { IOptChImage } from '@clyc/optimized-image/components/chakraImage';
 
 // Dynamic
-const Image = dynamic<IOptChImage>(() => import('@clyc/optimized-image/components/chakraImage'));
 const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 
 // Page
@@ -66,15 +64,7 @@ const LoginPage: NextPage = () => {
 
             {isDesktop && (
                 <SideBackground>
-                    <Image
-                        src={'https://skala-chile.s3.us-east-2.amazonaws.com/desafios/public_side_background-min.jpg'}
-                        alt="Skala desafios"
-                        tWidth={3358 / 2}
-                        tHeight={2348 / 2}
-                        h="full"
-                        w="full"
-                        objectFit="cover"
-                    />
+                    <Img src="/images/earth.jpg" objectFit="cover" objectPosition="center" h="full" w="full" />
                 </SideBackground>
             )}
         </>
