@@ -20,7 +20,7 @@ const PassForm = dynamic(() => import('components/profile/changePassword/changeP
 const UserProfile: NextPage = () => {
     return (
         <>
-            <NextSeo title="Perfil de usuario - Skala Desafíos" />
+            <NextSeo title="Perfil de usuario - GSG" />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
 
             <Navbar />

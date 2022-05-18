@@ -24,7 +24,9 @@ export interface Gsg {
     created_at: string;
     updated_at: string;
     tags: string;
-    main_image: string;
+    main_image: { url: string };
+    stage: string;
+    about: string;
 }
 
 export interface GsgFormated {

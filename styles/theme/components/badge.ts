@@ -11,8 +11,8 @@ const baseStyle = {
 
 function variantSolid({ colorScheme: c }: Record<string, any>) {
     return {
-        bg: c === 'basic' ? `gray.200` : `${c}.500`,
-        color: c === 'basic' ? `black` : `white`,
+        bg: c === 'basic' ? `gray.200` : `${c}.100`,
+        color: c === 'basic' ? `black` : `${c}.800`,
         shadow: c === 'basic' ? 'xs' : 'none',
     };
 }

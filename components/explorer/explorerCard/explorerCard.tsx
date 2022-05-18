@@ -1,5 +1,6 @@
 // Dependencies
 import { Text, Box, Stack, Image, Button } from '@chakra-ui/react';
+import Link from 'next/link';
 import { Gsg } from 'services/api/types/Gsg';
 // Types
 interface Props {
@@ -8,9 +9,27 @@ interface Props {
 
 // Component
 const ExplorerCard: React.FC<Props> = ({ project }) => {
+    const currencyFormat = (num: number) => {
+        return '$' + num?.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    };
+
     return (
-        <Box w="332px" rounded="8px" shadow="lg" overflow="hidden">
-            <Image src={project.main_image} alt="cover" objectFit="cover" w="full" h="165px" roundedTop="18px" />
+        <Box
+            w={{ base: 'full', lg: '332px' }}
+            roundedTop="18px"
+            roundedBottom="8px"
+            shadow="lg"
+            bg="gray.800"
+            overflow="hidden"
+        >
+            <Image
+                src={project.main_image ?? 'images/earth.jpg'}
+                alt="cover"
+                objectFit="cover"
+                w="full"
+                h="165px"
+                roundedTop="18px"
+            />
             <Box px="20px" py="18px">
                 <Stack spacing="5px">
                     <Text fontSize="md" fontWeight="medium">
@@ -25,13 +44,15 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                         {project.business_name}
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold">
-                        {project.finance_goal}
+                        {currencyFormat(project.finance_goal)}
                     </Text>
                 </Stack>
                 <Box textAlign="center" mt="13px">
-                    <Button variant="solid" colorScheme="basic" h="32px" w="full">
-                        Ver proyecto
-                    </Button>
+                    <Link href={`/projectDetail/${project.id}`} passHref>
+                        <Button variant="solid" h="32px" w="full">
+                            Ver proyecto
+                        </Button>
+                    </Link>
                 </Box>
             </Box>
         </Box>

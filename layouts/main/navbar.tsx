@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { HStack, Text, useMediaQuery, useDisclosure, Img, Container } from '@chakra-ui/react';
+import { HStack, Text, useMediaQuery, useDisclosure, Img, Container, Stack } from '@chakra-ui/react';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
 import LoginModal from 'components/login/loginModal';
@@ -47,22 +47,25 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <Container
-                maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
-                bgColor={{ base: 'gray.700', md: 'transparent' }}
-                py={{ base: '15px', md: '20px' }}
+            <HStack
+                w="full"
+                bgColor={{ base: 'gray.700', md: 'gray.900' }}
+                zIndex={50}
+                position="fixed"
+                as="nav"
+                shadow="sm"
+                top={0}
             >
-                <HStack as="nav" shadow="sm" w="full" justifyContent="space-between" top={0} zIndex={40}>
+                <Container
+                    display="flex"
+                    maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
+                    justifyContent="space-between"
+                    py={{ base: '15px', md: '20px' }}
+                >
                     <Link href="/explorer" passHref>
                         <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
                             <Img src="/images/logo_match_blanco.png" />
-                            <Text
-                                fontSize={{ base: 'xl', md: '2xl', lg: '3xl' }}
-                                fontWeight="bold"
-                                pt={1}
-                                cursor="pointer"
-                                userSelect="none"
-                            >
+                            <Text fontSize="sm" fontWeight="bold" pt={1} cursor="pointer" userSelect="none">
                                 MATCH
                             </Text>
                         </HStack>
@@ -90,8 +93,8 @@ const Navbar: React.FC = () => {
                     ) : (
                         <UserMenu onLogOut={handleLogOut} />
                     )}
-                </HStack>
-            </Container>
+                </Container>
+            </HStack>
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 

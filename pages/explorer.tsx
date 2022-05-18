@@ -34,7 +34,7 @@ const Explorer: NextPage = ({}) => {
     return (
         <>
             <Navbar />
-            <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="50px">
+            <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 <Stack
                     justify={'space-between'}
                     direction={{ base: 'column', md: 'row' }}
@@ -105,8 +105,8 @@ const Explorer: NextPage = ({}) => {
                 <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
                     {/* Validation of existing projects (temporary) */}
-                    {gsg?.data?.projects === [] ? (
-                        <SimpleGrid w="full" columns={3} spacing="37px">
+                    {gsg?.data?.projects ? (
+                        <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                             {gsg?.data?.projects.map((project) => (
                                 <ExplorerCard key={project.id} project={project} />
                             ))}

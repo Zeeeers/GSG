@@ -20,7 +20,7 @@ function baseStyleDialogContainer({ isCentered, scrollBehavior }: Dict) {
 function baseStyleDialog({ scrollBehavior }: Dict) {
     return {
         borderRadius: 'md',
-        bg: 'gray.900',
+        bg: 'gray.800',
         color: 'inherit',
         my: '3.75rem',
         zIndex: 'modal',

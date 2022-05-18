@@ -22,7 +22,7 @@ const OrganizationProfile: NextPage = () => {
 
     return (
         <>
-            <NextSeo title="Perfil de la organización - Skala Desafíos" />
+            <NextSeo title="Perfil de la organización - GSG" />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
 
             <Navbar />

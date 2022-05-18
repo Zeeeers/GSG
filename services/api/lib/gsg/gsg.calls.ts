@@ -7,7 +7,7 @@ import {
     UpdateGsgProjectCall,
     UpdateGsgProjectResponse,
 } from './gsg.types';
-import useSWR, { responseInterface } from 'swr';
+import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
 
 // READ
@@ -16,18 +16,17 @@ const gsgAllFetcher = async (endpoint: string) => {
     return data;
 };
 
-export const useGsg = (): responseInterface<GetAllGsgResponse | undefined, unknown> => {
+export const useGsg = (): SWRResponse<GetAllGsgResponse | undefined, unknown> => {
     return useSWR([ENDPOINT.BASE], gsgAllFetcher);
 };
 
-export const getGsgProject = async (_: string, id: number, token: string) => {
-    const { data } = await api.get<GetGsgProjectResponse>(ENDPOINT.DETAIL(id), {}, pymeHeaders(token));
-
+export const getGsgProject = async (_: string, id: number) => {
+    const { data } = await api.get<GetGsgProjectResponse>(ENDPOINT.DETAIL(id));
     return data;
 };
 
-export const useGsgProject = (id?: number, token?: string) => {
-    return useSWR([id ? ENDPOINT.DETAIL(id) : null, id, token], getGsgProject);
+export const useGsgProject = (id?: number) => {
+    return useSWR([id ? ENDPOINT.DETAIL(id) : null, id], getGsgProject);
 };
 
 export const getMyGsgProject = async (_: string, token?: string) => {

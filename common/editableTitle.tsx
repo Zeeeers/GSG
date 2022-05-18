@@ -21,10 +21,11 @@ const EditableTitle = forwardRef<EditableProps, any>(({ fontSize, ...props }, re
                 justifyContent="left"
                 spacing={{ base: 3, lg: 6 }}
                 shouldWrapChildren
+                alignItems={'center'}
             >
                 <>
                     <EditablePreview fontSize={fontSize} fontWeight="bold" />
-                    <EditableInput fontSize={fontSize} fontWeight="bold" minW={{ lg: '4xl' }} />
+                    <EditableInput fontSize={fontSize} fontWeight="bold" minW={{ lg: 'full' }} />
                 </>
 
                 {!props.isDisabled && (

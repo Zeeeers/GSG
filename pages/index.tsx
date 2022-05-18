@@ -75,8 +75,8 @@ const Index: NextPage = () => {
 
     return (
         <>
-            <Container maxWidth={'container.lg'} paddingBottom="153px">
-                <HStack justifyContent="space-between">
+            <HStack position="fixed" bg="gray.900" w="full" py={{ base: '15px', md: '20px' }} zIndex={20}>
+                <Container display="flex" justifyContent="space-between" maxWidth={'container.lg'}>
                     <Text fontSize="3xl" fontWeight="medium">
                         Creador de proyecto
                     </Text>
@@ -84,8 +84,10 @@ const Index: NextPage = () => {
                         <Button>Guardar borrador</Button>
                         <Button variant={'solid'}>Publicar proyecto</Button>
                     </HStack>
-                </HStack>
+                </Container>
+            </HStack>
 
+            <Container maxWidth={'container.lg'} paddingTop="7rem" paddingBottom="153px">
                 <VStack as="form" align="start" spacing="30px">
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Título del proyecto</FormLabel>
