@@ -89,7 +89,7 @@ function variantSolid({ colorScheme: c }: Dict) {
             bg: `gray.200`,
             color: `gray.700`,
             _hover: {
-                bg: `blackAlpha.50`,
+                bg: `blackAlpha.70`,
                 _disabled: disabledStyles,
             },
             _active: {
@@ -190,8 +190,8 @@ const sizes = {
     md: {
         h: '32px',
         minW: 10,
-        fontSize: 'sm',
-        py: '6px',
+        fontSize: 'md',
+        py: '5px',
         px: '12px',
     },
     sm: {

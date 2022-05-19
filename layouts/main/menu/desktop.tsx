@@ -1,10 +1,11 @@
 // Dependencies
-import { Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
+import { HiChevronDown } from 'react-icons/hi';
 
 // Types
 interface Props {
@@ -26,17 +27,21 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                 isLoading={isLoggingOut}
                 loadingText="Cerrando sesión"
                 transition="ease-in"
-                variant="ghost"
+                variant="solid"
+                bg="gray.800"
+                color="gray.50"
                 colorScheme="basic"
                 transitionProperty="background"
                 transitionDuration="200ms"
                 _hover={{
-                    backgroundColor: 'gray.100',
+                    backgroundColor: 'gray.700',
                 }}
-                size={'lg'}
-                px={6}
+                size={'md'}
+                px="10px"
+                py="5px"
+                rounded="25px"
             >
-                <HStack align="center" mr={4}>
+                <HStack align="center">
                     <Avatar
                         size="sm"
                         name={organization?.name ?? 'Skala'}
@@ -53,6 +58,7 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                     <Text as="span" fontWeight="normal" color="white.base">
                         {user?.name}
                     </Text>
+                    <Icon w={6} h={10} color="gray.50" as={HiChevronDown} />
                 </HStack>
             </MenuButton>
 

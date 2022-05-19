@@ -87,22 +87,27 @@ const Body: React.FC<Props> = ({ project }) => {
 
             <Stack>
                 <Text fontSize="4xl">Problema</Text>
+                <Text>{project?.problem}</Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Solución</Text>
+                <Text>{project?.solution}</Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Información complementaria</Text>
+                <Text>{project?.more_info}</Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Finanzas</Text>
+                <Text>{project?.finance}</Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Modelo de negocios</Text>
+                <Text>{project?.business_model}</Text>
             </Stack>
 
             <Stack>
@@ -111,6 +116,7 @@ const Body: React.FC<Props> = ({ project }) => {
 
             <Stack>
                 <Text fontSize="4xl">Oportunidad de inversión</Text>
+                <Text>{project?.investment_opportunity}</Text>
             </Stack>
             <Stack spacing="30px">
                 <Text fontSize="4xl">Equipo</Text>

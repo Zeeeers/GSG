@@ -1,7 +1,7 @@
 const parts = ['item', 'command', 'list', 'button', 'groupTitle', 'divider'];
 
 const baseStyleList = {
-    bg: `gray.600`,
+    bg: `gray.800`,
     boxShadow: `sm`,
     color: 'inherit',
     minW: '3xs',
@@ -9,7 +9,7 @@ const baseStyleList = {
     zIndex: 1,
     borderRadius: '2xl',
     borderWidth: '1px',
-    borderColor: 'gray.600',
+    borderColor: 'gray.900',
 };
 
 const baseStyleItem = {
@@ -47,7 +47,7 @@ const baseStyleCommand = {
 const baseStyleDivider = {
     border: 0,
     borderBottom: '1px solid',
-    borderColor: 'gray.600',
+    borderColor: 'gray.50',
     my: '0.5rem',
     opacity: 0.6,
 };

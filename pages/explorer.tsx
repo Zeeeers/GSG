@@ -25,6 +25,8 @@ import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
 import Navbar from 'layouts/main/navbar';
 import { useGsg } from 'services/api/lib/gsg';
 
+import { projects } from 'services/api/data';
+
 const Explorer: NextPage = ({}) => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'[id,asc]' | '[id,desc]'>('[id,desc]');
@@ -82,7 +84,7 @@ const Explorer: NextPage = ({}) => {
                         </HStack>
 
                         <HStack spacing="9px" w="full">
-                            <Input w={{ base: 'full', md: '184px' }} variant="outline" placeholder="Buscar..." />
+                            <Input w={{ base: 'full', md: '184px' }} variant="outline" placeholder="Buscar" />
                             <Button
                                 variant="solid"
                                 bg="gray.600"
@@ -102,12 +104,25 @@ const Explorer: NextPage = ({}) => {
                     </Stack>
                 </Stack>
 
-                <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
+                {/*<VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
-                    {/* Validation of existing projects (temporary) */}
+                    Validation of existing projects (temporary)
                     {gsg?.data?.projects ? (
                         <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                             {gsg?.data?.projects.map((project) => (
+                                <ExplorerCard key={project.id} project={project} />
+                            ))}
+                        </SimpleGrid>
+                    ) : (
+                        <Text>No hay proyectos</Text>
+                    )}
+                </VStack>*/}
+
+                <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
+                    <NavbarFilter />
+                    {projects ? (
+                        <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
+                            {projects.map((project) => (
                                 <ExplorerCard key={project.id} project={project} />
                             ))}
                         </SimpleGrid>

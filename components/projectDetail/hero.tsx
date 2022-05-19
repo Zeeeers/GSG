@@ -123,7 +123,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                     py={{ base: '24px', md: '60px' }}
                                 >
                                     <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
-                                        {project?.title}
+                                        {project?.title.toLocaleUpperCase()}
                                     </Text>
                                     <Text fontSize={{ base: 'sm', md: 'md' }}>{project?.business_name}</Text>
                                     <Text fontSize={{ base: 'sm', md: 'md' }} as="p">
@@ -161,7 +161,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                             mt={{ base: '20px', md: 0 }}
                                         >
                                             <Button onClick={onOpen} w={{ base: 'full', md: '212px' }} variant="solid">
-                                                Invertir
+                                                Contactar
                                             </Button>
                                             <Text fontSize="xs">Quedan 23 días</Text>
                                         </Stack>

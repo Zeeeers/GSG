@@ -1,7 +1,8 @@
 // Dependencies
-import { Text, Box, Stack, Image, Button } from '@chakra-ui/react';
+import { Text, Box, Stack, Image, Button, Badge, HStack, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Gsg } from 'services/api/types/Gsg';
+import { projects } from 'services/api/data';
 // Types
 interface Props {
     project: Gsg;
@@ -16,38 +17,50 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
     return (
         <Box
             w={{ base: 'full', lg: '332px' }}
+            h="448px"
             roundedTop="18px"
             roundedBottom="8px"
             shadow="lg"
             bg="gray.800"
             overflow="hidden"
+            _hover={{ bg: 'gray.700' }}
+            transitionProperty="common"
+            transitionDuration="normal"
         >
             <Image
-                src={project.main_image ?? 'images/earth.jpg'}
+                src={project.main_image.url ?? 'images/earth.jpg'}
                 alt="cover"
                 objectFit="cover"
                 w="full"
                 h="165px"
                 roundedTop="18px"
             />
-            <Box px="20px" py="18px">
-                <Stack spacing="5px">
-                    <Text fontSize="md" fontWeight="medium">
-                        {project.title}
-                    </Text>
-                    <Text fontSize="sm" fontWeight="normal" lineHeight="5">
-                        {project.description}
-                    </Text>
-                </Stack>
-                <Stack spacing="5px" mt="10px">
-                    <Text fontSize="xs" fontWeight="normal" color="gray.400">
-                        {project.business_name}
-                    </Text>
-                    <Text fontSize="2xl" fontWeight="bold">
-                        {currencyFormat(project.finance_goal)}
-                    </Text>
-                </Stack>
-                <Box textAlign="center" mt="13px">
+            <Box display={'flex'} flexDirection="column" justifyContent={'space-between'} h="283px" px="20px" py="18px">
+                <VStack align="flex-start">
+                    <HStack
+                        display="flex"
+                        justifyContent="center"
+                        rounded="6px"
+                        w="64px"
+                        h="24px"
+                        fontSize="md"
+                        fontWeight="medium"
+                        bg="green.100"
+                        color="green.800"
+                    >
+                        <Text>{project.stage}</Text>
+                    </HStack>
+                    <Stack spacing="5px" mt="10px">
+                        <Text fontSize="xl" fontWeight="semibold" noOfLines={2}>
+                            {project.title}
+                        </Text>
+                        <Text fontSize="sm" fontWeight="normal" lineHeight="5" noOfLines={5}>
+                            {project.description}
+                        </Text>
+                    </Stack>
+                </VStack>
+
+                <Box display={'flex'} flexDirection="column" textAlign="center" alignItems={'flex-end'} mt="13px">
                     <Link href={`/projectDetail/${project.id}`} passHref>
                         <Button variant="solid" h="32px" w="full">
                             Ver proyecto

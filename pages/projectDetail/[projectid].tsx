@@ -4,12 +4,15 @@ import HeaderHero from '../../components/projectDetail/hero';
 import { NextPage } from 'next';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useRouter } from 'next/router';
+import { projects } from 'services/api/data';
 
 const PublicChallenge: NextPage = () => {
     const router = useRouter();
-    const { data: project } = useGsgProject(
+    /*const { data: project } = useGsgProject(
         router.query.projectid ? Number.parseInt(router.query?.projectid as string) : undefined,
-    );
+    );*/
+
+    const project = projects.find((project) => project.id === Number.parseInt(router.query?.projectid as string));
 
     return (
         <>
@@ -17,7 +20,7 @@ const PublicChallenge: NextPage = () => {
 
             <Flex flexDir="column" paddingTop={{ base: '60px', md: 20 }}>
                 <Img
-                    src={project?.data?.gsg_project?.main_image?.url}
+                    src={project?.main_image?.url}
                     h="345px"
                     w="full"
                     objectFit="cover"
@@ -27,7 +30,7 @@ const PublicChallenge: NextPage = () => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project?.data?.gsg_project} />
+                <HeaderHero project={project} />
             </Flex>
         </>
     );
