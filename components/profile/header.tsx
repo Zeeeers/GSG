@@ -57,9 +57,9 @@ const ProfileHeader: React.FC = () => {
     };*/
 
     return (
-        <VStack as="header" alignItems="start">
-            <Heading as="h1" fontSize={{ base: 'lg', lg: '4xl' }} fontWeight="medium">
-                Cuenta
+        <VStack as="header" alignItems="center">
+            <Heading as="h1" fontSize={{ base: '3xl', lg: '4xl' }} fontWeight="bold">
+                CUENTA
             </Heading>
         </VStack>
     );

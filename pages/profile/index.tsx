@@ -25,11 +25,11 @@ const UserProfile: NextPage = () => {
 
             <Navbar />
 
-            <HStack mt={{ lg: 12 }} px={{ base: '25px' }} py={{ base: '50px' }}>
+            <HStack mt={{ lg: 10 }} px={{ base: '25px' }} py={{ base: '100px', md: '50px' }}>
                 <Container maxW="4xl" px="37px" py="40px" rounded="xl" shadow={'md'} bg={'gray.700'}>
                     <ProfileHeader />
 
-                    <Tabs mt="33px" isLazy>
+                    <Tabs mt="33px" fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
                         <TabList borderBottom="0" overflowX="auto" overflowY="hidden" pb={0.9}>
                             <Tab px={10} whiteSpace="nowrap">
                                 Perfil

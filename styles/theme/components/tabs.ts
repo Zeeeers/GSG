@@ -15,6 +15,7 @@ function baseStyleTab({ isFitted }: Dict) {
         flex: isFitted ? 1 : undefined,
         transitionProperty: 'common',
         transitionDuration: 'normal',
+
         _focus: {
             zIndex: 1,
             boxShadow: 'outline',
@@ -171,7 +172,8 @@ function variantLine({ colorScheme: c, orientation }: Dict) {
         tab: {
             [borderProp]: '4px solid',
             borderColor: 'transparent',
-            fontWeight: 'semibold',
+            fontWeight: 'normal',
+            fontFamily: 'inter',
             [marginProp]: '-2px',
             _hover: {
                 bg: 'gray.alpha.8',

@@ -75,7 +75,7 @@ const Index: NextPage = () => {
 
     return (
         <>
-            <HStack position="fixed" bg="gray.900" w="full" py={{ base: '15px', md: '20px' }} zIndex={20}>
+            <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
                 <Container display="flex" justifyContent="space-between" maxWidth={'container.lg'}>
                     <Text fontSize="3xl" fontWeight="medium">
                         Creador de proyecto
@@ -121,11 +121,15 @@ const Index: NextPage = () => {
 
                         <Input type="hidden" {...register('main_image')} />
                         <UploadButton
-                            variant="outline"
+                            variant="solid"
+                            bg="gray.700"
+                            color="gray.50"
+                            borderColor="gray.50"
+                            border="1px dashed"
                             w="full"
                             h="300px"
                             colorScheme="basic"
-                            fontWeight="bold"
+                            fontWeight="normal"
                             onChange={async (e) => {
                                 const { validateTypes, getBase64 } = await import('services/images');
 
@@ -187,7 +191,7 @@ const Index: NextPage = () => {
                         </Text>
                         <FormControl>
                             <FormLabel>De manera más detallada cuéntanos respecto a tu proyecto</FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} />
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 
@@ -204,9 +208,16 @@ const Index: NextPage = () => {
                     </VStack>
 
                     <VStack w="full" align="flex-start" spacing="40px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            5 dimensiones de impacto
-                        </Text>
+                        <VStack align="start" spacing="10px">
+                            <Text fontSize="2xl" fontWeight="medium">
+                                5 dimensiones de impacto
+                            </Text>
+                            <Text fontFamily="inter">
+                                Describe cómo tu proyecto a través de sus 5 dismensiones es capaz de generar el impacto
+                                esperado. Si quieres conocer más al respecto para generar una respuesta mejor orientada,
+                                puedes hacerlo a través de su web oficial
+                            </Text>
+                        </VStack>
                         <HStack w="full" justifyContent="space-between">
                             <Tag
                                 size="lg"
@@ -408,24 +419,9 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Problema
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                Describe el problema que actualmente estás buscando solucionar
-                            </FormLabel>
-
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
-
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                        <FormControl>
+                            <FormLabel>Describe el problema que actualmente estás buscando solucionar</FormLabel>
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 
@@ -433,24 +429,11 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Solución
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                Describe cómo resuelves esa problemática comentada en la pregunta anterior del proyecto
+                        <FormControl>
+                            <FormLabel>
+                                Describe cómo resuelves esa problemática comentada en la pregunta anterior
                             </FormLabel>
-
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
-
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 
@@ -458,25 +441,12 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Información Complementaria
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                        <FormControl>
+                            <FormLabel>
                                 Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
                                 que el inversionista comprenda mejor el proyecto
                             </FormLabel>
-                            <FormHelperText>Ejemplo: Aparición en prensa, prospección de mercado etc.</FormHelperText>
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
-
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 
@@ -484,24 +454,33 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Finanzas
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                Sube un documento con tu estado financiero actual. (PDF o Excel)
-                            </FormLabel>
+                        <FormControl id="main_image" isInvalid={!!errors.main_image}>
+                            <FormLabel>Subir documento con tu estado financiero actual. (PDF o Excel)</FormLabel>
 
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
+                            <Input type="hidden" {...register('main_image')} />
+                            <UploadButton
+                                variant="solid"
+                                bg="gray.700"
+                                color="gray.50"
+                                borderColor="gray.50"
+                                border="1px dashed"
+                                w="full"
+                                h="300px"
+                                colorScheme="basic"
+                                fontWeight="normal"
+                                onChange={async (e) => {
+                                    const { validateTypes, getBase64 } = await import('services/images');
 
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                                    if (e.target?.files && validateTypes(e.target.files[0])) {
+                                        const base = await getBase64(e.target.files![0]);
+                                        setBaseImg(base);
+                                        onCropperOpen();
+                                    }
+                                }}
+                            >
+                                Arrasta o sube una imagen aquí
+                            </UploadButton>
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.main_image?.message}</FormErrorMessage>
                         </FormControl>
                     </VStack>
 
@@ -509,22 +488,11 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Modelo de negocios
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>xxx</FormLabel>
-
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
-
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                        <FormControl>
+                            <FormLabel>
+                                ¿Cómo se generarán ingresos? ¿A quién irá dirigido? ¿Cuáles serán los canales de venta?
+                            </FormLabel>
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 
@@ -532,25 +500,12 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Uso de ingresos
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                        <FormControl>
+                            <FormLabel>
                                 Describe cómo realizarás la distribución del capital que buscas obtener en las
                                 diferentes áreas de tu negocio.
                             </FormLabel>
-
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
-
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 
@@ -558,25 +513,12 @@ const Index: NextPage = () => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Oportunidad de inversión
                         </Text>
-                        <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                        <FormControl>
+                            <FormLabel>
                                 ¿Cuál es el tamaño del mercado al que apuntas? ¿Por qué el inversor debería invertir
                                 ahora en ti? ¿Cuánto se multiplicaría su inversión y en cuánto tiempo?
                             </FormLabel>
-
-                            <Textarea
-                                fontSize={{ base: 'sm', md: 'md' }}
-                                focusBorderColor={'primary.400'}
-                                errorBorderColor={'red.400'}
-                            />
-
-                            <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                {proyectDescription?.length}/300 caractéres
-                            </Text>
-
-                            <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                                {errors.description?.message}
-                            </FormErrorMessage>
+                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
                         </FormControl>
                     </VStack>
 

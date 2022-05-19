@@ -1,9 +1,10 @@
 const baseStyle = {
     fontSize: 'md',
+    fontFamily: 'inter',
     lineHeight: 4,
     marginEnd: 3,
     mb: 3,
-    fontWeight: 'semibold',
+    fontWeight: 'normal',
     transitionProperty: 'common',
     transitionDuration: 'normal',
     opacity: 1,

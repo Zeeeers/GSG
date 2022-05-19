@@ -41,12 +41,13 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                         display="flex"
                         justifyContent="center"
                         rounded="6px"
-                        w="64px"
-                        h="24px"
-                        fontSize="md"
+                        px="8px"
+                        py="2px"
+                        fontSize="sm"
                         fontWeight="medium"
                         bg="green.100"
                         color="green.800"
+                        fontFamily="inter"
                     >
                         <Text>{project.stage}</Text>
                     </HStack>
@@ -59,7 +60,7 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                             fontSize="15px"
                             fontFamily="inter"
                             fontWeight="normal"
-                            lineHeight="5"
+                            lineHeight="20px"
                             noOfLines={5}
                         >
                             {project.description}

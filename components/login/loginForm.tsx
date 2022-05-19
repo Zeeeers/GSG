@@ -50,9 +50,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
                 },
             });
 
-            if (!isPyme) {
-                router.push((router.query.redirect_to as string) ?? '/profile');
-            }
+            router.push((router.query.redirect_to as string) ?? '/explorer');
             setIsLoggingIn(false);
             afterLogin && afterLogin();
         } else {

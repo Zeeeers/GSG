@@ -4,10 +4,10 @@ const baseStyleList = {
     bg: `gray.800`,
     boxShadow: `sm`,
     color: 'inherit',
-    minW: '3xs',
+    minW: '168px',
     py: '2',
     zIndex: 1,
-    borderRadius: '2xl',
+    borderRadius: '8px',
     borderWidth: '1px',
     borderColor: 'gray.900',
 };
@@ -18,14 +18,15 @@ const baseStyleItem = {
     transitionProperty: 'background',
     transitionDuration: 'ultra-fast',
     transitionTimingFunction: 'ease-in',
+    borderRadius: '2xl',
     _focus: {
-        bg: `gray.500`,
+        bg: `gray.700`,
     },
     _active: {
-        bg: `gray.500`,
+        bg: `gray.800`,
     },
     _expanded: {
-        bg: `gray.500`,
+        bg: `gray.700`,
     },
     _disabled: {
         opacity: 0.4,
@@ -46,8 +47,8 @@ const baseStyleCommand = {
 
 const baseStyleDivider = {
     border: 0,
-    borderBottom: '1px solid',
-    borderColor: 'gray.50',
+    borderBottom: '2px solid',
+    borderColor: 'gray.600',
     my: '0.5rem',
     opacity: 0.6,
 };

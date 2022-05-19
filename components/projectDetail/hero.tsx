@@ -1,5 +1,5 @@
 // Dependencies
-import { Img, Badge, Container, Flex, VStack, Text, Stack, Button, useDisclosure } from '@chakra-ui/react';
+import { Img, Badge, Container, Flex, VStack, Text, Stack, Button, useDisclosure, HStack } from '@chakra-ui/react';
 import CurrencyFormat from 'common/currencyFormat';
 import { useEffect, useState } from 'react';
 import { Gsg } from 'services/api/types/Gsg';
@@ -115,20 +115,23 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                     boxShadow="lg"
                                     bg="blue.700"
                                     w={{ base: 'full', md: 898 }}
-                                    h={{ base: 'full', md: '392px' }}
+                                    h={{ base: 'full', md: '-webkit-fit-content' }}
                                     justifyContent="start"
                                     alignItems="start"
                                     rounded={{ base: 0, md: '2xl' }}
                                     px={{ base: '24px', md: '40px' }}
-                                    py={{ base: '24px', md: '60px' }}
+                                    py={{ base: '24px', md: '30px' }}
+                                    spacing={0}
                                 >
-                                    <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
-                                        {project?.title.toLocaleUpperCase()}
-                                    </Text>
-                                    <Text fontSize={{ base: 'sm', md: 'md' }}>{project?.business_name}</Text>
-                                    <Text fontSize={{ base: 'sm', md: 'md' }} as="p">
-                                        {project?.description}
-                                    </Text>
+                                    <VStack align="flex-start" spacing="10px" mb="20px">
+                                        <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
+                                            {project?.title.toLocaleUpperCase()}
+                                        </Text>
+                                        <Text fontSize={{ base: 'sm', md: 'md' }}>{project?.business_name}</Text>
+                                        <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
+                                            {project?.description}
+                                        </Text>
+                                    </VStack>
                                     <Badge
                                         variant="solid"
                                         colorScheme="green"
@@ -137,35 +140,43 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                         py="2px"
                                         px="8px"
                                         rounded="6px"
+                                        mt={0}
                                     >
                                         {project?.stage}
                                     </Badge>
-                                    <Text>Levantamiento buscado</Text>
-                                    <Flex
-                                        justifyContent="space-between"
-                                        direction={{ base: 'column', md: 'row' }}
-                                        w="full"
-                                    >
-                                        <Stack spacing="5px">
-                                            <CurrencyFormat
-                                                fontSize="4xl"
-                                                fontWeight="medium"
-                                                number={project?.finance_goal ?? 0}
-                                            />
-                                            <Text fontSize="sm">Fecha Límite 10 de marzo</Text>
-                                        </Stack>
-
-                                        <Stack
-                                            alignItems={{ base: 'center', md: 'start' }}
-                                            spacing="5px"
-                                            mt={{ base: '20px', md: 0 }}
+                                    <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
+                                        <Text>Levantamiento buscado</Text>
+                                        <Flex
+                                            justifyContent="space-between"
+                                            direction={{ base: 'column', md: 'row' }}
+                                            w="full"
+                                            pt="5px"
                                         >
-                                            <Button onClick={onOpen} w={{ base: 'full', md: '212px' }} variant="solid">
-                                                Contactar
-                                            </Button>
-                                            <Text fontSize="xs">Quedan 23 días</Text>
-                                        </Stack>
-                                    </Flex>
+                                            <Stack spacing="5px">
+                                                <CurrencyFormat
+                                                    fontSize="4xl"
+                                                    fontWeight="medium"
+                                                    number={project?.finance_goal ?? 0}
+                                                />
+                                                <Text fontSize="sm">Fecha Límite 10 de marzo</Text>
+                                            </Stack>
+
+                                            <Stack
+                                                alignItems={{ base: 'center', md: 'start' }}
+                                                spacing="5px"
+                                                mt={{ base: '20px', md: 0 }}
+                                            >
+                                                <Button
+                                                    onClick={onOpen}
+                                                    w={{ base: 'full', md: '212px' }}
+                                                    variant="solid"
+                                                >
+                                                    Contactar
+                                                </Button>
+                                                <Text fontSize="xs">Quedan 23 días</Text>
+                                            </Stack>
+                                        </Flex>
+                                    </VStack>
                                 </VStack>
                             </Flex>
                         </Flex>

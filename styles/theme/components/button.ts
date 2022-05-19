@@ -4,6 +4,7 @@ const baseStyle = {
     lineHeight: '1.2',
     borderRadius: 'md',
     fontWeight: 'medium',
+    fontFamily: 'inter',
     transitionProperty: 'common',
     transitionDuration: 'normal',
     _focus: {
@@ -212,6 +213,7 @@ const defaultProps = {
     variant: 'outline',
     sizes: 'md',
     colorScheme: 'teal',
+    fontFamily: 'inter',
 };
 
 const buttonTheme = {

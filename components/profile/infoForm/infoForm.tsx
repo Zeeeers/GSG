@@ -66,7 +66,7 @@ const InfoForm: React.FC = () => {
 
     return user ? (
         <>
-            <Flex justifyContent={{ base: 'center', md: 'space-between' }} alignItems="center" mt="60px">
+            <Flex justifyContent={{ base: 'center', md: 'space-between' }} alignItems="center" mt="40px">
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'center'}>
                     <Avatar
                         size={'lg'}
@@ -82,7 +82,7 @@ const InfoForm: React.FC = () => {
                     <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0}>
                         <HStack>
                             <EditableTitle
-                                fontSize={{ base: '4xl', lg: '3xl' }}
+                                fontSize={{ base: 'xl', lg: '3xl' }}
                                 alignItems={'center'}
                                 alignContent="center"
                                 justifyItems={'center'}
@@ -91,21 +91,21 @@ const InfoForm: React.FC = () => {
                             />
                         </HStack>
 
-                        <Text fontSize={'md'} fontWeight={'normal'}>
+                        <Text fontSize={{ base: 'sm', md: 'md' }} fontWeight={'normal'}>
                             {user?.email}
                         </Text>
                     </VStack>
                 </Stack>
             </Flex>
 
-            <VStack alignItems={{ base: 'center', md: 'start' }} mt="50px">
+            <VStack alignItems={{ base: 'center', md: 'start' }} mt="40px">
                 <Text fontSize={'lg'} fontWeight={'medium'}>
                     Notificaciones
                 </Text>
                 <FormControl orientation="vertical">
                     <HStack alignItems={{ base: 'center', md: 'start' }}>
                         <Checkbox />
-                        <FormLabel fontSize={'sm'} fontWeight="medium">
+                        <FormLabel fontSize={'sm'} fontWeight="medium" fontFamily="inter">
                             Deseo rercibir correos con proyectos relacionados con mis intereses
                         </FormLabel>
                     </HStack>

@@ -15,6 +15,7 @@ import {
     useDisclosure,
     useToast,
     Stack,
+    Text,
 } from '@chakra-ui/react';
 import { IRegisterSkalaForm, registerSkalaSchema } from 'forms/registerSkala';
 import { useForm } from 'react-hook-form';
@@ -192,11 +193,13 @@ const RegisterForm: React.FC = () => {
                     </FormControl>
 
                     <FormControl id="termsCheck" isInvalid={!!errors.termsCheck}>
-                        <Checkbox {...register('termsCheck')}>
-                            {'He leído y entiendo los '}
-                            <Button variant="link" fontSize="md" mb={1} onClick={onTermsOpen}>
-                                términos y condiciones del servicio.
-                            </Button>
+                        <Checkbox {...register('termsCheck')} fontSize="xs" w="full">
+                            <HStack spacing={1}>
+                                <Text fontSize="xs">He leído y entiendo los </Text>
+                                <Button variant="link" fontSize="xs" mb={1} onClick={onTermsOpen}>
+                                    términos y condiciones del servicio.
+                                </Button>
+                            </HStack>
                         </Checkbox>
 
                         <FormErrorMessage fontWeight={'semibold'}>{errors.termsCheck?.message}</FormErrorMessage>

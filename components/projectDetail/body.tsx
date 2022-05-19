@@ -2,6 +2,7 @@ import { Avatar, Grid, GridItem, HStack, Icon, Stack, Text } from '@chakra-ui/re
 import { BsPlus } from 'react-icons/bs';
 import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';
 import { Gsg } from 'services/api/types/Gsg';
+import { HiHeart } from 'react-icons/hi';
 
 interface Props {
     project: Gsg | undefined;
@@ -26,12 +27,32 @@ const Body: React.FC<Props> = ({ project }) => {
         <Stack alignItems="start" mt="5rem" px={{ base: '34px', md: '124px' }} spacing="50px" py="207px">
             <Stack>
                 <Text fontSize="4xl">Acerca de</Text>
-                <Text as="p">{project?.about}</Text>
+                <Text as="p" fontFamily="inter" fontSize="md">
+                    {project?.about}
+                </Text>
             </Stack>
 
             <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
-                <Text fontSize="4xl">Impacto</Text>
-                <Text fontSize="sm">Madurez de impacto Intermedio</Text>
+                <Text fontSize="4xl" fontWeight="medium">
+                    Impacto
+                </Text>
+                <Text fontSize="sm" fontFamily="inter">
+                    Madurez de impacto Intermedio
+                </Text>
+
+                <HStack spacing="20px" pt="15px" pb="30px">
+                    <Stack p="15px" bg="green.600" rounded="15px">
+                        <Icon w={10} h={10} color="gray.50" as={HiHeart} />
+                    </Stack>
+                    <Text
+                        fontWeight="medium"
+                        fontSize="20px"
+                        color="#279B48
+"
+                    >
+                        Salud y bienestar
+                    </Text>
+                </HStack>
                 <Stack spacing="50px">
                     <Stack>
                         <HStack>
@@ -40,7 +61,9 @@ const Body: React.FC<Props> = ({ project }) => {
                                 QUÉ
                             </Text>
                         </HStack>
-                        <Text>{project?.impact_what ?? 'No hay impacto'}</Text>
+                        <Text fontFamily="inter" fontSize="md">
+                            {project?.impact_what ?? 'No hay impacto'}
+                        </Text>
                     </Stack>
 
                     <Stack>
@@ -50,7 +73,9 @@ const Body: React.FC<Props> = ({ project }) => {
                                 QUIÉN
                             </Text>
                         </HStack>
-                        <Text>{project?.impact_who ?? 'No hay impacto'}</Text>
+                        <Text fontFamily="inter" fontSize="md">
+                            {project?.impact_who ?? 'No hay impacto'}
+                        </Text>
                     </Stack>
 
                     <Stack>
@@ -60,7 +85,9 @@ const Body: React.FC<Props> = ({ project }) => {
                                 CUANTO
                             </Text>
                         </HStack>
-                        <Text>{project?.impact_how_much ?? 'No hay impacto'}</Text>
+                        <Text fontFamily="inter" fontSize="md">
+                            {project?.impact_how_much ?? 'No hay impacto'}
+                        </Text>
                     </Stack>
 
                     <Stack>
@@ -70,7 +97,9 @@ const Body: React.FC<Props> = ({ project }) => {
                                 CONTRIBUCIÓN
                             </Text>
                         </HStack>
-                        <Text>{project?.impact_contribution ?? 'No hay impacto'}</Text>
+                        <Text fontFamily="inter" fontSize="md">
+                            {project?.impact_contribution ?? 'No hay impacto'}
+                        </Text>
                     </Stack>
 
                     <Stack>
@@ -80,34 +109,46 @@ const Body: React.FC<Props> = ({ project }) => {
                                 RIESGOS
                             </Text>
                         </HStack>
-                        <Text>{project?.impact_risk ?? 'No hay impacto'}</Text>
+                        <Text fontFamily="inter" fontSize="md">
+                            {project?.impact_risk ?? 'No hay impacto'}
+                        </Text>
                     </Stack>
                 </Stack>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Problema</Text>
-                <Text>{project?.problem}</Text>
+                <Text fontFamily="inter" fontSize="md">
+                    {project?.problem}
+                </Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Solución</Text>
-                <Text>{project?.solution}</Text>
+                <Text fontFamily="inter" fontSize="md">
+                    {project?.solution}
+                </Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Información complementaria</Text>
-                <Text>{project?.more_info}</Text>
+                <Text fontFamily="inter" fontSize="md">
+                    {project?.more_info}
+                </Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Finanzas</Text>
-                <Text>{project?.finance}</Text>
+                <Text fontFamily="inter" fontSize="md">
+                    {project?.finance}
+                </Text>
             </Stack>
 
             <Stack>
                 <Text fontSize="4xl">Modelo de negocios</Text>
-                <Text>{project?.business_model}</Text>
+                <Text fontFamily="inter" fontSize="md">
+                    {project?.business_model}
+                </Text>
             </Stack>
 
             <Stack>
@@ -116,7 +157,9 @@ const Body: React.FC<Props> = ({ project }) => {
 
             <Stack>
                 <Text fontSize="4xl">Oportunidad de inversión</Text>
-                <Text>{project?.investment_opportunity}</Text>
+                <Text fontFamily="inter" fontSize="md">
+                    {project?.investment_opportunity}
+                </Text>
             </Stack>
             <Stack spacing="30px">
                 <Text fontSize="4xl">Equipo</Text>
@@ -136,7 +179,7 @@ const Body: React.FC<Props> = ({ project }) => {
                                 <Text color="gray.500" fontSize="sm">
                                     {member.position}
                                 </Text>
-                                <Text fontSize="sm" as="p">
+                                <Text fontFamily="inter" fontSize="md" as="p">
                                     {member.description}
                                 </Text>
                             </Stack>

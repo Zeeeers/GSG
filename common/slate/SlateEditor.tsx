@@ -170,7 +170,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
                         />
                     </Box>
 
-                    <Flex justify="center" p={4} bg="background.alpha.75">
+                    <Flex justify="center" align="flex-end" p={4} bg="background.alpha.75">
                         <MarkButton title="Negrita" format="bold" icon={FaBold} />
                         <MarkButton title="Cursiva" format="italic" icon={FaItalic} />
                         <MarkButton title="Subrayado" format="underline" icon={FaUnderline} />

@@ -31,8 +31,8 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
                 <ModalOverlay />
                 <ModalContent rounded="2xl" pt={'30px'} px="10px">
-                    <ModalHeader fontSize="4xl" d="flex" alignItems="center" pb={0}>
-                        {isRegister ? 'Registrate' : 'Inicia sesión'}
+                    <ModalHeader fontSize="3xl" d="flex" alignItems="center" pb={0}>
+                        {isRegister ? 'REGISTRATE' : 'INICIAR SESIÓN'}
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody mb={6} pt={0}>
@@ -53,13 +53,13 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                             )}
                         </Text>
 
-                        {isRegister ? <SignupOrgaForm /> : <LoginOrgaForm />}
+                        {isRegister ? <SignupOrgaForm /> : <LoginOrgaForm isPyme={true} />}
 
                         {!isRegister && (
-                            <Flex flexDirection={'column'} alignItems={'center'}>
+                            <Flex flexDirection={'column'} alignItems={'center'} mt="20px">
                                 <Link href="/recovery" passHref>
                                     <Button
-                                        variant="outline"
+                                        variant="link"
                                         transitionProperty="all"
                                         transitionDuration={'slow'}
                                         colorScheme="primary"
@@ -69,14 +69,15 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                 </Link>
                                 <VStack spacing="7px" mt="36px">
                                     <Text fontSize={'md'} fontWeight={'semibold'}>
-                                        ¿No tienes cuenta?
+                                        Aún no tengo cuenta
                                     </Text>
                                     <Button
                                         onClick={() => isSetRegister(true)}
-                                        variant="solid"
+                                        variant="outline"
                                         transitionProperty="all"
                                         transitionDuration={'slow'}
                                         colorScheme="secondary"
+                                        w="320px"
                                     >
                                         Registrarme
                                     </Button>
@@ -87,8 +88,12 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         <VStack mt={isRegister ? '20px' : '70px'} spacing={isRegister ? '2px' : '10px'}>
                             <Text fontSize={'xs'}>powered by</Text>
                             <HStack spacing={0}>
-                                <Text fontWeight={'bold'}>Company</Text>
-                                <Text fontWeight={'extrabold'}>Pitch</Text>
+                                <Text fontSize="24px" fontWeight={'bold'} textColor="#20B06B">
+                                    Company
+                                </Text>
+                                <Text fontSize="24px" fontWeight={'extrabold'} textColor="#20B06B">
+                                    Pitch
+                                </Text>
                             </HStack>
                         </VStack>
                     </ModalBody>
