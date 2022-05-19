@@ -54,7 +54,14 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                         <Text fontSize="xl" fontWeight="semibold" noOfLines={2}>
                             {project.title}
                         </Text>
-                        <Text fontSize="sm" fontWeight="normal" lineHeight="5" noOfLines={5}>
+                        <Text
+                            as="p"
+                            fontSize="15px"
+                            fontFamily="inter"
+                            fontWeight="normal"
+                            lineHeight="5"
+                            noOfLines={5}
+                        >
                             {project.description}
                         </Text>
                     </Stack>

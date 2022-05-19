@@ -11,7 +11,7 @@ const styles: Styles = {
             lineHeight: 'base',
         },
         '*::placeholder': {
-            color: 'gray.400',
+            color: 'gray.50',
         },
         '*, *::before, &::after': {
             borderColor: 'gray.200',

@@ -123,10 +123,10 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
             bg: 'white',
             transitionProperty: 'common',
             transitionDuration: 'slower',
-            color: 'gray.50',
+            color: 'gray.700',
             fontWeight: 'medium',
             _placeholder: {
-                color: 'gray.50',
+                color: 'gray.500',
                 fontWeight: 'regular',
             },
             _hover: {
@@ -200,7 +200,7 @@ const variantControl = ({ theme, colorScheme: c }: Record<string, any>) => {
             color: `${c}.${c === 'white' ? 'base' : '500'}`,
             bg: `${c}.alpha.24`,
             _placeholder: {
-                color: `gray.50`,
+                color: `gray.500`,
             },
             _focus: {
                 borderColor: `${c}.500`,

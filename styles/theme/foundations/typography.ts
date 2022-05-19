@@ -44,6 +44,7 @@ const typography = {
     fonts: {
         heading: `'Barlow', sans-serif`,
         body: `'Barlow', sans-serif`,
+        inter: `'Inter', sans-serif`,
     },
 
     fontSizes: {
