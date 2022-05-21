@@ -17,7 +17,6 @@ const PublicChallenge: NextPage = () => {
     return (
         <>
             <Navbar />
-
             <Flex flexDir="column" paddingTop={{ base: '60px', md: 20 }}>
                 <Img
                     src={project?.main_image?.url}

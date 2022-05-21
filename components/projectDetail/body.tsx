@@ -1,14 +1,14 @@
-import { Avatar, Grid, GridItem, HStack, Icon, Stack, Text } from '@chakra-ui/react';
+import { Avatar, forwardRef, Grid, GridItem, HStack, Icon, Stack, Text, TextProps } from '@chakra-ui/react';
 import { BsPlus } from 'react-icons/bs';
 import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';
 import { Gsg } from 'services/api/types/Gsg';
 import { HiHeart } from 'react-icons/hi';
+import { Ref } from 'react';
 
-interface Props {
-    project: Gsg | undefined;
-}
+const Body = forwardRef<any, any>(({ project }, ref) => {
+    const { about, impact, problem, solution, additionalInfo, finance, model, income, oportunity, member } =
+        ref.current;
 
-const Body: React.FC<Props> = ({ project }) => {
     const members = [
         {
             name: 'Nicolás henríquez',
@@ -24,16 +24,25 @@ const Body: React.FC<Props> = ({ project }) => {
         },
     ];
     return (
-        <Stack alignItems="start" mt="5rem" px={{ base: '34px', md: '124px' }} spacing="50px" py="207px">
+        <Stack
+            alignItems="start"
+            mt="5rem"
+            px={{ base: '34px', md: '124px' }}
+            spacing="50px"
+            py="207px"
+            scrollPaddingTop="100px"
+        >
             <Stack>
-                <Text fontSize="4xl">Acerca de</Text>
+                <Text scrollMarginTop="100px" ref={about} fontSize="4xl">
+                    Acerca de
+                </Text>
                 <Text as="p" fontFamily="inter" fontSize="md">
                     {project?.about}
                 </Text>
             </Stack>
 
             <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
-                <Text fontSize="4xl" fontWeight="medium">
+                <Text scrollMarginTop="150px" ref={impact} fontSize="4xl" fontWeight="medium">
                     Impacto
                 </Text>
                 <Text fontSize="sm" fontFamily="inter">
@@ -117,52 +126,68 @@ const Body: React.FC<Props> = ({ project }) => {
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Problema</Text>
+                <Text scrollMarginTop="100px" ref={problem} fontSize="4xl">
+                    Problema
+                </Text>
                 <Text fontFamily="inter" fontSize="md">
                     {project?.problem}
                 </Text>
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Solución</Text>
+                <Text scrollMarginTop="100px" ref={solution} fontSize="4xl">
+                    Solución
+                </Text>
                 <Text fontFamily="inter" fontSize="md">
                     {project?.solution}
                 </Text>
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Información complementaria</Text>
+                <Text scrollMarginTop="100px" ref={additionalInfo} fontSize="4xl">
+                    Información complementaria
+                </Text>
                 <Text fontFamily="inter" fontSize="md">
                     {project?.more_info}
                 </Text>
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Finanzas</Text>
+                <Text scrollMarginTop="100px" ref={finance} fontSize="4xl">
+                    Finanzas
+                </Text>
                 <Text fontFamily="inter" fontSize="md">
                     {project?.finance}
                 </Text>
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Modelo de negocios</Text>
+                <Text scrollMarginTop="100px" ref={model} fontSize="4xl">
+                    Modelo de negocios
+                </Text>
                 <Text fontFamily="inter" fontSize="md">
                     {project?.business_model}
                 </Text>
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Uso de los ingresos</Text>
+                <Text scrollMarginTop="100px" ref={income} fontSize="4xl">
+                    Uso de los ingresos
+                </Text>
             </Stack>
 
             <Stack>
-                <Text fontSize="4xl">Oportunidad de inversión</Text>
+                <Text scrollMarginTop="100px" ref={oportunity} fontSize="4xl">
+                    Oportunidad de inversión
+                </Text>
                 <Text fontFamily="inter" fontSize="md">
                     {project?.investment_opportunity}
                 </Text>
             </Stack>
             <Stack spacing="30px">
-                <Text fontSize="4xl">Equipo</Text>
+                <Text scrollMarginTop="100px" ref={member} fontSize="4xl">
+                    Equipo
+                </Text>
                 <Grid
                     placeContent="start"
                     placeItems="start"
@@ -189,6 +214,6 @@ const Body: React.FC<Props> = ({ project }) => {
             </Stack>
         </Stack>
     );
-};
+});
 
 export default Body;
