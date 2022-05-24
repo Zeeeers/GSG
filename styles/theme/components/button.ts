@@ -183,8 +183,8 @@ const sizes = {
         px: 8,
     },
     lg: {
-        h: 12,
-        minW: 12,
+        h: '48px',
+        minW: '48px',
         fontSize: 'lg',
         px: 6,
     },

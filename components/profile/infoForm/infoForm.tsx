@@ -2,6 +2,7 @@
 import {
     Avatar,
     Checkbox,
+    Divider,
     Flex,
     FormControl,
     FormLabel,
@@ -98,7 +99,9 @@ const InfoForm: React.FC = () => {
                 </Stack>
             </Flex>
 
-            <VStack alignItems={{ base: 'center', md: 'start' }} mt="40px">
+            <Divider mt="30px" display={{ base: 'block', md: 'none' }} />
+
+            <VStack display={{ base: 'none', md: 'block' }} alignItems={{ base: 'center', md: 'start' }} mt="40px">
                 <Text fontSize={'lg'} fontWeight={'medium'}>
                     Notificaciones
                 </Text>
@@ -109,6 +112,20 @@ const InfoForm: React.FC = () => {
                             Deseo rercibir correos con proyectos relacionados con mis intereses
                         </FormLabel>
                     </HStack>
+                </FormControl>
+            </VStack>
+
+            <VStack display={{ base: 'block', md: 'none' }} alignItems="center" mt="30px">
+                <FormControl orientation="vertical">
+                    <HStack justifyContent="center" alignItems="center" spacing="18px">
+                        <Checkbox />
+                        <Text fontFamily="inter" fontSize="18px" fontWeight="normal">
+                            Notificaciones
+                        </Text>
+                    </HStack>
+                    <Text fontFamily="inter" fontSize="14px" textAlign="center" mt="10px">
+                        Deseo rercibir correos con proyectos relacionados con mis intereses
+                    </Text>
                 </FormControl>
             </VStack>
         </>

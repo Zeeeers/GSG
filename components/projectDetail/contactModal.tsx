@@ -20,24 +20,30 @@ interface Props {
 
 const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
             <ModalContent rounded="2xl" pt={'30px'} px="10px">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="20px">
-                        <Heading fontSize="30px">{project?.title.toUpperCase()}</Heading>
+                        <Heading fontSize="30px" lineHeight="32px">
+                            CONTACTO DE {project?.title.toUpperCase()}
+                        </Heading>
                         <VStack alignItems="flex-start" spacing={0}>
-                            <Text fontSize="20px" fontWeight="bold">
+                            <Text fontSize="20px" fontWeight="semibold">
                                 Correo
                             </Text>
-                            <Text>Contacto@northstargroup.com</Text>
+                            <Text fontSize="16px" fontFamily="inter">
+                                Contacto@northstargroup.com
+                            </Text>
                         </VStack>
                         <VStack alignItems="flex-start" spacing={0}>
-                            <Text fontSize="20px" fontWeight="bold">
+                            <Text fontSize="20px" fontWeight="semibold">
                                 Teléfono
                             </Text>
-                            <Text>+569 0000 0000</Text>
+                            <Text fontSize="16px" fontFamily="inter">
+                                +569 0000 0000
+                            </Text>
                         </VStack>
                     </VStack>
                 </ModalBody>

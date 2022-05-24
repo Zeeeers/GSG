@@ -25,19 +25,26 @@ const UserProfile: NextPage = () => {
 
             <Navbar />
 
-            <HStack mt={{ lg: 10 }} px={{ base: '25px' }} py={{ base: '100px', md: '50px' }}>
-                <Container maxW="4xl" px="37px" py="40px" rounded="xl" shadow={'md'} bg={'gray.700'}>
+            <HStack mt={{ lg: 10 }} px={{ base: '25px' }} py={{ base: '140px', md: '50px' }}>
+                <Container
+                    maxW="4xl"
+                    px={{ base: '15px', md: '37px' }}
+                    py={{ base: '60px', md: '40px' }}
+                    rounded="xl"
+                    shadow={'md'}
+                    bg={'gray.700'}
+                >
                     <ProfileHeader />
 
                     <Tabs mt="33px" fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
-                        <TabList borderBottom="0" overflowX="auto" overflowY="hidden" pb={0.9}>
-                            <Tab px={10} whiteSpace="nowrap">
+                        <TabList borderBottom="0" overflowX="auto" overflowY="hidden" pb="15px">
+                            <Tab px="30px" whiteSpace="nowrap">
                                 Perfil
                             </Tab>
-                            <Tab px={10} whiteSpace="nowrap">
-                                Interéses
+                            <Tab px="30px" whiteSpace="nowrap">
+                                Intereses
                             </Tab>
-                            <Tab px={10} whiteSpace="nowrap">
+                            <Tab px="30px" whiteSpace="nowrap">
                                 Contraseña
                             </Tab>
                         </TabList>
