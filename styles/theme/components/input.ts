@@ -85,6 +85,7 @@ function variantOutline({ theme, colorScheme: c }: Record<string, any>) {
             border: '1px solid',
             borderColor: `gray.300`,
             bg: 'inherit',
+            fontFamily: 'inter',
             _hover: {
                 borderColor: `${c}.alpha.40`,
             },
@@ -155,7 +156,9 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
         addon: {
             border: '2px solid',
             borderColor: 'transparent',
-            bg: 'teal.400',
+            bg: 'gray.300',
+            textColor: 'gray.800',
+            fontWeight: 'semibold',
         },
     };
 }

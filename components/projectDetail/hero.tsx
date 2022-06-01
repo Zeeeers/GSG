@@ -319,7 +319,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                         alignItems="end"
                         spacing="30px"
                         zIndex={30}
-                        marginLeft="-80px"
+                        marginLeft="-110px"
                         marginTop={sticky ? '5px' : '350px'}
                     >
                         <Button
@@ -477,7 +477,9 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                         <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
                                             {project?.title.toLocaleUpperCase()}
                                         </Text>
-                                        <Text fontSize={{ base: 'sm', md: 'md' }}>{project?.business_name}</Text>
+                                        <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter">
+                                            {project?.business_name}
+                                        </Text>
                                         <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
                                             {project?.description}
                                         </Text>
@@ -508,22 +510,28 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                                     fontWeight="medium"
                                                     number={project?.finance_goal ?? 0}
                                                 />
-                                                <Text fontSize="sm">Fecha Límite 10 de marzo</Text>
+                                                <Text fontSize="sm" fontFamily="inter">
+                                                    Fecha Límite 10 de marzo
+                                                </Text>
                                             </Stack>
 
                                             <Stack
                                                 alignItems={{ base: 'center', md: 'start' }}
                                                 spacing="5px"
                                                 mt={{ base: '20px', md: 0 }}
+                                                justifyContent="end"
                                             >
                                                 <Button
                                                     onClick={onOpen}
                                                     w={{ base: 'full', md: '212px' }}
+                                                    h="48px"
                                                     variant="solid"
                                                 >
                                                     Contactar
                                                 </Button>
-                                                <Text fontSize="xs">Quedan 23 días</Text>
+                                                <Text fontSize="14px" fontFamily="inter">
+                                                    Quedan 23 días
+                                                </Text>
                                             </Stack>
                                         </Flex>
                                     </VStack>

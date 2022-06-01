@@ -2,13 +2,14 @@
 import { Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { useCheckboxGroup } from '@chakra-ui/checkbox';
 import CheckCard from 'common/checkCard';
+import { useState } from 'react';
 //import { useState } from 'react';
 // Types
 interface Props {}
 
 // Component
 const NavbarFilter: React.FC<Props> = ({}) => {
-    //const [filters, setFilters] = useState([]);
+    const [filters, setFilters] = useState([]);
 
     const itemsNavbarFilter = [
         'CORFO',
@@ -39,6 +40,7 @@ const NavbarFilter: React.FC<Props> = ({}) => {
                     bg="gray.700"
                     textColor="white"
                     fontWeight="normal"
+                    fontFamily="inter"
                     fontSize="md"
                     _hover={{ bg: 'gray.600' }}
                     _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}

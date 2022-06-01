@@ -23,6 +23,7 @@ import {
     useDisclosure,
     VStack,
     Stack,
+    Link,
 } from '@chakra-ui/react';
 import SlateEditor from 'common/slate/SlateEditor';
 import SelectOds from 'common/selectOds';
@@ -77,9 +78,25 @@ const Index: NextPage = () => {
         <>
             <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
                 <Container display="flex" justifyContent="space-between" maxWidth={'container.lg'}>
-                    <Text fontSize="3xl" fontWeight="medium">
-                        Creador de proyecto
-                    </Text>
+                    <HStack spacing="23px">
+                        <Link href="/explorer">
+                            <Button
+                                variant="solid"
+                                background="gray.100"
+                                textColor="gray.800"
+                                fontWeight="bold"
+                                _hover={{ background: 'gray.300' }}
+                                borderRadius="full"
+                                w="40px"
+                                h="40px"
+                            >
+                                {'<-'}
+                            </Button>
+                        </Link>
+                        <Text fontSize="3xl" fontWeight="medium">
+                            Creador de proyecto
+                        </Text>
+                    </HStack>
                     <HStack spacing="8px">
                         <Button>Guardar borrador</Button>
                         <Button variant={'solid'}>Publicar proyecto</Button>
