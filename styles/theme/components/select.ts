@@ -9,8 +9,8 @@ function baseStyleField() {
         appearance: 'none',
         paddingBottom: '1px',
         lineHeight: 'normal',
-        bg: 'gray.900',
-        color: 'white',
+        bg: 'white',
+        color: 'gray.200',
     };
 }
 

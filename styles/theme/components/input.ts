@@ -157,7 +157,7 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
             border: '2px solid',
             borderColor: 'transparent',
             bg: 'gray.300',
-            textColor: 'gray.800',
+            textColor: 'gray.100',
             fontWeight: 'semibold',
         },
     };
