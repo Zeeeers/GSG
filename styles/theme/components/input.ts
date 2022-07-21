@@ -132,7 +132,7 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
                 fontWeight: 'regular',
             },
             _hover: {
-                bg: 'gray.300',
+                bg: 'gray.100',
             },
 
             _focus: {
@@ -158,7 +158,7 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
             border: '2px solid',
             borderColor: 'transparent',
             bg: 'gray.300',
-            textColor: 'gray.100',
+            textColor: 'gray.800',
             fontWeight: 'semibold',
         },
     };

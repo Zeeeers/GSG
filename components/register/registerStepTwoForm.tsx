@@ -29,7 +29,7 @@ const TermsModal = dynamic(() => import('common/termsModal'));
 const ErrorNotification = dynamic(() => import('common/notifications/error'));
 
 // Component
-const RegisterForm: React.FC = () => {
+const RegisterStepTwoForm: React.FC = () => {
     // States
     const { isOpen: isTermsOpen, onOpen: onTermsOpen, onClose: onTermsClose } = useDisclosure();
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
@@ -47,6 +47,7 @@ const RegisterForm: React.FC = () => {
         resolver: zodResolver(registerSchema),
     });
     const toast = useToast();
+    const setStep = useRegisterStore((s) => s.setStep);
 
     // Handlers
     const handleRegister = async (values: IRegisterForm) => {
@@ -90,9 +91,24 @@ const RegisterForm: React.FC = () => {
     return (
         <>
             <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
-                <VStack my={8} spacing={8}>
+                <VStack my={8} spacing={8} w="550px">
+                    <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
+                        <Button
+                            variant="outline"
+                            textColor="teal.300"
+                            borderColor="teal.300"
+                            fontWeight="bold"
+                            _hover={{ background: 'teal.300', color: 'white' }}
+                            borderRadius="full"
+                            w="40px"
+                            h="40px"
+                            onClick={() => setStep('ONE')}
+                        >
+                            {'<-'}
+                        </Button>
+                    </VStack>
                     <FormControl id="logo" isInvalid={!!errors.logo}>
-                        <FormLabel fontSize="24px">CREAR ORGANIZACIÓN</FormLabel>
+                        <FormLabel fontSize="24px">Información de tu organización</FormLabel>
 
                         <VStack alignItems="start" justifyContent="center" mt="25px">
                             <VStack spacing={3}>
@@ -144,80 +160,26 @@ const RegisterForm: React.FC = () => {
 
                         <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
                     </FormControl>
+                    <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
+                        <FormLabel>Número o identificador nacional</FormLabel>
+
+                        <Input size="md" {...register('organizationName')} />
+
+                        <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
+                    </FormControl>
                 </VStack>
 
-                <Heading as="h2" size="2xl" mt={8} mb={4} fontWeight="bold">
-                    INFORMACIÓN DEL USUARIO
-                </Heading>
-
-                <VStack align="start" spacing={8} mb={16}>
-                    <FormControl id="userName" isInvalid={!!errors.userName}>
-                        <FormLabel>Nombre</FormLabel>
-
-                        <Input size="md" {...register('userName')} />
-
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.userName?.message}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="userEmail" isInvalid={!!errors.userEmail}>
-                        <FormLabel>Correo eletrónico</FormLabel>
-
-                        <Input size="md" {...register('userEmail')} />
-
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.userEmail?.message}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="password" isInvalid={!!errors.password}>
-                        <FormLabel>Crea tu contraseña</FormLabel>
-
-                        <InputPassword size="md" {...register('password')} />
-
-                        {!errors.password && (
-                            <FormHelperText fontWeight="semibold">
-                                Tu contraseña debe tener al menos 8 caracteres.
-                            </FormHelperText>
-                        )}
-
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.password?.message}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="passwordConfirm" isInvalid={!!errors.passwordConfirm}>
-                        <FormLabel>Confirmar contraseña</FormLabel>
-
-                        <InputPassword size="md" {...register('passwordConfirm')} />
-
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.passwordConfirm?.message}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="termsCheck" isInvalid={!!errors.termsCheck}>
-                        <Checkbox {...register('termsCheck')}>
-                            {'He leído y entiendo los '}
-                            <Button variant="link" fontSize="md" mb={1} onClick={onTermsOpen}>
-                                términos y condiciones del servicio.
-                            </Button>
-                        </Checkbox>
-
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.termsCheck?.message}</FormErrorMessage>
-                    </FormControl>
-
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        loadingText={'Creando cuenta'}
-                        isLoading={isCreatingAccount}
-                        isDisabled={!watch().termsCheck}
-                        mb={8}
-                        w="full"
-                    >
-                        Crear cuenta
-                    </Button>
-
-                    <Link href="/login" passHref>
-                        <Button type="button" w="full" variant="ghost">
-                            Ya tengo cuenta
-                        </Button>
-                    </Link>
-                </VStack>
+                <Button
+                    type="submit"
+                    variant="solid"
+                    loadingText={'Creando cuenta'}
+                    isLoading={isCreatingAccount}
+                    isDisabled={!watch().termsCheck}
+                    mb={8}
+                    w="full"
+                >
+                    Siguiente
+                </Button>
             </form>
 
             {isCropperOpen && (
@@ -238,4 +200,4 @@ const RegisterForm: React.FC = () => {
 };
 
 // Export
-export default RegisterForm;
+export default RegisterStepTwoForm;

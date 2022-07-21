@@ -15,8 +15,8 @@ export interface IRegisterForm {
 
 //  Validation Schema
 const registerShape: ZodShape<IRegisterForm> = {
-    logo: z.string().nonempty('Campo obligatorio'),
-    organizationName: z.string().nonempty('Campo obligatorio'),
+    //logo: z.string().nonempty('Campo obligatorio'),
+    //organizationName: z.string().nonempty('Campo obligatorio'),
     userName: z.string().nonempty('Campo obligatorio'),
     userEmail: z.string().email('Correo electrónico inválido').nonempty('Campo obligatorio'),
     password: z.string().nonempty('Campo obligatorio').min(8, 'Longitud mínima 8 caracteres'),

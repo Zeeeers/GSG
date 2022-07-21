@@ -40,6 +40,7 @@ import { Descendant } from 'slate';
 /*
     TODO: change type values in data products and validation
     TODO: migrate page to component and implement test
+    TODO: change heigth input
 */
 
 // Page
