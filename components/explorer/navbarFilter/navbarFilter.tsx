@@ -1,4 +1,6 @@
 // Dependencies
+
+//@ts-nocheck
 import { Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { useCheckboxGroup } from '@chakra-ui/checkbox';
 import CheckCard from 'common/checkCard';

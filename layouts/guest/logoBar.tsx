@@ -1,4 +1,5 @@
 // Dependencies
+
 import Link from 'next/link';
 import { Flex, HStack, Img, Text, VStack } from '@chakra-ui/react';
 //import Image from '@clyc/optimized-image/components/chakraImage';
@@ -28,7 +29,7 @@ const LogoBar: React.FC = ({ children }) => {
                     h="fit-content"
                     width="fit-content"
                     p={{ base: '25px', md: 30 }}
-                    bgColor="gray.900"
+                    bgColor="gray.800"
                     rounded="16px"
                 >
                     <Link href="/explorer" passHref>

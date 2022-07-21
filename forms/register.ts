@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { ZodShape } from 'services/validation';
 import { z } from 'zod';
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     HStack,
     Tab,
@@ -17,7 +18,7 @@ import {
     Select,
     Button,
 } from '@chakra-ui/react';
-import AddInvestorForm from 'components/admin/addInvestorForm';
+import AddInvestorForm from 'components/admin/AddInvestorForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import React from 'react';

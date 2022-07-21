@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Flex, Img, Text } from '@chakra-ui/react';
 import Navbar from 'layouts/main/navbar';
 import HeaderHero from '../../components/projectDetail/hero';

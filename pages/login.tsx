@@ -1,4 +1,6 @@
 // Dependencies
+
+//@ts-nocheck
 import { NextPage } from 'next';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -22,9 +24,9 @@ const LoginPage: NextPage = () => {
             <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/home" />
 
             <LogoBar>
-                <Stack alignItems="start" w="full">
-                    <Flex flexDir="column" mt={8}>
-                        <Heading as="h1" size="4xl" fontWeight="bold" mb={1}>
+                <Stack w="546px" alignItems="flex-start">
+                    <Flex flexDir="column" mt={8} gap="10px">
+                        <Heading as="h1" size="4xl" fontWeight="bold">
                             INICIAR SESIÓN
                         </Heading>
 
@@ -39,13 +41,15 @@ const LoginPage: NextPage = () => {
                                 variant="link"
                                 transitionProperty="all"
                                 transitionDuration={'slow'}
-                                colorScheme="gray"
+                                colorScheme="white"
+                                fontWeight="400"
+                                textDecorationLine="underline"
                                 my={4}
                             >
                                 Olvidé mi contraseña
                             </Button>
                         </Link>
-                        <Text>Aún no tengo cuenta</Text>
+                        <Text pt="20px">Aún no tengo cuenta</Text>
                         <Link href="/register" passHref>
                             <Button
                                 variant="outline"
@@ -53,6 +57,7 @@ const LoginPage: NextPage = () => {
                                 transitionDuration={'slow'}
                                 colorScheme="gray"
                                 w="full"
+                                h="40px"
                                 my={4}
                             >
                                 Registrarme
@@ -61,12 +66,6 @@ const LoginPage: NextPage = () => {
                     </VStack>
                 </Stack>
             </LogoBar>
-
-            {isDesktop && (
-                <SideBackground>
-                    <Img src="/images/earth.jpg" objectFit="cover" objectPosition="center" h="full" w="full" />
-                </SideBackground>
-            )}
         </>
     );
 };

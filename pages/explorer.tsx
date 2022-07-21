@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { NextPage } from 'next';
 import { useState } from 'react';
 import {

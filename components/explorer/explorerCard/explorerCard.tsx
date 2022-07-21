@@ -1,4 +1,6 @@
 // Dependencies
+
+//@ts-nocheck
 import { Text, Box, Stack, Image, Button, Badge, HStack, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Gsg } from 'services/api/types/Gsg';

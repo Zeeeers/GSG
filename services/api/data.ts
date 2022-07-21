@@ -1,5 +1,3 @@
-import { Gsg } from './types/Gsg';
-
 export const projects = [
     {
         id: 1,

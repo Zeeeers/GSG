@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Avatar, forwardRef, Grid, GridItem, HStack, Icon, Stack, Text, TextProps } from '@chakra-ui/react';
 import { BsPlus } from 'react-icons/bs';
 import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';

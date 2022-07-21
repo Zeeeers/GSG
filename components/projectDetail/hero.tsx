@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { Img, Badge, Container, Flex, VStack, Text, Stack, Button, useDisclosure, HStack } from '@chakra-ui/react';
 import { impact } from '@clyc/api-wrapper';
 import CurrencyFormat from 'common/currencyFormat';

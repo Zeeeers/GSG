@@ -31,7 +31,7 @@ const size = {
     },
 
     md: {
-        h: 8,
+        h: '40px',
         fontSize: 'md',
         px: '16px',
         borderRadius: 'md',
@@ -122,7 +122,7 @@ function variantFilled({ colorScheme: c }: Record<string, any>) {
         field: {
             border: '1px solid',
             borderColor: 'gray.300',
-            bg: 'white',
+            bg: 'gray.50',
             transitionProperty: 'common',
             transitionDuration: 'slower',
             color: 'gray.700',
