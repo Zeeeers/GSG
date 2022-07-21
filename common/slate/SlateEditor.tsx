@@ -151,6 +151,21 @@ const SlateEditor = forwardRef<Props, 'div'>(
                         setValue(value);
                     }}
                 >
+                    <Flex justify="center" align="flex-end" p={4} bg="background.alpha.75">
+                        <MarkButton title="Negrita" format="bold" icon={FaBold} />
+                        <MarkButton title="Cursiva" format="italic" icon={FaItalic} />
+                        <MarkButton title="Subrayado" format="underline" icon={FaUnderline} />
+                        <MarkButton title="Destacado" format="code" icon={FaCode} />
+                        <BlockButton title="Título 1" format="heading-one" icon={FaHeading} />
+                        <BlockButton title="Título 2" format="heading-two" icon={FaFont} />
+                        <BlockButton title="Cita" format="block-quote" icon={FaQuoteRight} />
+                        <BlockButton title="Lista Enumerada" format="numbered-list" icon={FaListOl} />
+                        <BlockButton title="Lista con Viñetas" format="bulleted-list" icon={FaListUl} />
+                        <LinkButton />
+                        <RemoveLinkButton />
+                        <InsertImageButton onOpen={onOpenImage} />
+                        <InsertVideoButton onOpen={onOpenVideo} />
+                    </Flex>
                     <Box p={4}>
                         <Editable
                             renderElement={renderElement}
@@ -169,34 +184,6 @@ const SlateEditor = forwardRef<Props, 'div'>(
                             }}
                         />
                     </Box>
-
-                    <Flex justify="center" align="flex-end" p={4} bg="background.alpha.75">
-                        <MarkButton title="Negrita" format="bold" icon={FaBold} />
-                        <MarkButton title="Cursiva" format="italic" icon={FaItalic} />
-                        <MarkButton title="Subrayado" format="underline" icon={FaUnderline} />
-                        <MarkButton title="Destacado" format="code" icon={FaCode} />
-                        <BlockButton title="Título 1" format="heading-one" icon={FaHeading} />
-                        <BlockButton title="Título 2" format="heading-two" icon={FaFont} />
-                        <BlockButton title="Cita" format="block-quote" icon={FaQuoteRight} />
-                        <BlockButton title="Lista Enumerada" format="numbered-list" icon={FaListOl} />
-                        <BlockButton title="Lista con Viñetas" format="bulleted-list" icon={FaListUl} />
-                        <LinkButton />
-                        <RemoveLinkButton />
-                        <InsertImageButton onOpen={onOpenImage} />
-                        <InsertVideoButton onOpen={onOpenVideo} />
-                    </Flex>
-
-                    <Flex w="full" justify="center" pb={4}>
-                        <Button
-                            variant="solid"
-                            size="sm"
-                            isLoading={isSavingChanges}
-                            loadingText="Guardando cambios"
-                            onClick={() => handleSaveField(value)}
-                        >
-                            Guardar cambios
-                        </Button>
-                    </Flex>
                 </Slate>
 
                 <Modal isOpen={isOpenImage} onClose={onCloseImage}>

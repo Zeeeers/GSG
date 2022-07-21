@@ -24,6 +24,7 @@ import {
     VStack,
     Stack,
     Link,
+    Divider,
 } from '@chakra-ui/react';
 import SlateEditor from 'common/slate/SlateEditor';
 import SelectOds from 'common/selectOds';
@@ -36,8 +37,12 @@ import { useState } from 'react';
 import AddMembersModal from 'components/project/addMembersModal';
 import { Descendant } from 'slate';
 
-// Page
+/*
+    TODO: change type values in data products and validation
+    TODO: migrate page to component and implement test
+*/
 
+// Page
 const Index: NextPage = () => {
     const [baseImg, setBaseImg] = useState<string>();
     const { onOpen: onCropperOpen } = useDisclosure();
@@ -51,7 +56,6 @@ const Index: NextPage = () => {
     const {
         register,
         formState: { errors },
-
         watch,
     } = useForm<IProjectForm>({
         defaultValues: {
@@ -94,25 +98,30 @@ const Index: NextPage = () => {
                             </Button>
                         </Link>
                         <Text fontSize="3xl" fontWeight="medium">
-                            Creador de proyecto
+                            Creador de producto/servicio
                         </Text>
                     </HStack>
                     <HStack spacing="8px">
+                        {/*TODO: saved proyect in cookies and API*/}
                         <Button>Guardar borrador</Button>
-                        <Button variant={'solid'}>Publicar proyecto</Button>
+                        {/*TODO: publish product and redirect to product publish success view*/}
+                        <Button variant={'solid'}>Publicar producto</Button>
                     </HStack>
                 </Container>
             </HStack>
 
             <Container maxWidth={'container.lg'} paddingTop="7rem" paddingBottom="153px">
                 <VStack as="form" align="start" spacing="30px">
+                    <Text fontSize={'4xl'} fontWeight="bold">
+                        Descripción General de tu producto/servicio
+                    </Text>
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Título del proyecto</FormLabel>
+                        <FormLabel>Título del producto/servicio</FormLabel>
                         <Input {...register('title')} />
                     </FormControl>
 
                     <FormControl id="description" isInvalid={!!errors.description}>
-                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>Descripción del proyecto</FormLabel>
+                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>Descripción del producto/servicio</FormLabel>
 
                         <Textarea
                             fontSize={{ base: 'sm', md: 'md' }}
@@ -122,7 +131,7 @@ const Index: NextPage = () => {
                         />
 
                         <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                            {proyectDescription?.length}/300 caractéres
+                            {proyectDescription?.length}/700 caractéres
                         </Text>
 
                         <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
@@ -130,9 +139,10 @@ const Index: NextPage = () => {
                         </FormErrorMessage>
                     </FormControl>
 
+                    {/*TODO: useCropper for upload image product*/}
                     <FormControl id="main_image" isInvalid={!!errors.main_image}>
                         <FormLabel>
-                            Sube una foto representativa del proyecto, aparecerá dentro de las tarjetas que
+                            Sube una foto representativa del producto/servicio, aparecerá dentro de las tarjetas que
                             inversionistas y público en general podrán ver
                         </FormLabel>
 
@@ -162,37 +172,26 @@ const Index: NextPage = () => {
                         <FormErrorMessage fontWeight={'semibold'}>{errors.main_image?.message}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>¿En qué etapa de levantamiento te encuentras?</FormLabel>
-                        <Select {...register('status')} placeholder="Seleccionar" />
-                    </FormControl>
-
-                    <VStack w={{ base: '100%', md: '50%' }} align="flex-start" spacing="20px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Levantamiento de capital
-                        </Text>
-                        <Stack spacing="25px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="finance_goal" isInvalid={!!errors.finance_goal}>
-                                <FormLabel>Capital a levantar</FormLabel>
-                                <InputGroup>
-                                    <InputLeftAddon>$</InputLeftAddon>
-                                    <Input {...register('finance_goal')} type="number" />
-                                </InputGroup>
-                                <FormHelperText>Ingresa el monto</FormHelperText>
+                    <VStack w={'full'} align="flex-start" spacing="40px">
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>¿Cuál es el propósito de tu producto/servicio?</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
 
-                            <FormControl id="end_date" isInvalid={!!errors.end_date}>
-                                <FormLabel>Fecha de término </FormLabel>
-                                <Input {...register('end_date')} />
-                                <FormHelperText>Para la búsqueda de levantamiento</FormHelperText>
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>Selecciona los ODS que contribuyes en resolver</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <FormHelperText>Máximo 3 ODS</FormHelperText>
                             </FormControl>
                         </Stack>
-                        <Stack spacing="25px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="business_name" isInvalid={!!errors.business_name}>
-                                <FormLabel>Nombre de tu empresa</FormLabel>
-                                <Input {...register('business_name')} />
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>Medición de impacto***********</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
-                            <FormControl id="business_web" isInvalid={!!errors.business_web}>
+
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>Sitio web</FormLabel>
                                 <InputGroup>
                                     <InputLeftAddon>www.</InputLeftAddon>
@@ -203,276 +202,11 @@ const Index: NextPage = () => {
                     </VStack>
 
                     <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Acerca de tu proyecto
-                        </Text>
-                        <FormControl>
-                            <FormLabel>De manera más detallada cuéntanos respecto a tu proyecto</FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
-                        </FormControl>
-                    </VStack>
-
-                    <VStack w={{ base: '100%', md: '50%' }} align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Impacto
-                        </Text>
-                        <FormControl id="qualities" isInvalid={!!errors.qualities}>
-                            <FormLabel>
-                                Selecciona los ODS que contribuyes en resolver a través de tu solución
-                            </FormLabel>
-                            <SelectOds />
-                        </FormControl>
-                    </VStack>
-
-                    <VStack w="full" align="flex-start" spacing="40px">
-                        <VStack align="start" spacing="10px">
-                            <Text fontSize="2xl" fontWeight="medium">
-                                5 dimensiones de impacto
-                            </Text>
-                            <Text fontFamily="inter">
-                                Describe cómo tu proyecto a través de sus 5 dismensiones es capaz de generar el impacto
-                                esperado. Si quieres conocer más al respecto para generar una respuesta mejor orientada,
-                                puedes hacerlo a través de su web oficial
-                            </Text>
-                        </VStack>
-                        <HStack w="full" justifyContent="space-between">
-                            <Tag
-                                size="lg"
-                                variant="subtle"
-                                colorScheme="red"
-                                borderRadius="16px"
-                                fontSize="20px"
-                                lineHeight="32px"
-                                p="10px"
-                                w="107px"
-                            >
-                                <TagLeftIcon boxSize="27px" as={CgShapeSquare} />
-                                <TagLabel>Qué</TagLabel>
-                            </Tag>
-                            <FormControl w="70%">
-                                <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                    Describe del “Qué” de tu proyecto
-                                </FormLabel>
-
-                                <Textarea
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    {...register('description')}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-
-                                <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                    {proyectDescription?.length}/300 caractéres
-                                </Text>
-
-                                <FormErrorMessage
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="red.400"
-                                >
-                                    {errors.description?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </HStack>
-
-                        <HStack w="full" justifyContent="space-between">
-                            <Tag
-                                size="lg"
-                                variant="subtle"
-                                colorScheme="green"
-                                borderRadius="16px"
-                                fontSize="18px"
-                                lineHeight="32px"
-                                p="10px"
-                                w="127px"
-                            >
-                                <TagLeftIcon boxSize="27px" as={CgShapeCircle} />
-                                <TagLabel>Quién</TagLabel>
-                            </Tag>
-                            <FormControl w="70%">
-                                <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                    Describe del “Quién” de tu proyecto
-                                </FormLabel>
-
-                                <Textarea
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-
-                                <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                    {proyectDescription?.length}/300 caractéres
-                                </Text>
-
-                                <FormErrorMessage
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="red.400"
-                                >
-                                    {errors.description?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </HStack>
-
-                        <HStack w="full" justifyContent="space-between">
-                            <Tag
-                                size="lg"
-                                variant="subtle"
-                                colorScheme="cyan"
-                                borderRadius="16px"
-                                fontSize="18px"
-                                lineHeight="32px"
-                                p="10px"
-                                w="143px"
-                            >
-                                <TagLeftIcon boxSize="27px" as={CgSortAz} />
-                                <TagLabel>Cuanto</TagLabel>
-                            </Tag>
-                            <FormControl w="70%">
-                                <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                    Describe el “Cuánto” de tu proyecto
-                                </FormLabel>
-
-                                <Textarea
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-
-                                <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                    {proyectDescription?.length}/300 caractéres
-                                </Text>
-
-                                <FormErrorMessage
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="red.400"
-                                >
-                                    {errors.description?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </HStack>
-
-                        <HStack w="full" justifyContent="space-between">
-                            <Tag
-                                size="lg"
-                                variant="subtle"
-                                colorScheme="purple"
-                                borderRadius="16px"
-                                fontSize="18px"
-                                lineHeight="32px"
-                                p="10px"
-                                w="210px"
-                            >
-                                <TagLeftIcon boxSize="27px" as={BsPlus} />
-                                <TagLabel>Contribución</TagLabel>
-                            </Tag>
-                            <FormControl w="70%">
-                                <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                    Describe la ”contribución” de tu proyecto
-                                </FormLabel>
-
-                                <Textarea
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-
-                                <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                    {proyectDescription?.length}/300 caractéres
-                                </Text>
-
-                                <FormErrorMessage
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="red.400"
-                                >
-                                    {errors.description?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </HStack>
-
-                        <HStack w="full" justifyContent="space-between">
-                            <Tag
-                                size="lg"
-                                variant="subtle"
-                                colorScheme="yellow"
-                                borderRadius="16px"
-                                fontSize="18px"
-                                lineHeight="32px"
-                                p="10px"
-                                w="157px"
-                            >
-                                <TagLeftIcon boxSize="27px" as={CgShapeTriangle} />
-                                <TagLabel>Riesgos</TagLabel>
-                            </Tag>
-                            <FormControl w="70%">
-                                <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                    Describe los “riesgos” de tu proyecto
-                                </FormLabel>
-
-                                <Textarea
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-
-                                <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                                    {proyectDescription?.length}/300 caractéres
-                                </Text>
-
-                                <FormErrorMessage
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="red.400"
-                                >
-                                    {errors.description?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </HStack>
-                    </VStack>
-
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Problema
-                        </Text>
-                        <FormControl>
-                            <FormLabel>Describe el problema que actualmente estás buscando solucionar</FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
-                        </FormControl>
-                    </VStack>
-
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Solución
-                        </Text>
-                        <FormControl>
-                            <FormLabel>
-                                Describe cómo resuelves esa problemática comentada en la pregunta anterior
-                            </FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
-                        </FormControl>
-                    </VStack>
-
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Información Complementaria
-                        </Text>
-                        <FormControl>
-                            <FormLabel>
-                                Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
-                                que el inversionista comprenda mejor el proyecto
-                            </FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
-                        </FormControl>
-                    </VStack>
-
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Finanzas
-                        </Text>
                         <FormControl id="main_image" isInvalid={!!errors.main_image}>
-                            <FormLabel>Subir documento con tu estado financiero actual. (PDF o Excel)</FormLabel>
+                            <FormLabel>
+                                Validación del impacto social/medioambiental: Por favor adjunta material que valide la
+                                medición de resultados{' '}
+                            </FormLabel>
 
                             <Input type="hidden" {...register('main_image')} />
                             <UploadButton
@@ -501,43 +235,75 @@ const Index: NextPage = () => {
                         </FormControl>
                     </VStack>
 
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Modelo de negocios
-                        </Text>
-                        <FormControl>
-                            <FormLabel>
-                                ¿Cómo se generarán ingresos? ¿A quién irá dirigido? ¿Cuáles serán los canales de venta?
-                            </FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
+                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '45%' }}>
+                        <FormLabel>Selecciona el respaldo con el que cuentas de una tercera organización</FormLabel>
+                        <Select {...register('status')} placeholder="Seleccionar" />
+                    </FormControl>
+
+                    <Divider paddingTop={'60px'} />
+
+                    <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
+                        Descripción financiera
+                    </Text>
+
+                    <VStack w={'full'} align="flex-start" spacing="40px">
+                        <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '47%' }}>
+                            <FormLabel>¿En qué etapa se encuentra tu producto/servicio?</FormLabel>
+                            <Select {...register('status')} placeholder="Seleccionar" />
                         </FormControl>
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>¿Cuál es el objetivo que tienes para buscar inversión?</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>¿Cuál es la etapa de levantamiento en la que te encuentras?</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+                        </Stack>
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>Garantías**************</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>¿Cuál es la rentabilidad que esperas para tu producto/ servicio?</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+                        </Stack>
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>
+                                    Por favor selecciona el rango del monto de aporte aproximado que estás buscando{' '}
+                                </FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>Selecciona los plazos de inversión que buscas</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+                        </Stack>
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>Trayectoria del negocio*************</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+
+                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>¿Qué tipo de inversionista buscas?</FormLabel>
+                                <Select {...register('status')} placeholder="Seleccionar" />
+                            </FormControl>
+                        </Stack>
                     </VStack>
 
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Uso de ingresos
-                        </Text>
-                        <FormControl>
-                            <FormLabel>
-                                Describe cómo realizarás la distribución del capital que buscas obtener en las
-                                diferentes áreas de tu negocio.
-                            </FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
-                        </FormControl>
-                    </VStack>
+                    <Divider pt="60px" />
 
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Oportunidad de inversión
-                        </Text>
-                        <FormControl>
-                            <FormLabel>
-                                ¿Cuál es el tamaño del mercado al que apuntas? ¿Por qué el inversor debería invertir
-                                ahora en ti? ¿Cuánto se multiplicaría su inversión y en cuánto tiempo?
-                            </FormLabel>
-                            <SlateEditor handleSaveField={handleEditField} bg="gray.50" color="gray.700" h="300px" />
-                        </FormControl>
-                    </VStack>
+                    <Text fontSize="4xl" fontWeight="bold" pt="60px">
+                        Otra información relevante
+                    </Text>
 
                     <VStack w="100%" align="flex-start" spacing="10px">
                         <Text fontSize="2xl" fontWeight="medium">
@@ -595,6 +361,47 @@ const Index: NextPage = () => {
                             ))}
                         </Stack>
                     </VStack>
+
+                    <VStack w="100%" align="flex-start" spacing="10px">
+                        <Text fontSize="2xl" fontWeight="medium">
+                            Información Complementaria
+                        </Text>
+                        <FormControl>
+                            <FormLabel>
+                                Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
+                                que el inversionista comprenda mejor el proyecto
+                            </FormLabel>
+                            <FormHelperText>Ejemplo: Aparición en prensa, prospección de mercado etc.</FormHelperText>
+                            <SlateEditor
+                                handleSaveField={handleEditField}
+                                bg="gray.50"
+                                color="gray.700"
+                                h="300px"
+                                mt="15px"
+                            />
+                        </FormControl>
+                    </VStack>
+
+                    <FormControl id="description" isInvalid={!!errors.description}>
+                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                            Espacio de mejora continua: ¿Cómo crees que tu producto/ servicio podría beneficiarse?
+                        </FormLabel>
+
+                        <Textarea
+                            fontSize={{ base: 'sm', md: 'md' }}
+                            focusBorderColor={'primary.400'}
+                            errorBorderColor={'red.400'}
+                            {...register('description')}
+                        />
+
+                        <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
+                            {proyectDescription?.length}/700 caractéres
+                        </Text>
+
+                        <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
+                            {errors.description?.message}
+                        </FormErrorMessage>
+                    </FormControl>
                 </VStack>
             </Container>
 

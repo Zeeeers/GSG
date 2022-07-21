@@ -86,6 +86,7 @@ function variantOutline({ theme, colorScheme: c }: Record<string, any>) {
             borderColor: `gray.300`,
             bg: 'inherit',
             fontFamily: 'inter',
+
             _hover: {
                 borderColor: `${c}.alpha.40`,
             },

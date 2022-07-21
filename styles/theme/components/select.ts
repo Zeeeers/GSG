@@ -11,6 +11,7 @@ function baseStyleField() {
         lineHeight: 'normal',
         bg: 'white',
         color: 'gray.200',
+        height: '40px',
     };
 }
 

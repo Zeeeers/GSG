@@ -61,8 +61,8 @@ const AddMembersForm = () => {
                 <Input {...register('position')} />
             </FormControl>
             <FormControl>
-                <FormLabel>Descripción del perfil</FormLabel>
-                <Textarea {...register('description')} />
+                <FormLabel>Linkedin</FormLabel>
+                <Input {...register('description')} />
             </FormControl>
 
             <Button type="submit" variant="solid">
