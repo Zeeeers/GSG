@@ -1,14 +1,31 @@
 //@ts-nocheck
-import { Avatar, forwardRef, Grid, GridItem, HStack, Icon, Stack, Text, TextProps } from '@chakra-ui/react';
+import {
+    Avatar,
+    forwardRef,
+    Grid,
+    GridItem,
+    HStack,
+    Icon,
+    IconButton,
+    Img,
+    Link,
+    Stack,
+    Text,
+    TextProps,
+    VStack,
+    Wrap,
+    WrapItem,
+} from '@chakra-ui/react';
 import { BsPlus } from 'react-icons/bs';
 import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';
+import { GrDocumentPdf } from 'react-icons/gr';
 import { Gsg } from 'services/api/types/Gsg';
 import { HiHeart } from 'react-icons/hi';
 import { Ref } from 'react';
+import { FaLinkedin } from 'react-icons/fa';
 
 const Body = forwardRef<any, any>(({ project }, ref) => {
-    const { about, impact, problem, solution, additionalInfo, finance, model, income, oportunity, member } =
-        ref.current;
+    const { description_general, impact, description_finance, other } = ref.current;
 
     const members = [
         {
@@ -33,185 +50,280 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
             py="207px"
             scrollPaddingTop="100px"
         >
-            <Stack>
-                <Text scrollMarginTop="100px" ref={about} fontSize="4xl">
-                    Acerca de
+            <Stack pl="30px" pr="30px" spacing="30px">
+                <Text scrollMarginTop="100px" ref={impact} fontSize="4xl">
+                    El impacto de {project?.business_name}
                 </Text>
-                <Text as="p" fontFamily="inter" fontSize="md">
-                    {project?.about}
-                </Text>
+                <VStack align="flex-start" spacing="5px">
+                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        El propósito del producto/servicio es:
+                    </Text>
+                    <Text as="p" fontFamily="inter" fontSize="24px" fontWeight="medium">
+                        Actúa para reducir el daño social y/o mediambiental
+                    </Text>
+                </VStack>
             </Stack>
 
             <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
-                <Text scrollMarginTop="150px" ref={impact} fontSize="4xl" fontWeight="medium">
-                    Impacto
-                </Text>
-                <Text fontSize="sm" fontFamily="inter">
-                    Madurez de impacto Intermedio
+                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                    ODS que incorpora el producto/servicio
                 </Text>
 
-                <HStack spacing="20px" pt="15px" pb="30px">
-                    <Stack p="15px" bg="green.600" rounded="15px">
-                        <Icon w={10} h={10} color="gray.50" as={HiHeart} />
-                    </Stack>
-                    <Text
-                        fontWeight="medium"
-                        fontSize="20px"
-                        color="#279B48
-"
-                    >
-                        Salud y bienestar
-                    </Text>
-                </HStack>
-                <Stack spacing="50px">
-                    <Stack>
-                        <HStack>
-                            <Icon w={10} h={10} color="red.400" as={CgShapeSquare} />
-                            <Text fontSize="2xl" fontWeight="medium" color="red.300">
-                                QUÉ
-                            </Text>
-                        </HStack>
-                        <Text fontFamily="inter" fontSize="md">
-                            {project?.impact_what ?? 'No hay impacto'}
-                        </Text>
-                    </Stack>
-
-                    <Stack>
-                        <HStack>
-                            <Icon w={10} h={10} color="teal.200" as={CgShapeCircle} />
-                            <Text fontSize="2xl" fontWeight="medium" color="teal.300">
-                                QUIÉN
-                            </Text>
-                        </HStack>
-                        <Text fontFamily="inter" fontSize="md">
-                            {project?.impact_who ?? 'No hay impacto'}
-                        </Text>
-                    </Stack>
-
-                    <Stack>
-                        <HStack>
-                            <Icon w={10} h={10} color="cyan.200" as={CgSortAz} />
-                            <Text fontSize="2xl" fontWeight="medium" color="cyan.300">
-                                CUANTO
-                            </Text>
-                        </HStack>
-                        <Text fontFamily="inter" fontSize="md">
-                            {project?.impact_how_much ?? 'No hay impacto'}
-                        </Text>
-                    </Stack>
-
-                    <Stack>
-                        <HStack>
-                            <Icon w={10} h={10} color="purple.200" as={BsPlus} />
-                            <Text fontSize="2xl" fontWeight="medium" color="purple.300">
-                                CONTRIBUCIÓN
-                            </Text>
-                        </HStack>
-                        <Text fontFamily="inter" fontSize="md">
-                            {project?.impact_contribution ?? 'No hay impacto'}
-                        </Text>
-                    </Stack>
-
-                    <Stack>
-                        <HStack>
-                            <Icon w={10} h={10} color="orange.500" as={CgShapeTriangle} />
-                            <Text fontSize="2xl" fontWeight="medium" color="orange.400">
-                                RIESGOS
-                            </Text>
-                        </HStack>
-                        <Text fontFamily="inter" fontSize="md">
-                            {project?.impact_risk ?? 'No hay impacto'}
-                        </Text>
-                    </Stack>
-                </Stack>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={problem} fontSize="4xl">
-                    Problema
-                </Text>
-                <Text fontFamily="inter" fontSize="md">
-                    {project?.problem}
-                </Text>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={solution} fontSize="4xl">
-                    Solución
-                </Text>
-                <Text fontFamily="inter" fontSize="md">
-                    {project?.solution}
-                </Text>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={additionalInfo} fontSize="4xl">
-                    Información complementaria
-                </Text>
-                <Text fontFamily="inter" fontSize="md">
-                    {project?.more_info}
-                </Text>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={finance} fontSize="4xl">
-                    Finanzas
-                </Text>
-                <Text fontFamily="inter" fontSize="md">
-                    {project?.finance}
-                </Text>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={model} fontSize="4xl">
-                    Modelo de negocios
-                </Text>
-                <Text fontFamily="inter" fontSize="md">
-                    {project?.business_model}
-                </Text>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={income} fontSize="4xl">
-                    Uso de los ingresos
-                </Text>
-            </Stack>
-
-            <Stack>
-                <Text scrollMarginTop="100px" ref={oportunity} fontSize="4xl">
-                    Oportunidad de inversión
-                </Text>
-                <Text fontFamily="inter" fontSize="md">
-                    {project?.investment_opportunity}
-                </Text>
-            </Stack>
-            <Stack spacing="30px">
-                <Text scrollMarginTop="100px" ref={member} fontSize="4xl">
-                    Equipo
-                </Text>
-                <Grid
-                    placeContent="start"
-                    placeItems="start"
-                    templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
-                    gap="50px"
-                >
-                    {members.map((member, i) => (
-                        <GridItem key={i}>
-                            <Stack spacing="10px" p={0}>
-                                <Avatar name={member.name} w="96px" h="96px" />
-                                <Text color="gray.50" fontSize="xl" fontWeight="medium">
-                                    {member.name}
-                                </Text>
-                                <Text color="gray.500" fontSize="sm">
-                                    {member.position}
-                                </Text>
-                                <Text fontFamily="inter" fontSize="md" as="p">
-                                    {member.description}
-                                </Text>
+                <Wrap spacingX="60px" spacingY="30px">
+                    <WrapItem>
+                        <HStack spacing="20px" pt="15px">
+                            <Stack p="15px" bg="green.600" rounded="15px">
+                                <Icon w={10} h={10} color="gray.50" as={HiHeart} />
                             </Stack>
-                        </GridItem>
-                    ))}
-                </Grid>
+                            <Text
+                                fontWeight="medium"
+                                fontSize="20px"
+                                color="#279B48
+"
+                            >
+                                Salud y bienestar
+                            </Text>
+                        </HStack>
+                    </WrapItem>
+                    <WrapItem>
+                        <HStack spacing="20px" pt="15px">
+                            <Stack p="15px" bg="green.600" rounded="15px">
+                                <Icon w={10} h={10} color="gray.50" as={HiHeart} />
+                            </Stack>
+                            <Text
+                                fontWeight="medium"
+                                fontSize="20px"
+                                color="#279B48
+"
+                            >
+                                Salud y bienestar
+                            </Text>
+                        </HStack>
+                    </WrapItem>
+                    <WrapItem>
+                        <HStack spacing="20px" pt="15px">
+                            <Stack p="15px" bg="green.600" rounded="15px">
+                                <Icon w={10} h={10} color="gray.50" as={HiHeart} />
+                            </Stack>
+                            <Text
+                                fontWeight="medium"
+                                fontSize="20px"
+                                color="#279B48
+"
+                            >
+                                Salud y bienestar
+                            </Text>
+                        </HStack>
+                    </WrapItem>
+                </Wrap>
+            </Stack>
+
+            <VStack pl="30px" pr="30px" align="flex-start" spacing="40px" w="full">
+                <VStack align="flex-start" spacing="5px">
+                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        Medición de resultados asociados al impacto social y/o mediambiental
+                    </Text>
+                    <Text as="p" fontSize="24px" fontWeight="medium">
+                        Estoy en proceso de medición de resultados sociales y/o medioambientales (aún no tengo
+                        resultados, pero están diseñados los indicadores que queremos medir)
+                    </Text>
+                </VStack>
+
+                <VStack align="flex-start" spacing="5px" w="full">
+                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        Northstar SpA ha presentado un documento en relación a cómo mide su impacto
+                    </Text>
+                    <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
+                        <GrDocumentPdf size={30} />
+                        <Text>Medición de impacto Northstar SpA</Text>
+                    </HStack>
+                </VStack>
+
+                <VStack align="flex-start" spacing="5px">
+                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        Como respaldo de una tercera organización, Northstar SpA cuenta con:
+                    </Text>
+                    <Text as="p" fontSize="24px" fontWeight="medium">
+                        Premio o reconocimiento de empresa u organización
+                    </Text>
+                </VStack>
+            </VStack>
+
+            <Stack
+                spacing="40px"
+                bg="gray.800"
+                w="full"
+                rounded="16px"
+                py="40px"
+                px={{ base: '24px', md: '35px' }}
+                ref={description_finance}
+                scrollMarginTop="100px"
+            >
+                <Text fontSize="4xl" fontWeight="medium">
+                    Descripción financiera de {project?.business_name}
+                </Text>
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            Como respaldo de una tercera organización, Northstar SpA cuenta con:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Premio o reconocimiento de empresa u organización
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            El objetivo que tiene con la inversión es:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Capital para comenzar
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            El levantamiento actual de capital en la cual se encuentra es:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Pre-seed
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            Cuenta con garantías:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Sí, por el 100% de la inversión buscada
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            La rentabilidad que Northstar SpA espera obtener es:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Entre 11 y 20%
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            El rango de monto del aporte que se busca es:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Menos de 20 millones (CLP)
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            En relación a los plazos de inversión, Northstar SpA buscaría un plazo de:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Hasta 48 meses
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            La trayectoria del negocio es:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Activo circulante vs Patrimonio último año fiscal
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            El tipo de inversionista que busca es:
+                        </Text>
+                        <Text as="p" fontSize="24px" fontWeight="medium">
+                            Inversores atomizados (dinero de diversas fuentes)
+                        </Text>
+                    </VStack>
+                </VStack>
+            </Stack>
+
+            <Stack pl="30px" spacing="30px" w="full" ref={other} scrollMarginTop="100px">
+                <Text ref={other} fontSize="4xl" fontWeight="medium">
+                    Otra información relevante
+                </Text>
+
+                <VStack align="flex-start" spacing="5px" w="full">
+                    <Text fontSize="3xl">Equipo</Text>
+                    <Grid
+                        w="full"
+                        placeContent="space-between"
+                        placeItems="start"
+                        templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+                        gap="50px"
+                    >
+                        {members.map((member, i) => (
+                            <GridItem key={i}>
+                                <Stack spacing="10px" p={0}>
+                                    <Avatar name={member.name} w="96px" h="96px" />
+                                    <VStack align="flex-start" spacing="5px">
+                                        <Text color="gray.50" fontSize="xl" fontWeight="medium">
+                                            {member.name}
+                                        </Text>
+                                        <Text color="gray.500" fontSize="15px">
+                                            {member.position}
+                                        </Text>
+                                    </VStack>
+
+                                    <Link href="https://www.linkedin.com/in/nicolasrs/" target="_blank" w="fit-content">
+                                        <FaLinkedin size={30} />
+                                    </Link>
+                                </Stack>
+                            </GridItem>
+                        ))}
+                    </Grid>
+                </VStack>
+            </Stack>
+
+            <Stack pl="30px" pr="30px" spacing="30px">
+                <VStack align="flex-start" spacing="5px">
+                    <Text as="p" fontSize="3xl">
+                        Espacios de mejora continua
+                    </Text>
+                    <Text as="p" fontSize="16px">
+                        Históricamente, la clase de activos de capital de riesgo ha sido dominio exclusivo de las
+                        empresas de capital de riesgo, los inversores profesionales y las personas de alto patrimonio
+                        neto.
+                    </Text>
+                </VStack>
+            </Stack>
+
+            <Stack pl="30px" pr="30px" spacing="30px">
+                <VStack align="flex-start" spacing="5px">
+                    <Text as="p" fontSize="3xl">
+                        Información complementaria
+                    </Text>
+                    <Text as="p" fontSize="16px">
+                        Históricamente, la clase de activos de capital de riesgo ha sido dominio exclusivo de las
+                        empresas de capital de riesgo, los inversores profesionales y las personas de alto patrimonio
+                        neto.
+                    </Text>
+                    <Img src={project?.main_image?.url} w="615px" h="219px" objectFit="cover" objectPosition="center" />
+                </VStack>
             </Stack>
         </Stack>
     );

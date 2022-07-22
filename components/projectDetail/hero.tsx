@@ -1,6 +1,18 @@
 // Dependencies
 //@ts-nocheck
-import { Img, Badge, Container, Flex, VStack, Text, Stack, Button, useDisclosure, HStack } from '@chakra-ui/react';
+import {
+    Img,
+    Badge,
+    Container,
+    Flex,
+    VStack,
+    Text,
+    Stack,
+    Button,
+    useDisclosure,
+    HStack,
+    Avatar,
+} from '@chakra-ui/react';
 import { impact } from '@clyc/api-wrapper';
 import CurrencyFormat from 'common/currencyFormat';
 import { useEffect, useRef, useState } from 'react';
@@ -17,47 +29,29 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
-        about: false,
+        description_general: true,
         impact: false,
-        problem: false,
-        solution: false,
-        additionalInfo: false,
-        finance: false,
-        model: false,
-        income: false,
-        oportunity: false,
-        member: false,
+        description_finance: false,
+        other: false,
     });
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const about = useRef<HTMLBodyElement>(null);
+    const description_general = useRef<HTMLBodyElement>(null);
     const impact = useRef<HTMLBodyElement>(null);
-    const problem = useRef<HTMLBodyElement>(null);
-    const solution = useRef<HTMLBodyElement>(null);
-    const additionalInfo = useRef<HTMLBodyElement>(null);
-    const finance = useRef<HTMLBodyElement>(null);
-    const model = useRef<HTMLBodyElement>(null);
-    const income = useRef<HTMLBodyElement>(null);
-    const oportunity = useRef<HTMLBodyElement>(null);
-    const member = useRef<HTMLBodyElement>(null);
+    const description_finance = useRef<HTMLBodyElement>(null);
+    const other = useRef<HTMLBodyElement>(null);
 
     const ref = useRef({
-        about,
+        description_general,
         impact,
-        problem,
-        solution,
-        additionalInfo,
-        finance,
-        model,
-        income,
-        oportunity,
-        member,
+        description_finance,
+        other,
     });
 
     const executeScroll = (section: string) => {
         switch (section) {
-            case 'about':
-                about?.current?.scrollIntoView({
+            case 'description_general':
+                description_general?.current?.scrollIntoView({
                     behavior: 'smooth',
                 });
 
@@ -67,47 +61,13 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                     behavior: 'smooth',
                 });
                 break;
-            case 'problem':
-                problem?.current?.scrollIntoView({
+            case 'description_finance':
+                description_finance?.current?.scrollIntoView({
                     behavior: 'smooth',
                 });
                 break;
-            case 'solution':
-                solution?.current?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                break;
-
-            case 'additional':
-                additionalInfo?.current?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                break;
-
-            case 'finance':
-                finance?.current?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                break;
-            case 'model':
-                model?.current?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                break;
-
-            case 'income':
-                income?.current?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                break;
-
-            case 'oportunity':
-                oportunity?.current?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-                break;
-            case 'member':
-                member?.current?.scrollIntoView({
+            case 'other':
+                other?.current?.scrollIntoView({
                     behavior: 'smooth',
                 });
                 break;
@@ -121,179 +81,53 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
             setSticky(false);
         }
 
-        let aboutY = about.current?.getBoundingClientRect().y ?? 0;
+        let description_generalY = description_general.current?.getBoundingClientRect().y ?? 0;
         let impactY = impact.current?.getBoundingClientRect().y ?? 0;
-        let problemY = problem.current?.getBoundingClientRect().y ?? 0;
-        let solutionY = solution.current?.getBoundingClientRect().y ?? 0;
-        let additionalInfoY = additionalInfo.current?.getBoundingClientRect().y ?? 0;
-        let financeY = finance.current?.getBoundingClientRect().y ?? 0;
-        let modelY = model.current?.getBoundingClientRect().y ?? 0;
-        let incomeY = income.current?.getBoundingClientRect().y ?? 0;
-        let oportunityY = oportunity.current?.getBoundingClientRect().y ?? 0;
-        let memberY = member.current?.getBoundingClientRect().y ?? 0;
+        let description_financeY = description_finance.current?.getBoundingClientRect().y ?? 0;
+        let otherY = other.current?.getBoundingClientRect().y ?? 0;
 
-        if (aboutY < 130) {
+        if (description_generalY < 130) {
             setIsActive({
                 ...isActive,
-                about: true,
+                description_general: true,
                 impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
-            });
-        } else {
-            setIsActive({
-                ...isActive,
-                about: false,
-                impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
+                description_finance: false,
+                other: false,
             });
         }
         if (impactY < 130) {
             setIsActive({
                 ...isActive,
-                about: false,
+                description_general: false,
                 impact: true,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
+                description_finance: false,
+                other: false,
             });
-        }
-        if (problemY < 130) {
+        } else {
             setIsActive({
                 ...isActive,
-                about: false,
+                description_general: true,
                 impact: false,
-                problem: true,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
+                description_finance: false,
+                other: false,
             });
         }
-        if (solutionY < 130) {
+        if (description_financeY < 130) {
             setIsActive({
                 ...isActive,
-                about: false,
+                description_general: false,
                 impact: false,
-                problem: false,
-                solution: true,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
+                description_finance: true,
+                other: false,
             });
         }
-        if (additionalInfoY < 130) {
+        if (otherY < 130) {
             setIsActive({
                 ...isActive,
-                about: false,
+                description_general: false,
                 impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: true,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
-            });
-        }
-        if (financeY < 130) {
-            setIsActive({
-                ...isActive,
-                about: false,
-                impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: true,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: false,
-            });
-        }
-        if (modelY < 130) {
-            setIsActive({
-                ...isActive,
-                about: false,
-                impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: true,
-                income: false,
-                oportunity: false,
-                member: false,
-            });
-        }
-        if (incomeY < 130) {
-            setIsActive({
-                ...isActive,
-                about: false,
-                impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: true,
-                oportunity: false,
-                member: false,
-            });
-        }
-        if (oportunityY < 130) {
-            setIsActive({
-                ...isActive,
-                about: false,
-                impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: true,
-                member: false,
-            });
-        }
-        if (memberY < 130) {
-            setIsActive({
-                ...isActive,
-                about: false,
-                impact: false,
-                problem: false,
-                solution: false,
-                additionalInfo: false,
-                finance: false,
-                model: false,
-                income: false,
-                oportunity: false,
-                member: true,
+                description_finance: false,
+                other: true,
             });
         }
     };
@@ -307,7 +141,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
     });
     return (
         <>
-            <Flex w="full" h="90px" position="absolute">
+            <Flex w="full" h="90px" position="absolute" ref={description_general}>
                 <Container
                     maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
                     pt={{ base: 0, md: 4 }}
@@ -324,16 +158,16 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                         marginTop={sticky ? '5px' : '350px'}
                     >
                         <Button
-                            color={isActive.about ? 'teal.400' : ''}
+                            color={isActive.description_general ? 'teal.400' : ''}
                             fontWeight="medium"
                             variant="unstyled"
                             _hover={{ color: 'teal.500' }}
                             fontSize="sm"
                             rounded={0}
-                            borderBottom={isActive.about ? '2px' : ''}
-                            onClick={() => executeScroll('about')}
+                            borderBottom={isActive.description_general ? '2px' : ''}
+                            onClick={() => executeScroll('description_general')}
                         >
-                            Acerca de
+                            Descripción general
                         </Button>
                         <Button
                             onClick={() => executeScroll('impact')}
@@ -347,93 +181,26 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                             Impacto
                         </Button>
                         <Button
-                            onClick={() => executeScroll('problem')}
+                            onClick={() => executeScroll('description_finance')}
                             variant="unstyled"
                             rounded={0}
-                            color={isActive.problem ? 'teal.400' : ''}
-                            borderBottom={isActive.problem ? '2px' : ''}
+                            color={isActive.description_finance ? 'teal.400' : ''}
+                            borderBottom={isActive.description_finance ? '2px' : ''}
                             _hover={{ color: 'teal.500' }}
                             fontSize="sm"
                         >
-                            Problema
+                            Descripción financiera
                         </Button>
                         <Button
-                            onClick={() => executeScroll('solution')}
+                            onClick={() => executeScroll('other')}
                             variant="unstyled"
                             rounded={0}
-                            color={isActive.solution ? 'teal.400' : ''}
-                            borderBottom={isActive.solution ? '2px' : ''}
+                            color={isActive.other ? 'teal.400' : ''}
+                            borderBottom={isActive.other ? '2px' : ''}
                             _hover={{ color: 'teal.500' }}
                             fontSize="sm"
                         >
-                            Solución
-                        </Button>
-                        <Button
-                            onClick={() => executeScroll('additional')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.additionalInfo ? 'teal.400' : ''}
-                            borderBottom={isActive.additionalInfo ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
-                        >
-                            Inf. complementaria
-                        </Button>
-                        <Button
-                            onClick={() => executeScroll('finance')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.finance ? 'teal.400' : ''}
-                            borderBottom={isActive.finance ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
-                        >
-                            Finanzas
-                        </Button>
-
-                        <Button
-                            onClick={() => executeScroll('model')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.model ? 'teal.400' : ''}
-                            borderBottom={isActive.model ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
-                        >
-                            Modelo de negocio
-                        </Button>
-                        <Button
-                            onClick={() => executeScroll('income')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.income ? 'teal.400' : ''}
-                            borderBottom={isActive.income ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
-                        >
-                            Uso de ingresos
-                        </Button>
-                        <Button
-                            onClick={() => executeScroll('oportunity')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.oportunity ? 'teal.400' : ''}
-                            borderBottom={isActive.oportunity ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
-                        >
-                            Oportunidad de inversión
-                        </Button>
-                        <Button
-                            onClick={() => executeScroll('member')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.member ? 'teal.400' : ''}
-                            borderBottom={isActive.member ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
-                        >
-                            Equipo
+                            Otra información
                         </Button>
                     </Stack>
 
@@ -475,12 +242,16 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                     spacing={0}
                                 >
                                     <VStack align="flex-start" spacing="10px" mb="20px">
+                                        <HStack spacing="17px">
+                                            <Avatar name={project?.business_name} w="48px" h="48px" />
+                                            <Text fontSize={{ base: 'sm', md: '24px' }} fontFamily="inter">
+                                                {project?.business_name}
+                                            </Text>
+                                        </HStack>
                                         <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
                                             {project?.title.toLocaleUpperCase()}
                                         </Text>
-                                        <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter">
-                                            {project?.business_name}
-                                        </Text>
+
                                         <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
                                             {project?.description}
                                         </Text>
@@ -498,24 +269,16 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                         {project?.stage}
                                     </Badge>
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
-                                        <Text>Levantamiento buscado</Text>
+                                        <Text>Rango de levantamiento buscado</Text>
                                         <Flex
                                             justifyContent="space-between"
                                             direction={{ base: 'column', md: 'row' }}
                                             w="full"
                                             pt="5px"
                                         >
-                                            <Stack spacing="5px">
-                                                <CurrencyFormat
-                                                    fontSize="4xl"
-                                                    fontWeight="medium"
-                                                    number={project?.finance_goal ?? 0}
-                                                />
-                                                <Text fontSize="sm" fontFamily="inter">
-                                                    Fecha Límite 10 de marzo
-                                                </Text>
-                                            </Stack>
-
+                                            <Text fontSize="4xl" fontWeight="medium">
+                                                Menos de 20 millones (CLP)
+                                            </Text>
                                             <Stack
                                                 alignItems={{ base: 'center', md: 'start' }}
                                                 spacing="5px"
@@ -530,9 +293,6 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                                 >
                                                     Contactar
                                                 </Button>
-                                                <Text fontSize="14px" fontFamily="inter">
-                                                    Quedan 23 días
-                                                </Text>
                                             </Stack>
                                         </Flex>
                                     </VStack>
