@@ -1,6 +1,6 @@
 // Dependencies
-import { Checkbox, Flex, HStack, Img, Stack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
-import SelectOds from 'common/selectOds';
+
+import { Checkbox, HStack, Img, Stack, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 
 // Components
 const OdsTab: React.FC = () => {
