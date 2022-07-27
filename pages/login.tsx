@@ -9,6 +9,7 @@ import { Button, Flex, Heading, Img, Stack, Text, useMediaQuery, VStack } from '
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
 import LogoBar from 'layouts/guest/logoBar';
 import LoginForm from 'components/login/loginForm';
+import { route } from 'next/dist/next-server/server/router';
 
 // Dynamic
 const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
@@ -20,8 +21,8 @@ const LoginPage: NextPage = () => {
 
     return (
         <>
-            <NextSeo title={'Iniciar sesión - Skala Desafíos'} />
-            <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/home" />
+            <NextSeo title={'Iniciar sesión - GSG'} />
+            <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/explorer" />
 
             <LogoBar>
                 <Stack w="546px" alignItems="flex-start">

@@ -36,6 +36,7 @@ import UploadButton from 'common/uploadButton';
 import { useState } from 'react';
 import AddMembersModal from 'components/project/addMembersModal';
 import { Descendant } from 'slate';
+import { NextSeo } from 'next-seo';
 
 /*
     TODO: change type values in data products and validation
@@ -81,6 +82,7 @@ const Index: NextPage = () => {
 
     return (
         <>
+            <NextSeo title={'Creador de proyecto - GSG'} />
             <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
                 <Container display="flex" justifyContent="space-between" maxWidth={'container.lg'}>
                     <HStack spacing="23px">
@@ -114,7 +116,7 @@ const Index: NextPage = () => {
             <Container maxWidth={'container.lg'} paddingTop="7rem" paddingBottom="153px">
                 <VStack as="form" align="start" spacing="30px">
                     <Text fontSize={'4xl'} fontWeight="bold">
-                        Descripción General de tu producto/servicio
+                        Descripción General
                     </Text>
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Título del producto/servicio</FormLabel>
@@ -138,6 +140,14 @@ const Index: NextPage = () => {
                         <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
                             {errors.description?.message}
                         </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                        <FormLabel>Sitio web</FormLabel>
+                        <InputGroup>
+                            <InputLeftAddon>www.</InputLeftAddon>
+                            <Input {...register('business_web')} />
+                        </InputGroup>
                     </FormControl>
 
                     {/*TODO: useCropper for upload image product*/}
@@ -173,31 +183,30 @@ const Index: NextPage = () => {
                         <FormErrorMessage fontWeight={'semibold'}>{errors.main_image?.message}</FormErrorMessage>
                     </FormControl>
 
+                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                        <FormLabel>Selecciona los ODS que contribuyes en resolver</FormLabel>
+                        <Select {...register('status')} placeholder="Seleccionar" />
+                        <FormHelperText>Máximo 3 ODS</FormHelperText>
+                    </FormControl>
+
+                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                        <FormLabel>Selecciona el respaldo con el que cuentas de una tercera organización</FormLabel>
+                        <Select {...register('status')} placeholder="Seleccionar" />
+                    </FormControl>
+
                     <VStack w={'full'} align="flex-start" spacing="40px">
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
                             <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>¿Cuál es el propósito de tu producto/servicio?</FormLabel>
                                 <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
-
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Selecciona los ODS que contribuyes en resolver</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
-                                <FormHelperText>Máximo 3 ODS</FormHelperText>
-                            </FormControl>
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
                             <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Medición de impacto***********</FormLabel>
+                                <FormLabel>
+                                    ¿Tienes información propia sobre mediciones de resultados de impacto?
+                                </FormLabel>
                                 <Select {...register('status')} placeholder="Seleccionar" />
-                            </FormControl>
-
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Sitio web</FormLabel>
-                                <InputGroup>
-                                    <InputLeftAddon>www.</InputLeftAddon>
-                                    <Input {...register('business_web')} />
-                                </InputGroup>
                             </FormControl>
                         </Stack>
                     </VStack>
@@ -236,11 +245,6 @@ const Index: NextPage = () => {
                         </FormControl>
                     </VStack>
 
-                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '45%' }}>
-                        <FormLabel>Selecciona el respaldo con el que cuentas de una tercera organización</FormLabel>
-                        <Select {...register('status')} placeholder="Seleccionar" />
-                    </FormControl>
-
                     <Divider paddingTop={'60px'} />
 
                     <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
@@ -249,7 +253,7 @@ const Index: NextPage = () => {
 
                     <VStack w={'full'} align="flex-start" spacing="40px">
                         <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '47%' }}>
-                            <FormLabel>¿En qué etapa se encuentra tu producto/servicio?</FormLabel>
+                            <FormLabel>¿En qué etapa se encuentra tu empresa, producto o servicio?</FormLabel>
                             <Select {...register('status')} placeholder="Seleccionar" />
                         </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
@@ -265,19 +269,23 @@ const Index: NextPage = () => {
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Garantías**************</FormLabel>
+                                <FormLabel>
+                                    Su empresa, producto o servicio que quiere financiar, ¿cuenta con garantías?
+                                </FormLabel>
                                 <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
 
                             <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>¿Cuál es la rentabilidad que esperas para tu producto/ servicio?</FormLabel>
+                                <FormLabel>
+                                    ¿Cuál es la rentabilidad que esperas para tu empresa, producto o servicio?
+                                </FormLabel>
                                 <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>
-                                    Por favor selecciona el rango del monto de aporte aproximado que estás buscando{' '}
+                                    Por favor selecciona el rango del monto de aporte aproximado que estás buscando
                                 </FormLabel>
                                 <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
@@ -289,7 +297,7 @@ const Index: NextPage = () => {
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Trayectoria del negocio*************</FormLabel>
+                                <FormLabel>Trayectoria de la empresa/ producto/ servicio</FormLabel>
                                 <Select {...register('status')} placeholder="Seleccionar" />
                             </FormControl>
 
@@ -370,7 +378,7 @@ const Index: NextPage = () => {
                         <FormControl>
                             <FormLabel>
                                 Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
-                                que el inversionista comprenda mejor el proyecto
+                                que el inversionista comprenda mejor a tu empresa, producto o servicio
                             </FormLabel>
                             <FormHelperText>Ejemplo: Aparición en prensa, prospección de mercado etc.</FormHelperText>
                             <SlateEditor
@@ -383,9 +391,42 @@ const Index: NextPage = () => {
                         </FormControl>
                     </VStack>
 
+                    <FormControl id="main_image" isInvalid={!!errors.main_image}>
+                        <FormLabel>
+                            ¿Tienes algún archivo que consideres necesario subir como información complementaria para
+                            que sea vista por el inversionista?
+                        </FormLabel>
+
+                        <Input type="hidden" {...register('main_image')} />
+                        <UploadButton
+                            variant="solid"
+                            bg="gray.700"
+                            color="gray.50"
+                            borderColor="gray.50"
+                            border="1px dashed"
+                            w="full"
+                            h="300px"
+                            colorScheme="basic"
+                            fontWeight="normal"
+                            onChange={async (e) => {
+                                const { validateTypes, getBase64 } = await import('services/images');
+
+                                if (e.target?.files && validateTypes(e.target.files[0])) {
+                                    const base = await getBase64(e.target.files![0]);
+                                    setBaseImg(base);
+                                    onCropperOpen();
+                                }
+                            }}
+                        >
+                            Arrastra o sube tu archivo pdf aquí
+                        </UploadButton>
+                        <FormErrorMessage fontWeight={'semibold'}>{errors.main_image?.message}</FormErrorMessage>
+                    </FormControl>
+
                     <FormControl id="description" isInvalid={!!errors.description}>
                         <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                            Espacio de mejora continua: ¿Cómo crees que tu producto/ servicio podría beneficiarse?
+                            Espacio de mejora continua: ¿Cómo crees que tu empresa, producto o servicio podría
+                            beneficiarse?
                         </FormLabel>
 
                         <Textarea

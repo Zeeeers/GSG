@@ -1,17 +1,5 @@
 // Dependencies
-import {
-    Avatar,
-    Checkbox,
-    Divider,
-    Flex,
-    FormControl,
-    FormLabel,
-    HStack,
-    Stack,
-    Text,
-    useToast,
-    VStack,
-} from '@chakra-ui/react';
+import { Avatar, Flex, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react';
 import { useUser } from 'services/api/lib/user';
 import { useOrganization } from 'services/api/lib/organization';
 import InfoSkeleton from './infoForm.skeleton';
@@ -98,36 +86,6 @@ const InfoForm: React.FC = () => {
                     </VStack>
                 </Stack>
             </Flex>
-
-            <Divider mt="30px" display={{ base: 'block', md: 'none' }} />
-
-            <VStack display={{ base: 'none', md: 'block' }} alignItems={{ base: 'center', md: 'start' }} mt="40px">
-                <Text fontSize={'lg'} fontWeight={'medium'}>
-                    Notificaciones
-                </Text>
-                <FormControl orientation="vertical">
-                    <HStack alignItems={{ base: 'center', md: 'start' }}>
-                        <Checkbox />
-                        <FormLabel fontSize={'sm'} fontWeight="medium" fontFamily="inter">
-                            Deseo rercibir correos con proyectos relacionados con mis intereses
-                        </FormLabel>
-                    </HStack>
-                </FormControl>
-            </VStack>
-
-            <VStack display={{ base: 'block', md: 'none' }} alignItems="center" mt="30px">
-                <FormControl orientation="vertical">
-                    <HStack justifyContent="center" alignItems="center" spacing="18px">
-                        <Checkbox />
-                        <Text fontFamily="inter" fontSize="18px" fontWeight="normal">
-                            Notificaciones
-                        </Text>
-                    </HStack>
-                    <Text fontFamily="inter" fontSize="14px" textAlign="center" mt="10px">
-                        Deseo rercibir correos con proyectos relacionados con mis intereses
-                    </Text>
-                </FormControl>
-            </VStack>
         </>
     ) : (
         <InfoSkeleton />

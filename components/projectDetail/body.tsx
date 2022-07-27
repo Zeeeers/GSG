@@ -45,23 +45,15 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
         <Stack
             alignItems="start"
             mt="5rem"
-            px={{ base: '34px', md: '124px' }}
+            px={{ base: '34px', md: '227px' }}
             spacing="50px"
             py="207px"
             scrollPaddingTop="100px"
         >
-            <Stack pl="30px" pr="30px" spacing="30px">
+            <Stack pl="27px" pr="30px" spacing="30px">
                 <Text scrollMarginTop="100px" ref={impact} fontSize="4xl">
                     El impacto de {project?.business_name}
                 </Text>
-                <VStack align="flex-start" spacing="5px">
-                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                        El propósito del producto/servicio es:
-                    </Text>
-                    <Text as="p" fontFamily="inter" fontSize="24px" fontWeight="medium">
-                        Actúa para reducir el daño social y/o mediambiental
-                    </Text>
-                </VStack>
             </Stack>
 
             <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
@@ -118,7 +110,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </Wrap>
             </Stack>
 
-            <VStack pl="30px" pr="30px" align="flex-start" spacing="40px" w="full">
+            <VStack pl="27px" pr="27px" align="flex-start" spacing="40px" w="full">
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                         Medición de resultados asociados al impacto social y/o mediambiental
@@ -262,7 +254,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </VStack>
             </Stack>
 
-            <Stack pl="30px" spacing="30px" w="full" ref={other} scrollMarginTop="100px">
+            <Stack pl="27px" spacing="27px" w="full" ref={other} scrollMarginTop="100px">
                 <Text ref={other} fontSize="4xl" fontWeight="medium">
                     Otra información relevante
                 </Text>
@@ -299,7 +291,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </VStack>
             </Stack>
 
-            <Stack pl="30px" pr="30px" spacing="30px">
+            <Stack pl="27px" pr="27px" spacing="27px">
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontSize="3xl">
                         Espacios de mejora continua
@@ -312,7 +304,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </VStack>
             </Stack>
 
-            <Stack pl="30px" pr="30px" spacing="30px">
+            <Stack pl="27px" pr="27px" spacing="60px">
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontSize="3xl">
                         Información complementaria
@@ -323,6 +315,16 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         neto.
                     </Text>
                     <Img src={project?.main_image?.url} w="615px" h="219px" objectFit="cover" objectPosition="center" />
+                </VStack>
+
+                <VStack align="flex-start" spacing="5px" w="full">
+                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        Northstar SpA ha presentado un documento complementario para que puedas verlo
+                    </Text>
+                    <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
+                        <GrDocumentPdf size={30} />
+                        <Text>Medición de impacto Northstar SpA</Text>
+                    </HStack>
                 </VStack>
             </Stack>
         </Stack>

@@ -22,7 +22,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
-            <ModalContent rounded="2xl" pt={'30px'} px="10px">
+            <ModalContent rounded="2xl" p="50px">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="20px">
@@ -45,6 +45,10 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
                                 +569 0000 0000
                             </Text>
                         </VStack>
+
+                        <Text fontSize="20px" textDecoration="underline" fontWeight="semibold">
+                            Sitio web
+                        </Text>
                     </VStack>
                 </ModalBody>
             </ModalContent>

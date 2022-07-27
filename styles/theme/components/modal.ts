@@ -30,8 +30,6 @@ function baseStyleDialog({ scrollBehavior }: Dict) {
 }
 
 const baseStyleHeader = {
-    px: 6,
-    py: 4,
     fontSize: 'xl',
     fontWeight: 'semibold',
 };
@@ -44,8 +42,8 @@ const baseStyleCloseButton = {
 
 function baseStyleBody({ scrollBehavior }: Dict) {
     return {
-        px: 6,
-        py: 2,
+        px: 0,
+        py: 0,
         flex: 1,
         overflow: scrollBehavior === 'inside' ? 'auto' : undefined,
     };

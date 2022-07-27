@@ -164,7 +164,12 @@ const RegisterStepTwoForm: React.FC = () => {
                     <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
                         <FormLabel>Número o identificador nacional</FormLabel>
 
-                        <Input size="md" {...register('organizationName')} />
+                        <Input
+                            size="md"
+                            {...register('organizationName')}
+                            placeholder="00000000-0"
+                            _placeholder={{ color: 'gray.400' }}
+                        />
 
                         <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
                     </FormControl>

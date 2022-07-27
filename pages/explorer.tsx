@@ -27,6 +27,7 @@ import Navbar from 'layouts/main/navbar';
 import { useGsg } from 'services/api/lib/gsg';
 
 import { projects } from 'services/api/data';
+import { NextSeo } from 'next-seo';
 
 const Explorer: NextPage = ({}) => {
     // filter orderBy
@@ -36,6 +37,7 @@ const Explorer: NextPage = ({}) => {
 
     return (
         <>
+            <NextSeo title={'Explorador - GSG'} />
             <Navbar />
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 <Stack
@@ -104,20 +106,6 @@ const Explorer: NextPage = ({}) => {
                         </HStack>
                     </Stack>
                 </Stack>
-
-                {/*<VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
-                    <NavbarFilter />
-                    Validation of existing projects (temporary)
-                    {gsg?.data?.projects ? (
-                        <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                            {gsg?.data?.projects.map((project) => (
-                                <ExplorerCard key={project.id} project={project} />
-                            ))}
-                        </SimpleGrid>
-                    ) : (
-                        <Text>No hay proyectos</Text>
-                    )}
-                </VStack>*/}
 
                 <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />

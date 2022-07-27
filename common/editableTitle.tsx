@@ -51,9 +51,7 @@ const EditableTitle = forwardRef<EditableProps, any>(({ fontSize, ...props }, re
                                 </Tooltip>
                             </>
                         ) : (
-                            <Tooltip hasArrow placement="bottom" label="Editar" aria-label="Editar">
-                                <IconButton aria-label="Editar" rounded="full" icon={<FaPen />} onClick={onEdit} />
-                            </Tooltip>
+                            <IconButton aria-label="Editar" rounded="full" icon={<FaPen />} onClick={onEdit} />
                         )}
                     </HStack>
                 )}
