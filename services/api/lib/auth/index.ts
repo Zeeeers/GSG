@@ -1,1 +1,9 @@
-export { default as auth, login, activateAccount, checkEmail, createNewPassword, recoverPassword } from './auth.calls';
+export {
+    default as auth,
+    login,
+    adminLogin,
+    activateAccount,
+    checkEmail,
+    createNewPassword,
+    recoverPassword,
+} from './auth.calls';

@@ -74,7 +74,9 @@ const Navbar: React.FC = () => {
                     {user === undefined ? (
                         isTablet ? (
                             <HStack spacing="15px">
-                                <Button onClick={() => onOpenOrgaLogin()}>¿Eres empresa? levantar capital</Button>
+                                <Button variant="outline" onClick={() => onOpenOrgaLogin()}>
+                                    ¿Eres empresa? levantar capital
+                                </Button>
                                 <Button
                                     onClick={onOpen}
                                     variant="solid"

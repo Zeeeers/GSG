@@ -6,19 +6,20 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { NextSeo } from 'next-seo';
 import { useRegisterStore } from 'stores/register';
-import { Flex, Heading, HStack, Img, Link, Text, useMediaQuery, VStack } from '@chakra-ui/react';
+import { Button, Flex, Heading, HStack, Img, Link, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import LogoBar from 'layouts/guest/logoBar';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
 import RegisterStepOneForm from 'components/register/registerStepOneForm';
 import RegisterStepTwoForm from 'components/register/registerStepTwoForm';
 import CreatePasswordForm from 'components/createPassword/createPasswordForm';
+import RecoveryForm from 'components/recovery/createPasswordForm';
 
 // Dynamic
 const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 //const RegisterSuccess = dynamic(() => import('components/register/registerSuccess'));
 
 // Page
-const CreatePassword: NextPage = () => {
+const RecoveryPassword: NextPage = () => {
     return (
         <Flex
             flexDirection="column"
@@ -57,12 +58,19 @@ const CreatePassword: NextPage = () => {
                             </Text>
                         </HStack>
                     </Link>
-                    <VStack maxW="504px" alignItems="flex-start">
-                        <Text fontSize="24px" textAlign="center">
-                            Hola Martín, te damos la bienvenida a GSG, para continuar crea tu contraseña
-                        </Text>
-
-                        <CreatePasswordForm />
+                    <VStack maxW="504px" alignItems="center">
+                        <VStack>
+                            <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" textAlign="center">
+                                Gracias
+                            </Text>
+                            <Text fontSize="16px" fontFamily="inter" textAlign="center">
+                                Te enviaremos un correo de reestablecimiento si tu cuenta está registrada dentro de
+                                nuestra plataforma
+                            </Text>
+                        </VStack>
+                        <Link href="/login" pt="40px">
+                            <Button>Volver atrás</Button>
+                        </Link>
                     </VStack>
                 </Flex>
             </VStack>
@@ -71,4 +79,4 @@ const CreatePassword: NextPage = () => {
 };
 
 // Export
-export default CreatePassword;
+export default RecoveryPassword;

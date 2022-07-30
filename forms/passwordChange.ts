@@ -4,17 +4,15 @@ import { ZodShape } from 'services/validation';
 
 // Types
 export interface IChangePassData {
-    password: string;
+    password?: string;
     newPassword: string;
     confirmPassword: string;
 }
 
 // Schemas
 const changePassShape: ZodShape<IChangePassData> = {
-    password: z
-        .string()
-        .nonempty('Campo obligatorio')
-        .min(8, 'La contraseña debe tener un largo mínimo de 8 caracteres.'),
+    password: z.string().optional(),
+
     newPassword: z
         .string()
         .nonempty('Campo obligatorio')

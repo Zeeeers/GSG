@@ -1,6 +1,6 @@
 // Dependencies
 import create from 'zustand';
-import { IRegisterForm } from 'forms/register';
+import { IRegisterOneForm } from 'forms/register';
 
 // Types
 type IRegisterStatus = 'FORM' | 'SUCCESS';
@@ -8,9 +8,9 @@ type IStep = 'ONE' | 'TWO';
 
 type IRegisterStore = {
     status: IRegisterStatus;
-    formValues?: IRegisterForm;
+    formValues?: IRegisterOneForm;
     updateStatus: (data: IRegisterStatus) => void;
-    updateFormValues: (data: IRegisterForm) => void;
+    updateFormValues: (data: IRegisterOneForm) => void;
     clearFormValues: () => void;
     step: IStep;
     setStep: (data: IStep) => void;

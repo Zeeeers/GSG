@@ -18,6 +18,21 @@ export interface LoginResponse {
 
 export type LoginCall = (payload: LoginRequest) => Promise<ApiResponse<LoginResponse>>;
 
+// Admin Login Types
+export interface AdminLoginRequest {
+    email: string;
+    password: string;
+}
+
+export interface AdminLoginResponse {
+    success: boolean;
+    message: string;
+    token?: string;
+    exp?: number;
+}
+
+export type AdminLoginCall = (payload: AdminLoginRequest) => Promise<ApiResponse<AdminLoginResponse>>;
+
 // Check Email
 export interface CheckEmailRequest {
     user_email: string;
@@ -45,7 +60,6 @@ export type ActivateAccountCall = (payload: ActivateAccountRequest) => Promise<A
 // Recover Password
 export interface RecoverPasswordRequest {
     email: string;
-    kind: SkalaPlatform;
 }
 
 export interface RecoverPasswordResponse {

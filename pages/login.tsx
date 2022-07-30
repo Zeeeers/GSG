@@ -1,28 +1,18 @@
 // Dependencies
-
-//@ts-nocheck
 import { NextPage } from 'next';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { NextSeo } from 'next-seo';
-import { Button, Flex, Heading, Img, Stack, Text, useMediaQuery, VStack } from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
 import LogoBar from 'layouts/guest/logoBar';
 import LoginForm from 'components/login/loginForm';
-import { route } from 'next/dist/next-server/server/router';
-
-// Dynamic
-const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 
 // Page
 const LoginPage: NextPage = () => {
-    // States
-    const [isDesktop] = useMediaQuery('(min-width: 62em)');
-
     return (
         <>
             <NextSeo title={'Iniciar sesión - GSG'} />
-            <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/explorer" />
+            <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dasboard" />
 
             <LogoBar>
                 <Stack w="546px" alignItems="flex-start">
@@ -37,7 +27,7 @@ const LoginPage: NextPage = () => {
                     <LoginForm />
 
                     <VStack w="full">
-                        <Link href="/recovery" passHref>
+                        <Link href="/recovery/recoveryPassword" passHref>
                             <Button
                                 variant="link"
                                 transitionProperty="all"

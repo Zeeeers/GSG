@@ -1,8 +1,5 @@
 // Dependencies
-//@ts-nocheck
 import { NextPage } from 'next';
-import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';
-import { BsPlus } from 'react-icons/bs';
 import {
     Button,
     Container,
@@ -15,9 +12,6 @@ import {
     InputGroup,
     InputLeftAddon,
     Select,
-    Tag,
-    TagLabel,
-    TagLeftIcon,
     Text,
     Textarea,
     useDisclosure,
@@ -27,7 +21,6 @@ import {
     Divider,
 } from '@chakra-ui/react';
 import SlateEditor from 'common/slate/SlateEditor';
-import SelectOds from 'common/selectOds';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IProjectForm, projectSchema } from 'forms/project';
 import { useForm } from 'react-hook-form';
@@ -37,6 +30,7 @@ import { useState } from 'react';
 import AddMembersModal from 'components/project/addMembersModal';
 import { Descendant } from 'slate';
 import { NextSeo } from 'next-seo';
+import { Select as CharkaSelect } from 'chakra-react-select';
 
 /*
     TODO: change type values in data products and validation
@@ -60,17 +54,6 @@ const Index: NextPage = () => {
         formState: { errors },
         watch,
     } = useForm<IProjectForm>({
-        defaultValues: {
-            title: project.title ?? '',
-            description: project.description ?? '',
-            main_image: project.main_image ?? '',
-            status: project.status,
-            finance_goal: project.finance_goal,
-            end_date: project.end_date,
-            business_name: project.business_name,
-            business_web: project.business_web,
-            qualities: project.qualities,
-        },
         resolver: zodResolver(projectSchema),
     });
 
@@ -121,6 +104,7 @@ const Index: NextPage = () => {
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Título del producto/servicio</FormLabel>
                         <Input {...register('title')} />
+                        <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="description" isInvalid={!!errors.description}>
@@ -142,12 +126,13 @@ const Index: NextPage = () => {
                         </FormErrorMessage>
                     </FormControl>
 
-                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                    <FormControl id="business_web" isInvalid={!!errors.business_web} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Sitio web</FormLabel>
                         <InputGroup>
                             <InputLeftAddon>www.</InputLeftAddon>
                             <Input {...register('business_web')} />
                         </InputGroup>
+                        <FormErrorMessage>{errors.business_web?.message}</FormErrorMessage>
                     </FormControl>
 
                     {/*TODO: useCropper for upload image product*/}
@@ -183,33 +168,21 @@ const Index: NextPage = () => {
                         <FormErrorMessage fontWeight={'semibold'}>{errors.main_image?.message}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                    <FormControl id="qualities" isInvalid={!!errors.qualities} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Selecciona los ODS que contribuyes en resolver</FormLabel>
-                        <Select {...register('status')} placeholder="Seleccionar" />
+                        <CharkaSelect {...register('qualities')} placeholder="Seleccionar" useBasicStyles />
                         <FormHelperText>Máximo 3 ODS</FormHelperText>
                     </FormControl>
 
-                    <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                    <FormControl id="third_parties" isInvalid={!!errors.third_parties} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Selecciona el respaldo con el que cuentas de una tercera organización</FormLabel>
-                        <Select {...register('status')} placeholder="Seleccionar" />
+                        <Select {...register('third_parties')} placeholder="Seleccionar" />
                     </FormControl>
 
-                    <VStack w={'full'} align="flex-start" spacing="40px">
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>¿Cuál es el propósito de tu producto/servicio?</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
-                            </FormControl>
-                        </Stack>
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
-                                    ¿Tienes información propia sobre mediciones de resultados de impacto?
-                                </FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
-                            </FormControl>
-                        </Stack>
-                    </VStack>
+                    <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '50%' }}>
+                        <FormLabel>¿Tienes información propia sobre mediciones de resultados de impacto?</FormLabel>
+                        <Select {...register('more_info')} placeholder="Seleccionar" />
+                    </FormControl>
 
                     <VStack w="100%" align="flex-start" spacing="10px">
                         <FormControl id="main_image" isInvalid={!!errors.main_image}>
@@ -252,58 +225,86 @@ const Index: NextPage = () => {
                     </Text>
 
                     <VStack w={'full'} align="flex-start" spacing="40px">
-                        <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '47%' }}>
+                        <FormControl id="stage" isInvalid={!!errors.stage} w={{ base: '100%', md: '47%' }}>
                             <FormLabel>¿En qué etapa se encuentra tu empresa, producto o servicio?</FormLabel>
-                            <Select {...register('status')} placeholder="Seleccionar" />
+                            <Select {...register('stage')} placeholder="Seleccionar" />
                         </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="investment_objective"
+                                isInvalid={!!errors.investment_objective}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>¿Cuál es el objetivo que tienes para buscar inversión?</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Select {...register('investment_objective')} placeholder="Seleccionar" />
                             </FormControl>
 
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="capital_stage"
+                                isInvalid={!!errors.capital_stage}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>¿Cuál es la etapa de levantamiento en la que te encuentras?</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Select {...register('capital_stage')} placeholder="Seleccionar" />
                             </FormControl>
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl id="guarantee" isInvalid={!!errors.guarantee} w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>
                                     Su empresa, producto o servicio que quiere financiar, ¿cuenta con garantías?
                                 </FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Select {...register('guarantee')} placeholder="Seleccionar" />
                             </FormControl>
 
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="expected_rentability"
+                                isInvalid={!!errors.expected_rentability}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>
                                     ¿Cuál es la rentabilidad que esperas para tu empresa, producto o servicio?
                                 </FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Select {...register('expected_rentability')} placeholder="Seleccionar" />
                             </FormControl>
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="finance_goal"
+                                isInvalid={!!errors.finance_goal}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>
                                     Por favor selecciona el rango del monto de aporte aproximado que estás buscando
                                 </FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Select {...register('finance_goal')} placeholder="Seleccionar" />
                             </FormControl>
 
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="time_lapse"
+                                isInvalid={!!errors.time_lapse}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>Selecciona los plazos de inversión que buscas</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Select {...register('time_lapse')} placeholder="Seleccionar" />
                             </FormControl>
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="business_model"
+                                isInvalid={!!errors.business_model}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>Trayectoria de la empresa/ producto/ servicio</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Input {...register('business_model')} placeholder="Seleccionar" />
                             </FormControl>
 
-                            <FormControl id="status" isInvalid={!!errors.status} w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="investment_types"
+                                isInvalid={!!errors.investment_types}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>¿Qué tipo de inversionista buscas?</FormLabel>
-                                <Select {...register('status')} placeholder="Seleccionar" />
+                                <Input {...register('investment_types')} placeholder="Seleccionar" />
                             </FormControl>
                         </Stack>
                     </VStack>

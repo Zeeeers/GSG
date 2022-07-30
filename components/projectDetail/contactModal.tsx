@@ -27,7 +27,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="20px">
                         <Heading fontSize="30px" lineHeight="32px">
-                            CONTACTO DE {project?.title.toUpperCase()}
+                            CONTACTO DE {project?.title}
                         </Heading>
                         <VStack alignItems="flex-start" spacing={0}>
                             <Text fontSize="20px" fontWeight="semibold">

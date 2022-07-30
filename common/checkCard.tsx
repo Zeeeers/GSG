@@ -12,7 +12,7 @@ const CheckCard = forwardRef<ICheckCardProps, 'input'>((props, ref) => {
     const { getInputProps, getCheckboxProps } = useCheckbox(props);
 
     return (
-        <Box as="label">
+        <Box as="label" w={props.width}>
             <input {...getInputProps()} />
             <Box ref={ref} {...props} {...getCheckboxProps()} />
         </Box>

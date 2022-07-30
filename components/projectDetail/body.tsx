@@ -6,26 +6,21 @@ import {
     GridItem,
     HStack,
     Icon,
-    IconButton,
     Img,
     Link,
     Stack,
     Text,
-    TextProps,
     VStack,
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
-import { BsPlus } from 'react-icons/bs';
-import { CgShapeSquare, CgShapeCircle, CgShapeTriangle, CgSortAz } from 'react-icons/cg';
 import { GrDocumentPdf } from 'react-icons/gr';
 import { Gsg } from 'services/api/types/Gsg';
 import { HiHeart } from 'react-icons/hi';
-import { Ref } from 'react';
 import { FaLinkedin } from 'react-icons/fa';
 
 const Body = forwardRef<any, any>(({ project }, ref) => {
-    const { description_general, impact, description_finance, other } = ref.current;
+    const { impact, description_finance, other } = ref?.current;
 
     const members = [
         {
@@ -62,51 +57,23 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </Text>
 
                 <Wrap spacingX="60px" spacingY="30px">
-                    <WrapItem>
-                        <HStack spacing="20px" pt="15px">
-                            <Stack p="15px" bg="green.600" rounded="15px">
-                                <Icon w={10} h={10} color="gray.50" as={HiHeart} />
-                            </Stack>
-                            <Text
-                                fontWeight="medium"
-                                fontSize="20px"
-                                color="#279B48
+                    {Object.values(project.qualities || {}).map((item) => (
+                        <WrapItem>
+                            <HStack spacing="20px" pt="15px">
+                                <Stack p="15px" bg="green.600" rounded="15px">
+                                    <Icon w={10} h={10} color="gray.50" as={HiHeart} />
+                                </Stack>
+                                <Text
+                                    fontWeight="medium"
+                                    fontSize="20px"
+                                    color="#279B48
 "
-                            >
-                                Salud y bienestar
-                            </Text>
-                        </HStack>
-                    </WrapItem>
-                    <WrapItem>
-                        <HStack spacing="20px" pt="15px">
-                            <Stack p="15px" bg="green.600" rounded="15px">
-                                <Icon w={10} h={10} color="gray.50" as={HiHeart} />
-                            </Stack>
-                            <Text
-                                fontWeight="medium"
-                                fontSize="20px"
-                                color="#279B48
-"
-                            >
-                                Salud y bienestar
-                            </Text>
-                        </HStack>
-                    </WrapItem>
-                    <WrapItem>
-                        <HStack spacing="20px" pt="15px">
-                            <Stack p="15px" bg="green.600" rounded="15px">
-                                <Icon w={10} h={10} color="gray.50" as={HiHeart} />
-                            </Stack>
-                            <Text
-                                fontWeight="medium"
-                                fontSize="20px"
-                                color="#279B48
-"
-                            >
-                                Salud y bienestar
-                            </Text>
-                        </HStack>
-                    </WrapItem>
+                                >
+                                    {item.name}
+                                </Text>
+                            </HStack>
+                        </WrapItem>
+                    ))}
                 </Wrap>
             </Stack>
 
@@ -116,27 +83,28 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Medición de resultados asociados al impacto social y/o mediambiental
                     </Text>
                     <Text as="p" fontSize="24px" fontWeight="medium">
-                        Estoy en proceso de medición de resultados sociales y/o medioambientales (aún no tengo
-                        resultados, pero están diseñados los indicadores que queremos medir)
+                        {project.more_info}
                     </Text>
                 </VStack>
 
-                <VStack align="flex-start" spacing="5px" w="full">
-                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                        Northstar SpA ha presentado un documento en relación a cómo mide su impacto
-                    </Text>
-                    <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
-                        <GrDocumentPdf size={30} />
-                        <Text>Medición de impacto Northstar SpA</Text>
-                    </HStack>
-                </VStack>
+                {project.social_impact !== 'https://dev-api.skalachile.com/cuadrado.png' && (
+                    <VStack align="flex-start" spacing="5px" w="full">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            Northstar SpA ha presentado un documento en relación a cómo mide su impacto
+                        </Text>
+                        <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
+                            <GrDocumentPdf size={30} />
+                            <Text>Medición de impacto Northstar SpA</Text>
+                        </HStack>
+                    </VStack>
+                )}
 
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                         Como respaldo de una tercera organización, Northstar SpA cuenta con:
                     </Text>
                     <Text as="p" fontSize="24px" fontWeight="medium">
-                        Premio o reconocimiento de empresa u organización
+                        {project.third_parties}
                     </Text>
                 </VStack>
             </VStack>
@@ -160,7 +128,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Como respaldo de una tercera organización, Northstar SpA cuenta con:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Premio o reconocimiento de empresa u organización
+                            {project.third_parties}
                         </Text>
                     </VStack>
                 </VStack>
@@ -171,7 +139,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El objetivo que tiene con la inversión es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Capital para comenzar
+                            {project.investment_objective}
                         </Text>
                     </VStack>
                 </VStack>
@@ -182,7 +150,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El levantamiento actual de capital en la cual se encuentra es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Pre-seed
+                            {project.capital_stage}
                         </Text>
                     </VStack>
                 </VStack>
@@ -193,7 +161,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Cuenta con garantías:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Sí, por el 100% de la inversión buscada
+                            {project.guarantee}
                         </Text>
                     </VStack>
                 </VStack>
@@ -204,7 +172,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             La rentabilidad que Northstar SpA espera obtener es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Entre 11 y 20%
+                            {project.expected_rentability}
                         </Text>
                     </VStack>
                 </VStack>
@@ -215,7 +183,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El rango de monto del aporte que se busca es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Menos de 20 millones (CLP)
+                            {project.finance_goal}
                         </Text>
                     </VStack>
                 </VStack>
@@ -226,7 +194,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             En relación a los plazos de inversión, Northstar SpA buscaría un plazo de:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Hasta 48 meses
+                            {project.time_lapse}
                         </Text>
                     </VStack>
                 </VStack>
@@ -237,7 +205,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             La trayectoria del negocio es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Activo circulante vs Patrimonio último año fiscal
+                            {project.business_model}
                         </Text>
                     </VStack>
                 </VStack>
@@ -248,7 +216,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El tipo de inversionista que busca es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            Inversores atomizados (dinero de diversas fuentes)
+                            {project.investment_types}
                         </Text>
                     </VStack>
                 </VStack>
@@ -268,25 +236,27 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
                         gap="50px"
                     >
-                        {members.map((member, i) => (
-                            <GridItem key={i}>
-                                <Stack spacing="10px" p={0}>
-                                    <Avatar name={member.name} w="96px" h="96px" />
-                                    <VStack align="flex-start" spacing="5px">
-                                        <Text color="gray.50" fontSize="xl" fontWeight="medium">
-                                            {member.name}
-                                        </Text>
-                                        <Text color="gray.500" fontSize="15px">
-                                            {member.position}
-                                        </Text>
-                                    </VStack>
+                        {project?.members
+                            ? Object.values(project?.members | {}).map((member, i) => (
+                                  <GridItem key={i}>
+                                      <Stack spacing="10px" p={0}>
+                                          <Avatar src={member.main_image} w="96px" h="96px" />
+                                          <VStack align="flex-start" spacing="5px">
+                                              <Text color="gray.50" fontSize="xl" fontWeight="medium">
+                                                  {member.name}
+                                              </Text>
+                                              <Text color="gray.500" fontSize="15px">
+                                                  {member.position}
+                                              </Text>
+                                          </VStack>
 
-                                    <Link href="https://www.linkedin.com/in/nicolasrs/" target="_blank" w="fit-content">
-                                        <FaLinkedin size={30} />
-                                    </Link>
-                                </Stack>
-                            </GridItem>
-                        ))}
+                                          <Link href={member.linkedin} target="_blank" w="fit-content">
+                                              <FaLinkedin size={30} />
+                                          </Link>
+                                      </Stack>
+                                  </GridItem>
+                              ))
+                            : 'No hay equipos registrados'}
                     </Grid>
                 </VStack>
             </Stack>
@@ -297,9 +267,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Espacios de mejora continua
                     </Text>
                     <Text as="p" fontSize="16px">
-                        Históricamente, la clase de activos de capital de riesgo ha sido dominio exclusivo de las
-                        empresas de capital de riesgo, los inversores profesionales y las personas de alto patrimonio
-                        neto.
+                        {project.better_project}
                     </Text>
                 </VStack>
             </Stack>
@@ -314,18 +282,20 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         empresas de capital de riesgo, los inversores profesionales y las personas de alto patrimonio
                         neto.
                     </Text>
-                    <Img src={project?.main_image?.url} w="615px" h="219px" objectFit="cover" objectPosition="center" />
+                    <Img src={project?.main_image} w="615px" h="219px" objectFit="cover" objectPosition="center" />
                 </VStack>
 
-                <VStack align="flex-start" spacing="5px" w="full">
-                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                        Northstar SpA ha presentado un documento complementario para que puedas verlo
-                    </Text>
-                    <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
-                        <GrDocumentPdf size={30} />
-                        <Text>Medición de impacto Northstar SpA</Text>
-                    </HStack>
-                </VStack>
+                {project.additional_document !== 'https://dev-api.skalachile.com/cuadrado.png' && (
+                    <VStack align="flex-start" spacing="5px" w="full">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            Northstar SpA ha presentado un documento complementario para que puedas verlo
+                        </Text>
+                        <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
+                            <GrDocumentPdf size={30} />
+                            <Text>Medición de impacto Northstar SpA</Text>
+                        </HStack>
+                    </VStack>
+                )}
             </Stack>
         </Stack>
     );

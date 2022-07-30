@@ -210,7 +210,7 @@ const sizes = {
 };
 
 const defaultProps = {
-    variant: 'outline',
+    variant: 'unstyled',
     sizes: 'md',
     colorScheme: 'teal',
     fontFamily: 'inter',

@@ -22,7 +22,7 @@ interface Props {
     interest?: Interest;
 }
 
-const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
+const StageModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
     const { getCheckboxProps } = useCheckboxGroup({
         defaultValue: [],
         //onChange: (value) => setFilters([...filters, value]),
@@ -36,7 +36,7 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                     <VStack alignItems="flex-start" spacing="30px" w="full">
                         <VStack alignItems="flex-start" spacing="5px">
                             <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                Respaldo de una tercera organización
+                                Respaldo de una etapa de producto o servicios
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
                                 A continuación se presentan las alternativas que podrás elegir para recibir correos con
@@ -45,11 +45,11 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                         </VStack>
 
                         <VStack w="full">
-                            {interest?.third_party.map((item, index) => (
+                            {interest?.stage.map((item, index) => (
                                 <CheckCard
                                     w="full"
                                     width="full"
-                                    key={`${index}-explorerFilter`}
+                                    key={`${index}-stageFilter`}
                                     as={WrapItem}
                                     v
                                     value={item}
@@ -81,4 +81,4 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
     );
 };
 
-export default ThirdModal;
+export default StageModal;

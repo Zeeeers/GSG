@@ -15,7 +15,7 @@ export interface IRegisterSkalaForm {
     organizationAddress?: string;
     idNumber: string;
     legalRepName?: string;
-    legalRepPhone: string;
+
     legalRepEmail: string;
     legalRepAddress?: string;
 }
@@ -37,12 +37,7 @@ const registerSkalaShape: ZodShape<IRegisterSkalaForm> = {
         .max(10, 'Largo máximo 10 caracteres')
         .regex(new RegExp('^[0-9]+-[0-9kK]{1}$'), { message: 'Ingrese un rut valido' }),
     legalRepName: z.string().optional(),
-    legalRepPhone: z
-        .string()
-        .min(9, 'Largo mínimo 9 caracteres')
-        .max(9, 'Largo máximo 9 caracteres')
-        .regex(new RegExp('^[0-9]+$'))
-        .or(z.string().max(0)),
+
     legalRepEmail: z.string().email('Correo electrónico inválido').or(z.string().max(0)),
     legalRepAddress: z.string().optional(),
 };

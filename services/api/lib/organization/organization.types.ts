@@ -59,6 +59,15 @@ export interface GetOrganizationResponse {
 
 export type GetOrganizationCall = (token: string) => Promise<ApiResponse<GetOrganizationResponse>>;
 
+// Get Project Organization Types
+export interface GetOrganizationProjectResponse {
+    status: boolean;
+    message: string;
+    organization: string;
+}
+
+export type GetOrganizationProjectCall = (token: string) => Promise<ApiResponse<GetOrganizationProjectResponse>>;
+
 // Update Organization Types
 export interface UpdateOrganizationRequest {
     data: OrganizationForm;

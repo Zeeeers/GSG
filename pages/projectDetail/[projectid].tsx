@@ -6,21 +6,24 @@ import { NextPage } from 'next';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useRouter } from 'next/router';
 import { projects } from 'services/api/data';
+import { useOrganizationProject } from 'services/api/lib/organization/organization.calls';
 
 const PublicChallenge: NextPage = () => {
     const router = useRouter();
-    /*const { data: project } = useGsgProject(
+    const { data: project } = useGsgProject(
         router.query.projectid ? Number.parseInt(router.query?.projectid as string) : undefined,
-    );*/
+    );
 
-    const project = projects.find((project) => project.id === Number.parseInt(router.query?.projectid as string));
+    const { data: user } = useOrganizationProject(
+        router.query.projectid ? Number.parseInt(router.query?.projectid as string) : undefined,
+    );
 
     return (
         <>
             <Navbar />
             <Flex flexDir="column" paddingTop={{ base: '60px', md: 20 }}>
                 <Img
-                    src={project?.main_image?.url}
+                    src={project?.data?.gsg_project?.main_image}
                     h="345px"
                     w="full"
                     objectFit="cover"
@@ -30,7 +33,7 @@ const PublicChallenge: NextPage = () => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project} />
+                <HeaderHero project={project?.data?.gsg_project} />
             </Flex>
         </>
     );

@@ -54,8 +54,16 @@ const Explorer: NextPage = ({}) => {
                             <Menu>
                                 {({ isOpen }) => (
                                     <>
-                                        <MenuButton as={Button} w={{ base: 'full', lg: '194px' }}>
+                                        <MenuButton
+                                            border="1px"
+                                            borderColor="gray.500"
+                                            h="40px"
+                                            as={Button}
+                                            w={{ base: 'full', lg: '194px' }}
+                                        >
                                             <Flex
+                                                py="8px"
+                                                px="16px"
                                                 justifyContent="space-between"
                                                 w="full"
                                                 alignItems="center"
@@ -109,10 +117,10 @@ const Explorer: NextPage = ({}) => {
 
                 <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
-                    {projects ? (
+                    {gsg?.data?.projects ? (
                         <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                            {projects.map((project) => (
-                                <ExplorerCard key={project.id} project={project} />
+                            {gsg?.data?.projects.map((project) => (
+                                <ExplorerCard key={project.id} project={project[0]} />
                             ))}
                         </SimpleGrid>
                     ) : (

@@ -1,9 +1,15 @@
 // Dependencies
-import { api, headers } from '../../config';
-import useSWR, { responseInterface } from 'swr';
+import { adminHeaders, api, headers } from '../../config';
+import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './user.endpoints';
-import { UserResponse, UpdateUserCall } from './user.types';
+import { UserResponse, UpdateUserCall, CreateInvestorCall, InvestorResponse } from './user.types';
 import { User } from 'services/api/types/User';
+
+// POST
+export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
+    const response = await api.post<InvestorResponse>(ENDPOINT.INVESTOR, { user: data }, adminHeaders(token));
+    return response;
+};
 
 // READ
 const userFetcher = async (endpoint: string) => {
@@ -15,20 +21,20 @@ const userFetcher = async (endpoint: string) => {
     return data?.user;
 };
 
-export const useUser = (): responseInterface<User | undefined, unknown> => {
+export const useUser = (): SWRResponse<User | undefined, unknown> => {
     return useSWR(ENDPOINT.BASE, userFetcher);
 };
 
 // UPDATE
 export const update: UpdateUserCall = async ({ token, data }) => {
     const response = await api.patch<UserResponse>(ENDPOINT.BASE, { user: data }, headers(token));
-
     return response;
 };
 
 // Global
 const userCalls = {
     useUser,
+    createInvestor,
     update,
 };
 

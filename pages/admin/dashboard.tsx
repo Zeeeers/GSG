@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {
     HStack,
     Tab,
@@ -17,17 +16,47 @@ import {
     Badge,
     Select,
     Button,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
 } from '@chakra-ui/react';
-import AddInvestorForm from 'components/admin/AddInvestorForm';
+import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
+import AddInvestorForm from 'components/admin/createInvestorForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import router from 'next/router';
 import React from 'react';
 
 const Panel: NextPage = () => {
+    const handleLogOut = async () => {
+        const auth = (await import('@clyc/next-route-manager/libs/AuthManager')).default;
+        auth.removeToken(process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!, {
+            domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
+            secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
+        });
+        router.push('/admin/login');
+    };
+
     return (
         <>
-            <NextSeo title={'Dashboard - Administrador CompanyPitch'} />
-            <HStack w="full" h="100vh">
+            <NextSeo title={'Dashboard - Administrador GSG'} />
+            <PrivatePage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/login" />
+            <HStack position="absolute" right={60} top={'20px'} w="fit-content">
+                <Menu direction="rtl">
+                    {({ isOpen }) => (
+                        <>
+                            <MenuButton isActive={isOpen} as={Button}>
+                                Admin
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                            </MenuList>
+                        </>
+                    )}
+                </Menu>
+            </HStack>
+            <VStack w="full" h="100vh">
                 <Tabs h="full" w="full" bg="gray.900" orientation="vertical">
                     <TabList bg="gray.800" border="none" w="339px">
                         <VStack align="start" pt="87px" pb="30px" px="30px">
@@ -82,7 +111,7 @@ const Panel: NextPage = () => {
 
                     <TabPanels pt="87px" pl="100px" overflowY="auto">
                         <TabPanel w="537px">
-                            <VStack align="start" spacing="15px" marginBottom="40px">
+                            <VStack position="relative" align="start" spacing="15px" marginBottom="40px">
                                 <Text fontWeight="bold" fontSize="2xl">
                                     AGREGAR UN NUEVO INVERSIONISTA
                                 </Text>
@@ -201,7 +230,7 @@ const Panel: NextPage = () => {
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
-            </HStack>
+            </VStack>
         </>
     );
 };

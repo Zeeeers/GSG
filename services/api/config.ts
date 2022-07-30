@@ -23,4 +23,11 @@ export const pymeHeaders = (token?: string) => ({
     },
 });
 
+export const adminHeaders = (token?: string) => ({
+    headers: {
+        Authorization: token,
+        'x-skala-platform': 'admin',
+    },
+});
+
 export const api = apisauce.create(config);

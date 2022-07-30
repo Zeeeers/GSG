@@ -1,6 +1,4 @@
 // Dependencies
-//@ts-nocheck
-import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
     FormControl,
@@ -11,90 +9,38 @@ import {
     Heading,
     Checkbox,
     Button,
-    FormHelperText,
     useDisclosure,
-    useToast,
     InputGroup,
     InputLeftAddon,
 } from '@chakra-ui/react';
-import { IRegisterForm, registerSchema } from 'forms/register';
+import { IRegisterOneForm, registerOneShema } from 'forms/register';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRegisterStore } from 'stores/register';
 import InputPassword from 'common/inputPassword';
-import UploadButton from 'common/uploadButton';
-import Link from 'next/link';
 
 // Dynamic
-const CropperModal = dynamic(() => import('common/cropperModal'));
 const TermsModal = dynamic(() => import('common/termsModal'));
-const ErrorNotification = dynamic(() => import('common/notifications/error'));
 
 // Component
 const RegisterStepOneForm: React.FC = () => {
     // States
     const { isOpen: isTermsOpen, onOpen: onTermsOpen, onClose: onTermsClose } = useDisclosure();
-    const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
-    const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-    const [baseImg, setBaseImg] = useState<string>();
-    const setRegisterData = useRegisterStore((state) => state.updateFormValues);
-    const setRegisterStatus = useRegisterStore((state) => state.updateStatus);
-
+    const setRegisterValues = useRegisterStore((state) => state.updateFormValues);
     const setStep = useRegisterStore((state) => state.setStep);
+
     const {
         register,
         formState: { errors },
         handleSubmit,
-        watch,
-        setValue,
-    } = useForm<IRegisterForm>({
-        resolver: zodResolver(registerSchema),
+    } = useForm<IRegisterOneForm>({
+        resolver: zodResolver(registerOneShema),
     });
-    const toast = useToast();
-
-    console.log(errors);
 
     // Handlers
-    const handleRegister = (values: IRegisterForm) => {
+    const handleRegister = (values: IRegisterOneForm) => {
         setStep('TWO');
-
-        console.log('holaa');
-        /* setIsCreatingAccount(true);
-        const { create } = await import('services/api/lib/organization');
-
-        const { ok } = await create({
-            user: {
-                name: values.userName,
-                email: values.userEmail,
-                password: values.password,
-                password_confirmation: values.passwordConfirm,
-            },
-            organization: {
-                kind: 'company_skala',
-                image: values.logo,
-                name: values.organizationName,
-            },
-        });
-
-        if (ok) {
-            setRegisterData(values);
-            setRegisterStatus('SUCCESS');
-        } else {
-            toast({
-                position: 'top-right',
-                duration: 2500,
-                onCloseComplete: () => {
-                    setIsCreatingAccount(false);
-                },
-                render: () => (
-                    <ErrorNotification
-                        title={'Error al crear cuenta'}
-                        description={'Ha ocurrido un error inesperado. Por favor, intentalo nuevamente.'}
-                    />
-                ),
-            });
-        }*/
+        setRegisterValues(values);
     };
 
     return (
@@ -137,15 +83,15 @@ const RegisterStepOneForm: React.FC = () => {
                         <FormErrorMessage fontWeight={'semibold'}>{errors.passwordConfirm?.message}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl id="legalRepPhone" isInvalid={!!errors.legalRepPhone}>
                         <FormLabel>Teléfono (opcional)</FormLabel>
 
                         <InputGroup>
                             <InputLeftAddon>+569</InputLeftAddon>
-                            <Input />
+                            <Input {...register('legalRepPhone')} />
                         </InputGroup>
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.userEmail?.message}</FormErrorMessage>
+                        <FormErrorMessage fontWeight={'semibold'}>{errors.legalRepPhone?.message}</FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="termsCheck" isInvalid={!!errors.termsCheck}>
@@ -159,29 +105,11 @@ const RegisterStepOneForm: React.FC = () => {
                         <FormErrorMessage fontWeight={'semibold'}>{errors.termsCheck?.message}</FormErrorMessage>
                     </FormControl>
 
-                    <Button type="submit" variant="solid" mb={8} w="full">
+                    <Button type="submit" variant="solid" mb={8} h="44px" w="full">
                         Siguiente
                     </Button>
-
-                    <Link href="/login" passHref>
-                        <Button type="button" w="full" variant="ghost">
-                            Ya tengo cuenta
-                        </Button>
-                    </Link>
                 </VStack>
             </form>
-
-            {isCropperOpen && (
-                <CropperModal
-                    title={'Recortar logo'}
-                    baseImg={baseImg!}
-                    isOpen={isCropperOpen}
-                    onClose={onCropperClose}
-                    onCropSave={(img) => {
-                        setValue('logo', img);
-                    }}
-                />
-            )}
 
             {isTermsOpen && <TermsModal isOpen={isTermsOpen} onClose={onTermsClose} />}
         </>

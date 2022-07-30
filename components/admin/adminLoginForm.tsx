@@ -4,21 +4,15 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage, useToast } from '@chakra-ui/react';
+import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
 import InputPassword from 'common/inputPassword';
 import { loginSchema, ILoginData } from 'forms/login';
 
 // Dynamic
 const DangerAlert = dynamic(() => import('common/alerts/danger'));
 
-// Types
-interface Props {
-    isPyme?: boolean;
-    afterLogin?: () => void;
-}
-
 // Component
-const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
+const AdminLoginForm: React.FC = () => {
     // State
     const router = useRouter();
     const [alert, setAlert] = useState(false);
@@ -30,19 +24,18 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
     } = useForm<ILoginData>({
         resolver: zodResolver(loginSchema),
     });
-    const toast = useToast();
 
     // Handlers
     const handleLogin = async (data: ILoginData) => {
         setIsLoggingIn(true);
 
         const { auth } = await import('services/api/lib/auth');
-        const { ok, data: response } = await auth.login({ email: data.email, password: data.password, isPyme });
+        const { ok, data: response } = await auth.adminLogin({ email: data.email, password: data.password });
 
         if (ok) {
             const { AuthManager } = await import('@clyc/next-route-manager');
             AuthManager.storeToken({
-                cookieName: isPyme ? process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME! : process.env.NEXT_PUBLIC_COOKIE_NAME!,
+                cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!,
                 token: response!.token!,
                 options: {
                     domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
@@ -51,28 +44,9 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
                 },
             });
 
-            toast({
-                title: 'Haz iniciado sesión',
-                description: 'Haz ingresado con éxito.',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-
-            router.push((router.query.redirect_to as string) ?? '/explorer');
+            router.push((router.query.redirect_to as string) ?? '/admin/dashboard');
             setIsLoggingIn(false);
-            afterLogin && afterLogin();
         } else {
-            toast({
-                title: 'No se ha podido iniciar sesión',
-                description: 'Ha ocurrido un error al intetar iniciar sesión',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-
             setIsLoggingIn(false);
             setAlert(true);
         }
@@ -83,7 +57,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
         if (router.query.redirect_to as string) {
             router.prefetch(router.query.redirect_to as string);
         } else {
-            router.prefetch('/explorer');
+            router.prefetch('/admin/dashboard');
         }
     }, [router]);
 
@@ -127,4 +101,4 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
 };
 
 // Export
-export default LoginForm;
+export default AdminLoginForm;

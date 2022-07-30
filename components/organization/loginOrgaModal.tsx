@@ -12,10 +12,11 @@ import {
     Text,
     HStack,
 } from '@chakra-ui/react';
+import RegisterStepForm from 'components/register/registerStepForm';
+import RegisterStepOneForm from 'components/register/registerStepOneForm';
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LoginOrgaForm from './loginOrgaForm';
-import SignupOrgaForm from './signupOrgaForm';
 
 // Types
 interface Props {
@@ -26,36 +27,33 @@ interface Props {
 // Component
 const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
     const [isRegister, isSetRegister] = useState(false);
+    const btnRef = React.useRef(null);
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                finalFocusRef={btnRef}
+                isCentered
+                size="lg"
+                scrollBehavior="outside"
+            >
                 <ModalOverlay />
-                <ModalContent rounded="2xl" pt={'30px'} px="10px">
-                    <ModalHeader fontSize="3xl" d="flex" alignItems="center" pb={0}>
+                <ModalContent top={30} rounded="2xl" pt={'30px'} px="30px">
+                    <ModalHeader fontSize="3xl" d="flex" alignItems="flex-start" textAlign="start" pl={0} pb={0}>
                         {isRegister ? 'REGISTRATE' : 'INICIAR SESIÓN'}
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody mb={6} pt={0}>
                         <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
-                            {isRegister ? (
-                                <HStack>
-                                    <Text>Crea tu cuenta en Goodbusiness para continuar</Text>
-                                    <Button
-                                        onClick={() => isSetRegister(false)}
-                                        variant={'link'}
-                                        alignContent="baseline"
-                                    >
-                                        Ya tengo cuenta
-                                    </Button>
-                                </HStack>
-                            ) : (
-                                'Ingresa a tu cuenta para continuar'
-                            )}
+                            {isRegister
+                                ? 'Crea tu cuenta en Goodbusiness para continuar'
+                                : 'Ingresa a tu cuenta para continuar'}
                         </Text>
 
-                        {isRegister ? <SignupOrgaForm /> : <LoginOrgaForm isPyme={true} />}
+                        {isRegister ? <RegisterStepForm /> : <LoginOrgaForm />}
 
-                        {!isRegister && (
+                        {!isRegister ? (
                             <Flex flexDirection={'column'} alignItems={'center'} mt="20px">
                                 <Link href="/recovery" passHref>
                                     <Button
@@ -83,19 +81,17 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                     </Button>
                                 </VStack>
                             </Flex>
+                        ) : (
+                            <Button
+                                type="button"
+                                w="full"
+                                variant="ghost"
+                                mt="20px"
+                                onClick={() => isSetRegister(false)}
+                            >
+                                Ya tengo cuenta
+                            </Button>
                         )}
-
-                        <VStack mt={isRegister ? '20px' : '70px'} spacing={isRegister ? '2px' : '10px'}>
-                            <Text fontSize={'xs'}>powered by</Text>
-                            <HStack spacing={0}>
-                                <Text fontSize="24px" fontWeight={'bold'} textColor="#20B06B">
-                                    Company
-                                </Text>
-                                <Text fontSize="24px" fontWeight={'extrabold'} textColor="#20B06B">
-                                    Pitch
-                                </Text>
-                            </HStack>
-                        </VStack>
                     </ModalBody>
                 </ModalContent>
             </Modal>

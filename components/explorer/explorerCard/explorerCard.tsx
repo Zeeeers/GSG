@@ -30,7 +30,7 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
             transitionDuration="normal"
         >
             <Image
-                src={project.main_image.url ?? 'images/earth.jpg'}
+                src={project.main_image ?? 'images/earth.jpg'}
                 alt="cover"
                 objectFit="cover"
                 w="full"
@@ -51,7 +51,7 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                         color="green.800"
                         fontFamily="inter"
                     >
-                        <Text>{project.stage}</Text>
+                        <Text>{project.capital_stage}</Text>
                     </HStack>
                     <Stack spacing="5px" mt="10px">
                         <Text fontSize="xl" fontWeight="semibold" noOfLines={2}>

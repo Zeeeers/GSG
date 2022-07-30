@@ -26,8 +26,8 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
         <>
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
                 <ModalOverlay />
-                <ModalContent rounded="2xl" pt={'30px'} px="10px">
-                    <ModalHeader fontSize="4xl" d="flex" alignItems="center" pb={0}>
+                <ModalContent rounded="2xl" pt={'54px'} px="34px">
+                    <ModalHeader fontSize="4xl" d="flex" textAlign="start" px={0} py={0}>
                         Ingresar
                     </ModalHeader>
                     <ModalCloseButton />
@@ -35,15 +35,16 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
                             Comienza a invertir en nuestros proyectos{' '}
                         </Text>
-                        <LoginForm />
+                        <LoginForm afterLogin={onClose} />
 
                         <Flex flexDirection={'column'} alignItems={'center'}>
-                            <Link href="/recovery" passHref>
+                            <Link href="/recovery/recoveryPassword" passHref>
                                 <Button
                                     variant="link"
                                     transitionProperty="all"
                                     transitionDuration={'slow'}
                                     colorScheme="primary"
+                                    fontWeight="normal"
                                 >
                                     Olvidé mi contraseña
                                 </Button>
@@ -52,7 +53,7 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                 <Text fontSize={'md'} fontWeight={'semibold'}>
                                     ¿No tienes cuenta?
                                 </Text>
-                                <Button>Solicitar una invitación</Button>
+                                <Button variant="outline">Solicitar una invitación</Button>
                             </VStack>
                         </Flex>
                     </ModalBody>

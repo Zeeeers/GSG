@@ -1,5 +1,4 @@
 // Dependencies
-//@ts-nocheck
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -8,91 +7,90 @@ import {
     FormErrorMessage,
     VStack,
     Input,
-    Heading,
-    Checkbox,
     Button,
-    FormHelperText,
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import { IRegisterForm, registerSchema } from 'forms/register';
+import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRegisterStore } from 'stores/register';
-import InputPassword from 'common/inputPassword';
 import UploadButton from 'common/uploadButton';
-import Link from 'next/link';
+import router from 'next/router';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModal'));
-const TermsModal = dynamic(() => import('common/termsModal'));
-const ErrorNotification = dynamic(() => import('common/notifications/error'));
 
 // Component
 const RegisterStepTwoForm: React.FC = () => {
     // States
-    const { isOpen: isTermsOpen, onOpen: onTermsOpen, onClose: onTermsClose } = useDisclosure();
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
     const [baseImg, setBaseImg] = useState<string>();
-    const setRegisterData = useRegisterStore((state) => state.updateFormValues);
-    const setRegisterStatus = useRegisterStore((state) => state.updateStatus);
     const {
         register,
         formState: { errors },
         handleSubmit,
         watch,
         setValue,
-    } = useForm<IRegisterForm>({
-        resolver: zodResolver(registerSchema),
+    } = useForm<IRegisterTwoForm>({
+        resolver: zodResolver(registerTwoSchema),
     });
     const toast = useToast();
     const setStep = useRegisterStore((s) => s.setStep);
+    const valuesForm = useRegisterStore((state) => state.formValues);
+
+    console.log(valuesForm);
 
     // Handlers
-    const handleRegister = async (values: IRegisterForm) => {
+    const handleRegister = async (values: IRegisterTwoForm) => {
         setIsCreatingAccount(true);
         const { create } = await import('services/api/lib/organization');
 
         const { ok } = await create({
             user: {
-                name: values.userName,
-                email: values.userEmail,
-                password: values.password,
-                password_confirmation: values.passwordConfirm,
+                name: valuesForm?.userName,
+                email: valuesForm?.userEmail,
+                password: valuesForm?.password,
+                password_confirmation: valuesForm?.passwordConfirm,
             },
             organization: {
-                kind: 'company_skala',
                 image: values.logo,
+                legal_representative_phone: valuesForm?.legalRepPhone,
                 name: values.organizationName,
+                social_number: values.idNumber,
             },
         });
 
         if (ok) {
-            setRegisterData(values);
-            setRegisterStatus('SUCCESS');
+            toast({
+                title: 'Usuario creado con éxito',
+                description: 'Felicidades, tu usuario se ha creado con éxito, ya puedes levantar tu capital',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            router.push('/');
+            setIsCreatingAccount(false);
         } else {
             toast({
+                title: 'No se ha podido crear el usuario',
+                description: 'Ha ocurrido un error al intentar crear el usuario, porfavor, intentelo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
                 position: 'top-right',
-                duration: 2500,
-                onCloseComplete: () => {
-                    setIsCreatingAccount(false);
-                },
-                render: () => (
-                    <ErrorNotification
-                        title={'Error al crear cuenta'}
-                        description={'Ha ocurrido un error inesperado. Por favor, intentalo nuevamente.'}
-                    />
-                ),
             });
+            setIsCreatingAccount(false);
         }
     };
 
     return (
         <>
             <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
-                <VStack my={8} spacing={8} w="550px">
+                <VStack my={8} spacing={8} w="full">
                     <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
                         <Button
                             variant="outline"
@@ -161,17 +159,17 @@ const RegisterStepTwoForm: React.FC = () => {
 
                         <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
                     </FormControl>
-                    <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
+                    <FormControl id="idNumber" isInvalid={!!errors.idNumber}>
                         <FormLabel>Número o identificador nacional</FormLabel>
 
                         <Input
                             size="md"
-                            {...register('organizationName')}
+                            {...register('idNumber')}
                             placeholder="00000000-0"
                             _placeholder={{ color: 'gray.400' }}
                         />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
+                        <FormErrorMessage fontWeight={'semibold'}>{errors.idNumber?.message}</FormErrorMessage>
                     </FormControl>
                 </VStack>
 
@@ -180,8 +178,8 @@ const RegisterStepTwoForm: React.FC = () => {
                     variant="solid"
                     loadingText={'Creando cuenta'}
                     isLoading={isCreatingAccount}
-                    isDisabled={!watch().termsCheck}
                     mb={8}
+                    h="44px"
                     w="full"
                 >
                     Siguiente
@@ -199,8 +197,6 @@ const RegisterStepTwoForm: React.FC = () => {
                     }}
                 />
             )}
-
-            {isTermsOpen && <TermsModal isOpen={isTermsOpen} onClose={onTermsClose} />}
         </>
     );
 };

@@ -214,7 +214,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                 overflow="hidden"
                             >
                                 <Img
-                                    src={project?.main_image?.url}
+                                    src={project?.main_image}
                                     alt="Imagen del desafio"
                                     w={{ base: 'full', md: 898 }}
                                     objectFit="cover"
@@ -249,7 +249,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                             </Text>
                                         </HStack>
                                         <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
-                                            {project?.title.toLocaleUpperCase()}
+                                            {project?.title}
                                         </Text>
 
                                         <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
@@ -266,7 +266,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                         rounded="6px"
                                         mt={0}
                                     >
-                                        {project?.stage}
+                                        {project?.capital_stage}
                                     </Badge>
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
                                         <Text>Rango de levantamiento buscado</Text>
@@ -277,7 +277,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                             pt="5px"
                                         >
                                             <Text fontSize="4xl" fontWeight="medium">
-                                                Menos de 20 millones (CLP)
+                                                {project?.finance_goal}
                                             </Text>
                                             <Stack
                                                 alignItems={{ base: 'center', md: 'start' }}

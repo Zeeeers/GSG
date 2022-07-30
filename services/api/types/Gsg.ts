@@ -1,56 +1,45 @@
+import { Members } from './Member';
+
 // Types
 export interface Gsg {
     id: number;
     title: string;
+    main_image: string;
     description: string;
-    status: string;
-    finance_goal: number;
-    end_date: string;
-    business_name: string;
-    business_web: string;
-    qualities: Array<String>;
-    impact_what: string;
-    impact_who: string;
-    impact_how_much: string;
-    impact_contribution: string;
-    impact_risk: string;
-    problem: string;
-    solution: string;
     more_info: string;
-    finance: string;
-    business_model: string;
-    expenses_use: string;
-    investment_opportunity: string;
-    created_at: string;
-    updated_at: string;
-    tags: string;
-    main_image: { url: string };
+    third_parties: string;
     stage: string;
-    about: string;
+    investment_objective: string;
+    capital_stage: string;
+    business_model: string;
+    guarantee: string;
+    expected_rentability: string;
+    finance_goal: string;
+    time_lapse: string;
+    investment_types: string;
+    better_project: string;
+    additional_info: string;
+    business_web: string;
 }
 
 export interface GsgFormated {
     id: number;
     title: string;
+    main_image: { url: string };
     description: string;
-    finance_goal: number;
-    end_date: string;
-    business_name: string;
-    business_web: string;
-    impact_what: string;
-    impact_who: string;
-    impact_how_much: string;
-    impact_contribution: string;
-    impact_risk: string;
-    problem: string;
-    solution: string;
     more_info: string;
-    finance: string;
+    third_parties: string;
+    stage: string;
+    investment_objective: string;
+    capital_stage: string;
     business_model: string;
-    expenses_use: string;
-    investment_opportunity: string;
-    created_at: string;
-    updated_at: string;
-    tags: string;
-    main_image: string;
+    guarantee: string;
+    expected_rentability: string;
+    finance_goal: string;
+    time_lapse: string;
+    investment_types: string;
+    better_project: string;
+    additional_info: string;
+    business_web: string;
+    members: Array<Members>;
 }

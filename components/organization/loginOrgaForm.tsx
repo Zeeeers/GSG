@@ -13,12 +13,11 @@ const DangerAlert = dynamic(() => import('common/alerts/danger'));
 
 // Types
 interface Props {
-    isPyme?: boolean;
     afterLogin?: () => void;
 }
 
 // Component
-const LoginOrgaForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
+const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
     // State
     const router = useRouter();
     const [alert, setAlert] = useState(false);
@@ -36,12 +35,12 @@ const LoginOrgaForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
         setIsLoggingIn(true);
 
         const { auth } = await import('services/api/lib/auth');
-        const { ok, data: response } = await auth.login({ email: data.email, password: data.password, isPyme });
+        const { ok, data: response } = await auth.login({ email: data.email, password: data.password, isPyme: true });
 
         if (ok) {
             const { AuthManager } = await import('@clyc/next-route-manager');
             AuthManager.storeToken({
-                cookieName: isPyme ? process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME! : process.env.NEXT_PUBLIC_COOKIE_NAME!,
+                cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!,
                 token: response!.token!,
                 options: {
                     domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
@@ -50,9 +49,6 @@ const LoginOrgaForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
                 },
             });
 
-            if (!isPyme) {
-                router.push((router.query.redirect_to as string) ?? '/profile');
-            }
             setIsLoggingIn(false);
             afterLogin && afterLogin();
         } else {

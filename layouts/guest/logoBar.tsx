@@ -1,8 +1,6 @@
 // Dependencies
-
 import Link from 'next/link';
 import { Flex, HStack, Img, Text, VStack } from '@chakra-ui/react';
-//import Image from '@clyc/optimized-image/components/chakraImage';
 
 // Component
 const LogoBar: React.FC = ({ children }) => {
@@ -12,10 +10,11 @@ const LogoBar: React.FC = ({ children }) => {
             alignItems="center"
             bgImage="/images/nasa.jpg"
             bgSize="cover"
-            height="1080px"
+            height="fit-content"
             w="full"
             bgPosition="center"
             bgAttachment="scroll"
+            pb="48px"
         >
             <VStack spacing="30px" mt="100px">
                 <Text fontSize="36px" fontWeight="bold">

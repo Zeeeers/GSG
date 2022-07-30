@@ -1,9 +1,11 @@
 // Dependencies
-import { api, pymeHeaders } from '../../config';
+import { adminHeaders, api, pymeHeaders } from '../../config';
 import ENDPOINT from './auth.endpoints';
 import {
     ActivateAccountCall,
     ActivateAccountResponse,
+    AdminLoginCall,
+    AdminLoginResponse,
     CheckEmailCall,
     CheckEmailResponse,
     CreateNewPassCall,
@@ -25,6 +27,11 @@ export const login: LoginCall = async ({ email, password, isPyme }) => {
     return response;
 };
 
+export const adminLogin: AdminLoginCall = async ({ email, password }) => {
+    const response = await api.post<AdminLoginResponse>(ENDPOINT.ADMIN_LOGIN, { email, password }, adminHeaders());
+    return response;
+};
+
 export const activateAccount: ActivateAccountCall = async ({ token }) => {
     const response = await api.post<ActivateAccountResponse>(ENDPOINT.ACTIVATE_ACCOUNT, {
         activation: {
@@ -38,15 +45,13 @@ export const activateAccount: ActivateAccountCall = async ({ token }) => {
 // CHECK
 export const checkEmail: CheckEmailCall = async ({ user_email }) => {
     const response = await api.post<CheckEmailResponse>(ENDPOINT.CHECK_EMAIL, { user_email });
-
     return response;
 };
 
 // RECOVERY
-export const recoverPassword: RecoverPasswordCall = async ({ email, kind }) => {
+export const recoverPassword: RecoverPasswordCall = async ({ email }) => {
     const response = await api.post<RecoverPasswordResponse>(ENDPOINT.RECOVER_PASSWORD, {
         email,
-        kind,
     });
 
     return response;
@@ -64,6 +69,7 @@ export const createNewPassword: CreateNewPassCall = async ({ password, token }) 
 // Global
 const authCalls = {
     login,
+    adminLogin,
     activateAccount,
     checkEmail,
     recoverPassword,
