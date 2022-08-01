@@ -1,0 +1,34 @@
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+* {
+    outline: none;
+    
+}
+
+body {
+    overflow-x: hidden;
+    scroll-margin-top: 200px;
+}
+p {
+    font-family: 'Inter', sans-serif;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 5px;
+    width: 10px;
+    padding-right: 2px;
+}
+
+.custom-scroll-bar::-webkit-scrollbar {
+    width: 10px;
+    background-color: #fff;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+    background-color: #a8a8a8;
+    border-radius: 5px;
+}
