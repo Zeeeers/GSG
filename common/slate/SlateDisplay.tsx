@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import React, { useCallback, useMemo } from 'react';
 import { Editable, withReact, Slate, ReactEditor, useFocused, useSelected } from 'slate-react';
 import { createEditor, Descendant, BaseEditor } from 'slate';

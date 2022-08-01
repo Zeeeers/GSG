@@ -4,3 +4,9 @@ export interface Members {
     name: string;
     linkedin: string;
 }
+
+export interface MembersFormat {
+    main_imagen: string;
+    name: string;
+    linkedin: string;
+}

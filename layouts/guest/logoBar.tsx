@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import Link from 'next/link';
 import { Flex, HStack, Img, Text, VStack } from '@chakra-ui/react';
 

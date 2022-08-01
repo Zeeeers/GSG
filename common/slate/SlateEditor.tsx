@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { forwardRef } from '@chakra-ui/system';
