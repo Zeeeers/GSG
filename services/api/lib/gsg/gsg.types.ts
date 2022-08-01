@@ -52,8 +52,8 @@ export type GetMyGsgProjectCall = (payload: GetMyGsgProjectRequest) => Promise<A
 
 // Update project
 export interface UpdateGsgProjectRequest {
-    token: string;
-    gsgProject: Partial<GsgFormated>;
+    gsgProject: { status: string };
+    idProject: number;
 }
 
 export interface UpdateGsgProjectResponse {

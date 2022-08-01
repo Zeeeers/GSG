@@ -1,5 +1,5 @@
 // Dependencies
-import { api, pymeHeaders } from '../../config';
+import { api, pymeHeaders, adminHeaders } from '../../config';
 import {
     GetAllGsgResponse,
     GetGsgProjectResponse,
@@ -11,13 +11,13 @@ import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
 
 // READ
-const gsgAllFetcher = async (endpoint: string) => {
-    const { data } = await api.get<GetAllGsgResponse>(endpoint);
+const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
+    const { data } = await api.get<GetAllGsgResponse>(endpoint, '', isAdmin ? adminHeaders() : undefined);
     return data;
 };
 
-export const useGsg = (): SWRResponse<GetAllGsgResponse | undefined, unknown> => {
-    return useSWR([ENDPOINT.BASE], gsgAllFetcher);
+export const useGsg = (isAdmin?: boolean): SWRResponse<GetAllGsgResponse | undefined, unknown> => {
+    return useSWR([ENDPOINT.BASE, isAdmin], gsgAllFetcher);
 };
 
 export const getGsgProject = async (_: string, id: number) => {
@@ -31,7 +31,6 @@ export const useGsgProject = (id?: number) => {
 
 export const getMyGsgProject = async (_: string, token?: string) => {
     const response = await api.get<GetMyGsgProjectResponse>(ENDPOINT.OWN, {}, pymeHeaders(token));
-
     return response;
 };
 
@@ -40,13 +39,18 @@ export const useMyGsgProject = (token?: string) => {
 };
 
 // Update
-export const updateGsgProject: UpdateGsgProjectCall = async ({ token, gsgProject }) => {
+export const updateStatusGsgProject: UpdateGsgProjectCall = async ({ idProject, gsgProject }) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!,
+    });
+
     const response = await api.patch<UpdateGsgProjectResponse>(
-        ENDPOINT.DETAIL(gsgProject.id!),
+        ENDPOINT.STATUS(idProject),
         {
             gsg_project: gsgProject,
         },
-        pymeHeaders(token),
+        adminHeaders(token),
     );
 
     return response;
@@ -55,6 +59,7 @@ export const updateGsgProject: UpdateGsgProjectCall = async ({ token, gsgProject
 // Global
 const gsgCalls = {
     gsgAllFetcher,
+    updateStatusGsgProject,
 };
 
 // Export

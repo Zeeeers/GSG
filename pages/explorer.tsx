@@ -35,6 +35,8 @@ const Explorer: NextPage = ({}) => {
     // data proyects
     const { data: gsg } = useGsg();
 
+    console.log(gsg?.data?.projects.filter((item) => item.status === 'published'));
+
     return (
         <>
             <NextSeo title={'Explorador - GSG'} />
@@ -117,14 +119,16 @@ const Explorer: NextPage = ({}) => {
 
                 <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
-                    {gsg?.data?.projects ? (
+                    {gsg?.data?.projects.filter((item) => item.status === 'published').length !== 0 ? (
                         <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                            {gsg?.data?.projects.map((project) => (
-                                <ExplorerCard key={project.id} project={project[0]} />
+                            {gsg?.data?.projects[0].map((project) => (
+                                <ExplorerCard key={project.id} project={project} />
                             ))}
                         </SimpleGrid>
                     ) : (
-                        <Text>No hay proyectos</Text>
+                        <Text fontSize="2xl" fontWeight="bold">
+                            No hay proyectos publicados
+                        </Text>
                     )}
                 </VStack>
             </Container>

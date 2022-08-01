@@ -57,7 +57,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </Text>
 
                 <Wrap spacingX="60px" spacingY="30px">
-                    {Object.values(project.qualities || {}).map((item) => (
+                    {Object.values(project?.qualities || {}).map((item) => (
                         <WrapItem>
                             <HStack spacing="20px" pt="15px">
                                 <Stack p="15px" bg="green.600" rounded="15px">
@@ -83,11 +83,11 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Medición de resultados asociados al impacto social y/o mediambiental
                     </Text>
                     <Text as="p" fontSize="24px" fontWeight="medium">
-                        {project.more_info}
+                        {project?.more_info}
                     </Text>
                 </VStack>
 
-                {project.social_impact !== 'https://dev-api.skalachile.com/cuadrado.png' && (
+                {project?.social_impact !== 'https://dev-api.skalachile.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             Northstar SpA ha presentado un documento en relación a cómo mide su impacto
@@ -104,7 +104,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Como respaldo de una tercera organización, Northstar SpA cuenta con:
                     </Text>
                     <Text as="p" fontSize="24px" fontWeight="medium">
-                        {project.third_parties}
+                        {project?.third_parties}
                     </Text>
                 </VStack>
             </VStack>
@@ -128,7 +128,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Como respaldo de una tercera organización, Northstar SpA cuenta con:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.third_parties}
+                            {project?.third_parties}
                         </Text>
                     </VStack>
                 </VStack>
@@ -139,7 +139,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El objetivo que tiene con la inversión es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.investment_objective}
+                            {project?.investment_objective}
                         </Text>
                     </VStack>
                 </VStack>
@@ -150,7 +150,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El levantamiento actual de capital en la cual se encuentra es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.capital_stage}
+                            {project?.capital_stage}
                         </Text>
                     </VStack>
                 </VStack>
@@ -161,7 +161,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Cuenta con garantías:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.guarantee}
+                            {project?.guarantee}
                         </Text>
                     </VStack>
                 </VStack>
@@ -172,7 +172,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             La rentabilidad que Northstar SpA espera obtener es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.expected_rentability}
+                            {project?.expected_rentability}
                         </Text>
                     </VStack>
                 </VStack>
@@ -183,7 +183,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El rango de monto del aporte que se busca es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.finance_goal}
+                            {project?.finance_goal}
                         </Text>
                     </VStack>
                 </VStack>
@@ -194,7 +194,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             En relación a los plazos de inversión, Northstar SpA buscaría un plazo de:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.time_lapse}
+                            {project?.time_lapse}
                         </Text>
                     </VStack>
                 </VStack>
@@ -205,7 +205,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             La trayectoria del negocio es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.business_model}
+                            {project?.business_model}
                         </Text>
                     </VStack>
                 </VStack>
@@ -216,7 +216,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El tipo de inversionista que busca es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project.investment_types}
+                            {project?.investment_types}
                         </Text>
                     </VStack>
                 </VStack>
@@ -237,7 +237,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         gap="50px"
                     >
                         {project?.members
-                            ? Object.values(project?.members | {}).map((member, i) => (
+                            ? Object.values(project?.members || {}).map((member, i) => (
                                   <GridItem key={i}>
                                       <Stack spacing="10px" p={0}>
                                           <Avatar src={member.main_image} w="96px" h="96px" />
@@ -267,7 +267,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Espacios de mejora continua
                     </Text>
                     <Text as="p" fontSize="16px">
-                        {project.better_project}
+                        {project?.better_project}
                     </Text>
                 </VStack>
             </Stack>
@@ -285,7 +285,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Img src={project?.main_image} w="615px" h="219px" objectFit="cover" objectPosition="center" />
                 </VStack>
 
-                {project.additional_document !== 'https://dev-api.skalachile.com/cuadrado.png' && (
+                {project?.additional_document !== 'https://dev-api.skalachile.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             Northstar SpA ha presentado un documento complementario para que puedas verlo

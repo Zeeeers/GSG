@@ -7,26 +7,23 @@ import {
     Tabs,
     Text,
     VStack,
-    Table,
-    Thead,
-    Tr,
-    Th,
-    Tbody,
-    Td,
-    Badge,
     Select,
     Button,
     Menu,
     MenuButton,
     MenuList,
     MenuItem,
+    Input,
+    Icon,
 } from '@chakra-ui/react';
 import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
 import AddInvestorForm from 'components/admin/createInvestorForm';
+import ListProyectsForm from 'components/admin/listProyectsForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import router from 'next/router';
 import React from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 const Panel: NextPage = () => {
     const handleLogOut = async () => {
@@ -124,109 +121,46 @@ const Panel: NextPage = () => {
                             <AddInvestorForm />
                         </TabPanel>
 
-                        <TabPanel>
-                            <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
-                                PROYECTOS POSTULADOS
-                            </Text>
+                        <TabPanel maxW="1080px">
+                            <HStack align="center" justifyContent="space-between">
+                                <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
+                                    PROYECTOS POSTULADOS
+                                </Text>
+                                <HStack spacing="15px">
+                                    <Select variant="filled" _focus={{ color: 'white' }} h="32px">
+                                        <option value="select">Filtrar por estado</option>
+                                        <option value="in-review">En revisión</option>
+                                        <option value="sketch">Borrador</option>
+                                        <option value="published">Publicado</option>
+                                        <option value="canceled">Finalizado</option>
+                                    </Select>
 
-                            <Table size="lg" p={0}>
-                                <Thead>
-                                    <Tr>
-                                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                                            Nombre del proyecto
-                                        </Th>
-                                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                                            Empresa
-                                        </Th>
-                                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                                            Etapa
-                                        </Th>
-                                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                                            Status
-                                        </Th>
-                                        <Th pl={0} border="none"></Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    <Tr>
-                                        <Td pl={0} py="30px" fontFamily="inter">
-                                            Northstar Technologies Group
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            Northstar SpA
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            <Badge
-                                                variant="solid"
-                                                fontFamily="inter"
-                                                colorScheme="green"
-                                                textAlign="center"
-                                                alignItems="center"
-                                                py="2px"
-                                                px="8px"
-                                                rounded="6px"
-                                                mt={0}
-                                            >
-                                                Pre-seed
-                                            </Badge>
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            <Select variant="filled" _focus={{ color: 'white' }}>
-                                                <option value="option1">Completado</option>
-                                                <option value="option2">Finalizado</option>
-                                                <option value="option3">En revisión</option>
-                                            </Select>
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            <HStack spacing="20px">
-                                                <Button variant="solid">Ver proyecto</Button>
-                                                <Button variant="solid" colorScheme="red">
-                                                    Eliminar
-                                                </Button>
+                                    <HStack>
+                                        <Input
+                                            w={{ base: 'full', md: '184px' }}
+                                            h="32px"
+                                            variant="outline"
+                                            placeholder="Buscar"
+                                        />
+                                        <Button
+                                            variant="solid"
+                                            bg="gray.600"
+                                            _focus={{ outline: 'none' }}
+                                            aria-label="Buscar"
+                                            textColor="white"
+                                            py="10px"
+                                            px="16px"
+                                            w="110px"
+                                        >
+                                            <HStack w="full" spacing="10px">
+                                                <Icon as={FaSearch} />
+                                                <Text>Buscar</Text>
                                             </HStack>
-                                        </Td>
-                                    </Tr>
-
-                                    <Tr>
-                                        <Td fontFamily="inter" pl={0} py="30px">
-                                            Northstar Technologies Group
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            Northstar SpA
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            <Badge
-                                                variant="solid"
-                                                fontFamily="inter"
-                                                colorScheme="green"
-                                                textAlign="center"
-                                                alignItems="center"
-                                                py="2px"
-                                                px="8px"
-                                                rounded="6px"
-                                                mt={0}
-                                            >
-                                                Seed
-                                            </Badge>
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            <Select defaultValue="option2" variant="filled" _focus={{ color: 'white' }}>
-                                                <option value="option1">Completado</option>
-                                                <option value="option2">Finalizado</option>
-                                                <option value="option3">En revisión</option>
-                                            </Select>
-                                        </Td>
-                                        <Td fontFamily="inter" pl={0}>
-                                            <HStack spacing="20px">
-                                                <Button variant="solid">Ver proyecto</Button>
-                                                <Button variant="solid" colorScheme="red">
-                                                    Eliminar
-                                                </Button>
-                                            </HStack>
-                                        </Td>
-                                    </Tr>
-                                </Tbody>
-                            </Table>
+                                        </Button>
+                                    </HStack>
+                                </HStack>
+                            </HStack>
+                            <ListProyectsForm />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
