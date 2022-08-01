@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';

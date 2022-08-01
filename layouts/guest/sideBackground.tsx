@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { Flex } from '@chakra-ui/react';
 
 // Component

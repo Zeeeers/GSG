@@ -1,5 +1,5 @@
 // Dependencies
-import { GenericAPIErrorResponse, GenericAPIResponse, Quality } from '@clyc/api-wrapper/dist/types';
+import { GenericAPIErrorResponse, GenericAPIResponse, Quality } from '@clyc/api-wrapper/types';
 import { ApiResponse } from 'apisauce';
 import { PaginationMeta } from 'services/api/types/Pagination';
 import { Gsg } from '../../types/Gsg';
