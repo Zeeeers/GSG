@@ -10,10 +10,8 @@ import {
     ModalCloseButton,
     VStack,
     Text,
-    HStack,
 } from '@chakra-ui/react';
 import RegisterStepForm from 'components/register/registerStepForm';
-import RegisterStepOneForm from 'components/register/registerStepOneForm';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import LoginOrgaForm from './loginOrgaForm';

@@ -2,7 +2,7 @@
 import { GenericAPIErrorResponse, GenericAPIResponse, Quality } from '@clyc/api-wrapper/dist/types';
 import { ApiResponse } from 'apisauce';
 import { PaginationMeta } from 'services/api/types/Pagination';
-import { Gsg, GsgFormated } from '../../types/Gsg';
+import { Gsg } from '../../types/Gsg';
 import { ProjectImage } from '../../types/ProjectImage';
 
 // Get GSG Projects Types

@@ -1,6 +1,5 @@
 // Dependencies
 import { ApiResponse } from 'apisauce';
-import { SkalaPlatform } from '../../types/SkalaPlatform';
 
 // Login Types
 export interface LoginRequest {

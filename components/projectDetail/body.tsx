@@ -57,8 +57,8 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 </Text>
 
                 <Wrap spacingX="60px" spacingY="30px">
-                    {Object.values(project?.qualities || {}).map((item) => (
-                        <WrapItem>
+                    {Object.values(project?.qualities || {}).map((item, i) => (
+                        <WrapItem key={i}>
                             <HStack spacing="20px" pt="15px">
                                 <Stack p="15px" bg="green.600" rounded="15px">
                                     <Icon w={10} h={10} color="gray.50" as={HiHeart} />

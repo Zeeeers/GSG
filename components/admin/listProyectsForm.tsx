@@ -56,8 +56,8 @@ const ListProyectsForm = () => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {data?.data?.projects[0].map((proyect) => (
-                        <Tr>
+                    {data?.data?.projects[0].map((proyect, i) => (
+                        <Tr key={i}>
                             <Td fontFamily="inter" pl={0} py="30px">
                                 {proyect.title}
                             </Td>
