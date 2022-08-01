@@ -41,8 +41,6 @@ const RegisterStepTwoForm: React.FC = () => {
     const setStep = useRegisterStore((s) => s.setStep);
     const valuesForm = useRegisterStore((state) => state.formValues);
 
-    console.log(valuesForm);
-
     // Handlers
     const handleRegister = async (values: IRegisterTwoForm) => {
         setIsCreatingAccount(true);
