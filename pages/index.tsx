@@ -40,14 +40,14 @@ import { Select as CharkaSelect } from 'chakra-react-select';
 
 // Page
 const Index: NextPage = () => {
-    const [baseImg, setBaseImg] = useState<string>();
+    const [, setBaseImg] = useState<string>();
     const { onOpen: onCropperOpen } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const project = useCreateGsgProjectStore((s) => s.project);
     const members = useCreateGsgProjectStore((s) => s.members);
     const setMember = useCreateGsgProjectStore((s) => s.setMember);
     const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
-    const [contenido, setContenido] = useState<Descendant[]>();
+    const [, setContenido] = useState<Descendant[]>();
 
     const {
         register,
