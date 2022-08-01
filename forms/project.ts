@@ -26,6 +26,7 @@ export interface IProjectForm {
 }
 
 export interface IMember {
+    main_image: string;
     name: string;
     position: string;
     linkedin?: string;
@@ -58,6 +59,7 @@ const projectShape: ZodShape<IProjectForm> = {
 };
 
 const memberShape: ZodShape<IMember> = {
+    main_image: z.string(),
     name: z.string().nonempty('Campo obligatorio'),
     position: z.string().nonempty('Campo obligatorio'),
     linkedin: z.string().optional(),

@@ -31,6 +31,7 @@ import AddMembersModal from 'components/project/addMembersModal';
 import { Descendant } from 'slate';
 import { NextSeo } from 'next-seo';
 import { Select as CharkaSelect } from 'chakra-react-select';
+import { PrivatePage } from '@clyc/next-route-manager';
 
 /*
     TODO: change type values in data products and validation
@@ -66,6 +67,7 @@ const Index: NextPage = () => {
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
+            <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
             <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
                 <Container display="flex" justifyContent="space-between" maxWidth={'container.lg'}>
                     <HStack spacing="23px">
