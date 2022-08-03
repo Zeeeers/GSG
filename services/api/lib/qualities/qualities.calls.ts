@@ -1,6 +1,6 @@
 // Dependencies
 
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import { api } from '../../config';
 import ENDPOINT from './qualities.endpoints';
 import { GetQualityListResponse } from './qualities.types';
@@ -11,8 +11,8 @@ const qualityAllFetcher = async (endpoint: string) => {
     return data;
 };
 
-export const useQualityList = (): SWRResponse<GetQualityListResponse | undefined, unknown> => {
-    return useSWR([ENDPOINT.BASE], qualityAllFetcher);
+export const useQualityList = (config?: SWRConfiguration): SWRResponse<GetQualityListResponse | undefined, unknown> => {
+    return useSWR([ENDPOINT.BASE], qualityAllFetcher, config);
 };
 
 /*export const useQualityList = (

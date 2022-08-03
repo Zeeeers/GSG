@@ -1,6 +1,10 @@
 // Dependencies
 import { api, pymeHeaders, adminHeaders } from '../../config';
 import {
+    CreateProjectCall,
+    CreateProjectResponse,
+    DeleteGsgProjectCall,
+    DeleteGsgProjectResponse,
     GetAllGsgResponse,
     GetGsgProjectResponse,
     GetMyGsgProjectResponse,
@@ -10,6 +14,24 @@ import {
 import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
 
+// CREATE
+export const create: CreateProjectCall = async ({ project }) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!,
+    });
+
+    const response = await api.post<CreateProjectResponse>(
+        ENDPOINT.CREATE,
+
+        project,
+
+        pymeHeaders(token),
+    );
+
+    return response;
+};
+
 // READ
 const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
     const { data } = await api.get<GetAllGsgResponse>(endpoint, '', isAdmin ? adminHeaders() : undefined);
@@ -18,6 +40,20 @@ const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
 
 export const useGsg = (isAdmin?: boolean): SWRResponse<GetAllGsgResponse | undefined, unknown> => {
     return useSWR([ENDPOINT.BASE, isAdmin], gsgAllFetcher);
+};
+
+const gsgAllAdminFetcher = async (endpoint: string) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!,
+    });
+
+    const { data } = await api.post<GetAllGsgResponse>(endpoint, '', adminHeaders(token));
+    return data;
+};
+
+export const useAdminGsg = (): SWRResponse<GetAllGsgResponse | undefined, unknown> => {
+    return useSWR([ENDPOINT.ADMIN], gsgAllAdminFetcher);
 };
 
 export const getGsgProject = async (_: string, id: number) => {
@@ -56,10 +92,24 @@ export const updateStatusGsgProject: UpdateGsgProjectCall = async ({ idProject, 
     return response;
 };
 
+// Delete
+export const deleteGsgProject: DeleteGsgProjectCall = async (idProject) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!,
+    });
+
+    const response = await api.delete<DeleteGsgProjectResponse>(ENDPOINT.DETAIL(idProject), '', adminHeaders(token));
+
+    return response;
+};
+
 // Global
 const gsgCalls = {
     gsgAllFetcher,
     updateStatusGsgProject,
+    deleteGsgProject,
+    create,
 };
 
 // Export

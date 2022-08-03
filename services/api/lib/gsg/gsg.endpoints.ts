@@ -1,10 +1,12 @@
 // Endpoints
 const GsgEndpoints = {
     BASE: `/gsg`,
-    DETAIL: (id: number) => `/gsg/${id}`,
+    ADMIN: '/gsg/index_admin',
+    DETAIL: (id: number): string => `/gsg/${id}`,
     OWN: `/gsg/0`,
     JOB: '/admin/gsg/execute_job',
     STATUS: (projectId: number): string => `/admin/users/${projectId}`,
+    CREATE: '/gsg/create',
 };
 
 // Export

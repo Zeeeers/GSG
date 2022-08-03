@@ -3,6 +3,7 @@ export interface Members {
     main_imagen: string;
     name: string;
     linkedin: string;
+    position: string;
 }
 
 export interface MembersFormat {

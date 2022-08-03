@@ -7,6 +7,7 @@ import {
     Input,
     Stack,
     useDisclosure,
+    useToast,
     VStack,
 } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
@@ -18,11 +19,17 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 
-const AddMembersForm = () => {
+type MemberProp = {
+    reload: () => void;
+};
+
+const AddMembersForm = ({ reload }) => {
     //const addMember = useCreateGsgProjectStore((s) => s.setMembers);
+
     const member = useCreateGsgProjectStore((s) => s.member);
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
     const [baseImg, setBaseImg] = useState<string>();
+    const [createMember, setCreateMember] = useState(false);
     const {
         register,
         reset,
@@ -32,6 +39,7 @@ const AddMembersForm = () => {
         handleSubmit,
     } = useForm<IMember>({
         defaultValues: {
+            main_image: member.main_imagen ?? '',
             name: member.name ?? '',
             position: member.position ?? '',
             linkedin: member.linkedin ?? '',
@@ -39,8 +47,36 @@ const AddMembersForm = () => {
         resolver: zodResolver(memberSchema),
     });
 
+    const toast = useToast();
+
     const handleMember = async (data: IMember) => {
-        // addMember(data);
+        setCreateMember(true);
+        const { create } = await import('../../services/api/lib/member');
+        const { ok } = await create(data);
+
+        if (ok) {
+            setCreateMember(false);
+            toast({
+                title: 'Equipo creado.',
+                description: 'Tu equipo ha sido creado exitosamente.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            reload();
+        } else {
+            setCreateMember(false);
+            toast({
+                title: 'Error al crear el equipo',
+                description: 'Ha ocurrido un error al intentar crear el equipo, porfavor, intenelo nuevamente.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+
         reset();
     };
 
@@ -48,8 +84,6 @@ const AddMembersForm = () => {
         <>
             <Stack as="form" spacing="20px" w="full" onSubmit={handleSubmit(handleMember)}>
                 <FormControl id="main_image" isInvalid={!!errors.main_image}>
-                    <FormLabel fontSize="24px">Información de tu organización</FormLabel>
-
                     <VStack alignItems="start" justifyContent="center" mt="25px">
                         <VStack spacing={3}>
                             <Avatar
@@ -57,7 +91,7 @@ const AddMembersForm = () => {
                                 tWidth={100}
                                 alt={watch().name}
                                 size="2xl"
-                                src={watch().main_image}
+                                src={member?.main_image ?? watch().main_image}
                                 icon={<></>}
                                 shadow="lg"
                                 bgColor={'gray.700'}
@@ -108,7 +142,7 @@ const AddMembersForm = () => {
                     <FormErrorMessage fontWeight={'semibold'}>{errors.linkedin?.message}</FormErrorMessage>
                 </FormControl>
 
-                <Button type="submit" variant="solid">
+                <Button isLoading={createMember} loadingText="Creando equipo" type="submit" variant="solid">
                     Guardar cambios
                 </Button>
             </Stack>

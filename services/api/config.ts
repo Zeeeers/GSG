@@ -3,7 +3,7 @@ import apisauce, { ApisauceConfig } from 'apisauce';
 
 // Config
 const config: ApisauceConfig = {
-    baseURL: process.env.API_URL ?? '/api/proxy',
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
     headers: {
         'x-skala-platform': process.env.NEXT_PUBLIC_SKALA_HEADER,
     },

@@ -19,7 +19,7 @@ const NavbarFilter: React.FC<Props> = ({}) => {
     return (
         <Wrap spacing="12px">
             {data?.qualities
-                .map((item) => item.icon.name)
+                ?.map((item) => item.icon.name)
                 ?.map((item, index) => (
                     <CheckCard
                         key={`${index}-explorerFilter`}

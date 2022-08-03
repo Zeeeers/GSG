@@ -1,6 +1,6 @@
 // Dependencies
-import { IMember } from 'forms/project';
 import { Gsg } from 'services/api/types/Gsg';
+import { Members } from 'services/api/types/Member';
 import create from 'zustand';
 
 // Types
@@ -13,10 +13,10 @@ interface ICreateGsgProjectStore {
     project: Partial<Gsg>;
     setProject: (data: Partial<Gsg>) => void;
     clearProjectStore: () => void;
-    members: Array<IMember>;
-    member: Partial<IMember>;
-    setMembers: (data: IMember) => void;
-    setMember: (data: IMember) => void;
+    members: Array<Members>;
+    member: Partial<Members>;
+    setMembers: (data: Members) => void;
+    setMember: (data: Members) => void;
     deleteMember: (data: string) => void;
     clearMember: () => void;
 }
@@ -25,7 +25,6 @@ interface ICreateGsgProjectStore {
 export const useCreateGsgProjectStore = create<ICreateGsgProjectStore>((set) => ({
     images: [],
     updateImages: (data) => set((state) => ({ ...state, images: data })),
-
     step: 'info',
     project: {},
     members: [],
