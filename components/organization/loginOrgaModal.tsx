@@ -49,7 +49,7 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                 : 'Ingresa a tu cuenta para continuar'}
                         </Text>
 
-                        {isRegister ? <RegisterStepForm /> : <LoginOrgaForm />}
+                        {isRegister ? <RegisterStepForm /> : <LoginOrgaForm afterLogin={onClose} />}
 
                         {!isRegister ? (
                             <Flex flexDirection={'column'} alignItems={'center'} mt="20px">

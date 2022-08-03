@@ -12,7 +12,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
-import React from 'react';
+import React, { useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -23,8 +23,12 @@ interface Props {
 }
 
 const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
+    //@ts-ignore
+    const [ods, setOds] = useState([]);
     const { getCheckboxProps } = useCheckboxGroup({
-        defaultValue: [],
+        defaultValue: ods,
+        //@ts-ignore
+        onChange: (value) => setOds(value),
     });
 
     return (
@@ -62,6 +66,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                                     fontWeight="normal"
                                     fontFamily="inter"
                                     fontSize="md"
+                                    disabled={ods?.length >= 3}
                                     _hover={{ bg: 'gray.600' }}
                                     _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
                                     {...getCheckboxProps({ value: item.id })}

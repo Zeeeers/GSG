@@ -12,6 +12,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
+import Time from 'components/projectDetail/formatText/time';
 import React from 'react';
 import { Interest } from 'services/api/types/Interest';
 
@@ -66,7 +67,7 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                                     _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
                                     {...getCheckboxProps({ value: item })}
                                 >
-                                    <Text>{item}</Text>
+                                    <Text>{Time(item)}</Text>
                                 </CheckCard>
                             ))}
                         </VStack>

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
+import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage, useToast } from '@chakra-ui/react';
 import InputPassword from 'common/inputPassword';
 import { loginSchema, ILoginData } from 'forms/login';
 
@@ -30,6 +30,8 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
         resolver: zodResolver(loginSchema),
     });
 
+    const toast = useToast();
+
     // Handlers
     const handleLogin = async (data: ILoginData) => {
         setIsLoggingIn(true);
@@ -49,9 +51,28 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
                 },
             });
 
+            toast({
+                title: 'Haz iniciado sesión',
+                description: 'Haz ingresado con éxito.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+
+            router.push((router.query.redirect_to as string) ?? '/explorer');
             setIsLoggingIn(false);
             afterLogin && afterLogin();
         } else {
+            toast({
+                title: 'No se ha podido iniciar sesión',
+                description: 'Ha ocurrido un error al intetar iniciar sesión',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+
             setIsLoggingIn(false);
             setAlert(true);
         }

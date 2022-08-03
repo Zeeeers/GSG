@@ -12,6 +12,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
+import StageCapital from 'components/projectDetail/formatText/stageCapital';
 import React from 'react';
 import { Interest } from 'services/api/types/Interest';
 
@@ -27,6 +28,8 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
         defaultValue: [],
         //onChange: (value) => setFilters([...filters, value]),
     });
+
+    console.log(interest?.stage);
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
@@ -66,7 +69,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                                     _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
                                     {...getCheckboxProps({ value: item })}
                                 >
-                                    <Text>{item}</Text>
+                                    <Text>{StageCapital(item)}</Text>
                                 </CheckCard>
                             ))}
                         </VStack>

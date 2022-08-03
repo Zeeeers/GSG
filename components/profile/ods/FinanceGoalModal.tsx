@@ -12,6 +12,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
+import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
 import React from 'react';
 import { Interest } from 'services/api/types/Interest';
 
@@ -66,7 +67,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                                     _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
                                     {...getCheckboxProps({ value: item })}
                                 >
-                                    <Text>{item}</Text>
+                                    <Text>{FinanceGoal(item)}</Text>
                                 </CheckCard>
                             ))}
                         </VStack>

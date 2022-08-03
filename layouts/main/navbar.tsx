@@ -9,6 +9,8 @@ import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
 import LoginModal from 'components/login/loginModal';
 import LoginOrgaModal from 'components/organization/loginOrgaModal';
+import { useOrganization } from 'services/api/lib/organization';
+import OrgaMenu from './menu/orgaMenu';
 
 // Types
 const UserMenu = dynamic(() => import('./menu/desktop'));
@@ -22,6 +24,7 @@ const Navbar: React.FC = () => {
     const [isTablet] = useMediaQuery('(min-width: 48em)');
     const router = useRouter();
     const { data: user, mutate } = useUser();
+    const { data: orga, mutate: reloadOrga } = useOrganization(true);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenOrgaLogin, onOpen: onOpenOrgaLogin, onClose: onCloseOrgaLogin } = useDisclosure();
@@ -35,6 +38,16 @@ const Navbar: React.FC = () => {
         });
         router.push('/explorer');
         mutate();
+    };
+
+    const handleLogOutOrga = async () => {
+        const auth = (await import('@clyc/next-route-manager/libs/AuthManager')).default;
+        auth.removeToken(process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!, {
+            domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
+            secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
+        });
+        router.push('/explorer');
+        reloadOrga();
     };
 
     // Effects
@@ -71,7 +84,7 @@ const Navbar: React.FC = () => {
                             </Text>
                         </HStack>
                     </Link>
-                    {user === undefined ? (
+                    {user === undefined && orga === undefined ? (
                         isTablet ? (
                             <HStack spacing="15px">
                                 <Button variant="outline" onClick={() => onOpenOrgaLogin()}>
@@ -93,8 +106,10 @@ const Navbar: React.FC = () => {
                         ) : (
                             <MobileButton />
                         )
-                    ) : (
+                    ) : user !== undefined ? (
                         <UserMenu onLogOut={handleLogOut} />
+                    ) : (
+                        <OrgaMenu onLogOut={handleLogOutOrga} />
                     )}
                 </Container>
             </HStack>
