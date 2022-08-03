@@ -119,7 +119,7 @@ const Explorer: NextPage = ({}) => {
 
                 <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                     <NavbarFilter />
-                    {gsg?.data?.projects.filter((item) => item.status === 'published').length !== 0 ? (
+                    {gsg?.data?.projects.length !== 0 ? (
                         <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                             {gsg?.data?.projects[0].map((project) => (
                                 <ExplorerCard key={project.id} project={project} />

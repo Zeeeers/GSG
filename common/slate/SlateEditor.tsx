@@ -174,6 +174,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
                             placeholder={placeholder ?? ''}
                             spellCheck
                             autoFocus
+                            onBlur={() => handleSaveField(value)}
                             onKeyDown={(event) => {
                                 Object.keys(HOTKEYS).forEach((hotkey: 'mod+b' | 'mod+i' | 'mod+u' | 'mod+`') => {
                                     if (isHotkey(hotkey, event as any)) {
@@ -239,7 +240,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                             setIsUploadingImg(true);
 
                                             const token = new AuthManager({
-                                                cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+                                                cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!,
                                             }).token;
 
                                             const { data: imageData, ok: imageOk } = await uploadImage({

@@ -2,6 +2,7 @@
 import { ApiResponse } from 'apisauce';
 import { Members } from '../../types/Member';
 
+// MemberCreate
 export interface MemberForm {
     main_image: string;
     name: string;
@@ -20,3 +21,10 @@ interface MemberRequest {
 }
 
 export type CreateInvestorCall = (payload: MemberRequest) => Promise<ApiResponse<MemberResponse>>;
+
+// MemberFetch
+export interface GetAllMemberResponse {
+    data: { members: Array<Members> };
+}
+
+export type GetAllMembersCall = () => Promise<ApiResponse<GetAllMemberResponse>>;

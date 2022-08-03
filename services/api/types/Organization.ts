@@ -36,3 +36,10 @@ export interface Organization {
     rrss_instagram?: string;
     rrss_facebook?: string;
 }
+
+export interface OrganizationFormat {
+    id: number;
+    name: string;
+    image: string;
+    legal_representative_phone: string;
+}

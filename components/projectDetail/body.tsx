@@ -6,6 +6,7 @@ import {
     GridItem,
     HStack,
     Icon,
+    Image,
     Img,
     Link,
     Stack,
@@ -18,6 +19,14 @@ import { GrDocumentPdf } from 'react-icons/gr';
 import { Gsg } from 'services/api/types/Gsg';
 import { HiHeart } from 'react-icons/hi';
 import { FaLinkedin } from 'react-icons/fa';
+import Messure from './formatText/messure';
+import ThirdParties from './formatText/thirdParties';
+import Objetive from './formatText/objective';
+import Stage from './formatText/stage';
+import Garantee from './formatText/garantee';
+import Rentability from './formatText/rentability';
+import FinanceGoal from './formatText/financeGoal';
+import Time from './formatText/time';
 
 const Body = forwardRef<any, any>(({ project }, ref) => {
     const { impact, description_finance, other } = ref?.current;
@@ -47,7 +56,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
         >
             <Stack pl="27px" pr="30px" spacing="30px">
                 <Text scrollMarginTop="100px" ref={impact} fontSize="4xl">
-                    El impacto de {project?.business_name}
+                    El impacto de {project?.organization.name}
                 </Text>
             </Stack>
 
@@ -56,19 +65,12 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     ODS que incorpora el producto/servicio
                 </Text>
 
-                <Wrap spacingX="60px" spacingY="30px">
+                <Wrap spacingX="60px" spacingY="15px" pt="30px">
                     {Object.values(project?.qualities || {}).map((item, i) => (
                         <WrapItem key={i}>
-                            <HStack spacing="20px" pt="15px">
-                                <Stack p="15px" bg="green.600" rounded="15px">
-                                    <Icon w={10} h={10} color="gray.50" as={HiHeart} />
-                                </Stack>
-                                <Text
-                                    fontWeight="medium"
-                                    fontSize="20px"
-                                    color="#279B48
-"
-                                >
+                            <HStack spacing="20px">
+                                <Image src={item.image} w="60px" h="60px" rounded="15px" />
+                                <Text fontWeight="medium" fontSize="20px" color={item.color}>
                                     {item.name}
                                 </Text>
                             </HStack>
@@ -83,28 +85,38 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Medición de resultados asociados al impacto social y/o mediambiental
                     </Text>
                     <Text as="p" fontSize="24px" fontWeight="medium">
-                        {project?.more_info}
+                        {Messure(project?.more_info)}
                     </Text>
                 </VStack>
 
                 {project?.social_impact !== 'https://dev-api.skalachile.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            Northstar SpA ha presentado un documento en relación a cómo mide su impacto
+                            {project?.organization.name} ha presentado un documento en relación a cómo mide su impacto
                         </Text>
-                        <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
-                            <GrDocumentPdf size={30} />
-                            <Text>Medición de impacto Northstar SpA</Text>
-                        </HStack>
+                        <Link href={project?.social_impact} target="_blank" w={'full'}>
+                            <HStack
+                                bg="gray.600"
+                                py="20px"
+                                px="30px"
+                                w="full"
+                                rounded="8px"
+                                spacing="20px"
+                                _hover={{ bg: 'gray.500' }}
+                            >
+                                <GrDocumentPdf size={30} />
+                                <Text>Medición de impacto {project?.organization.name}</Text>
+                            </HStack>
+                        </Link>
                     </VStack>
                 )}
 
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                        Como respaldo de una tercera organización, Northstar SpA cuenta con:
+                        Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
                     </Text>
                     <Text as="p" fontSize="24px" fontWeight="medium">
-                        {project?.third_parties}
+                        {ThirdParties(project?.third_parties)}
                     </Text>
                 </VStack>
             </VStack>
@@ -120,15 +132,15 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 scrollMarginTop="100px"
             >
                 <Text fontSize="4xl" fontWeight="medium">
-                    Descripción financiera de {project?.business_name}
+                    Descripción financiera de {project?.organization.name}
                 </Text>
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            Como respaldo de una tercera organización, Northstar SpA cuenta con:
+                            Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.third_parties}
+                            {ThirdParties(project?.third_parties)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -139,7 +151,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El objetivo que tiene con la inversión es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.investment_objective}
+                            {Objetive(project?.investment_objective)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -150,7 +162,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El levantamiento actual de capital en la cual se encuentra es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.capital_stage}
+                            {Stage(project?.capital_stage)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -161,7 +173,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Cuenta con garantías:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.guarantee}
+                            {Garantee(project?.guarantee)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -169,10 +181,10 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            La rentabilidad que Northstar SpA espera obtener es:
+                            La rentabilidad que {project?.organization.name} espera obtener es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.expected_rentability}
+                            {Rentability(project?.expected_rentability)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -183,7 +195,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             El rango de monto del aporte que se busca es:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.finance_goal}
+                            {FinanceGoal(project?.finance_goal)} (CLP)
                         </Text>
                     </VStack>
                 </VStack>
@@ -191,10 +203,10 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            En relación a los plazos de inversión, Northstar SpA buscaría un plazo de:
+                            En relación a los plazos de inversión, {project?.organization.name} buscaría un plazo de:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
-                            {project?.time_lapse}
+                            {Time(project?.time_lapse)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -288,12 +300,22 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 {project?.additional_document !== 'https://dev-api.skalachile.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            Northstar SpA ha presentado un documento complementario para que puedas verlo
+                            {project?.organization.name} ha presentado un documento complementario para que puedas verlo
                         </Text>
-                        <HStack bg="gray.600" py="20px" px="30px" w="full" rounded="8px" spacing="20px">
-                            <GrDocumentPdf size={30} />
-                            <Text>Medición de impacto Northstar SpA</Text>
-                        </HStack>
+                        <Link href={project?.additional_document} target="_blank" w="full">
+                            <HStack
+                                bg="gray.600"
+                                py="20px"
+                                px="30px"
+                                w="full"
+                                rounded="8px"
+                                spacing="20px"
+                                _hover={{ bg: 'gray.500' }}
+                            >
+                                <GrDocumentPdf size={30} />
+                                <Text>Documento complementario {project?.organization.name}</Text>
+                            </HStack>
+                        </Link>
                     </VStack>
                 )}
             </Stack>

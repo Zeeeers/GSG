@@ -3,26 +3,34 @@ import { ZodShape } from 'services/validation';
 import { z } from 'zod';
 
 // Types
+
+type select = {
+    value: string;
+    label: string;
+};
 export interface IProjectForm {
     title: string;
     description: string;
-    main_image: string;
-    more_info: string;
-    third_parties: string;
-    stage: string;
-    investment_objective: string;
-    capital_stage: string;
-    business_model: string;
-    guarantee: string;
-    expected_rentability: string;
-    finance_goal: string;
-    time_lapse: string;
-    investment_types: string;
-    better_project: string;
-    additional_info: string;
-    business_web: string;
+    main_image?: string;
+    social_impact?: string;
 
-    qualities: string;
+    more_info?: select;
+    third_parties?: select;
+    stage?: select;
+    investment_objective?: select;
+    capital_stage?: select;
+    guarantee?: select;
+    expected_rentability?: select;
+    finance_goal?: select;
+    time_lapse?: select;
+    qualities?: select;
+
+    investment_types?: string;
+    business_model?: string;
+    better_project?: string;
+    additional_info?: string;
+    business_web: string;
+    additional_document?: string;
 }
 
 export interface IMember {
@@ -39,23 +47,28 @@ const projectShape: ZodShape<IProjectForm> = {
         .string()
         .nonempty('Campo obligatorio')
         .min(300, 'La descripción debe tener al menos 300 caracteres de largo.'),
-    main_image: z.string().nonempty('Campo obligatorio'),
-    more_info: z.string().nonempty('Campo obligatorio'),
-    third_parties: z.string().nonempty('Campo obligatorio'),
-    stage: z.string().nonempty('Campo obligatorio'),
-    investment_objective: z.string().nonempty('Campo obligatorio'),
-    capital_stage: z.string().nonempty('Campo obligatorio'),
-    business_model: z.string().nonempty('Campo obligatorio'),
-    guarantee: z.string().nonempty('Campo obligatorio'),
-    expected_rentability: z.string().nonempty('Campo obligatorio'),
-    finance_goal: z.string().nonempty('Campo obligatorio'),
-    time_lapse: z.string().nonempty('Campo obligatorio'),
-    investment_types: z.string().nonempty('Campo obligatorio'),
-    better_project: z.string().nonempty('Campo obligatorio'),
-    additional_info: z.string().nonempty('Campo obligatorio'),
-    business_web: z.string().nonempty('Campo obligatorio').url('URL inválido'),
+    main_image: z.string().optional(),
+    social_impact: z.string().optional(),
 
-    qualities: z.string().nonempty('Campo obligatorio'),
+    more_info: z.object({ value: z.string(), label: z.string() }).optional(),
+    third_parties: z.object({ value: z.string(), label: z.string() }).optional(),
+    stage: z.object({ value: z.string(), label: z.string() }).optional(),
+    investment_objective: z.object({ value: z.string(), label: z.string() }).optional(),
+    capital_stage: z.object({ value: z.string(), label: z.string() }).optional(),
+
+    guarantee: z.object({ value: z.string(), label: z.string() }).optional(),
+    expected_rentability: z.object({ value: z.string(), label: z.string() }).optional(),
+    finance_goal: z.object({ value: z.string(), label: z.string() }).optional(),
+    time_lapse: z.object({ value: z.string(), label: z.string() }).optional(),
+
+    investment_types: z.string().optional(),
+    business_model: z.string().optional(),
+    better_project: z.string().optional(),
+    additional_info: z.string().optional(),
+    business_web: z.string().nonempty('Campo obligatorio').url('URL inválido'),
+    additional_document: z.string().optional(),
+
+    qualities: z.object({ value: z.string(), label: z.string() }).optional(),
 };
 
 const memberShape: ZodShape<IMember> = {

@@ -7,9 +7,10 @@ import AddMembersForm from './addMembersForm';
 interface Props {
     isOpen: boolean;
     onClose(): void;
+    reload: () => void;
 }
 
-const AddMembersModal: React.FC<Props> = ({ isOpen, onClose }) => {
+const AddMembersModal: React.FC<Props> = ({ isOpen, onClose, reload }) => {
     const clearMember = useCreateGsgProjectStore((s) => s.clearMember);
     if (!isOpen) {
         clearMember();
@@ -18,11 +19,11 @@ const AddMembersModal: React.FC<Props> = ({ isOpen, onClose }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
             <ModalOverlay />
-            <ModalContent rounded="2xl" pt={'30px'} px="10px">
+            <ModalContent rounded="2xl" py={'30px'} px="30px">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="20px">
-                        <AddMembersForm />
+                        <AddMembersForm reload={reload} />
                     </VStack>
                 </ModalBody>
             </ModalContent>

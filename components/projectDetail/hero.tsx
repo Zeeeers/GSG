@@ -19,6 +19,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Gsg } from 'services/api/types/Gsg';
 import Body from './body';
 import ContactModal from './contactModal';
+import BadgeStage from './formatText/badgeStage';
+import FinanceGoal from './formatText/financeGoal';
 
 interface Props {
     project: Gsg | undefined;
@@ -243,12 +245,25 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                 >
                                     <VStack align="flex-start" spacing="10px" mb="20px">
                                         <HStack spacing="17px">
-                                            <Avatar name={project?.business_name} w="48px" h="48px" />
-                                            <Text fontSize={{ base: 'sm', md: '24px' }} fontFamily="inter">
-                                                {project?.business_name}
+                                            <Avatar
+                                                name={project?.organization.name}
+                                                src={project?.organization.image}
+                                                w="48px"
+                                                h="48px"
+                                            />
+                                            <Text
+                                                fontSize={{ base: 'sm', md: '24px' }}
+                                                fontWeight="medium"
+                                                fontFamily="inter"
+                                            >
+                                                {project?.organization.name}
                                             </Text>
                                         </HStack>
-                                        <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="bold">
+                                        <Text
+                                            fontSize={{ base: 'xl', md: '4xl' }}
+                                            textTransform="uppercase"
+                                            fontWeight="bold"
+                                        >
                                             {project?.title}
                                         </Text>
 
@@ -256,18 +271,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                             {project?.description}
                                         </Text>
                                     </VStack>
-                                    <Badge
-                                        variant="solid"
-                                        colorScheme="green"
-                                        textAlign="center"
-                                        alignItems="center"
-                                        py="2px"
-                                        px="8px"
-                                        rounded="6px"
-                                        mt={0}
-                                    >
-                                        {project?.capital_stage}
-                                    </Badge>
+                                    <BadgeStage capitalStage={project?.capital_stage} />
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
                                         <Text>Rango de levantamiento buscado</Text>
                                         <Flex
@@ -276,8 +280,8 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                             w="full"
                                             pt="5px"
                                         >
-                                            <Text fontSize="4xl" fontWeight="medium">
-                                                {project?.finance_goal}
+                                            <Text fontSize="3xl" fontWeight="medium">
+                                                {FinanceGoal(project?.finance_goal)} (CLP)
                                             </Text>
                                             <Stack
                                                 alignItems={{ base: 'center', md: 'start' }}
@@ -315,7 +319,12 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                 </Container>
             </Flex>
 
-            <ContactModal isOpen={isOpen} onClose={onClose} project={project} />
+            <ContactModal
+                isOpen={isOpen}
+                onClose={onClose}
+                project={project?.organization}
+                web={project?.business_web}
+            />
         </>
     );
 };

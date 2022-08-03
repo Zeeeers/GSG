@@ -5,6 +5,7 @@ import { Text, Box, Stack, Image, Button, Badge, HStack, VStack } from '@chakra-
 import Link from 'next/link';
 import { Gsg } from 'services/api/types/Gsg';
 import { projects } from 'services/api/data';
+import Stage from 'components/projectDetail/formatText/stage';
 // Types
 interface Props {
     project: Gsg;
@@ -51,7 +52,7 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                         color="green.800"
                         fontFamily="inter"
                     >
-                        <Text>{project.capital_stage}</Text>
+                        <Text>{Stage(project.capital_stage)}</Text>
                     </HStack>
                     <Stack spacing="5px" mt="10px">
                         <Text fontSize="xl" fontWeight="semibold" noOfLines={2}>

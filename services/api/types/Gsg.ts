@@ -1,4 +1,5 @@
 import { Members } from './Member';
+import { OrganizationFormat } from './Organization';
 
 // Types
 export interface Gsg {
@@ -20,6 +21,7 @@ export interface Gsg {
     better_project: string;
     additional_info: string;
     business_web: string;
+    organization: OrganizationFormat;
 }
 
 export interface GsgFormated {

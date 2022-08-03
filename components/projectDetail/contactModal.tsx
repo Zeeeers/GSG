@@ -9,13 +9,14 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import { Gsg } from 'services/api/types/Gsg';
+import { OrganizationFormat } from 'services/api/types/Organization';
 
 // Types
 interface Props {
     isOpen: boolean;
     onClose(): void;
-    project: Gsg | undefined;
+    project: OrganizationFormat | undefined;
+    web: string;
 }
 
 const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
@@ -26,8 +27,8 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="20px">
-                        <Heading fontSize="30px" lineHeight="32px">
-                            CONTACTO DE {project?.title}
+                        <Heading fontSize="30px" lineHeight="32px" textTransform="uppercase">
+                            CONTACTO DE {project?.name}
                         </Heading>
                         <VStack alignItems="flex-start" spacing={0}>
                             <Text fontSize="20px" fontWeight="semibold">
@@ -42,7 +43,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
                                 Teléfono
                             </Text>
                             <Text fontSize="16px" fontFamily="inter">
-                                +569 0000 0000
+                                +569 {project?.legal_representative_phone}
                             </Text>
                         </VStack>
 
