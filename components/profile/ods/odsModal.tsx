@@ -41,7 +41,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
         setIsLoading(true);
         const { update } = await import('../../../services/api/lib/interest');
 
-        const { ok } = await update({ id: user?.id, qualities: ods?.join(';;') });
+        const { ok } = await update(user?.id, ods?.join(';;'));
 
         if (ok) {
             setIsLoading(false);

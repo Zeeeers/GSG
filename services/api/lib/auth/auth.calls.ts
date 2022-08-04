@@ -57,14 +57,15 @@ export const recoverPassword: RecoverPasswordCall = async ({ email }) => {
     return response;
 };
 
-export const createNewPassword: CreateNewPassCall = async ({ password, token }) => {
+//@ts-ignore
+export const createNewPassword: CreateNewPassCall = async ({ password, token, jwt }) => {
     const response = await api.post<CreateNewPassResponse>(
         ENDPOINT.NEW_PASSWORD,
         {
             token,
             password,
         },
-        headers(token),
+        headers(jwt),
     );
 
     return response;

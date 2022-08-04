@@ -10,10 +10,11 @@ import { createNewPassword } from 'services/api/lib/auth';
 
 type Props = {
     token: string;
+    jwt: string;
 };
 
 // Component
-const CreatePasswordForm: React.FC<Props> = ({ token }) => {
+const CreatePasswordForm: React.FC<Props> = ({ token, jwt }) => {
     // States
     const [isChangingPass, setIsChangingPass] = useState(false);
 
@@ -31,6 +32,8 @@ const CreatePasswordForm: React.FC<Props> = ({ token }) => {
 
         const { ok } = await createNewPassword({
             token: token,
+            //@ts-ignore
+            jwt: jwt,
             password: data.newPassword,
         });
 
