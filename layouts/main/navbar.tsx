@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
                     {user === undefined && orga === undefined ? (
                         isTablet ? (
                             <HStack spacing="15px">
-                                <Button variant="outline" onClick={() => onOpenOrgaLogin()}>
+                                <Button variant="outline" onClick={() => router.push('/register')}>
                                     ¿Eres empresa? levantar capital
                                 </Button>
                                 <Button

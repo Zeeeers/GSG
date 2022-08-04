@@ -10,7 +10,13 @@ import {
     ModalCloseButton,
     VStack,
     Text,
+    Tab,
+    TabList,
+    TabPanels,
+    TabPanel,
+    Tabs,
 } from '@chakra-ui/react';
+import LoginOrgaForm from 'components/organization/loginOrgaForm';
 import Link from 'next/link';
 import LoginForm from './loginForm';
 
@@ -26,36 +32,68 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
         <>
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
                 <ModalOverlay />
-                <ModalContent rounded="2xl" pt={'54px'} px="34px">
+                <ModalContent rounded="2xl" pt={'54px'} px="30px">
                     <ModalHeader fontSize="3xl" d="flex" textAlign="start" px={0} py={0}>
                         Ingresar
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody mb={6} pt={0}>
                         <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
-                            Comienza a invertir en nuestros proyectos{' '}
+                            Elige la cuenta con la que quieres ingresar
                         </Text>
-                        <LoginForm afterLogin={onClose} />
-
-                        <Flex flexDirection={'column'} alignItems={'center'}>
-                            <Link href="/recovery/recoveryPassword" passHref>
-                                <Button
-                                    variant="link"
-                                    transitionProperty="all"
-                                    transitionDuration={'slow'}
-                                    colorScheme="primary"
-                                    fontWeight="normal"
+                        <Tabs fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
+                            <TabList
+                                alignItems="flex-start"
+                                borderBottom="0"
+                                overflowX="auto"
+                                overflowY="hidden"
+                                pb="10px"
+                            >
+                                <Tab
+                                    pr="15px"
+                                    pl={0}
+                                    pt="20px"
+                                    borderBottom="2px"
+                                    textAlign="start"
+                                    alignItems="flex-start"
+                                    whiteSpace="nowrap"
                                 >
-                                    Olvidé mi contraseña
-                                </Button>
-                            </Link>
-                            <VStack spacing="7px" mt="36px">
-                                <Text fontSize={'md'} fontWeight={'normal'} fontFamily="inter">
-                                    ¿No tienes cuenta?
-                                </Text>
-                                <Button variant="outline">Solicitar una invitación</Button>
-                            </VStack>
-                        </Flex>
+                                    Empresa
+                                </Tab>
+                                <Tab ml="15px" px={0} pt="20px" borderBottom="2px" whiteSpace="nowrap">
+                                    Inversionista
+                                </Tab>
+                            </TabList>
+
+                            <TabPanels>
+                                <TabPanel px={0}>
+                                    <LoginOrgaForm afterLogin={onClose} />
+                                </TabPanel>
+                                <TabPanel px={0}>
+                                    <LoginForm afterLogin={onClose} />
+
+                                    <Flex flexDirection={'column'} alignItems={'center'}>
+                                        <Link href="/recovery/recoveryPassword" passHref>
+                                            <Button
+                                                variant="link"
+                                                transitionProperty="all"
+                                                transitionDuration={'slow'}
+                                                colorScheme="primary"
+                                                fontWeight="normal"
+                                            >
+                                                Olvidé mi contraseña
+                                            </Button>
+                                        </Link>
+                                        <VStack spacing="7px" mt="36px">
+                                            <Text fontSize={'md'} fontWeight={'normal'} fontFamily="inter">
+                                                ¿Eres inversionista y no tienes cuenta?
+                                            </Text>
+                                            <Button variant="outline">Solicitar una invitación</Button>
+                                        </VStack>
+                                    </Flex>
+                                </TabPanel>
+                            </TabPanels>
+                        </Tabs>
                     </ModalBody>
                 </ModalContent>
             </Modal>
