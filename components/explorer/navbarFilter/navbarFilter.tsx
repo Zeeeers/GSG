@@ -1,15 +1,16 @@
 // Dependencies
+//@ts-nocheck
 import { Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { useCheckboxGroup } from '@chakra-ui/checkbox';
 import CheckCard from 'common/checkCard';
-import { useQualityList } from 'services/api/lib/qualities';
+import { useGsg } from 'services/api/lib/gsg';
 
 // Types
 interface Props {}
 
 // Component
 const NavbarFilter: React.FC<Props> = ({}) => {
-    const { data } = useQualityList();
+    const { data } = useGsg();
 
     const { getCheckboxProps } = useCheckboxGroup({
         defaultValue: [],
@@ -18,7 +19,7 @@ const NavbarFilter: React.FC<Props> = ({}) => {
 
     return (
         <Wrap spacing="12px">
-            {data?.qualities
+            {data?.data?.qualities
                 ?.map((item) => item.icon.name)
                 ?.map((item, index) => (
                     <CheckCard

@@ -127,7 +127,7 @@ const Panel: NextPage = () => {
                                     PROYECTOS POSTULADOS
                                 </Text>
                                 <HStack spacing="15px">
-                                    <Select variant="filled" _focus={{ color: 'white' }} h="32px">
+                                    <Select variant="filled" _focus={{ color: 'white' }} h="40px">
                                         <option value="select">Filtrar por estado</option>
                                         <option value="in-review">En revisión</option>
                                         <option value="sketch">Borrador</option>
@@ -138,7 +138,7 @@ const Panel: NextPage = () => {
                                     <HStack>
                                         <Input
                                             w={{ base: 'full', md: '184px' }}
-                                            h="32px"
+                                            h="40px"
                                             variant="outline"
                                             placeholder="Buscar"
                                         />
@@ -151,6 +151,7 @@ const Panel: NextPage = () => {
                                             py="10px"
                                             px="16px"
                                             w="110px"
+                                            h="40px"
                                         >
                                             <HStack w="full" spacing="10px">
                                                 <Icon as={FaSearch} />

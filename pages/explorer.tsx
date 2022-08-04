@@ -39,14 +39,15 @@ const Explorer: NextPage = ({}) => {
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
-    const { data: project } = useGsgProject(orga?.pyme);
+    const { data: project } = useGsgProject(orga?.gsg_project_id);
 
     return (
         <>
             <NextSeo title={'Explorador - GSG'} />
             <Navbar />
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
-                {orga !== undefined && (orga?.pyme ? <StatusProject /> : <NotProject />)}
+                {orga !== undefined &&
+                    (orga?.gsg_project_id ? <StatusProject project={project?.data.gsg_project} /> : <NotProject />)}
 
                 <Stack
                     justify={'space-between'}

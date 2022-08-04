@@ -1,7 +1,36 @@
 import { Badge, Button, HStack, Text, VStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { GsgFormated } from 'services/api/types/Gsg';
 
-const StatusProject = () => {
+type StatusProps = {
+    project: GsgFormated;
+};
+const StatusProject: React.FC<StatusProps> = ({ project }) => {
+    let status = undefined;
+    switch (project?.status) {
+        case 'in-review':
+            status = 'En revisión';
+            break;
+
+        case 'sketch':
+            status = 'En borrador';
+            break;
+
+        case 'published':
+            status = 'Publicado';
+            break;
+
+        case 'canceled':
+            status = 'Finalizado';
+            break;
+
+        default:
+            status;
+            break;
+    }
+
+    const router = useRouter();
     return (
         <HStack bg="gray.700" p="20px" rounded="8px" w="full" mb="40px" justifyContent="space-between">
             <VStack align="flex-start">
@@ -10,14 +39,32 @@ const StatusProject = () => {
                         Mi proyecto
                     </Text>
                     <Badge colorScheme="teal" variant="solid" py="8px" px="10px">
-                        En borrador
+                        {status}
                     </Badge>
                 </HStack>
-                <Text fontFamily="inter">Northstar Technologies Group, Inc.</Text>
+                <Text fontFamily="inter">{project?.title}</Text>
             </VStack>
-            <Button h="40px" variant="solid">
-                Ver proyecto
-            </Button>
+            {project?.status === 'sketch' ? (
+                <Button
+                    bg="blue.700"
+                    _hover={{ bg: 'blue.600' }}
+                    h="40px"
+                    variant="solid"
+                    onClick={() => router.push(`/`)}
+                >
+                    Editar mi postulación
+                </Button>
+            ) : (
+                <Button
+                    bg="blue.700"
+                    _hover={{ bg: 'blue.600' }}
+                    h="40px"
+                    variant="solid"
+                    onClick={() => router.push(`/projectDetail/${project?.id}`)}
+                >
+                    Ver proyecto
+                </Button>
+            )}
         </HStack>
     );
 };

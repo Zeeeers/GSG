@@ -10,8 +10,6 @@ const ListProyectsForm = () => {
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
 
-    console.log(data);
-
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
         const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e?.target?.value } });

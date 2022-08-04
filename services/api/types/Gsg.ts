@@ -44,4 +44,5 @@ export interface GsgFormated {
     additional_info: string;
     business_web: string;
     members: Array<Members>;
+    status: string;
 }

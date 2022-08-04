@@ -58,7 +58,7 @@ const Index: NextPage = () => {
 
     const { onOpen: onCropperOpen } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isOpenSuccess, onOpenSuccess, onCloseSuccess } = useDisclosure();
+    const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
 
     const [createProyect, setCreateProyect] = useState(false);
 
