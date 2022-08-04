@@ -55,6 +55,7 @@ const RegisterStepTwoForm: React.FC = () => {
             },
             organization: {
                 image: values.logo,
+                legal_representative_email: valuesForm?.userEmail,
                 legal_representative_phone: valuesForm?.legalRepPhone,
                 name: values.organizationName,
                 social_number: values.idNumber,

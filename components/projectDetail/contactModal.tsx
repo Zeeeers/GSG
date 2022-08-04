@@ -34,9 +34,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
                             <Text fontSize="20px" fontWeight="semibold">
                                 Correo
                             </Text>
-                            <Text fontSize="16px" fontFamily="inter">
-                                Contacto@northstargroup.com
-                            </Text>
+                            <Text fontSize="16px" fontFamily="inter"></Text>
                         </VStack>
                         <VStack alignItems="flex-start" spacing={0}>
                             <Text fontSize="20px" fontWeight="semibold">

@@ -7,6 +7,7 @@ import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useRouter } from 'next/router';
 import { projects } from 'services/api/data';
 import { useOrganizationProject } from 'services/api/lib/organization/organization.calls';
+import { useUser } from 'services/api/lib/user';
 
 const PublicChallenge: NextPage = () => {
     const router = useRouter();
@@ -14,9 +15,7 @@ const PublicChallenge: NextPage = () => {
         router.query.projectid ? Number.parseInt(router.query?.projectid as string) : undefined,
     );
 
-    const { data: user } = useOrganizationProject(
-        router.query.projectid ? Number.parseInt(router.query?.projectid as string) : undefined,
-    );
+    const { data: userProfile } = useUser();
 
     return (
         <>
@@ -33,7 +32,7 @@ const PublicChallenge: NextPage = () => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project?.data?.gsg_project} />
+                <HeaderHero project={project?.data?.gsg_project} user={userProfile} />
             </Flex>
         </>
     );

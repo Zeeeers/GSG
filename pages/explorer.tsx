@@ -28,20 +28,26 @@ import { useGsg } from 'services/api/lib/gsg';
 
 import { projects } from 'services/api/data';
 import { NextSeo } from 'next-seo';
+import { useOrganization } from 'services/api/lib/organization';
+import NotProject from 'components/explorer/statusProject/notProject';
+import StatusProject from 'components/explorer/statusProject/status';
+import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 
 const Explorer: NextPage = ({}) => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'[id,asc]' | '[id,desc]'>('[id,desc]');
     // data proyects
     const { data: gsg } = useGsg();
-
-    console.log(gsg?.data?.projects.filter((item) => item.status === 'published'));
+    const { data: orga } = useOrganization(true);
+    const { data: project } = useGsgProject(orga?.pyme);
 
     return (
         <>
             <NextSeo title={'Explorador - GSG'} />
             <Navbar />
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
+                {orga !== undefined && (orga?.pyme ? <StatusProject /> : <NotProject />)}
+
                 <Stack
                     justify={'space-between'}
                     direction={{ base: 'column', md: 'row' }}

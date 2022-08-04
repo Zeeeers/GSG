@@ -16,6 +16,7 @@ import {
 import { impact } from '@clyc/api-wrapper';
 import CurrencyFormat from 'common/currencyFormat';
 import { useEffect, useRef, useState } from 'react';
+import { useUser } from 'services/api/lib/user';
 import { Gsg } from 'services/api/types/Gsg';
 import Body from './body';
 import ContactModal from './contactModal';
@@ -24,10 +25,11 @@ import FinanceGoal from './formatText/financeGoal';
 
 interface Props {
     project: Gsg | undefined;
+    user: User | undefined;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project }) => {
+const HeaderHero: React.FC<Props> = ({ project, user }) => {
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
@@ -289,14 +291,16 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                                                 mt={{ base: '20px', md: 0 }}
                                                 justifyContent="end"
                                             >
-                                                <Button
-                                                    onClick={onOpen}
-                                                    w={{ base: 'full', md: '212px' }}
-                                                    h="48px"
-                                                    variant="solid"
-                                                >
-                                                    Contactar
-                                                </Button>
+                                                {user && (
+                                                    <Button
+                                                        onClick={onOpen}
+                                                        w={{ base: 'full', md: '212px' }}
+                                                        h="48px"
+                                                        variant="solid"
+                                                    >
+                                                        Contactar
+                                                    </Button>
+                                                )}
                                             </Stack>
                                         </Flex>
                                     </VStack>
