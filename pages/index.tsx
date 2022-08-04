@@ -88,8 +88,9 @@ const Index: NextPage = () => {
         setContenido(values);
     };
 
-    const proyectDescription = watch('description', project.description ?? '');
-    const proyectBetter = watch('better_project', project.better_project ?? '');
+    const proyectDescription = watch('description', project.description ?? '0');
+    const proyectBetter = watch('better_project', project.better_project ?? '0');
+    const proyectTitle = watch('title', project.title ?? '0');
 
     const optionsQuality = quality?.qualities?.map((item) => ({
         value: item.id,
@@ -137,14 +138,15 @@ const Index: NextPage = () => {
         { value: 'series-d', label: 'Serie D' },
         { value: 'senior-debt', label: 'Deuda senior' },
         { value: 'mezzanine-debt', label: 'Deuda mezzanine' },
-        { value: 'other', label: 'other' },
+        { value: 'other', label: 'Otro' },
     ];
 
     const optionsGuarantee = [
-        { value: '100%', label: 'Sí, por el 100% de la inversión buscada' },
-        { value: '50%', label: 'Sí, por el 50% en relación a la inversión buscada' },
-        { value: '25%', label: 'Sí, por el 25% en relación a la inversión buscada' },
-        { value: 'no-garantee', label: 'No' },
+        { value: '0-20%', label: 'Entre un 0 y 20%' },
+        { value: '21-40%', label: 'Entre un 21 y 40%' },
+        { value: '41-60%', label: 'Entre un 41 y 60%' },
+        { value: '61-80%', label: 'Entre un 61 y 80% ' },
+        { value: '81-100%', label: 'Entre un 81 y 100%' },
     ];
 
     const optionsRenta = [
@@ -351,8 +353,15 @@ const Index: NextPage = () => {
                     </Text>
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Título del producto/servicio</FormLabel>
-                        <Input {...register('title')} />
-                        <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
+                        <Input maxLength={40} {...register('title')} />
+                        <Text
+                            textColor="gray.300"
+                            fontSize={{ base: 'xs', md: 'sm' }}
+                            fontWeight="medium"
+                            color="gray.400"
+                        >
+                            {proyectTitle?.length ?? 0}/40 caractéres
+                        </Text>
                     </FormControl>
 
                     <FormControl id="description" isInvalid={!!errors.description}>
@@ -495,7 +504,7 @@ const Index: NextPage = () => {
 
                     <FormControl id="more_info" w={{ base: '100%', md: '50%' }}>
                         <FormLabel lineHeight="140%">
-                            Selecciona el respaldo con el que cuentas de una tercera organización
+                            Actualmente tienes información sobre cómo mides tus resultados de impacto
                         </FormLabel>
                         <Controller
                             name="more_info"
@@ -648,6 +657,7 @@ const Index: NextPage = () => {
                             <FormControl id="finance_goal" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel lineHeight="140%">
                                     Por favor selecciona el rango del monto de aporte aproximado que estás buscando
+                                    (CLP)
                                 </FormLabel>
                                 <Controller
                                     name="finance_goal"

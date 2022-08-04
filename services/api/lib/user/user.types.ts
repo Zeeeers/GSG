@@ -41,6 +41,7 @@ export interface UserForm {
     lang?: string;
     country_id?: number;
     image?: string;
+    newsletter: boolean;
 }
 
 export interface UpdateUserRequest {

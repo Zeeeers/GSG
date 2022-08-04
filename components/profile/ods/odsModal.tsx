@@ -8,11 +8,13 @@ import {
     ModalOverlay,
     Text,
     useCheckboxGroup,
+    useToast,
     VStack,
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
 import React, { useState } from 'react';
+import { useUser } from 'services/api/lib/user';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -25,11 +27,44 @@ interface Props {
 const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
     //@ts-ignore
     const [ods, setOds] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const { getCheckboxProps } = useCheckboxGroup({
         defaultValue: ods,
         //@ts-ignore
         onChange: (value) => setOds(value),
     });
+    const { data: user } = useUser();
+
+    const toast = useToast();
+
+    const handleSave = async () => {
+        setIsLoading(true);
+        const { update } = await import('../../../services/api/lib/interest');
+
+        const { ok } = await update({ id: user?.id, qualities: ods?.join(';;') });
+
+        if (ok) {
+            setIsLoading(false);
+            toast({
+                //@ts-ignore
+                title: 'OSD guardado con éxito.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        } else {
+            setIsLoading(false);
+            toast({
+                //@ts-ignore
+                title: 'Ha ocurrido un error al crear el ODS.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
@@ -76,7 +111,14 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                             ))}
                         </VStack>
 
-                        <Button w="full" h="40px" variant="solid">
+                        <Button
+                            isLoading={isLoading}
+                            loadingText="Guardando ODS"
+                            onClick={handleSave}
+                            w="full"
+                            h="40px"
+                            variant="solid"
+                        >
                             Guardar cambios
                         </Button>
                     </VStack>

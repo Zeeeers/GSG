@@ -23,6 +23,7 @@ const InfoForm: React.FC = () => {
 
         const { ok } = await update({
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            //@ts-ignore
             data: {
                 name: value,
             },

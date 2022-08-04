@@ -41,7 +41,7 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                 <HStack align="center" spacing={0} py="10px">
                     <Avatar
                         size="sm"
-                        name={organization?.name ?? 'GSG'}
+                        name={organization?.name}
                         src={organization?.image}
                         alt={organization?.name ?? ''}
                         tHeight={32}
@@ -53,7 +53,7 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                     />
 
                     <Text as="span" fontWeight="normal" fontSize="md" fontFamily="inter" color="white.base">
-                        {organization?.legal_name ?? 'GSG'}
+                        {organization?.name ?? 'GSG'}
                     </Text>
                     <Icon w={6} h={10} color="gray.50" as={HiChevronDown} />
                 </HStack>

@@ -35,6 +35,7 @@ const ChangePassword: React.FC = () => {
 
         const { ok } = await update({
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            //@ts-ignore
             data: {
                 old_password: data.password,
                 password: data.newPassword,

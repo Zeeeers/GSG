@@ -1,6 +1,9 @@
 // Dependencies
-import { Checkbox, HStack, Img, Stack, Text, VStack, Wrap, WrapItem, useDisclosure } from '@chakra-ui/react';
-import { useInterestList } from 'services/api/lib/interest';
+//@ts-nocheck
+import { Checkbox, HStack, Img, Stack, Text, VStack, Wrap, WrapItem, useDisclosure, useToast } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useInterest, useInterestList } from 'services/api/lib/interest';
+import { update, useUser } from 'services/api/lib/user';
 import CapitalStageModal from './capitalStageModal';
 import ExpectedRentabilityModal from './expectedRentabilityModal';
 import FinanceGoalModal from './FinanceGoalModal';
@@ -11,6 +14,7 @@ import TimeLapseModal from './timeLapseModal';
 
 // Components
 const OdsTab: React.FC = () => {
+    const [isActive, setIsActive] = useState(false);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
     const { isOpen: isOpenThird, onOpen: openThird, onClose: closeThird } = useDisclosure();
     const { isOpen: isOpenStage, onOpen: openStage, onClose: closeStage } = useDisclosure();
@@ -24,6 +28,57 @@ const OdsTab: React.FC = () => {
     const { isOpen: isOpenTimeLapse, onOpen: openTimeLapse, onClose: closeTimeLapse } = useDisclosure();
 
     const { data: interest } = useInterestList();
+    const { data: getInterest } = useInterest();
+    const { data: user, mutate } = useUser();
+
+    const toast = useToast();
+
+    const handleUpdateNews = async () => {
+        const auth = import('@clyc/next-route-manager/libs/AuthManager');
+        const userApi = import('../../../services/api/lib/user');
+
+        const AuthManager = (await auth).default;
+        const { update } = await userApi;
+
+        const { ok, data } = await update({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            //@ts-ignore
+            data: {
+                newsletter: !isActive,
+            },
+        });
+
+        if (ok) {
+            mutate().then(() =>
+                toast({
+                    //@ts-ignore
+                    title: data?.user.newsletter
+                        ? 'La recepción de correos de acuerdo a los intereses ha sido activado con éxito'
+                        : 'La recepción de correos de acuerdo a los intereses ha sido desactivada con éxito',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                }),
+            );
+        } else {
+            toast({
+                title: 'Ha ocurrido un error la intentar activar el acuerdo de recepcion de correos.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            setIsActive(false);
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            //@ts-ignore
+            setIsActive(user?.newsletter);
+        }
+    }, [user]);
 
     return (
         <>
@@ -40,7 +95,7 @@ const OdsTab: React.FC = () => {
 
                 <VStack align="flex-start" spacing="30px">
                     <HStack>
-                        <Checkbox />
+                        <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
                         <Text>Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses</Text>
                     </HStack>
                     <Wrap spacingX="30px" spacingY="20px">
@@ -167,8 +222,8 @@ const OdsTab: React.FC = () => {
                 </VStack>
             </Stack>
 
-            {isOpenOds && <OdsModal isOpen={isOpenOds} onClose={closeOds} interest={interest?.data} />}
-            {isOpenThird && <ThirdModal isOpen={isOpenThird} onClose={closeThird} interest={interest?.data} />}
+            <OdsModal isOpen={isOpenOds} onClose={closeOds} interest={interest?.data} />
+            <ThirdModal isOpen={isOpenThird} onClose={closeThird} interest={interest?.data} />
             <StageModal isOpen={isOpenStage} onClose={closeStage} interest={interest?.data} />
             <CapitalStageModal isOpen={isOpenCapitalStage} onClose={closeCapitalStage} interest={interest?.data} />
             <ExpectedRentabilityModal

@@ -11,7 +11,7 @@ const LogoBar: React.FC = ({ children }) => {
             alignItems="center"
             bgImage="/images/nasa.jpg"
             bgSize="cover"
-            height="fit-content"
+            height="100vh"
             w="full"
             bgPosition="center"
             bgAttachment="scroll"
