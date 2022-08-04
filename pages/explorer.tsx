@@ -113,6 +113,7 @@ const Explorer: NextPage = ({}) => {
                                 py="10px"
                                 px="16px"
                                 w="110px"
+                                h="40px"
                             >
                                 <HStack w="full" spacing="10px">
                                     <Icon as={FaSearch} />

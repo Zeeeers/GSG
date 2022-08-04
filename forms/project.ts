@@ -9,8 +9,8 @@ type select = {
     label: string;
 };
 export interface IProjectForm {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     main_image?: string;
     social_impact?: string;
 
@@ -29,7 +29,7 @@ export interface IProjectForm {
     business_model?: string;
     better_project?: string;
     additional_info?: string;
-    business_web: string;
+    business_web?: string;
     additional_document?: string;
 }
 
@@ -42,11 +42,8 @@ export interface IMember {
 
 // Schema
 const projectShape: ZodShape<IProjectForm> = {
-    title: z.string().nonempty('Campo obligatorio'),
-    description: z
-        .string()
-        .nonempty('Campo obligatorio')
-        .min(300, 'La descripción debe tener al menos 300 caracteres de largo.'),
+    title: z.string().optional(),
+    description: z.string().optional(),
     main_image: z.string().optional(),
     social_impact: z.string().optional(),
 
@@ -65,7 +62,7 @@ const projectShape: ZodShape<IProjectForm> = {
     business_model: z.string().optional(),
     better_project: z.string().optional(),
     additional_info: z.string().optional(),
-    business_web: z.string().nonempty('Campo obligatorio').url('URL inválido'),
+    business_web: z.string().optional(),
     additional_document: z.string().optional(),
 
     qualities: z.object({ value: z.string(), label: z.string() }).optional(),

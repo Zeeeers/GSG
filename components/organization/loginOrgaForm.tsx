@@ -90,7 +90,7 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
     return (
         <Stack as="form" direction="column" spacing="17px" mt="23px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
-                <FormLabel fontSize="md" fontWeight="semibold">
+                <FormLabel fontSize="md" fontWeight="normal">
                     Correo electrónico
                 </FormLabel>
 
@@ -100,7 +100,7 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
             </FormControl>
 
             <FormControl id="password" isInvalid={!!errors.password}>
-                <FormLabel fontSize="md" fontWeight="semibold">
+                <FormLabel fontSize="md" fontWeight="normal">
                     Contraseña
                 </FormLabel>
 
@@ -119,6 +119,7 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
                     isLoading={isLoggingIn}
                     loadingText={'Iniciando sesión'}
                     w={'full'}
+                    h="44px"
                     mb={4}
                 >
                     Iniciar sesión

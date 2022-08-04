@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { useRegisterStore } from 'stores/register';
-import { Heading } from '@chakra-ui/react';
+import { Button, Heading, Link, Text } from '@chakra-ui/react';
 import LogoBar from 'layouts/guest/logoBar';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
 import RegisterStepOneForm from 'components/register/registerStepOneForm';
@@ -36,6 +36,10 @@ const RegisterPage: NextPage = () => {
                             REGISTRO
                         </Heading>
                         {step === 'ONE' ? <RegisterStepOneForm /> : <RegisterStepTwoForm />}
+
+                        <Button onClick={() => router.push('/login')} variant="ghost" mt="20px">
+                            Ya tengo cuenta
+                        </Button>
                     </>
                 ) : (
                     <>

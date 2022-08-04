@@ -131,12 +131,12 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 ref={description_finance}
                 scrollMarginTop="100px"
             >
-                <Text fontSize="4xl" fontWeight="medium">
+                <Text fontSize="4xl" fontWeight="medium" lineHeight="130%">
                     Descripción financiera de {project?.organization.name}
                 </Text>
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
                             Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
@@ -202,7 +202,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
 
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
                             En relación a los plazos de inversión, {project?.organization.name} buscaría un plazo de:
                         </Text>
                         <Text as="p" fontSize="24px" fontWeight="medium">
@@ -278,7 +278,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Text as="p" fontSize="3xl">
                         Espacios de mejora continua
                     </Text>
-                    <Text as="p" fontSize="16px">
+                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
                         {project?.better_project}
                     </Text>
                 </VStack>
@@ -289,7 +289,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Text as="p" fontSize="3xl">
                         Información complementaria
                     </Text>
-                    <Text as="p" fontSize="16px">
+                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
                         Históricamente, la clase de activos de capital de riesgo ha sido dominio exclusivo de las
                         empresas de capital de riesgo, los inversores profesionales y las personas de alto patrimonio
                         neto.

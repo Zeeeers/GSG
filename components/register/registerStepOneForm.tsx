@@ -12,6 +12,8 @@ import {
     useDisclosure,
     InputGroup,
     InputLeftAddon,
+    Text,
+    HStack,
 } from '@chakra-ui/react';
 import { IRegisterOneForm, registerOneShema } from 'forms/register';
 import { useForm } from 'react-hook-form';
@@ -52,7 +54,7 @@ const RegisterStepOneForm: React.FC = () => {
 
                 <VStack align="start" spacing={8}>
                     <FormControl id="userName" isInvalid={!!errors.userName}>
-                        <FormLabel>Nombre</FormLabel>
+                        <FormLabel>Nombre y apellido</FormLabel>
 
                         <Input size="md" {...register('userName')} />
 
@@ -95,11 +97,15 @@ const RegisterStepOneForm: React.FC = () => {
                     </FormControl>
 
                     <FormControl id="termsCheck" isInvalid={!!errors.termsCheck}>
-                        <Checkbox {...register('termsCheck')}>
-                            {'He leído y entiendo los '}
-                            <Button variant="link" fontSize="md" mb={1} onClick={onTermsOpen}>
-                                términos y condiciones del servicio.
-                            </Button>
+                        <Checkbox {...register('termsCheck')} fontSize="12px">
+                            <HStack spacing="5px">
+                                <Text fontSize="12px" fontFamily="inter">
+                                    He leído y acepto los
+                                </Text>
+                                <Button variant="link" fontFamily="inter" fontSize="12px" mb={1} onClick={onTermsOpen}>
+                                    términos y condiciones del servicio.
+                                </Button>
+                            </HStack>
                         </Checkbox>
 
                         <FormErrorMessage fontWeight={'semibold'}>{errors.termsCheck?.message}</FormErrorMessage>

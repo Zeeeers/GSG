@@ -33,7 +33,7 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 onClose={onClose}
                 finalFocusRef={btnRef}
                 isCentered
-                size="lg"
+                size="md"
                 scrollBehavior="outside"
             >
                 <ModalOverlay />
@@ -42,7 +42,7 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         {isRegister ? 'REGISTRATE' : 'INICIAR SESIÓN'}
                     </ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody mb={6} pt={0}>
+                    <ModalBody maxW="400px" mb={6} pt={0}>
                         <Text fontSize={'md'} fontWeight={'normal'} mt="7px">
                             {isRegister
                                 ? 'Crea tu cuenta en Goodbusiness para continuar'
@@ -59,12 +59,13 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                         transitionProperty="all"
                                         transitionDuration={'slow'}
                                         colorScheme="primary"
+                                        fontWeight={'normal'}
                                     >
                                         Olvidé mi contraseña
                                     </Button>
                                 </Link>
                                 <VStack spacing="7px" mt="36px">
-                                    <Text fontSize={'md'} fontWeight={'semibold'}>
+                                    <Text fontSize={'md'} fontWeight={'normal'}>
                                         Aún no tengo cuenta
                                     </Text>
                                     <Button
@@ -74,6 +75,7 @@ const LoginOrgaModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                         transitionDuration={'slow'}
                                         colorScheme="secondary"
                                         w="320px"
+                                        fontWeight={'normal'}
                                     >
                                         Registrarme
                                     </Button>

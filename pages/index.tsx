@@ -171,6 +171,7 @@ const Index: NextPage = () => {
         { value: 'until-4-years', label: 'Hasta 48 meses' },
         { value: 'more-than-4-years', label: 'Más de 48 meses' },
     ];
+
     const handlePublished = async (data: IProjectForm) => {
         setCreateProyect(true);
         const dataProject = {
@@ -212,6 +213,61 @@ const Index: NextPage = () => {
             toast({
                 title: 'Error al crear el proyecto',
                 description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+    };
+
+    const handleDraft = async (data: IProjectForm) => {
+        const dataProject = {
+            gsg_project: {
+                title: data.title ?? '',
+                description: data.description ?? '',
+                main_image: baseImgMain ?? undefined,
+                social_impact: baseSocialPdf?.base64 ?? undefined,
+                more_info: data.more_info?.value ?? '',
+                third_parties: data.third_parties?.value ?? '',
+                stage: data.stage?.value ?? '',
+                investment_objective: data.investment_objective?.value ?? '',
+                capital_stage: data.capital_stage?.value ?? '',
+                business_model: data.business_model ?? '',
+                guarantee: data.guarantee?.value ?? '',
+                expected_rentability: data.expected_rentability?.value ?? '',
+                finance_goal: data.finance_goal?.value ?? '',
+                time_lapse: data.time_lapse?.value ?? '',
+                investment_types: data.investment_types ?? '',
+                better_project: data.better_project ?? '',
+                additional_info: '',
+                business_web: data.business_web ?? '',
+                additional_document: baseAdditional?.base64 ?? undefined,
+                status: 'sketch',
+            },
+            qualities: selectedOptions?.map((item) => item.value)?.join(';;') ?? undefined,
+            members:
+                members?.length !== 0
+                    ? JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {})
+                    : undefined,
+        };
+
+        const { create } = await import('../services/api/lib/gsg');
+        const { ok } = await create({ project: dataProject });
+
+        if (ok) {
+            toast({
+                title: 'Borrador creado',
+                description: 'El borrador se ha creado con éxito.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        } else {
+            toast({
+                title: 'Error al crear el borrador',
+                description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -271,7 +327,7 @@ const Index: NextPage = () => {
                         </Text>
                     </HStack>
                     <HStack spacing="8px">
-                        <Button type="button" variant="outline">
+                        <Button onClick={handleSubmit(handleDraft)} type="button" variant="outline">
                             Guardar borrador
                         </Button>
 
@@ -315,8 +371,13 @@ const Index: NextPage = () => {
                             )}
                         />
 
-                        <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
-                            {proyectDescription?.length}/700 caractéres
+                        <Text
+                            textColor="gray.300"
+                            fontSize={{ base: 'xs', md: 'sm' }}
+                            fontWeight="medium"
+                            color="gray.400"
+                        >
+                            {proyectDescription?.length ?? 0}/700 caractéres
                         </Text>
 
                         <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
@@ -336,7 +397,7 @@ const Index: NextPage = () => {
                     {/*TODO: useCropper for upload image product*/}
 
                     <FormControl id="main_image">
-                        <FormLabel>
+                        <FormLabel lineHeight="140%">
                             Sube una foto representativa del proyecto de tu empresa, producto o servicio. Esta aparecerá
                             dentro de las tarjetas que inversionistas y público en general podrán ver
                         </FormLabel>
@@ -416,12 +477,14 @@ const Index: NextPage = () => {
                                 />
                             )}
                         />
-                        <FormHelperText>Máximo 3 ODS</FormHelperText>
+                        <FormHelperText textColor="gray.300">Máximo 3 ODS</FormHelperText>
                         <FormErrorMessage fontWeight={'semibold'}>{errors.qualities?.message}</FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="third_parties" w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Selecciona el respaldo con el que cuentas de una tercera organización</FormLabel>
+                        <FormLabel lineHeight="140%">
+                            Selecciona el respaldo con el que cuentas de una tercera organización
+                        </FormLabel>
                         <Controller
                             name="third_parties"
                             control={control}
@@ -431,7 +494,9 @@ const Index: NextPage = () => {
                     </FormControl>
 
                     <FormControl id="more_info" w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Selecciona el respaldo con el que cuentas de una tercera organización</FormLabel>
+                        <FormLabel lineHeight="140%">
+                            Selecciona el respaldo con el que cuentas de una tercera organización
+                        </FormLabel>
                         <Controller
                             name="more_info"
                             control={control}
@@ -550,7 +615,7 @@ const Index: NextPage = () => {
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
+                                <FormLabel lineHeight="140%">
                                     Su empresa, producto o servicio que quiere financiar, ¿cuenta con garantías?
                                 </FormLabel>
                                 <Controller
@@ -564,7 +629,7 @@ const Index: NextPage = () => {
                             </FormControl>
 
                             <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
+                                <FormLabel lineHeight="140%">
                                     ¿Cuál es la rentabilidad que esperas para tu empresa, producto o servicio?
                                 </FormLabel>
                                 <Controller
@@ -581,7 +646,7 @@ const Index: NextPage = () => {
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="finance_goal" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
+                                <FormLabel lineHeight="140%">
                                     Por favor selecciona el rango del monto de aporte aproximado que estás buscando
                                 </FormLabel>
                                 <Controller
@@ -701,11 +766,13 @@ const Index: NextPage = () => {
                             Información Complementaria
                         </Text>
                         <FormControl>
-                            <FormLabel>
+                            <FormLabel lineHeight="140%">
                                 Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
                                 que el inversionista comprenda mejor a tu empresa, producto o servicio
                             </FormLabel>
-                            <FormHelperText>Ejemplo: Aparición en prensa, prospección de mercado etc.</FormHelperText>
+                            <FormHelperText textColor="gray.300">
+                                Ejemplo: Aparición en prensa, prospección de mercado etc.
+                            </FormHelperText>
                             <SlateEditor
                                 handleSaveField={handleEditField}
                                 bg="gray.50"
@@ -794,7 +861,12 @@ const Index: NextPage = () => {
                             )}
                         />
 
-                        <Text fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="gray.400">
+                        <Text
+                            textColor="gray.300"
+                            fontSize={{ base: 'xs', md: 'sm' }}
+                            fontWeight="medium"
+                            color="gray.400"
+                        >
                             {proyectBetter?.length ?? 0}/700 caractéres
                         </Text>
 

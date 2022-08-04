@@ -27,7 +27,7 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
                 <ModalOverlay />
                 <ModalContent rounded="2xl" pt={'54px'} px="34px">
-                    <ModalHeader fontSize="4xl" d="flex" textAlign="start" px={0} py={0}>
+                    <ModalHeader fontSize="3xl" d="flex" textAlign="start" px={0} py={0}>
                         Ingresar
                     </ModalHeader>
                     <ModalCloseButton />
@@ -50,7 +50,7 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                 </Button>
                             </Link>
                             <VStack spacing="7px" mt="36px">
-                                <Text fontSize={'md'} fontWeight={'semibold'}>
+                                <Text fontSize={'md'} fontWeight={'normal'} fontFamily="inter">
                                     ¿No tienes cuenta?
                                 </Text>
                                 <Button variant="outline">Solicitar una invitación</Button>

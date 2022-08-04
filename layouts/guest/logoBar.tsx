@@ -19,7 +19,7 @@ const LogoBar: React.FC = ({ children }) => {
         >
             <VStack spacing="30px" mt="100px">
                 <Text fontSize="36px" fontWeight="bold">
-                    Inversiones de impacto
+                    Inversión de impacto
                 </Text>
                 <Flex
                     flexDirection="column"
