@@ -1,6 +1,7 @@
 //@ts-nocheck
 import {
     Heading,
+    Link,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -36,7 +37,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                 Correo
                             </Text>
                             <Text fontSize="16px" fontFamily="inter">
-                                https://www.{project?.legal_representative_email}
+                                {project?.legal_representative_email ?? 'No hay correo'}
                             </Text>
                         </VStack>
                         <VStack alignItems="flex-start" spacing={0}>
@@ -48,12 +49,15 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                             </Text>
                         </VStack>
 
-                        <Text fontSize="20px" textDecoration="underline" fontWeight="semibold">
+                        <Link
+                            href={`https://www.${web}`}
+                            target="_blank"
+                            textDecoration="underline"
+                            fontSize="20px"
+                            fontWeight="semibold"
+                        >
                             Sitio web
-                        </Text>
-                        <Text fontSize="16px" fontFamily="inter">
-                            {web}
-                        </Text>
+                        </Link>
                     </VStack>
                 </ModalBody>
             </ModalContent>
