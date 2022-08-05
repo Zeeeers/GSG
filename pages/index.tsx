@@ -26,6 +26,7 @@ import {
     ModalBody,
     ModalOverlay,
     ModalHeader,
+    Img,
 } from '@chakra-ui/react';
 import SlateEditor from 'common/slate/SlateEditor';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -802,12 +803,25 @@ const Index: NextPage = () => {
                                 </FormErrorMessage>
                             </FormControl>
                         </Stack>
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="baseline" w="full">
                             <FormControl id="business_model" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>
                                     Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
-                                <Input {...register('business_model')} placeholder="Ventas últimos 12 meses" />
+
+                                <FormHelperText pb="15px" justifyContent="flex-start">
+                                    <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                                        - Ventas últimos 12 meses - EBITDA último año fiscal <br /> - Deuda/Patrimonio
+                                        último año fiscal <br /> - Activo circulante vs Patrimonio último año fiscal{' '}
+                                        <br /> - Impuesto declarado en el último año fiscal
+                                    </Text>
+                                </FormHelperText>
+
+                                <Input
+                                    {...register('business_model')}
+                                    placeholder="Ventas últimos 12 meses"
+                                    mt="63px"
+                                />
                                 <FormErrorMessage fontWeight={'semibold'}>
                                     {errors.better_project?.message}
                                 </FormErrorMessage>
@@ -817,6 +831,13 @@ const Index: NextPage = () => {
                                 <FormLabel>
                                     ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
+                                <FormHelperText pb="15px">
+                                    <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                                        - Inversor ancla (recursos, nombre, inteligencia, acceso), <br /> - Inversores
+                                        atomizados (dinero de diversas fuentes) <br /> - Sponsor <br /> - Minoritarios{' '}
+                                        <br /> - Subordinados <br /> - Cualquiera <br /> - Otra, ¿Cuál?
+                                    </Text>
+                                </FormHelperText>
                                 <Input {...register('investment_types')} placeholder="Inversor ancla" />
                                 {errors.investment_types?.message}
                             </FormControl>
