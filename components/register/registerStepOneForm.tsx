@@ -55,35 +55,51 @@ const RegisterStepOneForm: React.FC = () => {
 
                 <VStack align="start" spacing={8}>
                     <FormControl id="userName" isInvalid={!!errors.userName}>
-                        <FormLabel>Nombre y apellido</FormLabel>
+                        <FormLabel>
+                            Nombre y apellido <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <Input size="md" {...register('userName')} />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.userName?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.userName?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="userEmail" isInvalid={!!errors.userEmail}>
-                        <FormLabel>Correo eletrónico</FormLabel>
+                        <FormLabel>
+                            Correo eletrónico <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <Input size="md" {...register('userEmail')} />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.userEmail?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.userEmail?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="password" isInvalid={!!errors.password}>
-                        <FormLabel>Crea tu contraseña</FormLabel>
+                        <FormLabel>
+                            Crea tu contraseña <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <InputPassword size="md" {...register('password')} />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.password?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.password?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="passwordConfirm" isInvalid={!!errors.passwordConfirm}>
-                        <FormLabel>Confirmar contraseña</FormLabel>
+                        <FormLabel>
+                            Confirmar contraseña <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <InputPassword size="md" {...register('passwordConfirm')} />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.passwordConfirm?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.passwordConfirm?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="legalRepPhone" isInvalid={!!errors.legalRepPhone}>
@@ -94,7 +110,9 @@ const RegisterStepOneForm: React.FC = () => {
                             <Input {...register('legalRepPhone')} />
                         </InputGroup>
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.legalRepPhone?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.legalRepPhone?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="termsCheck" isInvalid={!!errors.termsCheck}>
@@ -109,7 +127,9 @@ const RegisterStepOneForm: React.FC = () => {
                             </HStack>
                         </Checkbox>
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.termsCheck?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.termsCheck?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <Button type="submit" variant="solid" mb={8} h="44px" w="full">

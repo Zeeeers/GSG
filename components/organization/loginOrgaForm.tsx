@@ -91,22 +91,26 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
         <Stack as="form" direction="column" spacing="15px" mt="20px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
                 <FormLabel fontSize="md" fontWeight="normal">
-                    Correo electrónico
+                    Correo electrónico <span style={{ color: '#4FD1C5' }}>*</span>
                 </FormLabel>
 
                 <Input {...register('email')} size="md" />
 
-                <FormErrorMessage fontWeight={'semibold'}>{errors.email?.message}</FormErrorMessage>
+                <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                    {errors.email?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <FormControl id="password" isInvalid={!!errors.password}>
                 <FormLabel fontSize="md" fontWeight="normal">
-                    Contraseña
+                    Contraseña <span style={{ color: '#4FD1C5' }}>*</span>
                 </FormLabel>
 
                 <InputPassword {...register('password')} size="md" />
 
-                <FormErrorMessage fontWeight={'semibold'}>{errors.password?.message}</FormErrorMessage>
+                <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                    {errors.password?.message}
+                </FormErrorMessage>
             </FormControl>
 
             {alert && <DangerAlert message={'Correo electrónico o contraseña incorrecto'} />}

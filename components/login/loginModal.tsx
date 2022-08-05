@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import LoginOrgaForm from 'components/organization/loginOrgaForm';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import LoginForm from './loginForm';
 
 // Types
@@ -28,6 +29,7 @@ interface Props {
 
 // Component
 const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
+    const router = useRouter();
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
@@ -68,6 +70,36 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
                             <TabPanels>
                                 <TabPanel px={0}>
                                     <LoginOrgaForm afterLogin={onClose} />
+
+                                    <Flex flexDirection={'column'} alignItems={'center'} mt="20px">
+                                        <Link href="/recovery/recoveryPassword" passHref>
+                                            <Button
+                                                variant="link"
+                                                transitionProperty="all"
+                                                transitionDuration={'slow'}
+                                                colorScheme="primary"
+                                                fontWeight={'normal'}
+                                            >
+                                                Olvidé mi contraseña
+                                            </Button>
+                                        </Link>
+                                        <VStack spacing="10px" mt="36px">
+                                            <Text fontSize={'md'} fontWeight={'normal'}>
+                                                ¿Eres empresa y no tienes cuenta?
+                                            </Text>
+                                            <Button
+                                                onClick={() => router.push('/register')}
+                                                variant="outline"
+                                                transitionProperty="all"
+                                                transitionDuration={'slow'}
+                                                colorScheme="secondary"
+                                                w="320px"
+                                                fontWeight={'normal'}
+                                            >
+                                                Registrarme
+                                            </Button>
+                                        </VStack>
+                                    </Flex>
                                 </TabPanel>
                                 <TabPanel px={0}>
                                     <LoginForm afterLogin={onClose} />

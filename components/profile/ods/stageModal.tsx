@@ -14,6 +14,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
+import CheckCardBox from 'common/checkCardBox';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
 import React, { useState } from 'react';
 import { useUser } from 'services/api/lib/user';

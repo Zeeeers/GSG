@@ -24,12 +24,7 @@ const registerOneShape: ZodShape<IRegisterOneForm> = {
     userEmail: z.string().email('Correo electrónico inválido').nonempty('Campo obligatorio'),
     password: z.string().nonempty('Campo obligatorio').min(8, 'Longitud mínima 8 caracteres'),
     passwordConfirm: z.string().nonempty('Campo obligatorio'),
-    legalRepPhone: z
-        .string()
-        .min(8, 'Largo mínimo 8 caracteres')
-        .max(8, 'Largo máximo 8 caracteres')
-        .regex(new RegExp('^[0-9]+$'))
-        .optional(),
+    legalRepPhone: z.string().optional(),
     termsCheck: z.boolean(),
 };
 

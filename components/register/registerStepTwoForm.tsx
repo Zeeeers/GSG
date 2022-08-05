@@ -11,6 +11,7 @@ import {
     Button,
     useDisclosure,
     useToast,
+    Stack,
 } from '@chakra-ui/react';
 import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
 import { useForm } from 'react-hook-form';
@@ -72,7 +73,7 @@ const RegisterStepTwoForm: React.FC = () => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/');
+            router.push('/explorer');
             setIsCreatingAccount(false);
         } else {
             toast({
@@ -89,7 +90,7 @@ const RegisterStepTwoForm: React.FC = () => {
 
     return (
         <>
-            <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
+            <Stack w="460px" as="form" autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
                 <VStack my={8} spacing={8} w="full">
                     <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
                         <Button
@@ -127,12 +128,12 @@ const RegisterStepTwoForm: React.FC = () => {
                                     name={watch().organizationName ? 'GSG' : watch().organizationName}
                                 />
 
-                                <Input type="hidden" {...register('logo')} />
-
                                 <UploadButton
                                     variant="ghost"
                                     colorScheme="white"
                                     fontWeight="bold"
+                                    w="fit-content"
+                                    cursor="pointer"
                                     ml={-2}
                                     onChange={async (e) => {
                                         const { validateTypes, getBase64 } = await import('services/images');
@@ -147,20 +148,36 @@ const RegisterStepTwoForm: React.FC = () => {
                                     Subir logo
                                 </UploadButton>
 
-                                <FormErrorMessage fontWeight={'semibold'}>{errors.logo?.message}</FormErrorMessage>
+                                <Input
+                                    visibility="hidden"
+                                    type="hidden"
+                                    {...register('logo')}
+                                    w="fit-content"
+                                    cursor="pointer"
+                                />
+
+                                <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                                    {errors.logo?.message}
+                                </FormErrorMessage>
                             </VStack>
                         </VStack>
                     </FormControl>
 
                     <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
-                        <FormLabel>Nombre de la organización</FormLabel>
+                        <FormLabel>
+                            Nombre de la organización <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <Input size="md" {...register('organizationName')} />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.organizationName?.message}
+                        </FormErrorMessage>
                     </FormControl>
                     <FormControl id="idNumber" isInvalid={!!errors.idNumber}>
-                        <FormLabel>Número o identificador nacional</FormLabel>
+                        <FormLabel>
+                            Número o identificador nacional <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <Input
                             size="md"
@@ -169,7 +186,9 @@ const RegisterStepTwoForm: React.FC = () => {
                             _placeholder={{ color: 'gray.400' }}
                         />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.idNumber?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.idNumber?.message}
+                        </FormErrorMessage>
                     </FormControl>
                 </VStack>
 
@@ -184,7 +203,7 @@ const RegisterStepTwoForm: React.FC = () => {
                 >
                     Siguiente
                 </Button>
-            </form>
+            </Stack>
 
             {isCropperOpen && (
                 <CropperModal

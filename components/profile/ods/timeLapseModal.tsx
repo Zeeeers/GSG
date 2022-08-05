@@ -37,11 +37,11 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                     <VStack alignItems="flex-start" spacing="30px" w="full">
                         <VStack alignItems="flex-start" spacing="5px">
                             <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                Respaldo de plazos de inversión
+                                PLAZOS DE INVERSIÓN
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                A continuación se presentan las alternativas que podrás elegir para recibir correos con
-                                recomendaciones de empresas, productos o servicios asociados a esta categoría
+                                Selecciona una alternativa única para recibir correos con recomendaciones de proyectos
+                                asociados a esta categoría.
                             </Text>
                         </VStack>
 
