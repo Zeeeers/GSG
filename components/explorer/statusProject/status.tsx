@@ -2,6 +2,7 @@ import { Badge, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { GsgFormated } from 'services/api/types/Gsg';
+import { useDraftStore } from 'stores/draftProject';
 
 type StatusProps = {
     project: GsgFormated;
@@ -30,6 +31,8 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
             break;
     }
 
+    const setProject = useDraftStore((s) => s.setProject);
+
     const router = useRouter();
     return (
         <HStack bg="gray.700" p="20px" rounded="8px" w="full" mb="40px" justifyContent="space-between">
@@ -50,7 +53,11 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                     _hover={{ bg: 'blue.600' }}
                     h="40px"
                     variant="solid"
-                    onClick={() => router.push(`/`)}
+                    onClick={() => {
+                        router.push(`/`);
+                        //@ts-ignore
+                        setProject(project);
+                    }}
                 >
                     Editar mi postulación
                 </Button>

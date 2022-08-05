@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     Button,
     Heading,
@@ -8,12 +9,14 @@ import {
     ModalOverlay,
     Text,
     useCheckboxGroup,
+    useToast,
     VStack,
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
-import React from 'react';
+import React, { useState } from 'react';
+import { useUser } from 'services/api/lib/user';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -21,15 +24,58 @@ interface Props {
     isOpen: boolean;
     onClose(): void;
     interest?: Interest;
+    myInterest: Interest;
 }
 
-const StageModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
+const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
+    const [stage, setStage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { getCheckboxProps } = useCheckboxGroup({
         defaultValue: [],
-        //onChange: (value) => setFilters([...filters, value]),
+        // @ts-ignore
+        onChange: (value) => setStage(value),
     });
 
-    console.log(interest?.stage);
+    const { data: user } = useUser();
+
+    const toast = useToast();
+
+    const handleSave = async () => {
+        setIsLoading(true);
+        const { update } = await import('../../../services/api/lib/interest');
+
+        const data = {
+            interest: {
+                //@ts-ignore
+                third_party: third?.join(';;'),
+            },
+        };
+
+        const { ok } = await update({ id: myInterest?.interests?.id, data });
+
+        if (ok) {
+            setIsLoading(false);
+            toast({
+                //@ts-ignore
+                title: 'Respaldo guardado con éxito.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            onClose();
+        } else {
+            setIsLoading(false);
+            toast({
+                //@ts-ignore
+                title: 'Ha ocurrido un error al guardar los respaldos.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+    };
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
@@ -38,12 +84,12 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="30px" w="full">
                         <VStack alignItems="flex-start" spacing="5px">
-                            <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                Respaldo de una etapa de producto o servicios
+                            <Heading fontFamily="barlow" fontSize="24px" lineHeight="130%" textTransform="uppercase">
+                                ETAPA DE PROYECTO
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                A continuación se presentan las alternativas que podrás elegir para recibir correos con
-                                recomendaciones de empresas, productos o servicios asociados a esta categoría
+                                Selecciona una alternativa única para recibir correos con recomendaciones de proyectos
+                                asociados a esta categoría.
                             </Text>
                         </VStack>
 

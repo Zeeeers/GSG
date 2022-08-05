@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     Button,
     Heading,
@@ -22,9 +23,10 @@ interface Props {
     isOpen: boolean;
     onClose(): void;
     interest?: Interest;
+    myInterest: Interest;
 }
 
-const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
+const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     //@ts-ignore
     const [ods, setOds] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -41,23 +43,28 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
         setIsLoading(true);
         const { update } = await import('../../../services/api/lib/interest');
 
-        const { ok } = await update(user?.id, ods?.join(';;'));
+        const data = {
+            qualities: ods?.join(';;'),
+        };
+
+        const { ok } = await update({ id: myInterest?.interests?.id, data });
 
         if (ok) {
             setIsLoading(false);
             toast({
                 //@ts-ignore
-                title: 'OSD guardado con éxito.',
+                title: 'ODS guardado con éxito.',
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
                 position: 'top-right',
             });
+            onClose();
         } else {
             setIsLoading(false);
             toast({
                 //@ts-ignore
-                title: 'Ha ocurrido un error al crear el ODS.',
+                title: 'Ha ocurrido un error al guardar los ODS.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -73,13 +80,13 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="30px" w="full">
-                        <VStack alignItems="flex-start" spacing="5px">
+                        <VStack alignItems="flex-start" spacing="10px">
                             <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                Respaldo de una ODS
+                                OBJETIVOS DE DESARROLLO SOSTENIBLE (ODS)
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                A continuación se presentan las alternativas que podrás elegir para recibir correos con
-                                recomendaciones de empresas, productos o servicios asociados a esta categoría
+                                Selecciona los ODS que consideres necesarios para recibir correos con recomendaciones de
+                                proyectos asociados a esta categoría.
                             </Text>
                         </VStack>
 
@@ -101,7 +108,6 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest }) => {
                                     fontWeight="normal"
                                     fontFamily="inter"
                                     fontSize="md"
-                                    disabled={ods?.length >= 3}
                                     _hover={{ bg: 'gray.600' }}
                                     _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
                                     {...getCheckboxProps({ value: item.id })}

@@ -62,7 +62,7 @@ export const getGsgProject = async (_: string, id: number) => {
 };
 
 export const useGsgProject = (id?: number) => {
-    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject);
+    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, { revalidateOnFocus: false });
 };
 
 export const getMyGsgProject = async (_: string, token?: string) => {

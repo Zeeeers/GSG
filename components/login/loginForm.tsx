@@ -66,7 +66,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
         } else {
             toast({
                 title: 'No se ha podido iniciar sesión',
-                description: 'Ha ocurrido un error al intetar iniciar sesión',
+                description: 'Ha ocurrido un error al intentar iniciar sesión',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,

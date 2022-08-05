@@ -44,6 +44,7 @@ import { useQualityList } from 'services/api/lib/qualities';
 import { FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
 import SuccessModal from 'components/project/successModal';
+import { useDraftStore } from 'stores/draftProject';
 
 // Page
 const Index: NextPage = () => {
@@ -62,7 +63,7 @@ const Index: NextPage = () => {
 
     const [createProyect, setCreateProyect] = useState(false);
 
-    const project = useCreateGsgProjectStore((s) => s.project);
+    const project = useDraftStore((s) => s.project);
     const setMember = useCreateGsgProjectStore((s) => s.setMember);
     const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
     const [contenido, setContenido] = useState<Descendant[]>();
@@ -73,6 +74,8 @@ const Index: NextPage = () => {
 
     const toast = useToast();
 
+    console.log(project);
+
     const {
         register,
         formState: { errors },
@@ -82,6 +85,12 @@ const Index: NextPage = () => {
         watch,
     } = useForm<IProjectForm>({
         resolver: zodResolver(projectSchema),
+        defaultValues: {
+            title: project?.title ?? '',
+            description: project?.description ?? '',
+            business_web: project?.business_web ?? '',
+            third_parties: { value: project?.third_parties ?? '', label: '' },
+        },
     });
 
     const handleEditField = (values: Descendant[]) => {
@@ -226,28 +235,28 @@ const Index: NextPage = () => {
     const handleDraft = async (data: IProjectForm) => {
         const dataProject = {
             gsg_project: {
-                title: data.title ?? '',
-                description: data.description ?? '',
-                main_image: baseImgMain ?? undefined,
-                social_impact: baseSocialPdf?.base64 ?? undefined,
-                more_info: data.more_info?.value ?? '',
-                third_parties: data.third_parties?.value ?? '',
-                stage: data.stage?.value ?? '',
-                investment_objective: data.investment_objective?.value ?? '',
-                capital_stage: data.capital_stage?.value ?? '',
-                business_model: data.business_model ?? '',
-                guarantee: data.guarantee?.value ?? '',
-                expected_rentability: data.expected_rentability?.value ?? '',
-                finance_goal: data.finance_goal?.value ?? '',
-                time_lapse: data.time_lapse?.value ?? '',
-                investment_types: data.investment_types ?? '',
-                better_project: data.better_project ?? '',
+                title: data.title,
+                description: data.description,
+                main_image: baseImgMain,
+                social_impact: baseSocialPdf?.base64,
+                more_info: data.more_info?.value,
+                third_parties: data.third_parties?.value,
+                stage: data.stage?.value,
+                investment_objective: data.investment_objective?.value,
+                capital_stage: data.capital_stage?.value,
+                business_model: data.business_model,
+                guarantee: data.guarantee?.value,
+                expected_rentability: data.expected_rentability?.value,
+                finance_goal: data.finance_goal?.value,
+                time_lapse: data.time_lapse?.value,
+                investment_types: data.investment_types,
+                better_project: data.better_project,
                 additional_info: '',
-                business_web: data.business_web ?? '',
-                additional_document: baseAdditional?.base64 ?? undefined,
+                business_web: data.business_web,
+                additional_document: baseAdditional?.base64,
                 status: 'sketch',
             },
-            qualities: selectedOptions?.map((item) => item.value)?.join(';;') ?? undefined,
+            qualities: selectedOptions?.map((item) => item.value)?.join(';;'),
             members:
                 members?.length !== 0
                     ? JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {})
