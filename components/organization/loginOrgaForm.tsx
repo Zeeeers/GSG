@@ -88,7 +88,7 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
     }, [router]);
 
     return (
-        <Stack as="form" direction="column" spacing="17px" mt="23px" onSubmit={handleSubmit(handleLogin)}>
+        <Stack as="form" direction="column" spacing="15px" mt="20px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
                 <FormLabel fontSize="md" fontWeight="normal">
                     Correo electrónico

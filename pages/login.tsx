@@ -22,6 +22,7 @@ import LogoBar from 'layouts/guest/logoBar';
 import LoginForm from 'components/login/loginForm';
 import { useEffect } from 'react';
 import LoginOrgaForm from 'components/organization/loginOrgaForm';
+import { useRouter } from 'next/router';
 
 // Page
 const LoginPage: NextPage = ({ token }) => {
@@ -41,6 +42,8 @@ const LoginPage: NextPage = ({ token }) => {
             });
         }
     };
+
+    const router = useRouter();
 
     useEffect(() => {
         if (token) {
@@ -84,6 +87,36 @@ const LoginPage: NextPage = ({ token }) => {
                         <TabPanels>
                             <TabPanel px={0}>
                                 <LoginOrgaForm />
+
+                                <Flex flexDirection={'column'} alignItems={'center'} mt="20px">
+                                    <Link href="/recovery/recoveryPassword" passHref>
+                                        <Button
+                                            variant="link"
+                                            transitionProperty="all"
+                                            transitionDuration={'slow'}
+                                            colorScheme="primary"
+                                            fontWeight={'normal'}
+                                        >
+                                            Olvidé mi contraseña
+                                        </Button>
+                                    </Link>
+                                    <VStack spacing="10px" mt="36px">
+                                        <Text fontSize={'md'} fontWeight={'normal'}>
+                                            ¿Eres empresa y no tienes cuenta?
+                                        </Text>
+                                        <Button
+                                            onClick={() => router.push('/register')}
+                                            variant="outline"
+                                            transitionProperty="all"
+                                            transitionDuration={'slow'}
+                                            colorScheme="secondary"
+                                            w="320px"
+                                            fontWeight={'normal'}
+                                        >
+                                            Registrarme
+                                        </Button>
+                                    </VStack>
+                                </Flex>
                             </TabPanel>
                             <TabPanel px={0}>
                                 <LoginForm />

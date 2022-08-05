@@ -37,7 +37,11 @@ const NewPassword: NextPage<Props> = ({ token, jwt }) => {
                     >
                         <Link href="/explorer">
                             <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
-                                <Img src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png" />
+                                <Img
+                                    src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
+                                    w="40px"
+                                    h="40px"
+                                />
                                 <Text
                                     fontSize="3xl"
                                     textAlign="start"

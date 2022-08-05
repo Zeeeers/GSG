@@ -88,7 +88,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
     }, [router]);
 
     return (
-        <Stack as="form" w="full" direction="column" spacing="20px" pt="30px" onSubmit={handleSubmit(handleLogin)}>
+        <Stack as="form" w="full" direction="column" spacing="15px" pt="20px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
                 <FormLabel fontSize="md">Correo electrónico</FormLabel>
 
