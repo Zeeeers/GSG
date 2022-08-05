@@ -113,33 +113,57 @@ const AddMembersForm = ({ reload }) => {
                                     const { validateTypes, getBase64 } = await import('services/images');
 
                                     if (e.target?.files && validateTypes(e.target.files[0])) {
-                                        const base = await getBase64(e.target.files![0]);
-                                        setBaseImg(base);
-                                        onCropperOpen();
+                                        if (e.target.files[0].size > 600000) {
+                                            toast({
+                                                title: 'La imagen es muy grande',
+                                                status: 'error',
+                                                duration: 9000,
+                                                isClosable: true,
+                                                position: 'top-right',
+                                            });
+                                        } else {
+                                            const base = await getBase64(e.target.files![0]);
+                                            setBaseImg(base);
+                                            onCropperOpen();
+                                        }
                                     }
                                 }}
                             >
-                                Subir logo
+                                Subir imagen de perfil
                             </UploadButton>
 
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.main_image?.message}</FormErrorMessage>
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors.main_image?.message}
+                            </FormErrorMessage>
                         </VStack>
                     </VStack>
                 </FormControl>
                 <FormControl id="name" isInvalid={!!errors.name}>
-                    <FormLabel>Nombre</FormLabel>
+                    <FormLabel>
+                        Nombre y apellido <span style={{ color: '#4FD1C5' }}>*</span>
+                    </FormLabel>
                     <Input {...register('name')} />
-                    <FormErrorMessage fontWeight={'semibold'}>{errors.name?.message}</FormErrorMessage>
+                    <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                        {errors.name?.message}
+                    </FormErrorMessage>
                 </FormControl>
                 <FormControl id="position" isInvalid={!!errors.position}>
-                    <FormLabel>Posición dentro de la empresa</FormLabel>
+                    <FormLabel>
+                        Posición dentro de la empresa <span style={{ color: '#4FD1C5' }}>*</span>
+                    </FormLabel>
                     <Input {...register('position')} />
-                    <FormErrorMessage fontWeight={'semibold'}>{errors.position?.message}</FormErrorMessage>
+                    <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                        {errors.position?.message}
+                    </FormErrorMessage>
                 </FormControl>
                 <FormControl id="linkedin" isInvalid={!!errors.linkedin}>
-                    <FormLabel>Linkedin</FormLabel>
+                    <FormLabel>Linkedin (Opcional)</FormLabel>
                     <Input {...register('linkedin')} />
-                    <FormErrorMessage fontWeight={'semibold'}>{errors.linkedin?.message}</FormErrorMessage>
                 </FormControl>
 
                 <Button isLoading={createMember} loadingText="Creando equipo" type="submit" variant="solid">

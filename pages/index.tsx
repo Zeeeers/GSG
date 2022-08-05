@@ -423,7 +423,7 @@ const Index: NextPage = () => {
                             onClick={handleSubmit(handlePublished)}
                             variant="solid"
                         >
-                            Publicar producto
+                            Publicar proyecto
                         </Button>
                     </HStack>
                 </Container>
@@ -435,7 +435,9 @@ const Index: NextPage = () => {
                         Descripción General
                     </Text>
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Título del producto/servicio</FormLabel>
+                        <FormLabel>
+                            Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
                         <Input maxLength={40} {...register('title')} />
                         <Text
                             textColor="gray.300"
@@ -448,7 +450,9 @@ const Index: NextPage = () => {
                     </FormControl>
 
                     <FormControl id="description" isInvalid={!!errors.description}>
-                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>Descripción del producto/servicio</FormLabel>
+                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                            Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <Controller
                             name="description"
@@ -479,7 +483,9 @@ const Index: NextPage = () => {
                     </FormControl>
 
                     <FormControl id="business_web" isInvalid={!!errors.business_web} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Sitio web</FormLabel>
+                        <FormLabel>
+                            Sitio web <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
                         <InputGroup>
                             <InputLeftAddon>www.</InputLeftAddon>
                             <Input {...register('business_web')} />
@@ -491,8 +497,8 @@ const Index: NextPage = () => {
 
                     <FormControl id="main_image">
                         <FormLabel lineHeight="140%">
-                            Sube una foto representativa del proyecto de tu empresa, producto o servicio. Esta aparecerá
-                            dentro de las tarjetas que inversionistas y público en general podrán ver
+                            Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
+                            tarjetas que inversionistas y público en general podrán ver.
                         </FormLabel>
                         {baseImgMain ? (
                             <Stack position="relative" w="fit-content">
@@ -537,9 +543,19 @@ const Index: NextPage = () => {
                                         const { validateTypes, getBase64 } = await import('services/images');
 
                                         if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            const base = await getBase64(e.target.files![0]);
-                                            setBaseImgMain(base);
-                                            onCropperOpen();
+                                            if (e.target?.files[0].size > 600000) {
+                                                toast({
+                                                    title: 'La imagen es muy grande',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            } else {
+                                                const base = await getBase64(e.target.files![0]);
+                                                setBaseImgMain(base);
+                                                onCropperOpen();
+                                            }
                                         }
                                     }}
                                 >
@@ -553,7 +569,9 @@ const Index: NextPage = () => {
                     </FormControl>
 
                     <FormControl id="qualities" w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Selecciona los ODS que contribuyes en resolver</FormLabel>
+                        <FormLabel>
+                            Selecciona los ODS que contribuyes en resolver <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
                         <Controller
                             name="qualities"
                             control={control}
@@ -576,7 +594,8 @@ const Index: NextPage = () => {
 
                     <FormControl id="third_parties" w={{ base: '100%', md: '50%' }}>
                         <FormLabel lineHeight="140%">
-                            Selecciona el respaldo con el que cuentas de una tercera organización
+                            Selecciona el respaldo con el que cuentas de una tercera organización{' '}
+                            <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
                         <Controller
                             name="third_parties"
@@ -588,7 +607,8 @@ const Index: NextPage = () => {
 
                     <FormControl id="more_info" w={{ base: '100%', md: '50%' }}>
                         <FormLabel lineHeight="140%">
-                            Actualmente tienes información sobre cómo mides tus resultados de impacto
+                            Actualmente tienes información sobre cómo mides tus resultados de impacto{' '}
+                            <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
                         <Controller
                             name="more_info"
@@ -601,8 +621,8 @@ const Index: NextPage = () => {
                     <VStack w="100%" align="flex-start" spacing="10px">
                         <FormControl id="social_impact">
                             <FormLabel>
-                                Validación del impacto social/medioambiental: Por favor adjunta material que valide la
-                                medición de resultados (opcional)
+                                Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
+                                valíde la medición de resultados (opcional)
                             </FormLabel>
 
                             {baseSocialPdf ? (
@@ -667,7 +687,9 @@ const Index: NextPage = () => {
 
                     <VStack w={'full'} align="flex-start" spacing="40px">
                         <FormControl id="stage" w={{ base: '100%', md: '50%' }}>
-                            <FormLabel>¿En qué etapa se encuentra tu empresa, producto o servicio?</FormLabel>
+                            <FormLabel>
+                                ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
                             <Controller
                                 name="stage"
                                 control={control}
@@ -679,7 +701,10 @@ const Index: NextPage = () => {
                         </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
                             <FormControl id="investment_objective" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>¿Cuál es el objetivo que tienes para buscar inversión?</FormLabel>
+                                <FormLabel>
+                                    ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
                                 <Controller
                                     name="investment_objective"
                                     control={control}
@@ -693,7 +718,10 @@ const Index: NextPage = () => {
                             </FormControl>
 
                             <FormControl id="capital_stage" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>¿Cuál es la etapa de levantamiento en la que te encuentras?</FormLabel>
+                                <FormLabel>
+                                    ¿Cuál es la etapa de levantamiento en la que te encuentras?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
                                 <Controller
                                     name="capital_stage"
                                     control={control}
@@ -709,7 +737,8 @@ const Index: NextPage = () => {
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel lineHeight="140%">
-                                    Su empresa, producto o servicio que quiere financiar, ¿cuenta con garantías?
+                                    Su proyecto que quiere financiar, ¿cuenta con garantías?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
                                     name="guarantee"
@@ -723,7 +752,8 @@ const Index: NextPage = () => {
 
                             <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel lineHeight="140%">
-                                    ¿Cuál es la rentabilidad que esperas para tu empresa, producto o servicio?
+                                    ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
                                     name="expected_rentability"
@@ -741,7 +771,7 @@ const Index: NextPage = () => {
                             <FormControl id="finance_goal" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel lineHeight="140%">
                                     Por favor selecciona el rango del monto de aporte aproximado que estás buscando
-                                    (CLP)
+                                    (CLP) <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
                                     name="finance_goal"
@@ -756,7 +786,10 @@ const Index: NextPage = () => {
                             </FormControl>
 
                             <FormControl id="time_lapse" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Selecciona los plazos de inversión que buscas</FormLabel>
+                                <FormLabel>
+                                    Selecciona los plazos de inversión que buscas{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
                                 <Controller
                                     name="time_lapse"
                                     control={control}
@@ -771,7 +804,9 @@ const Index: NextPage = () => {
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="business_model" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>Trayectoria de la empresa/ producto/ servicio</FormLabel>
+                                <FormLabel>
+                                    Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
                                 <Input {...register('business_model')} placeholder="Ventas últimos 12 meses" />
                                 <FormErrorMessage fontWeight={'semibold'}>
                                     {errors.better_project?.message}
@@ -779,7 +814,9 @@ const Index: NextPage = () => {
                             </FormControl>
 
                             <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>¿Qué tipo de inversionista buscas?</FormLabel>
+                                <FormLabel>
+                                    ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
                                 <Input {...register('investment_types')} placeholder="Inversor ancla" />
                                 {errors.investment_types?.message}
                             </FormControl>
@@ -862,7 +899,8 @@ const Index: NextPage = () => {
                         <FormControl>
                             <FormLabel lineHeight="140%">
                                 Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
-                                que el inversionista comprenda mejor a tu empresa, producto o servicio
+                                que el inversionista comprenda mejor tu proyecto{' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <FormHelperText textColor="gray.300">
                                 Ejemplo: Aparición en prensa, prospección de mercado etc.
@@ -879,8 +917,8 @@ const Index: NextPage = () => {
 
                     <FormControl id="additional_document">
                         <FormLabel>
-                            ¿Tienes algún archivo que consideres necesario subir como información complementaria para
-                            que sea vista por el inversionista?
+                            ¿Tienes algún archivo (PDF) que consideres necesario subir como información complementaria
+                            para que sea vista por el inversionista? (Opcional)
                         </FormLabel>
 
                         {baseAdditional ? (
@@ -938,8 +976,8 @@ const Index: NextPage = () => {
 
                     <FormControl id="better_project">
                         <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                            Espacio de mejora continua: ¿Cómo crees que tu empresa, producto o servicio podría
-                            beneficiarse?
+                            Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
+                            <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
 
                         <Controller
