@@ -9,7 +9,7 @@ type Props = {
     jwt: string;
 };
 // Page
-const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
+const NewPassword: NextPage<Props> = ({ token, jwt }) => {
     return (
         <>
             <NextSeo title={'Crear contraseña - GSG'} />
@@ -52,7 +52,7 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
                         </Link>
                         <VStack maxW="504px" alignItems="flex-start">
                             <Text fontSize="24px" textAlign="center">
-                                Hola Martín, te damos la bienvenida a GSG, para continuar crea tu contraseña
+                                Recuperación de contraseña
                             </Text>
 
                             <CreatePasswordForm token={token} jwt={jwt} />
@@ -65,12 +65,12 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
 };
 
 // Export
-export default ChangePassword;
+export default NewPassword;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { token, jwt } = context.query;
 
-    if (!token && !jwt) {
+    if (!token) {
         return {
             redirect: {
                 destination: '/login',

@@ -91,7 +91,7 @@ const AddMembersForm = ({ reload }) => {
                                 tWidth={100}
                                 alt={watch().name}
                                 size="2xl"
-                                src={member?.main_image ?? watch().main_image}
+                                src={baseImg}
                                 icon={<></>}
                                 shadow="lg"
                                 bgColor={'gray.700'}
@@ -99,7 +99,7 @@ const AddMembersForm = ({ reload }) => {
                                 borderColor="white"
                                 borderStyle="dashed"
                                 textColor={'white'}
-                                name={watch().main_image ? 'GSG' : watch().name}
+                                name={watch().name}
                             />
 
                             <Input type="hidden" {...register('main_image')} />

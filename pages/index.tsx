@@ -73,9 +73,6 @@ const Index: NextPage = () => {
     const { data: quality } = useQualityList({ revalidateOnFocus: false });
 
     const toast = useToast();
-
-    console.log(project);
-
     const {
         register,
         formState: { errors },
@@ -85,12 +82,6 @@ const Index: NextPage = () => {
         watch,
     } = useForm<IProjectForm>({
         resolver: zodResolver(projectSchema),
-        defaultValues: {
-            title: project?.title ?? '',
-            description: project?.description ?? '',
-            business_web: project?.business_web ?? '',
-            third_parties: { value: project?.third_parties ?? '', label: '' },
-        },
     });
 
     const handleEditField = (values: Descendant[]) => {

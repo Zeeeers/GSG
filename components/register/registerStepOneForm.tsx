@@ -14,6 +14,7 @@ import {
     InputLeftAddon,
     Text,
     HStack,
+    Stack,
 } from '@chakra-ui/react';
 import { IRegisterOneForm, registerOneShema } from 'forms/register';
 import { useForm } from 'react-hook-form';
@@ -47,7 +48,7 @@ const RegisterStepOneForm: React.FC = () => {
 
     return (
         <>
-            <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
+            <Stack w="460px" as="form" autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
                 <Heading as="h2" size="2xl" mt={8} mb={4} fontWeight="bold">
                     INFORMACIÓN DEL USUARIO
                 </Heading>
@@ -115,7 +116,7 @@ const RegisterStepOneForm: React.FC = () => {
                         Siguiente
                     </Button>
                 </VStack>
-            </form>
+            </Stack>
 
             {isTermsOpen && <TermsModal isOpen={isTermsOpen} onClose={onTermsClose} />}
         </>
