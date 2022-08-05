@@ -89,7 +89,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     </Text>
                 </VStack>
 
-                {project?.social_impact !== 'https://dev-api.skalachile.com/cuadrado.png' && (
+                {project?.social_impact !== 'https://api.gsg-match.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             {project?.organization.name} ha presentado un documento en relación a cómo mide su impacto
@@ -297,7 +297,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Img src={project?.main_image} w="615px" h="219px" objectFit="cover" objectPosition="center" />
                 </VStack>
 
-                {project?.additional_document !== 'https://dev-api.skalachile.com/cuadrado.png' && (
+                {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             {project?.organization.name} ha presentado un documento complementario para que puedas verlo
