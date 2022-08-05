@@ -103,6 +103,25 @@ export interface UpdateGsgProjectResponse {
 
 export type UpdateGsgProjectCall = (payload: UpdateGsgProjectRequest) => Promise<ApiResponse<UpdateGsgProjectResponse>>;
 
+//Update
+
+export interface UpdateProjectRequest {
+    project: Gsg;
+    idProject: number;
+}
+
+export interface UpdateProjectResponse {
+    success: boolean;
+    message: string;
+    data: {
+        gsg_project: Gsg;
+        project_images: Array<ProjectImage>;
+        qualities: Array<Quality>;
+    };
+}
+
+export type UpdateProjectCall = (payload: UpdateProjectRequest) => Promise<ApiResponse<UpdateProjectResponse>>;
+
 // Update project
 export interface DeleteGsgProjectResponse {
     success: boolean;

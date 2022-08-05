@@ -10,6 +10,8 @@ import {
     GetMyGsgProjectResponse,
     UpdateGsgProjectCall,
     UpdateGsgProjectResponse,
+    UpdateProjectCall,
+    UpdateProjectResponse,
 } from './gsg.types';
 import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
@@ -92,16 +94,17 @@ export const updateStatusGsgProject: UpdateGsgProjectCall = async ({ idProject, 
     return response;
 };
 
-export const updateGsgProject: UpdateGsgProjectCall = async ({ idProject, gsgProject }) => {
+export const updateGsgProject: UpdateProjectCall = async (gsgProject) => {
+    console.log(gsgProject);
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
     const { token } = new AuthManager({
         cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!,
     });
 
-    const response = await api.patch<UpdateGsgProjectResponse>(
-        ENDPOINT.DETAIL(idProject),
+    const response = await api.patch<UpdateProjectResponse>(
+        ENDPOINT.DETAIL(gsgProject?.idProject),
 
-        gsgProject,
+        gsgProject?.project,
 
         pymeHeaders(token),
     );

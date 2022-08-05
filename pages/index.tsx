@@ -46,6 +46,14 @@ import { FiPaperclip } from 'react-icons/fi';
 import SuccessModal from 'components/project/successModal';
 import { useDraftStore } from 'stores/draftProject';
 import Messure from 'components/projectDetail/formatText/messure';
+import ThirdParties from 'components/projectDetail/formatText/thirdParties';
+import Stage from 'components/projectDetail/formatText/stage';
+import Objetive from 'components/projectDetail/formatText/objective';
+import StageCapital from 'components/projectDetail/formatText/stageCapital';
+import Garantee from 'components/projectDetail/formatText/garantee';
+import Rentability from 'components/projectDetail/formatText/rentability';
+import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
+import Time from 'components/projectDetail/formatText/time';
 
 // Page
 const Index: NextPage = () => {
@@ -75,7 +83,6 @@ const Index: NextPage = () => {
 
     const toast = useToast();
 
-    console.log(project.status);
     const {
         register,
         formState: { errors },
@@ -89,8 +96,28 @@ const Index: NextPage = () => {
             title: project.title,
             description: project.description,
             business_web: project.business_web,
-            third_parties: project.third_parties,
+            third_parties: { value: project.third_parties, label: ThirdParties(project.third_parties) },
             more_info: { value: project.more_info, label: Messure(project.more_info) },
+            /*qualities: Object.values(project?.qualities ?? {}).map((item) => ({
+                value: item.en_name,
+                label: item.name,
+            }))*/
+            stage: { value: project.stage, label: StageCapital(project.stage) },
+            investment_objective: {
+                value: project?.investment_objective,
+                label: Objetive(project?.investment_objective),
+            },
+            capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
+            guarantee: { value: project?.guarantee, label: Garantee(project?.guarantee) },
+            expected_rentability: {
+                value: project?.expected_rentability,
+                label: Rentability(project?.expected_rentability),
+            },
+            finance_goal: { value: project?.finance_goal, label: FinanceGoal(project?.finance_goal) },
+            time_lapse: { value: project?.time_lapse, label: Time(project?.time_lapse) },
+            business_model: project.business_model,
+            investment_types: project.investment_types,
+            better_project: project.better_project,
         },
     });
 
@@ -155,7 +182,7 @@ const Index: NextPage = () => {
         { value: '0-20%', label: 'Entre un 0 y 20%' },
         { value: '21-40%', label: 'Entre un 21 y 40%' },
         { value: '41-60%', label: 'Entre un 41 y 60%' },
-        { value: '61-80%', label: 'Entre un 61 y 80% ' },
+        { value: '61-80%', label: 'Entre un 61 y 80%' },
         { value: '81-100%', label: 'Entre un 81 y 100%' },
     ];
 
@@ -289,8 +316,6 @@ const Index: NextPage = () => {
 
         if (project?.status === 'sketch') {
             const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
-
-            console.log('pasaa?');
 
             if (ok) {
                 toast({
@@ -430,6 +455,7 @@ const Index: NextPage = () => {
                             control={control}
                             render={({ field }) => (
                                 <Textarea
+                                    maxLength={700}
                                     {...field}
                                     fontSize={{ base: 'sm', md: 'md' }}
                                     focusBorderColor={'primary.400'}
