@@ -58,14 +58,14 @@ export const recoverPassword: RecoverPasswordCall = async ({ email }) => {
 };
 
 //@ts-ignore
-export const createNewPassword: CreateNewPassCall = async ({ password, token, jwt }) => {
+export const createNewPassword: CreateNewPassCall = async ({ password, token, jwt, kind }) => {
     const response = await api.post<CreateNewPassResponse>(
         ENDPOINT.NEW_PASSWORD,
         {
             token,
             password,
         },
-        headers(jwt),
+        !kind || kind === 'investor' ? headers(jwt) : pymeHeaders(jwt),
     );
 
     return response;

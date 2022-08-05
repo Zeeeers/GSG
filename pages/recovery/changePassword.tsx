@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { Flex, HStack, Img, Link, Text, VStack } from '@chakra-ui/react';

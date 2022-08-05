@@ -92,6 +92,23 @@ export const updateStatusGsgProject: UpdateGsgProjectCall = async ({ idProject, 
     return response;
 };
 
+export const updateGsgProject: UpdateGsgProjectCall = async ({ idProject, gsgProject }) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!,
+    });
+
+    const response = await api.patch<UpdateGsgProjectResponse>(
+        ENDPOINT.DETAIL(idProject),
+
+        gsgProject,
+
+        pymeHeaders(token),
+    );
+
+    return response;
+};
+
 // Delete
 export const deleteGsgProject: DeleteGsgProjectCall = async (idProject) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);

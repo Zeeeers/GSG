@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     Heading,
     Modal,
@@ -19,7 +20,7 @@ interface Props {
     web: string;
 }
 
-const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
+const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
@@ -34,7 +35,9 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
                             <Text fontSize="20px" fontWeight="semibold">
                                 Correo
                             </Text>
-                            <Text fontSize="16px" fontFamily="inter"></Text>
+                            <Text fontSize="16px" fontFamily="inter">
+                                https://www.{project?.legal_representative_email}
+                            </Text>
                         </VStack>
                         <VStack alignItems="flex-start" spacing={0}>
                             <Text fontSize="20px" fontWeight="semibold">
@@ -47,6 +50,9 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project }) => {
 
                         <Text fontSize="20px" textDecoration="underline" fontWeight="semibold">
                             Sitio web
+                        </Text>
+                        <Text fontSize="16px" fontFamily="inter">
+                            {web}
                         </Text>
                     </VStack>
                 </ModalBody>

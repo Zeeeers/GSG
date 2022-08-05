@@ -45,6 +45,7 @@ import { FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
 import SuccessModal from 'components/project/successModal';
 import { useDraftStore } from 'stores/draftProject';
+import Messure from 'components/projectDetail/formatText/messure';
 
 // Page
 const Index: NextPage = () => {
@@ -73,6 +74,8 @@ const Index: NextPage = () => {
     const { data: quality } = useQualityList({ revalidateOnFocus: false });
 
     const toast = useToast();
+
+    console.log(project.status);
     const {
         register,
         formState: { errors },
@@ -82,6 +85,13 @@ const Index: NextPage = () => {
         watch,
     } = useForm<IProjectForm>({
         resolver: zodResolver(projectSchema),
+        defaultValues: {
+            title: project.title,
+            description: project.description,
+            business_web: project.business_web,
+            third_parties: project.third_parties,
+            more_info: { value: project.more_info, label: Messure(project.more_info) },
+        },
     });
 
     const handleEditField = (values: Descendant[]) => {
@@ -203,23 +213,44 @@ const Index: NextPage = () => {
             members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
         };
 
-        const { create } = await import('../services/api/lib/gsg');
-        const { ok } = await create({ project: dataProject });
+        const { create, updateGsgProject } = await import('../services/api/lib/gsg');
 
-        if (ok) {
-            setCreateProyect(false);
-            onOpenSuccess();
-            reset();
+        if (project?.status === 'sketch') {
+            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
+
+            if (ok) {
+                setCreateProyect(false);
+                onOpenSuccess();
+                reset();
+            } else {
+                setCreateProyect(false);
+                toast({
+                    title: 'Error al publicar el proyecto',
+                    description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
         } else {
-            setCreateProyect(false);
-            toast({
-                title: 'Error al crear el proyecto',
-                description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
+            const { ok } = await create({ project: dataProject });
+
+            if (ok) {
+                setCreateProyect(false);
+                onOpenSuccess();
+                reset();
+            } else {
+                setCreateProyect(false);
+                toast({
+                    title: 'Error al crear el proyecto',
+                    description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
         }
     };
 
@@ -254,27 +285,54 @@ const Index: NextPage = () => {
                     : undefined,
         };
 
-        const { create } = await import('../services/api/lib/gsg');
-        const { ok } = await create({ project: dataProject });
+        const { create, updateGsgProject } = await import('../services/api/lib/gsg');
 
-        if (ok) {
-            toast({
-                title: 'Borrador creado',
-                description: 'El borrador se ha creado con éxito.',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
+        if (project?.status === 'sketch') {
+            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
+
+            console.log('pasaa?');
+
+            if (ok) {
+                toast({
+                    title: 'Borrador modificado',
+                    description: 'El borrador se ha creado con éxito.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            } else {
+                toast({
+                    title: 'Error al modificar el borrador',
+                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
         } else {
-            toast({
-                title: 'Error al crear el borrador',
-                description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
+            const { ok } = await create({ project: dataProject });
+
+            if (ok) {
+                toast({
+                    title: 'Borrador creado',
+                    description: 'El borrador se ha creado con éxito.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            } else {
+                toast({
+                    title: 'Error al crear el borrador',
+                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
         }
     };
 

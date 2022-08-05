@@ -73,7 +73,7 @@ const RegisterStepTwoForm: React.FC = () => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/explorer');
+            router.push('/successRegister');
             setIsCreatingAccount(false);
         } else {
             toast({

@@ -7,9 +7,10 @@ import CreatePasswordForm from 'components/createPassword/createPasswordForm';
 type Props = {
     token: string;
     jwt: string;
+    kind: string;
 };
 // Page
-const NewPassword: NextPage<Props> = ({ token, jwt }) => {
+const NewPassword: NextPage<Props> = ({ token, jwt, kind }) => {
     return (
         <>
             <NextSeo title={'Crear contraseña - GSG'} />
@@ -59,7 +60,7 @@ const NewPassword: NextPage<Props> = ({ token, jwt }) => {
                                 Recuperación de contraseña
                             </Text>
 
-                            <CreatePasswordForm token={token} jwt={jwt} />
+                            <CreatePasswordForm token={token} jwt={jwt} kind={kind} />
                         </VStack>
                     </Flex>
                 </VStack>
@@ -72,7 +73,7 @@ const NewPassword: NextPage<Props> = ({ token, jwt }) => {
 export default NewPassword;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { token, jwt } = context.query;
+    const { token, jwt, kind } = context.query;
 
     if (!token) {
         return {
@@ -87,6 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         props: {
             token,
             jwt,
+            kind,
         }, // will be passed to the page component as props
     };
 };

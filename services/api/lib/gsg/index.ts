@@ -6,4 +6,5 @@ export {
     updateStatusGsgProject,
     create,
     deleteGsgProject,
+    updateGsgProject,
 } from './gsg.calls';
