@@ -9,7 +9,13 @@ const NotProject = () => {
             <Text fontSize="24px" fontWeight="bold" fontFamily="barlow" textTransform="uppercase">
                 Postula tu proyecto aquí
             </Text>
-            <Button bg="blue.700" _hover={{ bg: 'blue.600' }} onClick={() => router.push('/')} variant="solid" h="40px">
+            <Button
+                bg="blue.700"
+                _hover={{ bg: 'blue.600' }}
+                onClick={() => router.push('/creator')}
+                variant="solid"
+                h="40px"
+            >
                 Postular proyecto
             </Button>
         </HStack>

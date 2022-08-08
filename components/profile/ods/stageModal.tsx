@@ -2,6 +2,7 @@
 import {
     Button,
     Heading,
+    HStack,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -9,12 +10,15 @@ import {
     ModalOverlay,
     Text,
     useCheckboxGroup,
+    useRadioGroup,
     useToast,
     VStack,
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
+import RadioCard from 'common/checkCardBox';
 import CheckCardBox from 'common/checkCardBox';
+import Stage from 'components/projectDetail/formatText/stage';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
 import React, { useState } from 'react';
 import { useUser } from 'services/api/lib/user';
@@ -31,14 +35,13 @@ interface Props {
 const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     const [stage, setStage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { getCheckboxProps } = useCheckboxGroup({
-        defaultValue: [],
-        // @ts-ignore
+
+    const { getRootProps, getRadioProps } = useRadioGroup({
+        defaultValue: '',
         onChange: (value) => setStage(value),
     });
 
-    const { data: user } = useUser();
-
+    const group = getRootProps();
     const toast = useToast();
 
     const handleSave = async () => {
@@ -48,7 +51,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
         const data = {
             interest: {
                 //@ts-ignore
-                third_party: third?.join(';;'),
+                stage: stage,
             },
         };
 
@@ -58,7 +61,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
             setIsLoading(false);
             toast({
                 //@ts-ignore
-                title: 'Respaldo guardado con éxito.',
+                title: 'Etapa guardado con éxito.',
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -69,7 +72,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
             setIsLoading(false);
             toast({
                 //@ts-ignore
-                title: 'Ha ocurrido un error al guardar los respaldos.',
+                title: 'Ha ocurrido un error al guardar la etapa.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -94,34 +97,18 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
                             </Text>
                         </VStack>
 
-                        <VStack w="full">
-                            {interest?.stage.map((item, index) => (
-                                <CheckCard
-                                    w="full"
-                                    width="full"
-                                    key={`${index}-stageFilter`}
-                                    as={WrapItem}
-                                    v
-                                    value={item}
-                                    cursor="pointer"
-                                    px={'16px'}
-                                    py={'8px'}
-                                    rounded="8px"
-                                    bg="gray.700"
-                                    textColor="white"
-                                    fontWeight="normal"
-                                    fontFamily="inter"
-                                    fontSize="md"
-                                    _hover={{ bg: 'gray.600' }}
-                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
-                                    {...getCheckboxProps({ value: item })}
-                                >
-                                    <Text>{StageCapital(item)}</Text>
-                                </CheckCard>
-                            ))}
+                        <VStack w="full" {...group}>
+                            {interest?.stage.map((value) => {
+                                const radio = getRadioProps({ value });
+                                return (
+                                    <RadioCard key={value} {...radio}>
+                                        {StageCapital(value)}
+                                    </RadioCard>
+                                );
+                            })}
                         </VStack>
 
-                        <Button w="full" h="40px" variant="solid">
+                        <Button w="full" h="40px" variant="solid" onClick={handleSave}>
                             Guardar cambios
                         </Button>
                     </VStack>

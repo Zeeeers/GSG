@@ -48,7 +48,13 @@ const RegisterStepOneForm: React.FC = () => {
 
     return (
         <>
-            <Stack w="460px" as="form" autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
+            <Stack
+                w={{ base: '100%', md: '460px' }}
+                p={{ md: '24px' }}
+                as="form"
+                autoComplete="off"
+                onSubmit={handleSubmit(handleRegister)}
+            >
                 <Heading as="h2" size="2xl" mt={8} mb={4} fontWeight="bold">
                     INFORMACIÓN DEL USUARIO
                 </Heading>

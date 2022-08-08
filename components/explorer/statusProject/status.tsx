@@ -35,26 +35,70 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
 
     const router = useRouter();
     return (
-        <HStack bg="gray.700" p="20px" rounded="8px" w="full" mb="40px" justifyContent="space-between">
-            <VStack align="flex-start">
+        <HStack bg="gray.700" p="20px" rounded="8px" mb="40px" justifyContent="space-between">
+            <VStack align="flex-start" w={{ base: 'full', sm: 'fit-content' }}>
+                <Badge display={{ base: 'block', md: 'none' }} colorScheme="teal" variant="solid" py="8px" px="10px">
+                    {status}
+                </Badge>
                 <HStack spacing="30px">
                     <Text fontSize="24px" fontWeight="bold" fontFamily="barlow" textTransform="uppercase">
                         Mi proyecto
                     </Text>
-                    <Badge colorScheme="teal" variant="solid" py="8px" px="10px">
+                    <Badge
+                        display={{ base: 'none', md: 'block' }}
+                        colorScheme="teal"
+                        variant="solid"
+                        py="8px"
+                        px="10px"
+                    >
                         {status}
                     </Badge>
                 </HStack>
                 <Text fontFamily="inter">{project?.title}</Text>
+                {project?.status === 'sketch' ? (
+                    <Button
+                        display={{ base: 'block', sm: 'none' }}
+                        w="full"
+                        bg="blue.700"
+                        _hover={{ bg: 'blue.600' }}
+                        h="40px"
+                        variant="solid"
+                        onClick={() => {
+                            router.push({
+                                query: { id: project?.id },
+                                pathname: '/creator',
+                            });
+                            //@ts-ignore
+                            setProject(project);
+                        }}
+                    >
+                        Editar mi postulación
+                    </Button>
+                ) : (
+                    <Button
+                        display={{ base: 'block', sm: 'none' }}
+                        bg="blue.700"
+                        _hover={{ bg: 'blue.600' }}
+                        h="40px"
+                        variant="solid"
+                        onClick={() => router.push(`/projectDetail/${project?.id}`)}
+                    >
+                        Ver proyecto
+                    </Button>
+                )}
             </VStack>
             {project?.status === 'sketch' ? (
                 <Button
+                    display={{ base: 'none', sm: 'block' }}
                     bg="blue.700"
                     _hover={{ bg: 'blue.600' }}
                     h="40px"
                     variant="solid"
                     onClick={() => {
-                        router.push(`/`);
+                        router.push({
+                            query: { id: project?.id },
+                            pathname: '/creator',
+                        });
                         //@ts-ignore
                         setProject(project);
                     }}
@@ -63,6 +107,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                 </Button>
             ) : (
                 <Button
+                    display={{ base: 'none', sm: 'block' }}
                     bg="blue.700"
                     _hover={{ bg: 'blue.600' }}
                     h="40px"

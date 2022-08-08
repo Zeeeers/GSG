@@ -1,44 +1,35 @@
-// Dependencies
 //@ts-nocheck
-import { forwardRef } from '@chakra-ui/system';
-import { Box } from '@chakra-ui/layout';
-import { RadioGroupProps, useRadio, UseRadioProps } from '@chakra-ui/react';
+import { Box, useRadio } from '@chakra-ui/react';
 
-// Types
-type ICheckCardProps = UseRadioProps | RadioGroupProps;
-
-// Component
-const CheckCardBox = forwardRef<ICheckCardProps, 'input'>((props) => {
+const RadioCard = (props) => {
     const { getInputProps, getCheckboxProps } = useRadio(props);
 
     const input = getInputProps();
     const checkbox = getCheckboxProps();
 
     return (
-        <Box as="label">
+        <Box w="full" as="label">
             <input {...input} />
             <Box
                 {...checkbox}
+                w="full"
+                width="full"
                 cursor="pointer"
-                borderWidth="1px"
-                borderRadius="md"
-                boxShadow="md"
-                _checked={{
-                    bg: 'teal.600',
-                    color: 'white',
-                    borderColor: 'teal.600',
-                }}
-                _focus={{
-                    boxShadow: 'outline',
-                }}
-                px={5}
-                py={3}
+                px={'16px'}
+                py={'8px'}
+                rounded="8px"
+                bg="gray.700"
+                textColor="white"
+                fontWeight="normal"
+                fontFamily="inter"
+                fontSize="md"
+                _hover={{ bg: 'gray.600' }}
+                _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
             >
                 {props.children}
             </Box>
         </Box>
     );
-});
+};
 
-// export
-export default CheckCardBox;
+export default RadioCard;

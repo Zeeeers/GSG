@@ -7,6 +7,15 @@ const globalConfig = {
     eslint: {
         dirs: ['pages', 'components', 'common', 'services', 'forms', 'hooks', 'stores'],
     },
+    redirects() {
+        return [
+            {
+                source: '/',
+                destination: '/login',
+                permanent: false,
+            },
+        ];
+    },
 };
 
 // Export

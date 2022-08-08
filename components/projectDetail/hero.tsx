@@ -153,7 +153,7 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                     px={{ base: 0, md: 4, lg: 12, xl: 6 }}
                 >
                     <Stack
-                        display={{ base: 'none', md: 'flex' }}
+                        display={{ base: 'none', xl: 'flex' }}
                         position={sticky ? 'fixed' : 'absolute'}
                         alignItems="end"
                         spacing="30px"
@@ -246,23 +246,20 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                                     spacing={0}
                                 >
                                     <VStack align="flex-start" spacing="10px" mb="20px">
-                                        <HStack spacing="17px">
+                                        <HStack spacing="17px" mb="20px">
                                             <Avatar
                                                 name={project?.organization.name}
                                                 src={project?.organization.image}
                                                 w="48px"
                                                 h="48px"
                                             />
-                                            <Text
-                                                fontSize={{ base: 'sm', md: '24px' }}
-                                                fontWeight="medium"
-                                                fontFamily="inter"
-                                            >
+                                            <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
                                                 {project?.organization.name}
                                             </Text>
                                         </HStack>
                                         <Text
-                                            fontSize={{ base: 'xl', md: '4xl' }}
+                                            fontSize={{ base: '3xl', md: '4xl' }}
+                                            lineHeight="32px"
                                             textTransform="uppercase"
                                             fontWeight="bold"
                                         >
@@ -275,14 +272,14 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                                     </VStack>
                                     <BadgeStage capitalStage={project?.capital_stage} />
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
-                                        <Text>Rango de levantamiento buscado</Text>
+                                        <Text fontFamily="inter">Rango de levantamiento buscado</Text>
                                         <Flex
                                             justifyContent="space-between"
                                             direction={{ base: 'column', md: 'row' }}
                                             w="full"
                                             pt="5px"
                                         >
-                                            <Text fontSize="3xl" fontWeight="medium">
+                                            <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
                                                 {FinanceGoal(project?.finance_goal)} (CLP)
                                             </Text>
                                             <Stack

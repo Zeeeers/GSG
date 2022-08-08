@@ -48,14 +48,14 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
     return (
         <Stack
             alignItems="start"
-            mt="5rem"
-            px={{ base: '34px', md: '227px' }}
+            mt={{ md: '5rem' }}
+            px={{ xl: '227px' }}
             spacing="50px"
-            py="207px"
+            py={{ base: '30px', md: '207px' }}
             scrollPaddingTop="100px"
         >
             <Stack pl="27px" pr="30px" spacing="30px">
-                <Text scrollMarginTop="100px" ref={impact} fontSize="4xl">
+                <Text scrollMarginTop="100px" ref={impact} fontSize={{ base: '3xl', md: '4xl' }}>
                     El impacto de {project?.organization.name}
                 </Text>
             </Stack>
@@ -70,7 +70,13 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <WrapItem key={i}>
                             <HStack spacing="20px">
                                 <Image src={item.image} w="60px" h="60px" rounded="15px" />
-                                <Text fontWeight="medium" fontSize="20px" color={item.color}>
+                                <Text
+                                    fontFamily="inter"
+                                    lineHeight="140%"
+                                    fontWeight="medium"
+                                    fontSize="20px"
+                                    color={item.color}
+                                >
                                     {item.name}
                                 </Text>
                             </HStack>
@@ -81,10 +87,10 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
 
             <VStack pl="27px" pr="27px" align="flex-start" spacing="40px" w="full">
                 <VStack align="flex-start" spacing="5px">
-                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                    <Text as="p" fontFamily="inter" fontSize={'md'} color="gray.400">
                         Medición de resultados asociados al impacto social y/o mediambiental
                     </Text>
-                    <Text as="p" fontSize="24px" fontWeight="medium">
+                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                         {Messure(project?.more_info)}
                     </Text>
                 </VStack>
@@ -115,7 +121,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                         Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
                     </Text>
-                    <Text as="p" fontSize="24px" fontWeight="medium">
+                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                         {ThirdParties(project?.third_parties)}
                     </Text>
                 </VStack>
@@ -131,7 +137,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 ref={description_finance}
                 scrollMarginTop="100px"
             >
-                <Text fontSize="4xl" fontWeight="medium" lineHeight="130%">
+                <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
                     Descripción financiera de {project?.organization.name}
                 </Text>
                 <VStack align="flex-start">
@@ -139,7 +145,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
                             Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {ThirdParties(project?.third_parties)}
                         </Text>
                     </VStack>
@@ -150,7 +156,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             El objetivo que tiene con la inversión es:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {Objetive(project?.investment_objective)}
                         </Text>
                     </VStack>
@@ -161,7 +167,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             El levantamiento actual de capital en la cual se encuentra es:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {Stage(project?.capital_stage)}
                         </Text>
                     </VStack>
@@ -172,7 +178,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             Cuenta con garantías:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {Garantee(project?.guarantee)}
                         </Text>
                     </VStack>
@@ -183,7 +189,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             La rentabilidad que {project?.organization.name} espera obtener es:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {Rentability(project?.expected_rentability)}
                         </Text>
                     </VStack>
@@ -194,7 +200,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             El rango de monto del aporte que se busca es:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {FinanceGoal(project?.finance_goal)} (CLP)
                         </Text>
                     </VStack>
@@ -205,7 +211,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
                             En relación a los plazos de inversión, {project?.organization.name} buscaría un plazo de:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {Time(project?.time_lapse)}
                         </Text>
                     </VStack>
@@ -216,7 +222,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             La trayectoria del negocio es:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {project?.business_model}
                         </Text>
                     </VStack>
@@ -227,7 +233,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                             El tipo de inversionista que busca es:
                         </Text>
-                        <Text as="p" fontSize="24px" fontWeight="medium">
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {project?.investment_types}
                         </Text>
                     </VStack>
@@ -235,7 +241,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
             </Stack>
 
             <Stack pl="27px" spacing="27px" w="full" ref={other} scrollMarginTop="100px">
-                <Text ref={other} fontSize="4xl" fontWeight="medium">
+                <Text ref={other} fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium">
                     Otra información relevante
                 </Text>
 

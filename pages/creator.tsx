@@ -34,14 +34,14 @@ import { IProjectForm, projectSchema } from 'forms/project';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 import UploadButton from 'common/uploadButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddMembersModal from 'components/project/addMembersModal';
 import { Descendant } from 'slate';
 import { NextSeo } from 'next-seo';
 import { Select as CharkaSelect } from 'chakra-react-select';
 import { PrivatePage } from '@clyc/next-route-manager';
 import { useMembers } from 'services/api/lib/member';
-import { useQualityList } from 'services/api/lib/qualities';
+import { getQualities, useQualityList } from 'services/api/lib/qualities';
 import { FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
 import SuccessModal from 'components/project/successModal';
@@ -55,17 +55,18 @@ import Garantee from 'components/projectDetail/formatText/garantee';
 import Rentability from 'components/projectDetail/formatText/rentability';
 import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
 import Time from 'components/projectDetail/formatText/time';
+import { getGsgProject } from '../services/api/lib/gsg';
 
 // Page
-const Index: NextPage = () => {
+const Creator: NextPage = ({ project, quality }) => {
     type basePDFType = {
         base64: string;
         file: File;
     };
 
-    const [baseImgMain, setBaseImgMain] = useState<string>();
-    const [baseSocialPdf, setBaseSocialPdf] = useState<basePDFType | undefined>(undefined);
-    const [baseAdditional, setBaseAdditional] = useState<basePDFType | undefined>(undefined);
+    const [baseImgMain, setBaseImgMain] = useState<string>(project.main_image);
+    const [baseSocialPdf, setBaseSocialPdf] = useState<basePDFType | undefined>(project?.social_impact);
+    const [baseAdditional, setBaseAdditional] = useState<basePDFType | undefined>(project?.additional_document);
 
     const { onOpen: onCropperOpen } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,16 +74,24 @@ const Index: NextPage = () => {
 
     const [createProyect, setCreateProyect] = useState(false);
 
-    const project = useDraftStore((s) => s.project);
+    //const project = useDraftStore((s) => s.project);
     const setMember = useCreateGsgProjectStore((s) => s.setMember);
     const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
     const [contenido, setContenido] = useState<Descendant[]>();
     const [selectedOptions, setSelectedOptions] = useState();
 
-    const { data: members, mutate } = useMembers();
-    const { data: quality } = useQualityList({ revalidateOnFocus: false });
+    const getNameFile = (url) => {
+        return url(url.indexOf('/') + 2).split('/');
+    };
 
+    const { data: members, mutate } = useMembers();
+    //const { data: quality } = useQualityList({ revalidateOnFocus: false });
     const toast = useToast();
+
+    const optionsQuality = quality?.map((item) => ({
+        value: item.id,
+        label: item.icon.name,
+    }));
 
     const {
         register,
@@ -94,15 +103,11 @@ const Index: NextPage = () => {
     } = useForm<IProjectForm>({
         resolver: zodResolver(projectSchema),
         defaultValues: {
-            title: project.title,
-            description: project.description,
-            business_web: project.business_web,
-            third_parties: { value: project.third_parties, label: ThirdParties(project.third_parties) },
-            more_info: { value: project.more_info, label: Messure(project.more_info) },
-            /*qualities: Object.values(project?.qualities ?? {}).map((item) => ({
-                value: item.en_name,
-                label: item.name,
-            }))*/
+            title: project?.title,
+            description: project?.description,
+            business_web: project?.business_web,
+            third_parties: { value: project?.third_parties, label: ThirdParties(project?.third_parties) },
+            more_info: { value: project?.more_info, label: Messure(project?.more_info) },
             stage: { value: project.stage, label: StageCapital(project.stage) },
             investment_objective: {
                 value: project?.investment_objective,
@@ -129,11 +134,6 @@ const Index: NextPage = () => {
     const proyectDescription = watch('description', project.description ?? '0');
     const proyectBetter = watch('better_project', project.better_project ?? '0');
     const proyectTitle = watch('title', project.title ?? '0');
-
-    const optionsQuality = quality?.qualities?.map((item) => ({
-        value: item.id,
-        label: item.icon.name,
-    }));
 
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -387,13 +387,22 @@ const Index: NextPage = () => {
             });
         }
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
             <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
-                <Container display="flex" justifyContent="space-between" maxWidth={'container.lg'}>
-                    <HStack spacing="23px">
+                <Container
+                    display="flex"
+                    flexDirection={{ base: 'column', md: 'row' }}
+                    justifyContent={{ base: 'center', md: 'space-between' }}
+                    maxWidth={'container.lg'}
+                >
+                    <Stack direction={{ base: 'column', sm: 'row' }} spacing={{ base: '10px', md: '23px' }}>
                         <Link href="/explorer">
                             <Button
                                 variant="solid"
@@ -411,9 +420,9 @@ const Index: NextPage = () => {
                         <Text fontSize="3xl" fontWeight="medium">
                             Creador de producto/servicio
                         </Text>
-                    </HStack>
-                    <HStack spacing="8px">
-                        <Button onClick={handleSubmit(handleDraft)} type="button" variant="outline">
+                    </Stack>
+                    <HStack spacing="8px" mt={{ base: '10px', md: 0 }}>
+                        <Button onClick={handleSubmit(handleDraft)} type="button" variant="outline" w="full">
                             Guardar borrador
                         </Button>
 
@@ -423,6 +432,7 @@ const Index: NextPage = () => {
                             type="button"
                             onClick={handleSubmit(handlePublished)}
                             variant="solid"
+                            w="full"
                         >
                             Publicar proyecto
                         </Button>
@@ -430,7 +440,7 @@ const Index: NextPage = () => {
                 </Container>
             </HStack>
 
-            <Container maxWidth={'container.lg'} paddingTop="7rem" paddingBottom="153px">
+            <Container maxWidth={'container.lg'} paddingTop={{ base: '17rem', sm: '10rem' }} paddingBottom="153px">
                 <VStack as="form" align="start" spacing="40px">
                     <Text fontSize={'4xl'} fontWeight="bold">
                         Descripción General
@@ -560,7 +570,7 @@ const Index: NextPage = () => {
                                         }
                                     }}
                                 >
-                                    Arrasta o sube una imagen aquí
+                                    Arrastra o sube tu imagen aquí (min 800x400px)
                                 </UploadButton>
                                 <FormErrorMessage fontWeight={'semibold'}>
                                     {errors.main_image?.message}
@@ -579,6 +589,9 @@ const Index: NextPage = () => {
                             render={({ field }) => (
                                 <CharkaSelect
                                     {...field}
+                                    defaultValue={Object.values(project.qualities).map(
+                                        (item) => optionsQuality[item.id - 1],
+                                    )}
                                     tagVariant="solid"
                                     colorScheme="teal"
                                     isOptionDisabled={() => selectedOptions?.length >= 3}
@@ -626,10 +639,23 @@ const Index: NextPage = () => {
                                 valíde la medición de resultados (opcional)
                             </FormLabel>
 
-                            {baseSocialPdf ? (
+                            {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
+                            baseSocialPdf !== undefined ? (
                                 <HStack align="center">
                                     <FiPaperclip />
-                                    <Text fontWeight="bold">{baseSocialPdf.file.name}</Text>
+                                    {baseSocialPdf?.file?.name ? (
+                                        <Text fontWeight="bold">{baseSocialPdf?.file.name}</Text>
+                                    ) : (
+                                        <Link
+                                            fontFamily="inter"
+                                            fontWeight="medium"
+                                            href={baseSocialPdf}
+                                            target="_blank"
+                                        >
+                                            Ver PDF
+                                        </Link>
+                                    )}
+
                                     <Button
                                         onClick={() => setBaseSocialPdf(undefined)}
                                         bg="teal.400"
@@ -926,12 +952,19 @@ const Index: NextPage = () => {
                             <FormHelperText textColor="gray.300">
                                 Ejemplo: Aparición en prensa, prospección de mercado etc.
                             </FormHelperText>
-                            <SlateEditor
-                                handleSaveField={handleEditField}
-                                bg="gray.50"
-                                color="gray.700"
-                                h="fit-content"
-                                mt="15px"
+                            <Controller
+                                name="additional_info"
+                                control={control}
+                                render={({ field }) => (
+                                    <SlateEditor
+                                        {...field}
+                                        handleSaveField={handleEditField}
+                                        bg="gray.50"
+                                        color="gray.700"
+                                        h="fit-content"
+                                        mt="15px"
+                                    />
+                                )}
                             />
                         </FormControl>
                     </VStack>
@@ -942,10 +975,16 @@ const Index: NextPage = () => {
                             para que sea vista por el inversionista? (Opcional)
                         </FormLabel>
 
-                        {baseAdditional ? (
+                        {baseAdditional !== 'https://api.gsg-match.com/cuadrado.png' && baseAdditional !== undefined ? (
                             <HStack align="center">
                                 <FiPaperclip />
-                                <Text fontWeight="bold">{baseAdditional.file.name}</Text>
+                                {baseAdditional?.file?.name ? (
+                                    <Text fontWeight="bold">{baseAdditional?.file.name}</Text>
+                                ) : (
+                                    <Link fontFamily="inter" fontWeight="medium" href={baseAdditional} target="_blank">
+                                        Ver PDF
+                                    </Link>
+                                )}
                                 <Button
                                     onClick={() => setBaseAdditional(undefined)}
                                     bg="teal.400"
@@ -1036,5 +1075,27 @@ const Index: NextPage = () => {
     );
 };
 
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+    const projectId = ctx.query.id as string | undefined;
+
+    try {
+        if (projectId) {
+            const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, projectId);
+            const quality = await getQualities(`${process.env.NEXT_PUBLIC_API_URL!}/quality`);
+
+            return {
+                props: {
+                    project: data?.data?.gsg_project,
+                    quality: quality?.qualities,
+                },
+            };
+        }
+    } catch (error) {
+        return {
+            props: {},
+        };
+    }
+};
+
 // Export
-export default Index;
+export default Creator;

@@ -57,7 +57,7 @@ const LoginPage: NextPage = ({ token }) => {
             <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dasboard" />
 
             <LogoBar>
-                <Stack w="417px" alignItems="flex-start">
+                <Stack w="full" alignItems="flex-start">
                     <Flex flexDir="column" mt={8} gap="10px">
                         <Heading as="h1" size="4xl" fontWeight="bold">
                             INICIAR SESIÓN

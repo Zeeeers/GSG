@@ -72,7 +72,7 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                 </VStack>
 
                 <Box display={'flex'} flexDirection="column" textAlign="center" alignItems={'flex-end'} mt="13px">
-                    <Link href={`/projectDetail/${project.id}`} passHref>
+                    <Link href={`/projectDetail/${project.id} `} passHref>
                         <Button variant="solid" h="32px" w="full">
                             Ver proyecto
                         </Button>

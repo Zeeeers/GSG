@@ -90,7 +90,13 @@ const RegisterStepTwoForm: React.FC = () => {
 
     return (
         <>
-            <Stack w="460px" as="form" autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
+            <Stack
+                w={{ base: '100%', md: '460px' }}
+                p={{ md: '24px' }}
+                as="form"
+                autoComplete="off"
+                onSubmit={handleSubmit(handleRegister)}
+            >
                 <VStack my={8} spacing={8} w="full">
                     <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
                         <Button

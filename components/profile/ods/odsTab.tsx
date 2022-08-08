@@ -84,7 +84,7 @@ const OdsTab: React.FC = () => {
         <>
             <Stack spacing="30px" mt="20px">
                 <VStack alignItems="flex-start" spacing="10px">
-                    <Text fontSize="24px" fontWeight="bold" textTransform="uppercase" lineHeight={6}>
+                    <Text fontSize="24px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
                         Selecciona tus intereses por categoría
                     </Text>
                     <Text fontSize={'md'} fontWeight={'normal'} lineHeight={6}>
@@ -247,8 +247,18 @@ const OdsTab: React.FC = () => {
                 interest={interest?.data}
                 myInterest={getInterest?.data}
             />
-            <FinanceGoalModal isOpen={isOpenFinanceGoal} onClose={closeFinanceGoal} interest={interest?.data} />
-            <TimeLapseModal isOpen={isOpenTimeLapse} onClose={closeTimeLapse} interest={interest?.data} />
+            <FinanceGoalModal
+                isOpen={isOpenFinanceGoal}
+                onClose={closeFinanceGoal}
+                interest={interest?.data}
+                myInterest={getInterest?.data}
+            />
+            <TimeLapseModal
+                isOpen={isOpenTimeLapse}
+                onClose={closeTimeLapse}
+                interest={interest?.data}
+                myInterest={getInterest?.data}
+            />
         </>
     );
 };
