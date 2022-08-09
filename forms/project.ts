@@ -25,7 +25,7 @@ export interface IProjectForm {
     time_lapse?: select;
     qualities?: select;
 
-    investment_types?: string;
+    investment_types?: select;
     business_model?: string;
     better_project?: string;
     additional_info?: string;
@@ -58,7 +58,7 @@ const projectShape: ZodShape<IProjectForm> = {
     finance_goal: z.object({ value: z.string(), label: z.string() }).optional(),
     time_lapse: z.object({ value: z.string(), label: z.string() }).optional(),
 
-    investment_types: z.string().optional(),
+    investment_types: z.object({ value: z.string(), label: z.string() }).optional(),
     business_model: z.string().optional(),
     better_project: z.string().optional(),
     additional_info: z.string().optional(),

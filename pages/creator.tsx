@@ -73,6 +73,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
 
     const [createProyect, setCreateProyect] = useState(false);
+    const [isStage, setIsStage] = useState(false);
 
     //const project = useDraftStore((s) => s.project);
     const setMember = useCreateGsgProjectStore((s) => s.setMember);
@@ -113,7 +114,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 value: project?.investment_objective,
                 label: Objetive(project?.investment_objective),
             },
-            capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
+            //capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
             guarantee: { value: project?.guarantee, label: Garantee(project?.guarantee) },
             expected_rentability: {
                 value: project?.expected_rentability,
@@ -174,9 +175,11 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'series-b', label: 'Serie B' },
         { value: 'series-c', label: 'Serie C' },
         { value: 'series-d', label: 'Serie D' },
+    ];
+
+    const optionsDeuda = [
         { value: 'senior-debt', label: 'Deuda senior' },
         { value: 'mezzanine-debt', label: 'Deuda mezzanine' },
-        { value: 'other', label: 'Otro' },
     ];
 
     const optionsGuarantee = [
@@ -212,6 +215,15 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'more-than-4-years', label: 'Más de 48 meses' },
     ];
 
+    const optionsInvestor = [
+        { value: '1', label: 'Inversor ancla' },
+        { value: '2', label: 'Inversores atomizados' },
+        { value: '3', label: 'Sponsor' },
+        { value: '4', label: 'Minoritarios' },
+        { value: '5', label: 'Cualquiera' },
+        { value: '6', label: 'Otros' },
+    ];
+
     const handlePublished = async (data: IProjectForm) => {
         setCreateProyect(true);
         const dataProject = {
@@ -232,9 +244,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: data.time_lapse?.value,
                 investment_types: data.investment_types,
                 better_project: data.better_project,
-                additional_info: '',
+                additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
                 business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
+                debt: data.debt,
                 status: 'in-review',
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
@@ -301,9 +314,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: data.time_lapse?.value,
                 investment_types: data.investment_types,
                 better_project: data.better_project,
-                additional_info: '',
+                additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
                 business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
+                debt: data.debt,
                 status: 'sketch',
             },
             qualities: selectedOptions?.map((item) => item.value)?.join(';;'),
@@ -434,7 +448,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             variant="solid"
                             w="full"
                         >
-                            Publicar proyecto
+                            Postular proyecto
                         </Button>
                     </HStack>
                 </Container>
@@ -494,9 +508,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     </FormControl>
 
                     <FormControl id="business_web" isInvalid={!!errors.business_web} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>
-                            Sitio web <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
+                        <FormLabel>Sitio web (opcional)</FormLabel>
                         <InputGroup>
                             <InputLeftAddon>www.</InputLeftAddon>
                             <Input {...register('business_web')} />
@@ -580,9 +592,20 @@ const Creator: NextPage = ({ project, quality }) => {
                     </FormControl>
 
                     <FormControl id="qualities" w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>
-                            Selecciona los ODS que contribuyes en resolver <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
+                        <FormLabel>Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
+                        <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
+                            Los Objetivos de desarrollo sostenible son el plan maestro para conseguir un futuro
+                            sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos globales a los
+                            que nos enfrentamos día a día, como la pobreza, la desigualdad, el clima, la degradación
+                            ambiental, la prosperidad, la paz y la justicia.{' '}
+                            <a
+                                href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/"
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >
+                                Ver más
+                            </a>
+                        </FormHelperText>
                         <Controller
                             name="qualities"
                             control={control}
@@ -602,7 +625,11 @@ const Creator: NextPage = ({ project, quality }) => {
                                 />
                             )}
                         />
-                        <FormHelperText textColor="gray.300">Máximo 3 ODS</FormHelperText>
+
+                        <FormHelperText textColor="gray.300" lineHeight="140%">
+                            Máximo 3 ODS
+                        </FormHelperText>
+
                         <FormErrorMessage fontWeight={'semibold'}>{errors.qualities?.message}</FormErrorMessage>
                     </FormControl>
 
@@ -614,8 +641,16 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Controller
                             name="third_parties"
                             control={control}
-                            render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsThirty} />}
+                            render={({ field }) => (
+                                <CharkaSelect
+                                    {...field}
+                                    useBasicStyles
+                                    options={optionsThirty}
+                                    onChange={(value) => (value?.value === 'other' ? setIsOtherParties(true) : '')}
+                                />
+                            )}
                         />
+                        <Input placeholder="¿Cuál?" mt="10px" />
                         <FormErrorMessage fontWeight={'semibold'}>{errors.third_parties?.message}</FormErrorMessage>
                     </FormControl>
 
@@ -713,54 +748,111 @@ const Creator: NextPage = ({ project, quality }) => {
                     </Text>
 
                     <VStack w={'full'} align="flex-start" spacing="40px">
-                        <FormControl id="stage" w={{ base: '100%', md: '50%' }}>
-                            <FormLabel>
-                                ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
+                        <FormControl id="capital_stage" w={{ base: '100%', md: '47%' }}>
+                            <FormLabel>¿Cuál es la etapa de levantamiento en la que te encuentras?</FormLabel>
+                            <FormHelperText pb="15px" justifyContent="flex-start">
+                                <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                                    Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo
+                                    capital a través de inversores. En este proceso, entran nuevos socios que adquieren
+                                    una parte del capital social de la empresa y, por tanto, el control de una parte de
+                                    ésta.{' '}
+                                    <a
+                                        color="#fff"
+                                        href="https://corporatefinanceinstitute.com/"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                    >
+                                        Ver más
+                                    </a>
+                                </Text>
+                            </FormHelperText>
                             <Controller
-                                name="stage"
+                                name="capital_stage"
                                 control={control}
                                 render={({ field }) => (
-                                    <CharkaSelect {...field} useBasicStyles options={optionsStage} />
+                                    <CharkaSelect
+                                        {...field}
+                                        useBasicStyles
+                                        options={optionsCapital}
+                                        onChange={(value) =>
+                                            value !== undefined ? setIsStage(true) : setIsStage(false)
+                                        }
+                                    />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.stage?.message}</FormErrorMessage>
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.capital_stage?.message}</FormErrorMessage>
                         </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="investment_objective" w={{ base: '100%', md: '50%' }}>
+                            <FormControl w={{ base: '100%', md: '47%' }}>
                                 <FormLabel>
-                                    ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                    Financiamiento a base de deuda buscado <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
-                                    name="investment_objective"
+                                    name="debt"
                                     control={control}
                                     render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsObject} />
+                                        <CharkaSelect {...field} useBasicStyles options={optionsDeuda} />
                                     )}
                                 />
-                                <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.investment_objective?.message}
-                                </FormErrorMessage>
+                            </FormControl>
+                        </Stack>
+
+                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
+                            <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>
+                                    ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+
+                                <Controller
+                                    name="investment_types"
+                                    control={control}
+                                    render={({ field }) => {
+                                        if (isStage) {
+                                            return <CharkaSelect {...field} useBasicStyles options={optionsDeuda} />;
+                                        } else {
+                                            return (
+                                                <CharkaSelect
+                                                    {...field}
+                                                    useBasicStyles
+                                                    options={optionsInvestor}
+                                                    isDisabled
+                                                />
+                                            );
+                                        }
+                                    }}
+                                />
+                                {errors.investment_types?.message}
                             </FormControl>
 
-                            <FormControl id="capital_stage" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
-                                    ¿Cuál es la etapa de levantamiento en la que te encuentras?{' '}
+                            <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
+                                <FormLabel lineHeight="140%">
+                                    ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
-                                    name="capital_stage"
+                                    name="expected_rentability"
                                     control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsCapital} />
-                                    )}
+                                    render={({ field }) => {
+                                        if (isStage) {
+                                            return <CharkaSelect {...field} useBasicStyles options={optionsRenta} />;
+                                        } else {
+                                            return (
+                                                <CharkaSelect
+                                                    {...field}
+                                                    useBasicStyles
+                                                    options={optionsRenta}
+                                                    isDisabled
+                                                />
+                                            );
+                                        }
+                                    }}
                                 />
                                 <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.capital_stage?.message}
+                                    {errors.expected_rentability?.message}
                                 </FormErrorMessage>
                             </FormControl>
                         </Stack>
+
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel lineHeight="140%">
@@ -777,21 +869,18 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <FormErrorMessage fontWeight={'semibold'}>{errors.guarantee?.message}</FormErrorMessage>
                             </FormControl>
 
-                            <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel lineHeight="140%">
-                                    ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                            <FormControl id="stage" w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>
+                                    ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
-                                    name="expected_rentability"
+                                    name="stage"
                                     control={control}
                                     render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsRenta} />
+                                        <CharkaSelect {...field} useBasicStyles options={optionsStage} />
                                     )}
                                 />
-                                <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.expected_rentability?.message}
-                                </FormErrorMessage>
+                                <FormErrorMessage fontWeight={'semibold'}>{errors.stage?.message}</FormErrorMessage>
                             </FormControl>
                         </Stack>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
@@ -829,43 +918,53 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormErrorMessage>
                             </FormControl>
                         </Stack>
+                        <FormControl id="business_model" w="full">
+                            <FormLabel>
+                                Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+
+                            <FormHelperText pb="15px" justifyContent="flex-start">
+                                <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                                    Ventas últimos 12 meses - EBITDA último año fiscal - Deuda/Patrimonio último año
+                                    fiscal - Activo circulante vs Patrimonio último año fiscal Impuesto declarado en el
+                                    último año fiscal.
+                                </Text>
+                            </FormHelperText>
+
+                            <Controller
+                                name="business_model"
+                                control={control}
+                                render={({ field }) => (
+                                    <Textarea
+                                        maxLength={700}
+                                        {...field}
+                                        fontSize={{ base: 'sm', md: 'md' }}
+                                        focusBorderColor={'primary.400'}
+                                        errorBorderColor={'red.400'}
+                                    />
+                                )}
+                            />
+
+                            <FormErrorMessage fontWeight={'semibold'}>
+                                {errors.better_project?.message}
+                            </FormErrorMessage>
+                        </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="baseline" w="full">
-                            <FormControl id="business_model" w={{ base: '100%', md: '50%' }}>
+                            <FormControl id="investment_objective" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>
-                                    Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
+                                    ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
-
-                                <FormHelperText pb="15px" justifyContent="flex-start">
-                                    <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                                        - Ventas últimos 12 meses - EBITDA último año fiscal <br /> - Deuda/Patrimonio
-                                        último año fiscal <br /> - Activo circulante vs Patrimonio último año fiscal{' '}
-                                        <br /> - Impuesto declarado en el último año fiscal
-                                    </Text>
-                                </FormHelperText>
-
-                                <Input
-                                    {...register('business_model')}
-                                    placeholder="Ventas últimos 12 meses"
-                                    mt="63px"
+                                <Controller
+                                    name="investment_objective"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <CharkaSelect {...field} useBasicStyles options={optionsObject} />
+                                    )}
                                 />
                                 <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.better_project?.message}
+                                    {errors.investment_objective?.message}
                                 </FormErrorMessage>
-                            </FormControl>
-
-                            <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
-                                    ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <FormHelperText pb="15px">
-                                    <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                                        - Inversor ancla (recursos, nombre, inteligencia, acceso), <br /> - Inversores
-                                        atomizados (dinero de diversas fuentes) <br /> - Sponsor <br /> - Minoritarios{' '}
-                                        <br /> - Subordinados <br /> - Cualquiera <br /> - Otra, ¿Cuál?
-                                    </Text>
-                                </FormHelperText>
-                                <Input {...register('investment_types')} placeholder="Inversor ancla" />
-                                {errors.investment_types?.message}
                             </FormControl>
                         </Stack>
                     </VStack>

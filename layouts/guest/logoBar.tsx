@@ -17,7 +17,7 @@ const LogoBar: React.FC = ({ children }) => {
             bgAttachment="fixed"
             pb="100px"
         >
-            <VStack spacing="30px" mt="60px" h="100%" w="full">
+            <VStack spacing="30px" mt="20px" h="100%" w="full">
                 <Text fontSize="36px" fontWeight="bold">
                     Inversión de impacto
                 </Text>
@@ -33,7 +33,7 @@ const LogoBar: React.FC = ({ children }) => {
                     rounded="16px"
                 >
                     <Link href="/explorer" passHref>
-                        <HStack mb="10px" spacing={3} alignItems="center" cursor="pointer">
+                        <HStack spacing={3} alignItems="center" cursor="pointer">
                             <Img
                                 src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
                                 w="40px"

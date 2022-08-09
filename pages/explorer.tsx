@@ -41,12 +41,6 @@ const Explorer: NextPage = () => {
     const { data: orga } = useOrganization(true);
     const { data: project } = useGsgProject(orga?.gsg_project_id);
 
-    console.log(
-        gsg?.data.projects[0].filter((project) => {
-            console.log(Object.values(project.qualities).map((quality) => [1, 8].includes(quality.id)));
-        }),
-    );
-
     return (
         <>
             <NextSeo title={'Explorador - GSG'} />
