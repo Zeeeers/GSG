@@ -414,7 +414,9 @@ const Creator: NextPage = ({ project, quality }) => {
     }, []);
 
     useEffect(() => {
-        proyectCapital?.value !== 'other' ? setIsStage(true) : setIsStage(false);
+        proyectCapital && proyectCapital?.value !== 'other' ? setIsStage(true) : setIsStage(false);
+
+        console.log(proyectCapital?.value);
     }, [proyectCapital]);
     return (
         <>
