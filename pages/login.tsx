@@ -88,7 +88,7 @@ const LoginPage: NextPage = ({ token }) => {
                             <TabPanel px={0}>
                                 <LoginOrgaForm />
 
-                                <Flex flexDirection={'column'} alignItems={'center'} mt="20px">
+                                <Flex flexDirection={'column'} alignItems={'center'} mt="10px">
                                     <Link href="/recovery/recoveryPassword" passHref>
                                         <Button
                                             variant="link"
@@ -100,10 +100,7 @@ const LoginPage: NextPage = ({ token }) => {
                                             Olvidé mi contraseña
                                         </Button>
                                     </Link>
-                                    <VStack spacing="10px" mt="36px">
-                                        <Text fontSize={'md'} fontWeight={'normal'}>
-                                            ¿Eres empresa y no tienes cuenta?
-                                        </Text>
+                                    <VStack spacing="10px" mt="20px">
                                         <Button
                                             onClick={() => router.push('/register')}
                                             variant="outline"

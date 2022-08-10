@@ -64,7 +64,7 @@ const Creator: NextPage = ({ project, quality }) => {
         file: File;
     };
 
-    const [baseImgMain, setBaseImgMain] = useState<string>(project.main_image);
+    const [baseImgMain, setBaseImgMain] = useState<string>(project?.main_image);
     const [baseSocialPdf, setBaseSocialPdf] = useState<basePDFType | undefined>(project?.social_impact);
     const [baseAdditional, setBaseAdditional] = useState<basePDFType | undefined>(project?.additional_document);
 
@@ -80,6 +80,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
     const [contenido, setContenido] = useState<Descendant[]>();
     const [selectedOptions, setSelectedOptions] = useState();
+    const [isOtherParties, setIsOtherParties] = useState(false);
 
     const getNameFile = (url) => {
         return url(url.indexOf('/') + 2).split('/');
@@ -89,7 +90,7 @@ const Creator: NextPage = ({ project, quality }) => {
     //const { data: quality } = useQualityList({ revalidateOnFocus: false });
     const toast = useToast();
 
-    const optionsQuality = quality?.map((item) => ({
+    const optionsQuality = quality.map((item) => ({
         value: item.id,
         label: item.icon.name,
     }));
@@ -109,12 +110,11 @@ const Creator: NextPage = ({ project, quality }) => {
             business_web: project?.business_web,
             third_parties: { value: project?.third_parties, label: ThirdParties(project?.third_parties) },
             more_info: { value: project?.more_info, label: Messure(project?.more_info) },
-            stage: { value: project.stage, label: StageCapital(project.stage) },
+            stage: { value: project?.stage, label: StageCapital(project?.stage) },
             investment_objective: {
                 value: project?.investment_objective,
                 label: Objetive(project?.investment_objective),
             },
-            //capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
             guarantee: { value: project?.guarantee, label: Garantee(project?.guarantee) },
             expected_rentability: {
                 value: project?.expected_rentability,
@@ -122,9 +122,9 @@ const Creator: NextPage = ({ project, quality }) => {
             },
             finance_goal: { value: project?.finance_goal, label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse, label: Time(project?.time_lapse) },
-            business_model: project.business_model,
-            investment_types: project.investment_types,
-            better_project: project.better_project,
+            business_model: project?.business_model,
+            investment_types: { value: project?.investment_types, label: project?.investment_types },
+            better_project: project?.better_project,
         },
     });
 
@@ -132,9 +132,12 @@ const Creator: NextPage = ({ project, quality }) => {
         setContenido(values);
     };
 
-    const proyectDescription = watch('description', project.description ?? '0');
-    const proyectBetter = watch('better_project', project.better_project ?? '0');
-    const proyectTitle = watch('title', project.title ?? '0');
+    const proyectDescription = watch('description', project?.description ?? '0');
+    const proyectBetter = watch('better_project', project?.better_project ?? '0');
+    const proyectTitle = watch('title', project?.title ?? '0');
+    const proyectParties = watch('third_parties');
+    const proyectObject = watch('investment_objective');
+    const proyectCapital = watch('capital_stage');
 
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -161,13 +164,6 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'already_launched', label: 'Producto o servicio ya en el mercado' },
     ];
 
-    const optionsObject = [
-        { value: 'to-begin', label: 'Capital para comenzar' },
-        { value: 'to-scale', label: 'Capital para escalar' },
-        { value: 'to-innovate', label: 'Capital para innovar' },
-        { value: 'other', label: 'Otro' },
-    ];
-
     const optionsCapital = [
         { value: 'pre-seed', label: 'Pre-seed' },
         { value: 'seed', label: 'Seed' },
@@ -175,11 +171,20 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'series-b', label: 'Serie B' },
         { value: 'series-c', label: 'Serie C' },
         { value: 'series-d', label: 'Serie D' },
+        { value: 'other', label: 'No busco financiamiento de capital social' },
     ];
 
     const optionsDeuda = [
         { value: 'senior-debt', label: 'Deuda senior' },
         { value: 'mezzanine-debt', label: 'Deuda mezzanine' },
+        { value: 'other', label: 'No busco financiamiento de deuda' },
+    ];
+
+    const optionsObject = [
+        { value: 'to-begin', label: 'Capital para comenzar' },
+        { value: 'to-scale', label: 'Capital para escalar' },
+        { value: 'to-innovate', label: 'Capital para innovar' },
+        { value: 'other', label: 'Otro' },
     ];
 
     const optionsGuarantee = [
@@ -216,12 +221,11 @@ const Creator: NextPage = ({ project, quality }) => {
     ];
 
     const optionsInvestor = [
-        { value: '1', label: 'Inversor ancla' },
-        { value: '2', label: 'Inversores atomizados' },
-        { value: '3', label: 'Sponsor' },
-        { value: '4', label: 'Minoritarios' },
-        { value: '5', label: 'Cualquiera' },
-        { value: '6', label: 'Otros' },
+        { value: 'Inversor ancla', label: 'Inversor ancla' },
+        { value: 'Inversores atomizados', label: 'Inversores atomizados' },
+        { value: 'Sponsor', label: 'Sponsor' },
+        { value: 'Minoritarios', label: 'Minoritarios' },
+        { value: 'Cualquiera', label: 'Cualquiera' },
     ];
 
     const handlePublished = async (data: IProjectForm) => {
@@ -237,17 +241,18 @@ const Creator: NextPage = ({ project, quality }) => {
                 stage: data.stage?.value,
                 investment_objective: data.investment_objective?.value,
                 capital_stage: data.capital_stage?.value,
+
                 business_model: data.business_model,
                 guarantee: data.guarantee?.value,
                 expected_rentability: data.expected_rentability?.value,
                 finance_goal: data.finance_goal?.value,
                 time_lapse: data.time_lapse?.value,
-                investment_types: data.investment_types,
+                investment_types: data.investment_types?.value,
                 better_project: data.better_project,
                 additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
                 business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
-                debt: data.debt,
+                debt: data.debt?.value,
                 status: 'in-review',
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
@@ -307,17 +312,18 @@ const Creator: NextPage = ({ project, quality }) => {
                 stage: data.stage?.value,
                 investment_objective: data.investment_objective?.value,
                 capital_stage: data.capital_stage?.value,
+
                 business_model: data.business_model,
                 guarantee: data.guarantee?.value,
                 expected_rentability: data.expected_rentability?.value,
                 finance_goal: data.finance_goal?.value,
                 time_lapse: data.time_lapse?.value,
-                investment_types: data.investment_types,
+                investment_types: data.investment_types?.value,
                 better_project: data.better_project,
                 additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
                 business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
-                debt: data.debt,
+                debt: data.debt?.value,
                 status: 'sketch',
             },
             qualities: selectedOptions?.map((item) => item.value)?.join(';;'),
@@ -405,6 +411,10 @@ const Creator: NextPage = ({ project, quality }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        proyectCapital?.value !== 'other' ? setIsStage(true) : setIsStage(false);
+    }, [proyectCapital]);
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
@@ -432,7 +442,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             </Button>
                         </Link>
                         <Text fontSize="3xl" fontWeight="medium">
-                            Creador de producto/servicio
+                            Creador de proyecto
                         </Text>
                     </Stack>
                     <HStack spacing="8px" mt={{ base: '10px', md: 0 }}>
@@ -521,7 +531,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     <FormControl id="main_image">
                         <FormLabel lineHeight="140%">
                             Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
-                            tarjetas que inversionistas y público en general podrán ver.
+                            tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 600kB)
                         </FormLabel>
                         {baseImgMain ? (
                             <Stack position="relative" w="fit-content">
@@ -568,7 +578,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         if (e.target?.files && validateTypes(e.target.files[0])) {
                                             if (e.target?.files[0].size > 600000) {
                                                 toast({
-                                                    title: 'La imagen es muy grande',
+                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 600kB',
                                                     status: 'error',
                                                     duration: 9000,
                                                     isClosable: true,
@@ -598,13 +608,14 @@ const Creator: NextPage = ({ project, quality }) => {
                             sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos globales a los
                             que nos enfrentamos día a día, como la pobreza, la desigualdad, el clima, la degradación
                             ambiental, la prosperidad, la paz y la justicia.{' '}
-                            <a
+                            <Link
                                 href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/"
                                 target="_blank"
                                 rel="noreferrer noopener"
+                                color="#fff"
                             >
                                 Ver más
-                            </a>
+                            </Link>
                         </FormHelperText>
                         <Controller
                             name="qualities"
@@ -612,7 +623,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             render={({ field }) => (
                                 <CharkaSelect
                                     {...field}
-                                    defaultValue={Object.values(project.qualities).map(
+                                    defaultValue={Object.values(project?.qualities ?? []).map(
                                         (item) => optionsQuality[item.id - 1],
                                     )}
                                     tagVariant="solid"
@@ -641,16 +652,11 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Controller
                             name="third_parties"
                             control={control}
-                            render={({ field }) => (
-                                <CharkaSelect
-                                    {...field}
-                                    useBasicStyles
-                                    options={optionsThirty}
-                                    onChange={(value) => (value?.value === 'other' ? setIsOtherParties(true) : '')}
-                                />
-                            )}
+                            render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsThirty} />}
                         />
-                        <Input placeholder="¿Cuál?" mt="10px" />
+
+                        {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
+
                         <FormErrorMessage fontWeight={'semibold'}>{errors.third_parties?.message}</FormErrorMessage>
                     </FormControl>
 
@@ -671,7 +677,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <FormControl id="social_impact">
                             <FormLabel>
                                 Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
-                                valíde la medición de resultados (opcional)
+                                valíde la medición de resultados. (opcional) (Tamaño máximo 600kB)
                             </FormLabel>
 
                             {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
@@ -743,59 +749,78 @@ const Creator: NextPage = ({ project, quality }) => {
 
                     <Divider paddingTop={'60px'} />
 
-                    <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
-                        Descripción financiera
-                    </Text>
+                    <VStack align="flex-start">
+                        <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
+                            Descripción financiera
+                        </Text>
+
+                        <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                            Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo capital a
+                            través de inversores. En este proceso, entran nuevos socios que adquieren una parte del
+                            capital social de la empresa y, por tanto, el control de una parte de ésta. Por otro lado,
+                            la deuda comprende el entregar al equipo emprendedor un monto de dinero con el compromiso de
+                            ser devuelto en su totalidad e incluyendo intereses.
+                        </Text>
+                    </VStack>
 
                     <VStack w={'full'} align="flex-start" spacing="40px">
-                        <FormControl id="capital_stage" w={{ base: '100%', md: '47%' }}>
-                            <FormLabel>¿Cuál es la etapa de levantamiento en la que te encuentras?</FormLabel>
-                            <FormHelperText pb="15px" justifyContent="flex-start">
-                                <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                                    Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo
-                                    capital a través de inversores. En este proceso, entran nuevos socios que adquieren
-                                    una parte del capital social de la empresa y, por tanto, el control de una parte de
-                                    ésta.{' '}
-                                    <a
-                                        color="#fff"
-                                        href="https://corporatefinanceinstitute.com/"
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                    >
-                                        Ver más
-                                    </a>
+                        <VStack align="flex-start" w="full" spacing="20px">
+                            <VStack spacing="5px" align="flex-start" w="full">
+                                <Text fontSize={'2xl'} fontWeight="medium">
+                                    ¿Qué tipo de financiamiento buscas?
                                 </Text>
-                            </FormHelperText>
-                            <Controller
-                                name="capital_stage"
-                                control={control}
-                                render={({ field }) => (
-                                    <CharkaSelect
-                                        {...field}
-                                        useBasicStyles
-                                        options={optionsCapital}
-                                        onChange={(value) =>
-                                            value !== undefined ? setIsStage(true) : setIsStage(false)
-                                        }
+                                <Text>
+                                    Selecciona al menos 1 <span style={{ color: '#4FD1C5' }}>*</span>
+                                </Text>
+                            </VStack>
+                            <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
+                                <FormControl id="capital_stage" w={{ base: '100%', md: '47%' }}>
+                                    <Controller
+                                        name="capital_stage"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <CharkaSelect
+                                                {...field}
+                                                defaultValue={
+                                                    project?.capital_stage
+                                                        ? {
+                                                              label: Stage(project?.capital_stage),
+                                                              value: project?.capital_stage,
+                                                          }
+                                                        : [optionsCapital[6]]
+                                                }
+                                                useBasicStyles
+                                                options={optionsCapital}
+                                            />
+                                        )}
                                     />
-                                )}
-                            />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.capital_stage?.message}</FormErrorMessage>
-                        </FormControl>
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl w={{ base: '100%', md: '47%' }}>
-                                <FormLabel>
-                                    Financiamiento a base de deuda buscado <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="debt"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsDeuda} />
-                                    )}
-                                />
-                            </FormControl>
-                        </Stack>
+                                    <FormErrorMessage fontWeight={'semibold'}>
+                                        {errors.capital_stage?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <FormControl id="debt" w={{ base: '100%', md: '47%' }}>
+                                    <Controller
+                                        name="debt"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <CharkaSelect
+                                                {...field}
+                                                useBasicStyles
+                                                options={optionsDeuda}
+                                                defaultValue={
+                                                    project?.debt
+                                                        ? {
+                                                              label: Stage(project?.debt),
+                                                              value: project?.debt,
+                                                          }
+                                                        : [optionsDeuda[2]]
+                                                }
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            </Stack>
+                        </VStack>
 
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
                             <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
@@ -808,7 +833,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     control={control}
                                     render={({ field }) => {
                                         if (isStage) {
-                                            return <CharkaSelect {...field} useBasicStyles options={optionsDeuda} />;
+                                            return <CharkaSelect {...field} useBasicStyles options={optionsInvestor} />;
                                         } else {
                                             return (
                                                 <CharkaSelect
@@ -925,9 +950,9 @@ const Creator: NextPage = ({ project, quality }) => {
 
                             <FormHelperText pb="15px" justifyContent="flex-start">
                                 <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                                    Ventas últimos 12 meses - EBITDA último año fiscal - Deuda/Patrimonio último año
-                                    fiscal - Activo circulante vs Patrimonio último año fiscal Impuesto declarado en el
-                                    último año fiscal.
+                                    Coméntanos de tus ventas de los últimos 12 meses, EBITDA último año fiscal,
+                                    Deuda/Patrimonio último año fiscal, Activo circulante vs Patrimonio último año
+                                    fiscal, Impuesto declarado en el último año fiscal.
                                 </Text>
                             </FormHelperText>
 
@@ -962,6 +987,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <CharkaSelect {...field} useBasicStyles options={optionsObject} />
                                     )}
                                 />
+                                {proyectObject?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
                                 <FormErrorMessage fontWeight={'semibold'}>
                                     {errors.investment_objective?.message}
                                 </FormErrorMessage>
@@ -1071,7 +1097,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     <FormControl id="additional_document">
                         <FormLabel>
                             ¿Tienes algún archivo (PDF) que consideres necesario subir como información complementaria
-                            para que sea vista por el inversionista? (Opcional)
+                            para que sea vista por el inversionista? (Opcional) (Tamaño máximo 600kB)
                         </FormLabel>
 
                         {baseAdditional !== 'https://api.gsg-match.com/cuadrado.png' && baseAdditional !== undefined ? (
@@ -1112,15 +1138,25 @@ const Creator: NextPage = ({ project, quality }) => {
                                             const base = await getBase64(e.target.files![0]);
                                             setBaseAdditional({ base64: base, file: e.target.files[0] });
                                         } else {
-                                            toast({
-                                                title: 'Archivo inválido.',
-                                                description:
-                                                    'El archivo subido no es correcto, porfavor, carge un PDF válido.',
-                                                status: 'error',
-                                                duration: 9000,
-                                                isClosable: true,
-                                                position: 'top-right',
-                                            });
+                                            if (e.target?.files[0].size > 600000) {
+                                                toast({
+                                                    title: 'El PDF es muy grande, porfavor, suba una PDF menor o igual a 600kB',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            } else {
+                                                toast({
+                                                    title: 'Archivo inválido.',
+                                                    description:
+                                                        'El archivo subido no es correcto, porfavor, carge un PDF válido.',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            }
                                         }
                                     }}
                                 >
@@ -1176,15 +1212,21 @@ const Creator: NextPage = ({ project, quality }) => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const projectId = ctx.query.id as string | undefined;
+    const quality = await getQualities(`${process.env.NEXT_PUBLIC_API_URL!}/quality`);
 
     try {
         if (projectId) {
             const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, projectId);
-            const quality = await getQualities(`${process.env.NEXT_PUBLIC_API_URL!}/quality`);
 
             return {
                 props: {
                     project: data?.data?.gsg_project,
+                    quality: quality?.qualities,
+                },
+            };
+        } else {
+            return {
+                props: {
                     quality: quality?.qualities,
                 },
             };

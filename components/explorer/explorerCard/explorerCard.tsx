@@ -40,20 +40,41 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
             />
             <Box display={'flex'} flexDirection="column" justifyContent={'space-between'} h="283px" px="20px" py="18px">
                 <VStack align="flex-start">
-                    <HStack
-                        display="flex"
-                        justifyContent="center"
-                        rounded="6px"
-                        px="8px"
-                        py="2px"
-                        fontSize="sm"
-                        fontWeight="medium"
-                        bg="green.100"
-                        color="green.800"
-                        fontFamily="inter"
-                    >
-                        <Text>{Stage(project.capital_stage)}</Text>
+                    <HStack>
+                        <HStack
+                            display="flex"
+                            justifyContent="center"
+                            rounded="6px"
+                            px="8px"
+                            py="2px"
+                            fontSize="sm"
+                            fontWeight="medium"
+                            bg="green.100"
+                            color="green.800"
+                            fontFamily="inter"
+                        >
+                            <Text>{Stage(project.capital_stage)}</Text>
+                        </HStack>
+
+                        {!project?.debt ||
+                            (project?.debt !== 'other' && (
+                                <HStack
+                                    display="flex"
+                                    justifyContent="center"
+                                    rounded="6px"
+                                    px="8px"
+                                    py="2px"
+                                    fontSize="sm"
+                                    fontWeight="medium"
+                                    bg="green.100"
+                                    color="green.800"
+                                    fontFamily="inter"
+                                >
+                                    <Text>{Stage(project?.debt)}</Text>
+                                </HStack>
+                            ))}
                     </HStack>
+
                     <Stack spacing="5px" mt="10px">
                         <Text fontSize="xl" fontWeight="semibold" noOfLines={2}>
                             {project.title}

@@ -270,7 +270,11 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                                             {project?.description}
                                         </Text>
                                     </VStack>
-                                    <BadgeStage capitalStage={project?.capital_stage} />
+                                    <HStack>
+                                        <BadgeStage capitalStage={project?.capital_stage} />
+                                        {!project?.debt ||
+                                            (project?.debt !== 'other' && <BadgeStage capitalStage={project?.debt} />)}
+                                    </HStack>
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
                                         <Text fontFamily="inter">Rango de levantamiento buscado</Text>
                                         <Flex

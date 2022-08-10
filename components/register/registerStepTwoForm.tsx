@@ -135,9 +135,8 @@ const RegisterStepTwoForm: React.FC = () => {
                                 />
 
                                 <UploadButton
-                                    variant="ghost"
+                                    variant="outline"
                                     colorScheme="white"
-                                    fontWeight="bold"
                                     w="fit-content"
                                     cursor="pointer"
                                     ml={-2}

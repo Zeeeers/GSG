@@ -31,6 +31,8 @@ export interface IProjectForm {
     additional_info?: string;
     business_web?: string;
     additional_document?: string;
+
+    debt?: select;
 }
 
 export interface IMember {
@@ -66,6 +68,8 @@ const projectShape: ZodShape<IProjectForm> = {
     additional_document: z.string().optional(),
 
     qualities: z.object({ value: z.string(), label: z.string() }).optional(),
+
+    debt: z.object({ value: z.string(), label: z.string() }).optional(),
 };
 
 const memberShape: ZodShape<IMember> = {

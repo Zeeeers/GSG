@@ -65,6 +65,7 @@ const AddMembersForm = ({ reload }) => {
                 position: 'top-right',
             });
             reload();
+            setBaseImg('');
         } else {
             setCreateMember(false);
             toast({
@@ -105,9 +106,8 @@ const AddMembersForm = ({ reload }) => {
                             <Input type="hidden" {...register('main_image')} />
 
                             <UploadButton
-                                variant="ghost"
+                                variant="outline"
                                 colorScheme="white"
-                                fontWeight="bold"
                                 ml={-2}
                                 onChange={async (e) => {
                                     const { validateTypes, getBase64 } = await import('services/images');
@@ -115,7 +115,7 @@ const AddMembersForm = ({ reload }) => {
                                     if (e.target?.files && validateTypes(e.target.files[0])) {
                                         if (e.target.files[0].size > 600000) {
                                             toast({
-                                                title: 'La imagen es muy grande',
+                                                title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 600kB',
                                                 status: 'error',
                                                 duration: 9000,
                                                 isClosable: true,

@@ -41,6 +41,8 @@ const Explorer: NextPage = () => {
     const { data: orga } = useOrganization(true);
     const { data: project } = useGsgProject(orga?.gsg_project_id);
 
+    const [isVisible, setIsVisible] = useState(false);
+
     return (
         <>
             <NextSeo title={'Explorador - GSG'} />
@@ -49,184 +51,440 @@ const Explorer: NextPage = () => {
                 {orga !== undefined &&
                     (orga?.gsg_project_id ? <StatusProject project={project?.data.gsg_project} /> : <NotProject />)}
 
-                <Stack
-                    justify={'space-between'}
-                    direction={{ base: 'column', md: 'row' }}
-                    justifyContent="end"
-                    w="full"
-                >
-                    <Heading
-                        fontSize={{ base: '2xl', md: '4xl' }}
-                        lineHeight="130%"
-                        fontWeight="bold"
-                        w="full"
-                        textAlign="left"
-                    >
-                        PROYECTOS DE INVERSIÓN
-                    </Heading>
-                    <Stack
-                        spacing="13px"
-                        direction={{ base: 'column-reverse', md: 'row' }}
-                        alignItems={{ base: 'center', sm: 'flex-end' }}
-                        justifyContent="flex-end"
-                    >
-                        <HStack display={{ base: 'none', md: 'block' }} spacing="20px" justifyContent="flex-end">
-                            <Menu>
-                                {({ isOpen }) => (
-                                    <>
-                                        <MenuButton
-                                            border="1px"
-                                            borderColor="gray.500"
-                                            h="40px"
-                                            as={Button}
-                                            w={{ base: 'full', lg: '194px' }}
-                                        >
-                                            <Flex
-                                                py="8px"
-                                                px="16px"
-                                                justifyContent="space-between"
-                                                w="full"
-                                                alignItems="center"
-                                                fontWeight="normal"
-                                                fontSize="md"
-                                            >
-                                                <Text>
-                                                    {orderBy === '[id,desc]' ? 'Más recientes' : 'Más antiguos'}
-                                                </Text>
-                                                <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
-                                            </Flex>
-                                        </MenuButton>
-                                        <MenuList w={{ base: 'full', md: '194px' }}>
-                                            <MenuOptionGroup
-                                                value={orderBy}
-                                                onChange={(e: '[id,asc]' | '[id,desc]') => setOrderBy(e)}
-                                            >
-                                                <MenuItemOption value="[id,desc]" fontWeight="normal">
-                                                    Más recientes
-                                                </MenuItemOption>
-                                                <MenuItemOption value="[id,asc]" fontWeight="normal">
-                                                    Más antiguos
-                                                </MenuItemOption>
-                                            </MenuOptionGroup>
-                                        </MenuList>
-                                    </>
-                                )}
-                            </Menu>
+                {orga ? (
+                    <>
+                        <HStack bg="gray.700" p="20px" rounded="8px" mb="40px" justifyContent="space-between">
+                            <VStack align="flex-start" w={{ base: 'full', sm: 'fit-content' }}>
+                                <Text fontSize="24px" fontWeight="bold" fontFamily="barlow" textTransform="uppercase">
+                                    Revisar otros proyectos
+                                </Text>
+                                <Text fontFamily="inter">Explora proyectos que otras empresas han postulado</Text>
+
+                                <Button
+                                    display={{ base: 'block', md: 'none' }}
+                                    bg="blue.700"
+                                    _hover={{ bg: 'blue.600' }}
+                                    h="40px"
+                                    variant="solid"
+                                    onClick={() => setIsVisible(!isVisible)}
+                                >
+                                    {isVisible ? 'Ocultar' : 'Explorar'}
+                                </Button>
+                            </VStack>
+
+                            <Button
+                                display={{ base: 'none', md: 'block' }}
+                                bg="blue.700"
+                                _hover={{ bg: 'blue.600' }}
+                                h="40px"
+                                variant="solid"
+                                onClick={() => setIsVisible(!isVisible)}
+                            >
+                                {isVisible ? 'Ocultar' : 'Explorar'}
+                            </Button>
                         </HStack>
 
+                        {isVisible && (
+                            <>
+                                <Stack
+                                    justify={'space-between'}
+                                    direction={{ base: 'column', md: 'row' }}
+                                    justifyContent="end"
+                                    w="full"
+                                >
+                                    <Heading
+                                        fontSize={{ base: '2xl', md: '4xl' }}
+                                        lineHeight="130%"
+                                        fontWeight="bold"
+                                        w="full"
+                                        textAlign="left"
+                                    >
+                                        PROYECTOS DE INVERSIÓN
+                                    </Heading>
+                                    <Stack
+                                        spacing="13px"
+                                        direction={{ base: 'column-reverse', md: 'row' }}
+                                        alignItems={{ base: 'center', sm: 'flex-end' }}
+                                        justifyContent="flex-end"
+                                    >
+                                        <HStack
+                                            display={{ base: 'none', md: 'block' }}
+                                            spacing="20px"
+                                            justifyContent="flex-end"
+                                        >
+                                            <Menu>
+                                                {({ isOpen }) => (
+                                                    <>
+                                                        <MenuButton
+                                                            border="1px"
+                                                            borderColor="gray.500"
+                                                            h="40px"
+                                                            as={Button}
+                                                            w={{ base: 'full', lg: '194px' }}
+                                                        >
+                                                            <Flex
+                                                                py="8px"
+                                                                px="16px"
+                                                                justifyContent="space-between"
+                                                                w="full"
+                                                                alignItems="center"
+                                                                fontWeight="normal"
+                                                                fontSize="md"
+                                                            >
+                                                                <Text>
+                                                                    {orderBy === '[id,desc]'
+                                                                        ? 'Más recientes'
+                                                                        : 'Más antiguos'}
+                                                                </Text>
+                                                                <Icon
+                                                                    as={isOpen ? FaChevronUp : FaChevronDown}
+                                                                    ml={2}
+                                                                />
+                                                            </Flex>
+                                                        </MenuButton>
+                                                        <MenuList w={{ base: 'full', md: '194px' }}>
+                                                            <MenuOptionGroup
+                                                                value={orderBy}
+                                                                onChange={(e: '[id,asc]' | '[id,desc]') =>
+                                                                    setOrderBy(e)
+                                                                }
+                                                            >
+                                                                <MenuItemOption value="[id,desc]" fontWeight="normal">
+                                                                    Más recientes
+                                                                </MenuItemOption>
+                                                                <MenuItemOption value="[id,asc]" fontWeight="normal">
+                                                                    Más antiguos
+                                                                </MenuItemOption>
+                                                            </MenuOptionGroup>
+                                                        </MenuList>
+                                                    </>
+                                                )}
+                                            </Menu>
+                                        </HStack>
+
+                                        <Stack
+                                            display={{ base: 'none', sm: 'flex' }}
+                                            flexDirection="row"
+                                            alignItems={{ base: 'center', sm: 'flex-end' }}
+                                            justify={{ base: 'space-between', md: 'center' }}
+                                            w="full"
+                                        >
+                                            <Input
+                                                w={{ base: 'full', sm: '70%', md: '184px' }}
+                                                variant="outline"
+                                                placeholder="Buscar"
+                                                mr="5px"
+                                            />
+                                            <Button
+                                                variant="solid"
+                                                bg="gray.600"
+                                                _focus={{ outline: 'none' }}
+                                                aria-label="Buscar"
+                                                textColor="white"
+                                                py="10px"
+                                                px="16px"
+                                                w={{ base: '28%', md: 'full', lg: '110px' }}
+                                                h="40px"
+                                            >
+                                                <HStack w="full" spacing="10px">
+                                                    <Icon as={FaSearch} />
+                                                    <Text>Buscar</Text>
+                                                </HStack>
+                                            </Button>
+                                        </Stack>
+
+                                        <VStack display={{ base: 'block', sm: 'none' }} spacing="9px" w="full">
+                                            <Input
+                                                w={{ base: 'full', md: '184px' }}
+                                                variant="outline"
+                                                placeholder="Buscar"
+                                            />
+                                            <Button
+                                                alignItems="center"
+                                                justifyContent="center"
+                                                variant="solid"
+                                                bg="gray.600"
+                                                _focus={{ outline: 'none' }}
+                                                aria-label="Buscar"
+                                                textColor="white"
+                                                py="10px"
+                                                px="16px"
+                                                w="full"
+                                                h="40px"
+                                            >
+                                                <HStack spacing="10px">
+                                                    <Icon as={FaSearch} />
+                                                    <Text>Buscar</Text>
+                                                </HStack>
+                                            </Button>
+                                        </VStack>
+
+                                        <HStack
+                                            display={{ base: 'block', md: 'none' }}
+                                            spacing="20px"
+                                            w="full"
+                                            justifyContent="end"
+                                        >
+                                            <Menu>
+                                                {({ isOpen }) => (
+                                                    <>
+                                                        <MenuButton
+                                                            border="1px"
+                                                            borderColor="gray.500"
+                                                            h="40px"
+                                                            as={Button}
+                                                            w={{ base: 'full', lg: '194px' }}
+                                                        >
+                                                            <Flex
+                                                                py="8px"
+                                                                px="16px"
+                                                                justifyContent="space-between"
+                                                                w="full"
+                                                                alignItems="center"
+                                                                fontWeight="normal"
+                                                                fontSize="md"
+                                                            >
+                                                                <Text>
+                                                                    {orderBy === '[id,desc]'
+                                                                        ? 'Más recientes'
+                                                                        : 'Más antiguos'}
+                                                                </Text>
+                                                                <Icon
+                                                                    as={isOpen ? FaChevronUp : FaChevronDown}
+                                                                    ml={2}
+                                                                />
+                                                            </Flex>
+                                                        </MenuButton>
+                                                        <MenuList w={{ base: 'full', md: '194px' }}>
+                                                            <MenuOptionGroup
+                                                                value={orderBy}
+                                                                onChange={(e: '[id,asc]' | '[id,desc]') =>
+                                                                    setOrderBy(e)
+                                                                }
+                                                            >
+                                                                <MenuItemOption value="[id,desc]" fontWeight="normal">
+                                                                    Más recientes
+                                                                </MenuItemOption>
+                                                                <MenuItemOption value="[id,asc]" fontWeight="normal">
+                                                                    Más antiguos
+                                                                </MenuItemOption>
+                                                            </MenuOptionGroup>
+                                                        </MenuList>
+                                                    </>
+                                                )}
+                                            </Menu>
+                                        </HStack>
+                                    </Stack>
+                                </Stack>
+
+                                <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
+                                    <NavbarFilter />
+                                    {gsg?.data?.projects.length !== 0 ? (
+                                        <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
+                                            {gsg?.data?.projects[0].map((project) => (
+                                                <ExplorerCard key={project.id} project={project} />
+                                            ))}
+                                        </SimpleGrid>
+                                    ) : (
+                                        <Text fontSize="2xl" fontWeight="bold">
+                                            No hay proyectos publicados
+                                        </Text>
+                                    )}
+                                </VStack>
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <>
                         <Stack
-                            display={{ base: 'none', sm: 'flex' }}
-                            flexDirection="row"
-                            alignItems={{ base: 'center', sm: 'flex-end' }}
-                            justify={{ base: 'space-between', md: 'center' }}
+                            justify={'space-between'}
+                            direction={{ base: 'column', md: 'row' }}
+                            justifyContent="end"
                             w="full"
                         >
-                            <Input
-                                w={{ base: 'full', sm: '70%', md: '184px' }}
-                                variant="outline"
-                                placeholder="Buscar"
-                                mr="5px"
-                            />
-                            <Button
-                                variant="solid"
-                                bg="gray.600"
-                                _focus={{ outline: 'none' }}
-                                aria-label="Buscar"
-                                textColor="white"
-                                py="10px"
-                                px="16px"
-                                w={{ base: '28%', md: 'full', lg: '110px' }}
-                                h="40px"
+                            <Heading
+                                fontSize={{ base: '2xl', md: '4xl' }}
+                                lineHeight="130%"
+                                fontWeight="bold"
+                                w="full"
+                                textAlign="left"
                             >
-                                <HStack w="full" spacing="10px">
-                                    <Icon as={FaSearch} />
-                                    <Text>Buscar</Text>
+                                PROYECTOS DE INVERSIÓN
+                            </Heading>
+                            <Stack
+                                spacing="13px"
+                                direction={{ base: 'column-reverse', md: 'row' }}
+                                alignItems={{ base: 'center', sm: 'flex-end' }}
+                                justifyContent="flex-end"
+                            >
+                                <HStack
+                                    display={{ base: 'none', md: 'block' }}
+                                    spacing="20px"
+                                    justifyContent="flex-end"
+                                >
+                                    <Menu>
+                                        {({ isOpen }) => (
+                                            <>
+                                                <MenuButton
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    h="40px"
+                                                    as={Button}
+                                                    w={{ base: 'full', lg: '194px' }}
+                                                >
+                                                    <Flex
+                                                        py="8px"
+                                                        px="16px"
+                                                        justifyContent="space-between"
+                                                        w="full"
+                                                        alignItems="center"
+                                                        fontWeight="normal"
+                                                        fontSize="md"
+                                                    >
+                                                        <Text>
+                                                            {orderBy === '[id,desc]' ? 'Más recientes' : 'Más antiguos'}
+                                                        </Text>
+                                                        <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
+                                                    </Flex>
+                                                </MenuButton>
+                                                <MenuList w={{ base: 'full', md: '194px' }}>
+                                                    <MenuOptionGroup
+                                                        value={orderBy}
+                                                        onChange={(e: '[id,asc]' | '[id,desc]') => setOrderBy(e)}
+                                                    >
+                                                        <MenuItemOption value="[id,desc]" fontWeight="normal">
+                                                            Más recientes
+                                                        </MenuItemOption>
+                                                        <MenuItemOption value="[id,asc]" fontWeight="normal">
+                                                            Más antiguos
+                                                        </MenuItemOption>
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </>
+                                        )}
+                                    </Menu>
                                 </HStack>
-                            </Button>
+
+                                <Stack
+                                    display={{ base: 'none', sm: 'flex' }}
+                                    flexDirection="row"
+                                    alignItems={{ base: 'center', sm: 'flex-end' }}
+                                    justify={{ base: 'space-between', md: 'center' }}
+                                    w="full"
+                                >
+                                    <Input
+                                        w={{ base: 'full', sm: '70%', md: '184px' }}
+                                        variant="outline"
+                                        placeholder="Buscar"
+                                        mr="5px"
+                                    />
+                                    <Button
+                                        variant="solid"
+                                        bg="gray.600"
+                                        _focus={{ outline: 'none' }}
+                                        aria-label="Buscar"
+                                        textColor="white"
+                                        py="10px"
+                                        px="16px"
+                                        w={{ base: '28%', md: 'full', lg: '110px' }}
+                                        h="40px"
+                                    >
+                                        <HStack w="full" spacing="10px">
+                                            <Icon as={FaSearch} />
+                                            <Text>Buscar</Text>
+                                        </HStack>
+                                    </Button>
+                                </Stack>
+
+                                <VStack display={{ base: 'block', sm: 'none' }} spacing="9px" w="full">
+                                    <Input w={{ base: 'full', md: '184px' }} variant="outline" placeholder="Buscar" />
+                                    <Button
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        variant="solid"
+                                        bg="gray.600"
+                                        _focus={{ outline: 'none' }}
+                                        aria-label="Buscar"
+                                        textColor="white"
+                                        py="10px"
+                                        px="16px"
+                                        w="full"
+                                        h="40px"
+                                    >
+                                        <HStack spacing="10px">
+                                            <Icon as={FaSearch} />
+                                            <Text>Buscar</Text>
+                                        </HStack>
+                                    </Button>
+                                </VStack>
+
+                                <HStack
+                                    display={{ base: 'block', md: 'none' }}
+                                    spacing="20px"
+                                    w="full"
+                                    justifyContent="end"
+                                >
+                                    <Menu>
+                                        {({ isOpen }) => (
+                                            <>
+                                                <MenuButton
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    h="40px"
+                                                    as={Button}
+                                                    w={{ base: 'full', lg: '194px' }}
+                                                >
+                                                    <Flex
+                                                        py="8px"
+                                                        px="16px"
+                                                        justifyContent="space-between"
+                                                        w="full"
+                                                        alignItems="center"
+                                                        fontWeight="normal"
+                                                        fontSize="md"
+                                                    >
+                                                        <Text>
+                                                            {orderBy === '[id,desc]' ? 'Más recientes' : 'Más antiguos'}
+                                                        </Text>
+                                                        <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
+                                                    </Flex>
+                                                </MenuButton>
+                                                <MenuList w={{ base: 'full', md: '194px' }}>
+                                                    <MenuOptionGroup
+                                                        value={orderBy}
+                                                        onChange={(e: '[id,asc]' | '[id,desc]') => setOrderBy(e)}
+                                                    >
+                                                        <MenuItemOption value="[id,desc]" fontWeight="normal">
+                                                            Más recientes
+                                                        </MenuItemOption>
+                                                        <MenuItemOption value="[id,asc]" fontWeight="normal">
+                                                            Más antiguos
+                                                        </MenuItemOption>
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </>
+                                        )}
+                                    </Menu>
+                                </HStack>
+                            </Stack>
                         </Stack>
 
-                        <VStack display={{ base: 'block', sm: 'none' }} spacing="9px" w="full">
-                            <Input w={{ base: 'full', md: '184px' }} variant="outline" placeholder="Buscar" />
-                            <Button
-                                alignItems="center"
-                                justifyContent="center"
-                                variant="solid"
-                                bg="gray.600"
-                                _focus={{ outline: 'none' }}
-                                aria-label="Buscar"
-                                textColor="white"
-                                py="10px"
-                                px="16px"
-                                w="full"
-                                h="40px"
-                            >
-                                <HStack spacing="10px">
-                                    <Icon as={FaSearch} />
-                                    <Text>Buscar</Text>
-                                </HStack>
-                            </Button>
+                        <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
+                            <NavbarFilter />
+                            {gsg?.data?.projects.length !== 0 ? (
+                                <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
+                                    {gsg?.data?.projects[0].map((project) => (
+                                        <ExplorerCard key={project.id} project={project} />
+                                    ))}
+                                </SimpleGrid>
+                            ) : (
+                                <Text fontSize="2xl" fontWeight="bold">
+                                    No hay proyectos publicados
+                                </Text>
+                            )}
                         </VStack>
-
-                        <HStack display={{ base: 'block', md: 'none' }} spacing="20px" w="full" justifyContent="end">
-                            <Menu>
-                                {({ isOpen }) => (
-                                    <>
-                                        <MenuButton
-                                            border="1px"
-                                            borderColor="gray.500"
-                                            h="40px"
-                                            as={Button}
-                                            w={{ base: 'full', lg: '194px' }}
-                                        >
-                                            <Flex
-                                                py="8px"
-                                                px="16px"
-                                                justifyContent="space-between"
-                                                w="full"
-                                                alignItems="center"
-                                                fontWeight="normal"
-                                                fontSize="md"
-                                            >
-                                                <Text>
-                                                    {orderBy === '[id,desc]' ? 'Más recientes' : 'Más antiguos'}
-                                                </Text>
-                                                <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
-                                            </Flex>
-                                        </MenuButton>
-                                        <MenuList w={{ base: 'full', md: '194px' }}>
-                                            <MenuOptionGroup
-                                                value={orderBy}
-                                                onChange={(e: '[id,asc]' | '[id,desc]') => setOrderBy(e)}
-                                            >
-                                                <MenuItemOption value="[id,desc]" fontWeight="normal">
-                                                    Más recientes
-                                                </MenuItemOption>
-                                                <MenuItemOption value="[id,asc]" fontWeight="normal">
-                                                    Más antiguos
-                                                </MenuItemOption>
-                                            </MenuOptionGroup>
-                                        </MenuList>
-                                    </>
-                                )}
-                            </Menu>
-                        </HStack>
-                    </Stack>
-                </Stack>
-
-                <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
-                    <NavbarFilter />
-                    {gsg?.data?.projects.length !== 0 ? (
-                        <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                            {gsg?.data?.projects[0].map((project) => (
-                                <ExplorerCard key={project.id} project={project} />
-                            ))}
-                        </SimpleGrid>
-                    ) : (
-                        <Text fontSize="2xl" fontWeight="bold">
-                            No hay proyectos publicados
-                        </Text>
-                    )}
-                </VStack>
+                    </>
+                )}
             </Container>
         </>
     );
