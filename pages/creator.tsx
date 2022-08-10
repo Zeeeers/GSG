@@ -134,6 +134,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const proyectDescription = watch('description', project?.description ?? '0');
     const proyectBetter = watch('better_project', project?.better_project ?? '0');
+    const proyectBusiness = watch('business_model', project?.business_model ?? '0');
     const proyectTitle = watch('title', project?.title ?? '0');
     const proyectParties = watch('third_parties');
     const proyectObject = watch('investment_objective');
@@ -881,7 +882,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
                             <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel lineHeight="140%">
-                                    Su proyecto que quiere financiar, ¿cuenta con garantías?{' '}
+                                    ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
@@ -947,7 +948,6 @@ const Creator: NextPage = ({ project, quality }) => {
                             <FormLabel>
                                 Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
-
                             <FormHelperText pb="15px" justifyContent="flex-start">
                                 <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
                                     Coméntanos de tus ventas de los últimos 12 meses, EBITDA último año fiscal,
@@ -955,7 +955,6 @@ const Creator: NextPage = ({ project, quality }) => {
                                     fiscal, Impuesto declarado en el último año fiscal.
                                 </Text>
                             </FormHelperText>
-
                             <Controller
                                 name="business_model"
                                 control={control}
@@ -969,7 +968,14 @@ const Creator: NextPage = ({ project, quality }) => {
                                     />
                                 )}
                             />
-
+                            <Text
+                                textColor="gray.300"
+                                fontSize={{ base: 'xs', md: 'sm' }}
+                                fontWeight="medium"
+                                color="gray.400"
+                            >
+                                {proyectBusiness?.length ?? 0}/700 caractéres
+                            </Text>
                             <FormErrorMessage fontWeight={'semibold'}>
                                 {errors.better_project?.message}
                             </FormErrorMessage>

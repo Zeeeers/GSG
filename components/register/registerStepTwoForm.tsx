@@ -12,6 +12,7 @@ import {
     useDisclosure,
     useToast,
     Stack,
+    FormHelperText,
 } from '@chakra-ui/react';
 import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
 import { useForm } from 'react-hook-form';
@@ -184,7 +185,12 @@ const RegisterStepTwoForm: React.FC = () => {
                             Número o identificador nacional <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
 
+                        <FormHelperText mt="-3px" color="gray.300">
+                            Ingrese rut sin puntos y con guión
+                        </FormHelperText>
+
                         <Input
+                            mt="10px"
                             size="md"
                             {...register('idNumber')}
                             placeholder="00000000-0"
