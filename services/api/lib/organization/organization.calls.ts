@@ -39,7 +39,7 @@ const organizationFetcher = async (endpoint: string, isPyme?: boolean) => {
 };
 
 export const useOrganization = (isPyme?: boolean): SWRResponse<Organization | undefined, unknown> => {
-    return useSWR(isPyme ? [ENDPOINT.BASE, isPyme] : null, organizationFetcher);
+    return useSWR(isPyme ? [ENDPOINT.BASE, isPyme] : null, organizationFetcher, { revalidateOnFocus: false });
 };
 
 // READ

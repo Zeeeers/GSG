@@ -14,6 +14,12 @@ const globalConfig = {
                 destination: '/login',
                 permanent: false,
             },
+
+            {
+                source: '/admin',
+                destination: '/admin/login',
+                permanent: false,
+            },
         ];
     },
 };

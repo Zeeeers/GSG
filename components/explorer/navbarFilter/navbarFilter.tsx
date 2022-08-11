@@ -4,6 +4,7 @@ import { Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { useCheckboxGroup } from '@chakra-ui/checkbox';
 import CheckCard from 'common/checkCard';
 import { useGsg } from 'services/api/lib/gsg';
+import { useFilterStore } from 'stores/filters';
 
 // Types
 interface Props {}
@@ -11,10 +12,12 @@ interface Props {}
 // Component
 const NavbarFilter: React.FC<Props> = ({}) => {
     const { data } = useGsg();
+    const setFilters = useFilterStore((s) => s.setFilters);
+    const filters = useFilterStore((s) => s.filters);
 
     const { getCheckboxProps } = useCheckboxGroup({
         defaultValue: [],
-        //onChange: (value) => setFilters([...filters, value]),
+        onChange: (value) => setFilters({ ...filters, qualities: value }),
     });
 
     return (

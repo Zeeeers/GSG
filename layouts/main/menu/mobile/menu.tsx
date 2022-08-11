@@ -1,9 +1,7 @@
 // Dependencies
-import { Box, Button, HStack, Icon, Slide, Text, VStack } from '@chakra-ui/react';
-import Link from 'next/link';
-import { FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { Box, Button, Slide, VStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useMobileMenuStore } from 'stores/mainNav';
-//import { useUser } from '../../../../services/api/lib/user';
 
 // Types
 interface Props {
@@ -11,55 +9,32 @@ interface Props {
 }
 
 // Component
-const MobileUserMenu: React.FC<Props> = ({ onLogOut }) => {
+const MobileUserMenu: React.FC<Props> = () => {
     // States
     const isOpen = useMobileMenuStore((c) => c.isOpen);
-    const onToggle = useMobileMenuStore((s) => s.onToggle);
+    const router = useRouter();
     //const { data: user } = useUser();
 
     return (
         <Slide in={isOpen} direction="left" style={{ zIndex: 30 }}>
-            <VStack h="full" w="full" bgColor="gray.700">
-                <Box py={8} zIndex={0} />
+            <VStack spacing="20px" align="flex-start" h="full" w="full" bgColor="gray.700" px="24px">
+                <Box py="60px" zIndex={0} />
 
-                <Link href="/profile" passHref>
-                    <HStack
-                        as={Button}
-                        spacing={4}
-                        px={4}
-                        justifyContent="left"
-                        variant="ghost"
-                        color="white"
-                        w="full"
-                        rounded="none"
-                        onClick={onToggle}
-                    >
-                        <Icon as={FaUser} />
-                        <Text fontWeight="semibold" fontSize="xl">
-                            Perfil de usuario
-                        </Text>
-                    </HStack>
-                </Link>
-
-                <HStack
-                    as={Button}
-                    spacing={4}
-                    px={4}
-                    justifyContent="left"
-                    variant="ghost"
-                    color="white"
+                <Button w="full" variant="outline" onClick={() => router.push('/register')}>
+                    ¿Eres empresa? levantar capital
+                </Button>
+                <Button
                     w="full"
-                    rounded="none"
-                    onClick={() => {
-                        onToggle();
-                        onLogOut();
-                    }}
+                    onClick={() => router.push('/login')}
+                    variant="solid"
+                    _focus={{ outline: 'none' }}
+                    aria-label="Buscar"
+                    textColor="white"
+                    py="10px"
+                    px="16px"
                 >
-                    <Icon as={FaSignOutAlt} />
-                    <Text fontWeight="semibold" fontSize="xl">
-                        Cerrar sesión
-                    </Text>
-                </HStack>
+                    Ingresar
+                </Button>
             </VStack>
         </Slide>
     );

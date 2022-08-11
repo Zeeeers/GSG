@@ -154,6 +154,8 @@ const RegisterStepTwoForm: React.FC = () => {
                                     Subir logo
                                 </UploadButton>
 
+                                <FormHelperText color="gray.300">Tamaño máximo 600kB</FormHelperText>
+
                                 <Input
                                     visibility="hidden"
                                     type="hidden"
