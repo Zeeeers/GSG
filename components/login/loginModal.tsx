@@ -25,10 +25,12 @@ import LoginForm from './loginForm';
 interface Props {
     isOpen: boolean;
     onClose(): void;
+    investorReload(): void;
+    orgaReload(): void;
 }
 
 // Component
-const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
+const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose, investorReload, orgaReload }) => {
     const router = useRouter();
     return (
         <>
@@ -69,7 +71,12 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
                             <TabPanels>
                                 <TabPanel px={0}>
-                                    <LoginOrgaForm afterLogin={onClose} />
+                                    <LoginOrgaForm
+                                        afterLogin={() => {
+                                            onClose();
+                                            orgaReload();
+                                        }}
+                                    />
 
                                     <Flex flexDirection={'column'} alignItems={'center'} mt="20px">
                                         <Link href="/recovery/recoveryPassword" passHref>
@@ -102,7 +109,12 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                     </Flex>
                                 </TabPanel>
                                 <TabPanel px={0}>
-                                    <LoginForm afterLogin={onClose} />
+                                    <LoginForm
+                                        afterLogin={() => {
+                                            onClose();
+                                            investorReload();
+                                        }}
+                                    />
 
                                     <Flex flexDirection={'column'} alignItems={'center'}>
                                         <Link href="/recovery/recoveryPassword" passHref>

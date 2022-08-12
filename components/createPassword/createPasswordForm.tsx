@@ -91,7 +91,9 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
 
                 <InputPassword {...register('newPassword')} fontWeight="normal" size="md" />
 
-                <FormErrorMessage fontWeight="semibold">{errors.newPassword?.message}</FormErrorMessage>
+                <FormErrorMessage color="red.400" fontWeight="medium">
+                    {errors.newPassword?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <FormControl id="confirmPassword" isInvalid={!!errors.confirmPassword}>
@@ -101,7 +103,9 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
 
                 <InputPassword {...register('confirmPassword')} fontWeight="normal" size="md" />
 
-                <FormErrorMessage fontWeight="semibold">{errors.confirmPassword?.message}</FormErrorMessage>
+                <FormErrorMessage color="red.400" fontWeight="medium">
+                    {errors.confirmPassword?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <Stack w="full">

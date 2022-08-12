@@ -16,11 +16,14 @@ const changePassShape: ZodShape<IChangePassData> = {
     newPassword: z
         .string()
         .nonempty('Campo obligatorio')
-        .min(8, 'La contraseña debe tener un largo mínimo de 8 caracteres.'),
+        .regex(
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+            'Debe contener 8 carácteres, minúsculas, mayúsculas y al menos 1 número',
+        ),
     confirmPassword: z.string().nonempty('Campo obligatorio'),
 };
 
 export const changePassSchema = z.object(changePassShape).refine((form) => form.newPassword === form.confirmPassword, {
     message: 'Las contraseñas no coinciden',
-    path: ['passwordConfirm'],
+    path: ['confirmPassword'],
 });

@@ -33,6 +33,7 @@ import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useFilterStore } from 'stores/filters';
+import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -59,8 +60,10 @@ const Explorer: NextPage = () => {
     useEffect(() => {
         if (!orga) {
             setIsVisible(true);
+        } else {
+            return setIsVisible(false);
         }
-    }, []);
+    }, [orga]);
 
     return (
         <>
@@ -265,9 +268,11 @@ const Explorer: NextPage = () => {
                                           ))}
                                 </SimpleGrid>
                             ) : (
-                                <Text fontSize="2xl" fontWeight="bold">
-                                    No hay proyectos publicados
-                                </Text>
+                                <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
+                                    {[0, 2, 3, 4, 5, 6].map((item, index) => (
+                                        <CardSkeleton key={index} />
+                                    ))}
+                                </SimpleGrid>
                             )}
                         </VStack>
                     </>

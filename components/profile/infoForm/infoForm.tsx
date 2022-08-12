@@ -60,7 +60,7 @@ const InfoForm: React.FC = () => {
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'center'}>
                     <Avatar
                         size={'lg'}
-                        name={organization?.name ?? 'GSG'}
+                        name={user.name ?? 'GSG'}
                         src={organization?.image}
                         height={100}
                         width={100}

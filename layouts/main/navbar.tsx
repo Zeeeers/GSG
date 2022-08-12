@@ -120,8 +120,8 @@ const Navbar: React.FC = () => {
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 
-            <LoginModal isOpen={isOpen} onClose={onClose} />
-            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} />
+            <LoginModal isOpen={isOpen} onClose={onClose} investorReload={mutate} orgaReload={reloadOrga} />
+            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} orgaReload={reloadOrga} />
         </>
     );
 };
