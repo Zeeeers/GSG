@@ -1,6 +1,19 @@
 // Dependencies
 //@ts-nocheck
-import { Checkbox, HStack, Img, Stack, Text, VStack, Wrap, WrapItem, useDisclosure, useToast } from '@chakra-ui/react';
+import {
+    Checkbox,
+    HStack,
+    Img,
+    Stack,
+    Text,
+    VStack,
+    Wrap,
+    WrapItem,
+    useDisclosure,
+    useToast,
+    Button,
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
 import { update, useUser } from 'services/api/lib/user';
@@ -32,6 +45,7 @@ const OdsTab: React.FC = () => {
     const { data: user, mutate } = useUser();
 
     const toast = useToast();
+    const router = useRouter();
 
     const handleUpdateNews = async () => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
@@ -219,6 +233,11 @@ const OdsTab: React.FC = () => {
                             </VStack>
                         </WrapItem>
                     </Wrap>
+                    <Stack w="full" align="flex-end">
+                        <Button variant="outline" h="40px" onClick={() => router.push('/explorer')}>
+                            Ir al explorador
+                        </Button>
+                    </Stack>
                 </VStack>
             </Stack>
 
