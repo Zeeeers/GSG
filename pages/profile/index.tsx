@@ -39,10 +39,10 @@ const UserProfile: NextPage = () => {
                     <Tabs mt="33px" fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
                         <TabList borderBottom="0" overflowX="auto" overflowY="hidden" pb="15px">
                             <Tab px="30px" whiteSpace="nowrap">
-                                Perfil
+                                Intereses
                             </Tab>
                             <Tab px="30px" whiteSpace="nowrap">
-                                Intereses
+                                Perfil
                             </Tab>
                             <Tab px="30px" whiteSpace="nowrap">
                                 Contraseña
@@ -51,11 +51,12 @@ const UserProfile: NextPage = () => {
 
                         <TabPanels>
                             <TabPanel>
-                                <InfoForm />
-                            </TabPanel>
-                            <TabPanel>
                                 <OdsTab />
                             </TabPanel>
+                            <TabPanel>
+                                <InfoForm />
+                            </TabPanel>
+
                             <TabPanel>
                                 <PassForm />
                             </TabPanel>

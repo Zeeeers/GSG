@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import RadioCard from 'common/checkCardBox';
 import Stage from 'components/projectDetail/formatText/stage';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -28,8 +28,8 @@ interface Props {
 const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     const [stageCapital, setStageCapital] = useState('');
 
-    const { getRootProps, getRadioProps } = useRadioGroup({
-        defaultValue: '',
+    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+        defaultValue: stageCapital,
         onChange: (value) => setStageCapital(value),
     });
 
@@ -47,7 +47,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
             },
         };
 
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest.id, data });
 
         if (ok) {
             toast({
@@ -70,6 +70,12 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.capital_stage) {
+            setValue(myInterest?.capital_stage);
+        }
+    }, [myInterest]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">

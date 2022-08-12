@@ -40,6 +40,17 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
         });
 
         if (ok) {
+            const { AuthManager } = await import('@clyc/next-route-manager');
+            AuthManager.storeToken({
+                cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+                token: jwt,
+                options: {
+                    domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
+                    secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
+                    maxAge: 604800,
+                },
+            });
+
             toast({
                 title: 'Contraseña creada.',
                 description: 'La contraseña ha sido creada con éxito',
@@ -48,7 +59,7 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/login');
+            router.push('/profile');
         } else {
             toast({
                 title: 'No se pudo crear la contraseña',

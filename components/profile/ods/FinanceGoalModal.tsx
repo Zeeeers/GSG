@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Button,
     Heading,
@@ -14,7 +15,7 @@ import {
 
 import RadioCard from 'common/checkCardBox';
 import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -27,8 +28,8 @@ interface Props {
 
 const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     const [finance, setFinance] = useState('');
-    const { getRootProps, getRadioProps } = useRadioGroup({
-        defaultValue: '',
+    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+        defaultValue: finance,
         onChange: (value) => setFinance(value),
     });
 
@@ -47,7 +48,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
         };
 
         //@ts-ignore
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
             toast({
@@ -70,6 +71,12 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.finance_goal) {
+            setValue(myInterest && myInterest?.finance_goal);
+        }
+    }, [myInterest]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">

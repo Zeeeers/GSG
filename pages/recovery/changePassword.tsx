@@ -57,7 +57,7 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
                         </Link>
                         <VStack maxW="504px" alignItems="flex-start">
                             <Text fontSize="24px" textAlign="center">
-                                Hola Martín, te damos la bienvenida a GSG, para continuar crea tu contraseña
+                                Hola!, te damos la bienvenida a GSG, para continuar crea tu contraseña
                             </Text>
 
                             <CreatePasswordForm token={token} jwt={jwt} />

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     Button,
     Heading,
@@ -14,7 +15,7 @@ import {
 
 import RadioCard from 'common/checkCardBox';
 import Time from 'components/projectDetail/formatText/time';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -28,8 +29,8 @@ interface Props {
 const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     const [time, setTime] = useState('');
 
-    const { getRootProps, getRadioProps } = useRadioGroup({
-        defaultValue: '',
+    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+        defaultValue: time,
         onChange: (value) => setTime(value),
     });
 
@@ -48,7 +49,7 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
         };
 
         //@ts-ignore
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
             toast({
@@ -71,6 +72,13 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.time_lapse) {
+            setValue(myInterest && myInterest?.time_lapse);
+        }
+    }, [myInterest]);
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Button,
     Heading,
@@ -13,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import RadioCard from 'common/checkCardBox';
 import Rentability from 'components/projectDetail/formatText/rentability';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -27,8 +28,8 @@ interface Props {
 const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     const [rentability, setRentability] = useState('');
 
-    const { getRootProps, getRadioProps } = useRadioGroup({
-        defaultValue: '',
+    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+        defaultValue: rentability,
         onChange: (value) => setRentability(value),
     });
 
@@ -47,7 +48,7 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
         };
 
         //@ts-ignore
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
             toast({
@@ -70,6 +71,13 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.expected_rentability) {
+            setValue(myInterest && myInterest?.expected_rentability);
+        }
+    }, [myInterest]);
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />

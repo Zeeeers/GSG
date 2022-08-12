@@ -182,50 +182,23 @@ const Explorer: NextPage = () => {
                                     w="full"
                                 >
                                     <Input
-                                        w={{ base: 'full', sm: '70%', md: '184px' }}
+                                        w={{ base: 'full', sm: 'full', md: '184px' }}
                                         variant="outline"
                                         placeholder="Buscar"
                                         mr="5px"
+                                        textColor="white"
                                         onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                     />
-                                    <Button
-                                        variant="solid"
-                                        bg="gray.600"
-                                        _focus={{ outline: 'none' }}
-                                        aria-label="Buscar"
-                                        textColor="white"
-                                        py="10px"
-                                        px="16px"
-                                        w={{ base: '28%', md: 'full', lg: '110px' }}
-                                        h="40px"
-                                    >
-                                        <HStack w="full" spacing="10px">
-                                            <Icon as={FaSearch} />
-                                            <Text>Buscar</Text>
-                                        </HStack>
-                                    </Button>
                                 </Stack>
 
                                 <VStack display={{ base: 'block', sm: 'none' }} spacing="9px" w="full">
-                                    <Input w={{ base: 'full', md: '184px' }} variant="outline" placeholder="Buscar" />
-                                    <Button
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        variant="solid"
-                                        bg="gray.600"
-                                        _focus={{ outline: 'none' }}
-                                        aria-label="Buscar"
-                                        textColor="white"
-                                        py="10px"
-                                        px="16px"
+                                    <Input
                                         w="full"
-                                        h="40px"
-                                    >
-                                        <HStack spacing="10px">
-                                            <Icon as={FaSearch} />
-                                            <Text>Buscar</Text>
-                                        </HStack>
-                                    </Button>
+                                        variant="outline"
+                                        placeholder="Buscar"
+                                        textColor="white"
+                                        onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                                    />
                                 </VStack>
 
                                 <HStack

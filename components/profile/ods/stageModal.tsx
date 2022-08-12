@@ -20,7 +20,7 @@ import RadioCard from 'common/checkCardBox';
 import CheckCardBox from 'common/checkCardBox';
 import Stage from 'components/projectDetail/formatText/stage';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUser } from 'services/api/lib/user';
 import { Interest } from 'services/api/types/Interest';
 
@@ -36,7 +36,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
     const [stage, setStage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const { getRootProps, getRadioProps } = useRadioGroup({
+    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
         defaultValue: '',
         onChange: (value) => setStage(value),
     });
@@ -55,7 +55,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
             },
         };
 
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
             setIsLoading(false);
@@ -80,6 +80,13 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.stage) {
+            setValue(myInterest && myInterest?.stage);
+        }
+    }, [myInterest]);
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />

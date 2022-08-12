@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
 import ThirdParties from 'components/projectDetail/formatText/thirdParties';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUser } from 'services/api/lib/user';
 import { Interest } from 'services/api/types/Interest';
 
@@ -30,8 +30,8 @@ interface Props {
 const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
     const [third, setThird] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const { getCheckboxProps } = useCheckboxGroup({
-        defaultValue: [],
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
+        defaultValue: third,
         // @ts-ignore
         onChange: (value) => setThird(value),
     });
@@ -50,7 +50,7 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
             },
         };
 
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
             setIsLoading(false);
@@ -75,6 +75,12 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.third_party) {
+            setValue(myInterest && myInterest?.third_party.split(';;'));
+        }
+    }, [myInterest]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">

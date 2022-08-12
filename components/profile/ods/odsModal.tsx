@@ -14,7 +14,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUser } from 'services/api/lib/user';
 import { Interest } from 'services/api/types/Interest';
 
@@ -30,11 +30,13 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) =>
     //@ts-ignore
     const [ods, setOds] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const { getCheckboxProps } = useCheckboxGroup({
+
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
         defaultValue: ods,
         //@ts-ignore
         onChange: (value) => setOds(value),
     });
+
     const { data: user } = useUser();
 
     const toast = useToast();
@@ -47,7 +49,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) =>
             qualities: ods?.join(';;'),
         };
 
-        const { ok } = await update({ id: myInterest?.interests?.id, data });
+        const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
             setIsLoading(false);
@@ -72,6 +74,12 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) =>
             });
         }
     };
+
+    useEffect(() => {
+        if (myInterest?.qualities) {
+            setValue(myInterest && Object.values(myInterest.qualities).map((i) => i.id.toString()));
+        }
+    }, [myInterest]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">

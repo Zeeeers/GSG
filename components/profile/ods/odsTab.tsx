@@ -222,42 +222,47 @@ const OdsTab: React.FC = () => {
                 </VStack>
             </Stack>
 
-            <OdsModal isOpen={isOpenOds} onClose={closeOds} interest={interest?.data} myInterest={getInterest?.data} />
+            <OdsModal
+                isOpen={isOpenOds}
+                onClose={closeOds}
+                interest={interest?.data}
+                myInterest={getInterest?.data?.interests}
+            />
             <ThirdModal
                 isOpen={isOpenThird}
                 onClose={closeThird}
                 interest={interest?.data}
-                myInterest={getInterest?.data}
+                myInterest={getInterest?.data?.interests}
             />
             <StageModal
                 isOpen={isOpenStage}
                 onClose={closeStage}
                 interest={interest?.data}
-                myInterest={getInterest?.data}
+                myInterest={getInterest?.data?.interests}
             />
             <CapitalStageModal
                 isOpen={isOpenCapitalStage}
                 onClose={closeCapitalStage}
                 interest={interest?.data}
-                myInterest={getInterest?.data}
+                myInterest={getInterest?.data?.interests}
             />
             <ExpectedRentabilityModal
                 isOpen={isOpenExpectedRentabilityModal}
                 onClose={closeExpectedRentabilityModal}
                 interest={interest?.data}
-                myInterest={getInterest?.data}
+                myInterest={getInterest?.data?.interests}
             />
             <FinanceGoalModal
                 isOpen={isOpenFinanceGoal}
                 onClose={closeFinanceGoal}
                 interest={interest?.data}
-                myInterest={getInterest?.data}
+                myInterest={getInterest?.data?.interests}
             />
             <TimeLapseModal
                 isOpen={isOpenTimeLapse}
                 onClose={closeTimeLapse}
                 interest={interest?.data}
-                myInterest={getInterest?.data}
+                myInterest={getInterest?.data?.interests}
             />
         </>
     );
