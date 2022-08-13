@@ -33,15 +33,14 @@ interface Props {
 }
 
 const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
-    const [stage, setStage] = useState('');
+    const [stage, setStage] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
-        defaultValue: '',
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
+        defaultValue: stage,
         onChange: (value) => setStage(value),
     });
 
-    const group = getRootProps();
     const toast = useToast();
 
     const handleSave = async () => {
@@ -51,7 +50,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
         const data = {
             interest: {
                 //@ts-ignore
-                stage: stage,
+                stage: stage.join(';;'),
             },
         };
 
@@ -83,7 +82,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
 
     useEffect(() => {
         if (myInterest?.stage) {
-            setValue(myInterest && myInterest?.stage);
+            setValue(myInterest && myInterest?.stage.split(';;'));
         }
     }, [myInterest]);
 
@@ -104,15 +103,31 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
                             </Text>
                         </VStack>
 
-                        <VStack w="full" {...group}>
-                            {interest?.stage.map((value) => {
-                                const radio = getRadioProps({ value });
-                                return (
-                                    <RadioCard key={value} {...radio}>
-                                        {StageCapital(value)}
-                                    </RadioCard>
-                                );
-                            })}
+                        <VStack w="full" overflowY="auto" h="330px">
+                            {interest?.stage.map((item, index) => (
+                                <CheckCard
+                                    w="full"
+                                    width="full"
+                                    key={`${index}-explorerFilter`}
+                                    as={WrapItem}
+                                    v
+                                    value={item}
+                                    cursor="pointer"
+                                    px={'16px'}
+                                    py={'8px'}
+                                    rounded="8px"
+                                    bg="gray.700"
+                                    textColor="white"
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    fontSize="md"
+                                    _hover={{ bg: 'gray.600' }}
+                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                    {...getCheckboxProps({ value: item })}
+                                >
+                                    <Text>{StageCapital(item)}</Text>
+                                </CheckCard>
+                            ))}
                         </VStack>
 
                         <Button w="full" h="40px" variant="solid" onClick={handleSave}>

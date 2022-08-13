@@ -178,7 +178,7 @@ const OdsTab: React.FC = () => {
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/survey-stages.svg" />
-                                <Text>Etapa levantamiento</Text>
+                                <Text>Tipo de financiamiento</Text>
                             </VStack>
                         </WrapItem>
                         <WrapItem>

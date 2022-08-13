@@ -8,10 +8,13 @@ import {
     ModalContent,
     ModalOverlay,
     Text,
+    useCheckboxGroup,
     useRadioGroup,
     useToast,
     VStack,
+    WrapItem,
 } from '@chakra-ui/react';
+import CheckCard from 'common/checkCard';
 import RadioCard from 'common/checkCardBox';
 import Rentability from 'components/projectDetail/formatText/rentability';
 import React, { useEffect, useState } from 'react';
@@ -26,14 +29,12 @@ interface Props {
 }
 
 const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
-    const [rentability, setRentability] = useState('');
+    const [rentability, setRentability] = useState([]);
 
-    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
         defaultValue: rentability,
         onChange: (value) => setRentability(value),
     });
-
-    const group = getRootProps();
 
     const toast = useToast();
 
@@ -43,7 +44,7 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
         const data = {
             interest: {
                 //@ts-ignore
-                expected_rentability: rentability,
+                expected_rentability: rentability.join(';;'),
             },
         };
 
@@ -74,7 +75,7 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
 
     useEffect(() => {
         if (myInterest?.expected_rentability) {
-            setValue(myInterest && myInterest?.expected_rentability);
+            setValue(myInterest && myInterest?.expected_rentability.split(';;'));
         }
     }, [myInterest]);
 
@@ -95,15 +96,31 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
                             </Text>
                         </VStack>
 
-                        <VStack w="full" {...group}>
-                            {interest?.expected_rentability.map((value) => {
-                                const radio = getRadioProps({ value });
-                                return (
-                                    <RadioCard key={value} {...radio}>
-                                        {Rentability(value)}
-                                    </RadioCard>
-                                );
-                            })}
+                        <VStack w="full" overflowY="auto" h="330px">
+                            {interest?.expected_rentability.map((item, index) => (
+                                <CheckCard
+                                    w="full"
+                                    width="full"
+                                    key={`${index}-explorerFilter`}
+                                    as={WrapItem}
+                                    v
+                                    value={item}
+                                    cursor="pointer"
+                                    px={'16px'}
+                                    py={'8px'}
+                                    rounded="8px"
+                                    bg="gray.700"
+                                    textColor="white"
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    fontSize="md"
+                                    _hover={{ bg: 'gray.600' }}
+                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                    {...getCheckboxProps({ value: item })}
+                                >
+                                    <Text>{Rentability(item)}</Text>
+                                </CheckCard>
+                            ))}
                         </VStack>
 
                         <Button w="full" h="40px" variant="solid" onClick={handleSave}>

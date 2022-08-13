@@ -8,10 +8,13 @@ import {
     ModalContent,
     ModalOverlay,
     Text,
+    useCheckboxGroup,
     useRadioGroup,
     useToast,
     VStack,
+    WrapItem,
 } from '@chakra-ui/react';
+import CheckCard from 'common/checkCard';
 
 import RadioCard from 'common/checkCardBox';
 import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
@@ -27,13 +30,11 @@ interface Props {
 }
 
 const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
-    const [finance, setFinance] = useState('');
-    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+    const [finance, setFinance] = useState([]);
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
         defaultValue: finance,
         onChange: (value) => setFinance(value),
     });
-
-    const group = getRootProps();
 
     const toast = useToast();
 
@@ -43,7 +44,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
         const data = {
             interest: {
                 //@ts-ignore
-                finance_goal: finance,
+                finance_goal: finance.join(';;'),
             },
         };
 
@@ -74,7 +75,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
 
     useEffect(() => {
         if (myInterest?.finance_goal) {
-            setValue(myInterest && myInterest?.finance_goal);
+            setValue(myInterest && myInterest?.finance_goal.split(';;'));
         }
     }, [myInterest]);
 
@@ -95,15 +96,31 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
                             </Text>
                         </VStack>
 
-                        <VStack w="full" {...group}>
-                            {interest?.finance_goal.map((value) => {
-                                const radio = getRadioProps({ value });
-                                return (
-                                    <RadioCard key={value} {...radio}>
-                                        {FinanceGoal(value)}
-                                    </RadioCard>
-                                );
-                            })}
+                        <VStack w="full" overflowY="auto" h="330px">
+                            {interest?.finance_goal.map((item, index) => (
+                                <CheckCard
+                                    w="full"
+                                    width="full"
+                                    key={`${index}-explorerFilter`}
+                                    as={WrapItem}
+                                    v
+                                    value={item}
+                                    cursor="pointer"
+                                    px={'16px'}
+                                    py={'8px'}
+                                    rounded="8px"
+                                    bg="gray.700"
+                                    textColor="white"
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    fontSize="md"
+                                    _hover={{ bg: 'gray.600' }}
+                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                    {...getCheckboxProps({ value: item })}
+                                >
+                                    <Text>{FinanceGoal(item)}</Text>
+                                </CheckCard>
+                            ))}
                         </VStack>
 
                         <Button w="full" h="40px" variant="solid" onClick={handleSave}>

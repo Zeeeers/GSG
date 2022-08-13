@@ -8,10 +8,13 @@ import {
     ModalContent,
     ModalOverlay,
     Text,
+    useCheckboxGroup,
     useRadioGroup,
     useToast,
     VStack,
+    WrapItem,
 } from '@chakra-ui/react';
+import CheckCard from 'common/checkCard';
 import RadioCard from 'common/checkCardBox';
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useEffect, useState } from 'react';
@@ -26,14 +29,12 @@ interface Props {
 }
 
 const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
-    const [stageCapital, setStageCapital] = useState('');
+    const [stageCapital, setStageCapital] = useState([]);
 
-    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
         defaultValue: stageCapital,
         onChange: (value) => setStageCapital(value),
     });
-
-    const group = getRootProps();
 
     const toast = useToast();
 
@@ -43,7 +44,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
         const data = {
             interest: {
                 //@ts-ignore
-                capital_stage: stageCapital,
+                capital_stage: stageCapital.join(';;'),
             },
         };
 
@@ -73,7 +74,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
 
     useEffect(() => {
         if (myInterest?.capital_stage) {
-            setValue(myInterest?.capital_stage);
+            setValue(myInterest && myInterest?.capital_stage.split(';;'));
         }
     }, [myInterest]);
 
@@ -86,7 +87,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
                     <VStack alignItems="flex-start" spacing="30px" w="full">
                         <VStack alignItems="flex-start" spacing="5px">
                             <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                ETAPA DE LEVANTAMIENTO
+                                TIPO DE FINANCIAMIENTO
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
                                 Selecciona una alternativa única para recibir correos con recomendaciones de proyectos
@@ -94,15 +95,31 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
                             </Text>
                         </VStack>
 
-                        <VStack w="full" {...group}>
-                            {interest?.capital_stage.map((value) => {
-                                const radio = getRadioProps({ value });
-                                return (
-                                    <RadioCard key={value} {...radio}>
-                                        {Stage(value)}
-                                    </RadioCard>
-                                );
-                            })}
+                        <VStack w="full" overflowY="auto" h="330px">
+                            {interest?.capital_stage.map((item, index) => (
+                                <CheckCard
+                                    w="full"
+                                    width="full"
+                                    key={`${index}-explorerFilter`}
+                                    as={WrapItem}
+                                    v
+                                    value={item}
+                                    cursor="pointer"
+                                    px={'16px'}
+                                    py={'8px'}
+                                    rounded="8px"
+                                    bg="gray.700"
+                                    textColor="white"
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    fontSize="md"
+                                    _hover={{ bg: 'gray.600' }}
+                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                    {...getCheckboxProps({ value: item })}
+                                >
+                                    <Text>{Stage(item)}</Text>
+                                </CheckCard>
+                            ))}
                         </VStack>
 
                         <Button w="full" h="40px" variant="solid" onClick={handleSave}>

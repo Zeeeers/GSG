@@ -8,10 +8,13 @@ import {
     ModalContent,
     ModalOverlay,
     Text,
+    useCheckboxGroup,
     useRadioGroup,
     useToast,
     VStack,
+    WrapItem,
 } from '@chakra-ui/react';
+import CheckCard from 'common/checkCard';
 
 import RadioCard from 'common/checkCardBox';
 import Time from 'components/projectDetail/formatText/time';
@@ -27,14 +30,12 @@ interface Props {
 }
 
 const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
-    const [time, setTime] = useState('');
+    const [time, setTime] = useState([]);
 
-    const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+    const { getCheckboxProps, setValue } = useCheckboxGroup({
         defaultValue: time,
         onChange: (value) => setTime(value),
     });
-
-    const group = getRootProps();
 
     const toast = useToast();
 
@@ -44,7 +45,7 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
         const data = {
             interest: {
                 //@ts-ignore
-                time_lapse: time,
+                time_lapse: time.join(';;'),
             },
         };
 
@@ -75,7 +76,7 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
 
     useEffect(() => {
         if (myInterest?.time_lapse) {
-            setValue(myInterest && myInterest?.time_lapse);
+            setValue(myInterest && myInterest?.time_lapse.split(';;'));
         }
     }, [myInterest]);
 
@@ -96,15 +97,31 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
                             </Text>
                         </VStack>
 
-                        <VStack w="full" {...group}>
-                            {interest?.time_lapse.map((value) => {
-                                const radio = getRadioProps({ value });
-                                return (
-                                    <RadioCard key={value} {...radio}>
-                                        {Time(value)}
-                                    </RadioCard>
-                                );
-                            })}
+                        <VStack w="full" overflowY="auto" h="330px">
+                            {interest?.time_lapse.map((item, index) => (
+                                <CheckCard
+                                    w="full"
+                                    width="full"
+                                    key={`${index}-explorerFilter`}
+                                    as={WrapItem}
+                                    v
+                                    value={item}
+                                    cursor="pointer"
+                                    px={'16px'}
+                                    py={'8px'}
+                                    rounded="8px"
+                                    bg="gray.700"
+                                    textColor="white"
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    fontSize="md"
+                                    _hover={{ bg: 'gray.600' }}
+                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                    {...getCheckboxProps({ value: item })}
+                                >
+                                    <Text>{Time(item)}</Text>
+                                </CheckCard>
+                            ))}
                         </VStack>
 
                         <Button w="full" h="40px" variant="solid" onClick={handleSave}>
