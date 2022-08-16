@@ -62,7 +62,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
 
             <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
                 <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                    ODS que incorpora el producto/servicio
+                    ODS que incorpora el proyecto
                 </Text>
 
                 <Wrap spacingX="60px" spacingY="15px" pt="30px">
@@ -116,15 +116,6 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         </Link>
                     </VStack>
                 )}
-
-                <VStack align="flex-start" spacing="5px">
-                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                        Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
-                    </Text>
-                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                        {ThirdParties(project?.third_parties)}
-                    </Text>
-                </VStack>
             </VStack>
 
             <Stack

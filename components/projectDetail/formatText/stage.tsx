@@ -19,10 +19,10 @@ const Stage = (capitalStage: string) => {
         case 'series-d':
             return (stage = 'Serie D');
 
-        case 'senior-debt':
+        case 'deuda senior':
             return (stage = 'Deuda senior');
 
-        case 'mezzanine-debt':
+        case 'deuda mezzanine':
             return (stage = 'Deuda mezzanine');
 
         case 'other':
