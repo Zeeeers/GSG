@@ -276,7 +276,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Espacios de mejora continua
                     </Text>
                     <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
-                        {project?.better_project}
+                        {project?.better_project ?? 'Sin información'}
                     </Text>
                 </VStack>
             </Stack>
@@ -287,11 +287,8 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         Información complementaria
                     </Text>
                     <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
-                        Históricamente, la clase de activos de capital de riesgo ha sido dominio exclusivo de las
-                        empresas de capital de riesgo, los inversores profesionales y las personas de alto patrimonio
-                        neto.
+                        {project?.adittional_info ?? 'Sin información'}
                     </Text>
-                    <Img src={project?.main_image} w="615px" h="219px" objectFit="cover" objectPosition="center" />
                 </VStack>
 
                 {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (
