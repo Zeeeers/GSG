@@ -86,7 +86,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, relo
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
-            <ModalContent rounded="2xl" px="30px" py="60px">
+            <ModalContent rounded="2xl" px="30px" py="60px" overflow="hidden">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="30px" w="full">
@@ -100,7 +100,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, relo
                             </Text>
                         </VStack>
 
-                        <VStack w="full" overflowY="auto" h="330px">
+                        <VStack w="full" overflowY="auto" h="330px" className="custom-scroll-light">
                             {interest?.qualities.map((item, index) => (
                                 <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
                                     <CheckCard
@@ -120,7 +120,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, relo
                                         fontFamily="inter"
                                         fontSize="md"
                                         _hover={{ bg: 'gray.600' }}
-                                        _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                        _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
                                         {...getCheckboxProps({ value: item.id })}
                                     >
                                         <Text>{`${item.id})  ${item.icon.name}`}</Text>

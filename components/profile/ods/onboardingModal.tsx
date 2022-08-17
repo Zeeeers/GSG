@@ -26,7 +26,7 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboard
     const router = useRouter();
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
-            <ModalOverlay bg="none" backdropFilter="auto" backdropBrightness="40%" backdropBlur="2px" />
+            <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="60px">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>

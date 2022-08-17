@@ -2,12 +2,24 @@
 import { adminHeaders, api, headers } from '../../config';
 import useSWR, { SWRResponse } from 'swr';
 import ENDPOINT from './user.endpoints';
-import { UserResponse, UpdateUserCall, CreateInvestorCall, InvestorResponse } from './user.types';
+import {
+    UserResponse,
+    UpdateUserCall,
+    CreateInvestorCall,
+    InvestorResponse,
+    SendMatchCall,
+    SendMatchResponse,
+} from './user.types';
 import { User } from 'services/api/types/User';
 
 // POST
 export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
     const response = await api.post<InvestorResponse>(ENDPOINT.INVESTOR, { user: data }, adminHeaders(token));
+    return response;
+};
+
+export const sendMatch: SendMatchCall = async ({ token, data }) => {
+    const response = await api.post<SendMatchResponse>(ENDPOINT.FORCE, data, adminHeaders(token));
     return response;
 };
 
@@ -36,6 +48,7 @@ const userCalls = {
     useUser,
     createInvestor,
     update,
+    sendMatch,
 };
 
 // Export

@@ -121,7 +121,7 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
                                         fontFamily="inter"
                                         fontSize="md"
                                         _hover={{ bg: 'gray.600' }}
-                                        _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                        _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
                                         {...getCheckboxProps({ value: item })}
                                     >
                                         <Text>{ThirdParties(item)}</Text>

@@ -15,10 +15,12 @@ import {
     MenuItem,
     Input,
     Icon,
+    Divider,
 } from '@chakra-ui/react';
 import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
 import AddInvestorForm from 'components/admin/createInvestorForm';
 import ListProyectsForm from 'components/admin/listProyectsForm';
+import SendMatchForm from 'components/admin/sendMatchForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import router from 'next/router';
@@ -104,9 +106,32 @@ const Panel: NextPage = () => {
                         >
                             Proyectos postulados
                         </Tab>
+
+                        <Divider />
+
+                        <Tab
+                            fontFamily="inter"
+                            justifyContent="flex-start"
+                            border="none"
+                            _selected={{
+                                border: 'none',
+                                color: 'primary.600',
+                                fontWeight: 'bold',
+                                borderRadius: 'none',
+                            }}
+                            _focus={{
+                                border: 'none',
+                            }}
+                            fontWeight="normal"
+                            fontSize="md"
+                            pl={6}
+                            py="15px"
+                        >
+                            Enviar match
+                        </Tab>
                     </TabList>
 
-                    <TabPanels pt="87px" pl="100px" overflowY="auto">
+                    <TabPanels pt="87px" pl={{ base: '25px', '2xl': '100px' }} overflowY="auto">
                         <TabPanel w="537px">
                             <VStack position="relative" align="start" spacing="15px" marginBottom="40px">
                                 <Text fontWeight="bold" fontSize="2xl">
@@ -121,7 +146,7 @@ const Panel: NextPage = () => {
                             <AddInvestorForm />
                         </TabPanel>
 
-                        <TabPanel maxW="1080px">
+                        <TabPanel w="full" pr={{ base: '25px', '2xl': '200px' }}>
                             <HStack align="center" justifyContent="space-between">
                                 <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
                                     PROYECTOS POSTULADOS
@@ -162,6 +187,19 @@ const Panel: NextPage = () => {
                                 </HStack>
                             </HStack>
                             <ListProyectsForm />
+                        </TabPanel>
+
+                        <TabPanel w="537px">
+                            <VStack position="relative" align="start" spacing="15px" marginBottom="40px">
+                                <Text fontWeight="bold" fontSize="2xl">
+                                    ENVIAR MATCH A UN INVERSIONISTA
+                                </Text>
+                                <Text fontWeight="normal" fontSize="sm" fontFamily="inter">
+                                    Ingresa un correo para enviar un match.
+                                </Text>
+                            </VStack>
+
+                            <SendMatchForm />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

@@ -22,6 +22,23 @@ interface InvestorRequest {
 
 export type CreateInvestorCall = (payload: InvestorRequest) => Promise<ApiResponse<InvestorResponse>>;
 
+// Send Match
+export interface SendMatchForm {
+    email: string;
+}
+
+export interface SendMatchResponse {
+    status: boolean;
+    message: string;
+    user: User;
+}
+interface SendMatchRequest {
+    token: string;
+    data: SendMatchForm;
+}
+
+export type SendMatchCall = (payload: SendMatchRequest) => Promise<ApiResponse<SendMatchResponse>>;
+
 // Get User Types
 export interface UserResponse {
     status: boolean;

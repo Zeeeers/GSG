@@ -1,1 +1,1 @@
-export { useUser, update, createInvestor, default as user } from './user.calls';
+export { useUser, update, createInvestor, sendMatch, default as user } from './user.calls';

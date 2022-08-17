@@ -19,6 +19,8 @@ import {
     VStack,
     SimpleGrid,
     Stack,
+    MenuItem,
+    Image,
 } from '@chakra-ui/react';
 import { FaChevronUp, FaChevronDown, FaSearch } from 'react-icons/fa';
 import NavbarFilter from 'components/explorer/navbarFilter/navbarFilter';
@@ -34,6 +36,8 @@ import StatusProject from 'components/explorer/statusProject/status';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useFilterStore } from 'stores/filters';
 import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
+import { useQualityList } from 'services/api/lib/qualities';
+import { OptChImage } from '@clyc/optimized-image';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -42,6 +46,7 @@ const Explorer: NextPage = () => {
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
     const { data: project } = useGsgProject(orga?.gsg_project_id);
+    const { data: qualities } = useQualityList();
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
 
@@ -108,155 +113,164 @@ const Explorer: NextPage = () => {
 
                 {isVisible ? (
                     <>
-                        <Stack
-                            justify={'space-between'}
-                            direction={{ base: 'column', md: 'row' }}
-                            justifyContent="end"
-                            w="full"
-                        >
-                            <Heading
-                                fontSize={{ base: '2xl', md: '4xl' }}
-                                lineHeight="130%"
-                                fontWeight="bold"
-                                w="full"
-                                textAlign="left"
-                            >
-                                PROYECTOS DE INVERSIÓN
-                            </Heading>
-                            <Stack
-                                spacing="13px"
-                                direction={{ base: 'column-reverse', md: 'row' }}
-                                alignItems={{ base: 'center', sm: 'flex-end' }}
-                                justifyContent="flex-end"
-                            >
-                                <HStack
-                                    display={{ base: 'none', md: 'block' }}
-                                    spacing="20px"
-                                    justifyContent="flex-end"
+                        <Stack justify="flex-start" direction="column" justifyContent="end" w="full">
+                            <VStack w="full" align="flex-start" spacing="10px">
+                                <Heading
+                                    fontSize={{ base: '2xl', md: '4xl' }}
+                                    lineHeight="130%"
+                                    fontWeight="bold"
+                                    w="full"
+                                    textAlign="left"
                                 >
-                                    <Menu>
-                                        {({ isOpen }) => (
-                                            <>
-                                                <MenuButton
-                                                    border="1px"
-                                                    borderColor="gray.500"
-                                                    h="40px"
-                                                    as={Button}
-                                                    w={{ base: 'full', lg: '194px' }}
+                                    PROYECTOS DE INVERSIÓN
+                                </Heading>
+                                <Text>
+                                    A continuación se visualizan todos los proyectos activos dentro de Match. Puedes
+                                    filtrarlos según lo requieras.
+                                </Text>
+                            </VStack>
+
+                            <Stack
+                                pt="20px"
+                                spacing="13px"
+                                direction={{ base: 'column', md: 'row' }}
+                                alignItems={{ base: 'center', sm: 'flex-end' }}
+                                justifyContent="space-between"
+                                w="full"
+                            >
+                                <Menu closeOnSelect={false}>
+                                    <MenuButton
+                                        as={Button}
+                                        border="1px"
+                                        borderColor="gray.500"
+                                        whiteSpace="break-spaces"
+                                        textAlign="left"
+                                        w={{ base: 'full', md: '332px' }}
+                                        h="40px"
+                                    >
+                                        <Flex alignItems="center" justify="center">
+                                            <Text as="p" fontFamily="inter" fontSize="16px">
+                                                Objetivos de desarrollo sostenible{' '}
+                                                {filters?.qualities && `(${filters?.qualities?.length})`}
+                                            </Text>
+
+                                            <Icon ml={2} as={FaChevronDown} />
+                                        </Flex>
+                                    </MenuButton>
+
+                                    <MenuList
+                                        minWidth="240px"
+                                        overflowY="auto"
+                                        maxHeight="55vh"
+                                        className="custom-scroll"
+                                    >
+                                        <MenuOptionGroup
+                                            title="Filtro"
+                                            type="checkbox"
+                                            defaultValue={filters?.qualities?.map((qt) => qt)}
+                                            onChange={(value: Array<string>) =>
+                                                setFilters({
+                                                    qualities: value.length === 0 ? undefined : value,
+                                                })
+                                            }
+                                        >
+                                            {qualities?.qualities?.map((quality) => (
+                                                <MenuItemOption
+                                                    key={`${quality.id}-Filter`}
+                                                    value={quality.icon.name.toString()}
+                                                    _checked={{
+                                                        bgColor: 'gray.700',
+                                                    }}
+                                                    rounded="none"
+                                                    fontWeight="medium"
+                                                    icon={<></>}
+                                                    iconSpacing={'unset'}
                                                 >
-                                                    <Flex
-                                                        py="8px"
-                                                        px="16px"
-                                                        justifyContent="space-between"
-                                                        w="full"
-                                                        alignItems="center"
-                                                        fontWeight="normal"
-                                                        fontSize="md"
-                                                    >
-                                                        <Text>
-                                                            {orderBy === 'desc' ? 'Más recientes' : 'Más antiguos'}
-                                                        </Text>
-                                                        <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
+                                                    <Flex align="center" justify="flex-start">
+                                                        <Image
+                                                            rounded="full"
+                                                            Width={32}
+                                                            Height={32}
+                                                            mr={4}
+                                                            src={quality.icon.image}
+                                                        />
+
+                                                        {quality.icon.name}
                                                     </Flex>
-                                                </MenuButton>
-                                                <MenuList w={{ base: 'full', md: '194px' }}>
-                                                    <MenuOptionGroup
-                                                        value={orderBy}
-                                                        onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
-                                                    >
-                                                        <MenuItemOption value="desc" fontWeight="normal">
-                                                            Más recientes
-                                                        </MenuItemOption>
-                                                        <MenuItemOption value="asc" fontWeight="normal">
-                                                            Más antiguos
-                                                        </MenuItemOption>
-                                                    </MenuOptionGroup>
-                                                </MenuList>
-                                            </>
-                                        )}
-                                    </Menu>
-                                </HStack>
+                                                </MenuItemOption>
+                                            ))}
+                                        </MenuOptionGroup>
+                                    </MenuList>
+                                </Menu>
 
                                 <Stack
-                                    display={{ base: 'none', sm: 'flex' }}
-                                    flexDirection="row"
-                                    alignItems={{ base: 'center', sm: 'flex-end' }}
-                                    justify={{ base: 'space-between', md: 'center' }}
-                                    w="full"
+                                    direction={{ base: 'column', md: 'row' }}
+                                    w={{ base: 'full', md: 'fit-content' }}
                                 >
-                                    <Input
-                                        w={{ base: 'full', sm: 'full', md: '184px' }}
-                                        variant="outline"
-                                        placeholder="Buscar"
-                                        mr="5px"
-                                        textColor="white"
-                                        onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                                    />
-                                </Stack>
-
-                                <VStack display={{ base: 'block', sm: 'none' }} spacing="9px" w="full">
-                                    <Input
-                                        w="full"
-                                        variant="outline"
-                                        placeholder="Buscar"
-                                        textColor="white"
-                                        onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                                    />
-                                </VStack>
-
-                                <HStack
-                                    display={{ base: 'block', md: 'none' }}
-                                    spacing="20px"
-                                    w="full"
-                                    justifyContent="end"
-                                >
-                                    <Menu>
-                                        {({ isOpen }) => (
-                                            <>
-                                                <MenuButton
-                                                    border="1px"
-                                                    borderColor="gray.500"
-                                                    h="40px"
-                                                    as={Button}
-                                                    w={{ base: 'full', lg: '194px' }}
-                                                >
-                                                    <Flex
-                                                        py="8px"
-                                                        px="16px"
-                                                        justifyContent="space-between"
+                                    <HStack spacing="20px" justifyContent="flex-end" w={{ base: 'full', lg: '194px' }}>
+                                        <Menu>
+                                            {({ isOpen }) => (
+                                                <>
+                                                    <MenuButton
+                                                        border="1px"
+                                                        borderColor="gray.500"
+                                                        h="40px"
                                                         w="full"
-                                                        alignItems="center"
-                                                        fontWeight="normal"
-                                                        fontSize="md"
+                                                        as={Button}
                                                     >
-                                                        <Text>
-                                                            {orderBy === 'desc' ? 'Más recientes' : 'Más antiguos'}
-                                                        </Text>
-                                                        <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
-                                                    </Flex>
-                                                </MenuButton>
-                                                <MenuList w={{ base: 'full', md: '194px' }}>
-                                                    <MenuOptionGroup
-                                                        value={orderBy}
-                                                        onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
-                                                    >
-                                                        <MenuItemOption value="desc" fontWeight="normal">
-                                                            Más recientes
-                                                        </MenuItemOption>
-                                                        <MenuItemOption value="asc" fontWeight="normal">
-                                                            Más antiguos
-                                                        </MenuItemOption>
-                                                    </MenuOptionGroup>
-                                                </MenuList>
-                                            </>
-                                        )}
-                                    </Menu>
-                                </HStack>
+                                                        <Flex
+                                                            py="8px"
+                                                            px="16px"
+                                                            justifyContent="space-between"
+                                                            w="full"
+                                                            alignItems="center"
+                                                            fontWeight="normal"
+                                                            fontSize="md"
+                                                        >
+                                                            <Text>
+                                                                {orderBy === 'desc' ? 'Más recientes' : 'Más antiguos'}
+                                                            </Text>
+                                                            <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
+                                                        </Flex>
+                                                    </MenuButton>
+                                                    <MenuList w={{ base: 'full', md: '194px' }}>
+                                                        <MenuOptionGroup
+                                                            value={orderBy}
+                                                            onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
+                                                        >
+                                                            <MenuItemOption value="desc" fontWeight="normal">
+                                                                Más recientes
+                                                            </MenuItemOption>
+                                                            <MenuItemOption value="asc" fontWeight="normal">
+                                                                Más antiguos
+                                                            </MenuItemOption>
+                                                        </MenuOptionGroup>
+                                                    </MenuList>
+                                                </>
+                                            )}
+                                        </Menu>
+                                    </HStack>
+                                    <Stack
+                                        flexDirection="row"
+                                        alignItems={{ base: 'center', sm: 'flex-end' }}
+                                        justify={{ base: 'space-between', md: 'center' }}
+                                        w="full"
+                                    >
+                                        <Input
+                                            w={{ base: 'full', sm: 'full', md: '184px' }}
+                                            variant="outline"
+                                            borderColor="gray.400"
+                                            placeholder="Buscar"
+                                            mr="5px"
+                                            textColor="white"
+                                            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                                        />
+                                    </Stack>
+                                </Stack>
                             </Stack>
                         </Stack>
 
                         <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
-                            <NavbarFilter />
                             {gsg?.data?.projects.length !== 0 ? (
                                 <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                                     {projectFilter?.length !== 0

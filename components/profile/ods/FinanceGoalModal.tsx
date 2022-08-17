@@ -98,7 +98,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
                             </Text>
                         </VStack>
 
-                        <VStack w="full" overflowY="auto" h="330px">
+                        <VStack w="full" overflowY="auto" h="330px" className="custom-scroll-light">
                             {interest?.finance_goal.map((item, index) => (
                                 <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
                                     <CheckCard
@@ -118,7 +118,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
                                         fontFamily="inter"
                                         fontSize="md"
                                         _hover={{ bg: 'gray.600' }}
-                                        _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                        _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
                                         {...getCheckboxProps({ value: item })}
                                     >
                                         <Text>{FinanceGoal(item)}</Text>
