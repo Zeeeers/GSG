@@ -21,6 +21,7 @@ import CapitalStageModal from './capitalStageModal';
 import ExpectedRentabilityModal from './expectedRentabilityModal';
 import FinanceGoalModal from './FinanceGoalModal';
 import OdsModal from './odsModal';
+import OnboardingModal from './onboardingModal';
 import StageModal from './stageModal';
 import ThirdModal from './thirdModal';
 import TimeLapseModal from './timeLapseModal';
@@ -28,6 +29,7 @@ import TimeLapseModal from './timeLapseModal';
 // Components
 const OdsTab: React.FC = () => {
     const [isActive, setIsActive] = useState(false);
+    const [isOnboarding, setIsOnboarding] = useState(null);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
     const { isOpen: isOpenThird, onOpen: openThird, onClose: closeThird } = useDisclosure();
     const { isOpen: isOpenStage, onOpen: openStage, onClose: closeStage } = useDisclosure();
@@ -39,6 +41,7 @@ const OdsTab: React.FC = () => {
         onClose: closeExpectedRentabilityModal,
     } = useDisclosure();
     const { isOpen: isOpenTimeLapse, onOpen: openTimeLapse, onClose: closeTimeLapse } = useDisclosure();
+    const { isOpen: isOpenOnboarding, onOpen: openOnboarding, onClose: closeOnboarding } = useDisclosure();
 
     const { data: interest } = useInterestList();
     const { data: getInterest } = useInterest();
@@ -87,10 +90,29 @@ const OdsTab: React.FC = () => {
         }
     };
 
+    const handleUpdateOnboarding = async (value) => {
+        const auth = import('@clyc/next-route-manager/libs/AuthManager');
+        const userApi = import('../../../services/api/lib/user');
+
+        const AuthManager = (await auth).default;
+        const { update } = await userApi;
+
+        const { ok, data } = await update({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            //@ts-ignore
+            data: {
+                onboarding: !value,
+            },
+        });
+    };
+
     useEffect(() => {
         if (user) {
             //@ts-ignore
             setIsActive(user?.newsletter);
+            if (user?.onboarding) {
+                openOnboarding();
+            }
         }
     }, [user]);
 
@@ -241,47 +263,60 @@ const OdsTab: React.FC = () => {
                 </VStack>
             </Stack>
 
+            <OnboardingModal
+                isOpen={isOpenOnboarding}
+                onClose={closeOnboarding}
+                handleUpdateOnboarding={handleUpdateOnboarding}
+            />
+
             <OdsModal
                 isOpen={isOpenOds}
                 onClose={closeOds}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
             <ThirdModal
                 isOpen={isOpenThird}
                 onClose={closeThird}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
             <StageModal
                 isOpen={isOpenStage}
                 onClose={closeStage}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
             <CapitalStageModal
                 isOpen={isOpenCapitalStage}
                 onClose={closeCapitalStage}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
             <ExpectedRentabilityModal
                 isOpen={isOpenExpectedRentabilityModal}
                 onClose={closeExpectedRentabilityModal}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
             <FinanceGoalModal
                 isOpen={isOpenFinanceGoal}
                 onClose={closeFinanceGoal}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
             <TimeLapseModal
                 isOpen={isOpenTimeLapse}
                 onClose={closeTimeLapse}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
+                reload={mutate}
             />
         </>
     );

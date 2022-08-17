@@ -142,7 +142,7 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    });
+    }, []);
     return (
         <>
             <Flex w="full" h="90px" position="absolute" ref={description_general}>

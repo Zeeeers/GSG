@@ -11,6 +11,8 @@ const ThirdParties = (thirdProp: string) => {
             return (third = 'Adjudicación fondo CORFO u otro fondo público');
         case 'other':
             return (third = 'Otro');
+        case 'nothing':
+            return (third = 'Ninguno');
         default: {
             return third;
         }

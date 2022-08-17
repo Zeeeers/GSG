@@ -26,9 +26,10 @@ interface Props {
     onClose(): void;
     interest?: Interest;
     myInterest: Interest;
+    reload?: () => void;
 }
 
-const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
+const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, reload }) => {
     const [rentability, setRentability] = useState([]);
 
     const { getCheckboxProps, setValue } = useCheckboxGroup({
@@ -52,6 +53,7 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
         const { ok } = await update({ id: myInterest?.id, data });
 
         if (ok) {
+            reload();
             toast({
                 //@ts-ignore
                 title: 'Rentabilidad guardada con éxito.',
@@ -91,40 +93,42 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
                                 RENTABILIDAD ESPERADA
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                Selecciona una alternativa única para recibir correos con recomendaciones de proyectos
-                                asociados a esta categoría.
+                                Selecciona las opciones de rentabilidad esperada que consideres necesarias para recibir
+                                correos con recomendaciones de proyectos asociados a esta categoría.
                             </Text>
                         </VStack>
 
                         <VStack w="full" overflowY="auto" h="330px">
                             {interest?.expected_rentability.map((item, index) => (
-                                <CheckCard
-                                    w="full"
-                                    width="full"
-                                    key={`${index}-explorerFilter`}
-                                    as={WrapItem}
-                                    v
-                                    value={item}
-                                    cursor="pointer"
-                                    px={'16px'}
-                                    py={'8px'}
-                                    rounded="8px"
-                                    bg="gray.700"
-                                    textColor="white"
-                                    fontWeight="normal"
-                                    fontFamily="inter"
-                                    fontSize="md"
-                                    _hover={{ bg: 'gray.600' }}
-                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
-                                    {...getCheckboxProps({ value: item })}
-                                >
-                                    <Text>{Rentability(item)}</Text>
-                                </CheckCard>
+                                <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
+                                    <CheckCard
+                                        w="full"
+                                        width="full"
+                                        key={`${index}-explorerFilter`}
+                                        as={WrapItem}
+                                        v
+                                        value={item}
+                                        cursor="pointer"
+                                        px={'16px'}
+                                        py={'8px'}
+                                        rounded="8px"
+                                        bg="gray.700"
+                                        textColor="white"
+                                        fontWeight="normal"
+                                        fontFamily="inter"
+                                        fontSize="md"
+                                        _hover={{ bg: 'gray.600' }}
+                                        _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                        {...getCheckboxProps({ value: item })}
+                                    >
+                                        <Text>{Rentability(item)}</Text>
+                                    </CheckCard>
+                                </VStack>
                             ))}
                         </VStack>
 
                         <Button w="full" h="40px" variant="solid" onClick={handleSave}>
-                            Guardar cambios
+                            Guardar
                         </Button>
                     </VStack>
                 </ModalBody>

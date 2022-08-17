@@ -27,24 +27,19 @@ import Garantee from './formatText/garantee';
 import Rentability from './formatText/rentability';
 import FinanceGoal from './formatText/financeGoal';
 import Time from './formatText/time';
+import { info } from 'console';
+import { useEffect, useState } from 'react';
 
 const Body = forwardRef<any, any>(({ project }, ref) => {
     const { impact, description_finance, other } = ref?.current;
+    const [additional_info, setAdditional_info] = useState([]);
 
-    const members = [
-        {
-            name: 'Nicolás henríquez',
-            position: 'Gerente general',
-            description:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        },
-        {
-            name: 'Nicolás henríquez',
-            position: 'Gerente general',
-            description:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-        },
-    ];
+    useEffect(() => {
+        if (JSON.parse(project?.additional_info ?? '[]').length === 0) {
+            setAdditional_info(JSON.parse(project?.additional_info ?? '[]'));
+        }
+    }, [JSON.parse(project?.additional_info ?? '[]')]);
+
     return (
         <Stack
             alignItems="start"
@@ -286,9 +281,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Text as="p" fontSize="3xl">
                         Información complementaria
                     </Text>
-                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
-                        {project?.adittional_info ?? 'Sin información'}
-                    </Text>
+                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%"></Text>
                 </VStack>
 
                 {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (

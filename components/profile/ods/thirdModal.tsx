@@ -25,9 +25,10 @@ interface Props {
     onClose(): void;
     interest?: Interest;
     myInterest: Interest;
+    reload?: () => void;
 }
 
-const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) => {
+const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, reload }) => {
     const [third, setThird] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const { getCheckboxProps, setValue } = useCheckboxGroup({
@@ -54,6 +55,7 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
 
         if (ok) {
             setIsLoading(false);
+            reload();
             toast({
                 //@ts-ignore
                 title: 'Respaldo guardado con éxito.',
@@ -101,28 +103,30 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
 
                         <VStack w="full">
                             {interest?.third_party.map((item, index) => (
-                                <CheckCard
-                                    w="full"
-                                    width="full"
-                                    key={`${index}-explorerFilter`}
-                                    as={WrapItem}
-                                    v
-                                    value={item}
-                                    cursor="pointer"
-                                    px={'16px'}
-                                    py={'8px'}
-                                    rounded="8px"
-                                    bg="gray.700"
-                                    textColor="white"
-                                    fontWeight="normal"
-                                    fontFamily="inter"
-                                    fontSize="md"
-                                    _hover={{ bg: 'gray.600' }}
-                                    _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
-                                    {...getCheckboxProps({ value: item })}
-                                >
-                                    <Text>{ThirdParties(item)}</Text>
-                                </CheckCard>
+                                <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
+                                    <CheckCard
+                                        w="full"
+                                        width="full"
+                                        key={`${index}-explorerFilter`}
+                                        as={WrapItem}
+                                        v
+                                        value={item}
+                                        cursor="pointer"
+                                        px={'16px'}
+                                        py={'8px'}
+                                        rounded="8px"
+                                        bg="gray.700"
+                                        textColor="white"
+                                        fontWeight="normal"
+                                        fontFamily="inter"
+                                        fontSize="md"
+                                        _hover={{ bg: 'gray.600' }}
+                                        _checked={{ bg: 'teal.500', textColor: 'white', _hover: { bg: 'teal.600' } }}
+                                        {...getCheckboxProps({ value: item })}
+                                    >
+                                        <Text>{ThirdParties(item)}</Text>
+                                    </CheckCard>
+                                </VStack>
                             ))}
                         </VStack>
 
@@ -134,7 +138,7 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest }) 
                             h="40px"
                             variant="solid"
                         >
-                            Guardar cambios
+                            Guardar
                         </Button>
                     </VStack>
                 </ModalBody>

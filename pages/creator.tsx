@@ -92,7 +92,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const optionsQuality = quality.map((item) => ({
         value: item.id,
-        label: item.icon.name,
+        label: `${item.id}) ${'  '} ${item.icon.name}`,
     }));
 
     const {
@@ -146,6 +146,7 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'incubators', label: 'Participación en Incubadoras o Aceleradoras' },
         { value: 'corfo', label: 'Adjudicación fondo CORFO u otro fondo público' },
         { value: 'other', label: 'Otro' },
+        { value: 'nothing', label: 'Ninguno' },
     ];
 
     const optionsMore = [
