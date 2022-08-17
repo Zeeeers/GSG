@@ -12,6 +12,7 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 // Types
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboarding }) => {
+    const router = useRouter();
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay bg="none" backdropFilter="auto" backdropBrightness="40%" backdropBlur="2px" />
@@ -54,7 +56,7 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboard
                                 <Text>Lo entiendo, no volver a mostrar</Text>
                             </HStack>
 
-                            <Button w="full" h="40px" variant="solid">
+                            <Button w="full" h="40px" variant="solid" onClick={() => router.push('/explorer')}>
                                 Ir al explorador de proyectos
                             </Button>
                         </VStack>
