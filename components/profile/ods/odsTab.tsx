@@ -110,9 +110,6 @@ const OdsTab: React.FC = () => {
         if (user) {
             //@ts-ignore
             setIsActive(user?.newsletter);
-            if (user?.onboarding) {
-                openOnboarding();
-            }
         }
     }, [user]);
 
@@ -256,7 +253,13 @@ const OdsTab: React.FC = () => {
                         </WrapItem>
                     </Wrap>
                     <Stack w="full" align="flex-end">
-                        <Button variant="outline" h="40px" onClick={() => router.push('/explorer')}>
+                        <Button
+                            variant="outline"
+                            h="40px"
+                            onClick={() => {
+                                openOnboarding();
+                            }}
+                        >
                             Ir al explorador
                         </Button>
                     </Stack>

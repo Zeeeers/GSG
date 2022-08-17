@@ -36,8 +36,8 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboard
                                 Tus intereses se han guardado
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                Si seleccionaste recibir correos, te comenzaremos a enviar proyectos que tengan afinidad
-                                con tus intereses.
+                                Si seleccionaste que deseas recibir correos semanalmente, te comenzaremos a enviar
+                                proyectos que tengan afinidad con tus intereses.
                             </Text>
                         </VStack>
 
