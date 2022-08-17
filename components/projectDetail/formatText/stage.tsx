@@ -7,16 +7,16 @@ const Stage = (capitalStage: string) => {
         case 'seed':
             return (stage = 'Seed');
 
-        case 'series-a':
+        case 'serie-a':
             return (stage = 'Serie A');
 
-        case 'series-b':
+        case 'serie-b':
             return (stage = 'Serie B');
 
-        case 'series-c':
+        case 'serie-c':
             return (stage = 'Serie C');
 
-        case 'series-d':
+        case 'serie-d':
             return (stage = 'Serie D');
 
         case 'senior-debt':
