@@ -29,6 +29,7 @@ import FinanceGoal from './formatText/financeGoal';
 import Time from './formatText/time';
 import { info } from 'console';
 import { useEffect, useState } from 'react';
+import StageCapital from './formatText/stageCapital';
 
 const Body = forwardRef<any, any>(({ project }, ref) => {
     const { impact, description_finance, other } = ref?.current;
@@ -111,6 +112,17 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                         </Link>
                     </VStack>
                 )}
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                            Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {ThirdParties(project?.third_parties)}
+                        </Text>
+                    </VStack>
+                </VStack>
             </VStack>
 
             <Stack
@@ -129,10 +141,10 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
-                            Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
+                            La etapa en la cual se encuentra el proyecto:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {ThirdParties(project?.third_parties)}
+                            {StageCapital(project?.stage)}
                         </Text>
                     </VStack>
                 </VStack>

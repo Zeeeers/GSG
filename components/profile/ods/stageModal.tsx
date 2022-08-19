@@ -89,7 +89,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
     }, [myInterest]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" blockScrollOnMount={true} scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="60px">
                 <ModalCloseButton />

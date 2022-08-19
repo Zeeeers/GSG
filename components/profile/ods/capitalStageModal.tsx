@@ -81,7 +81,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
     }, [myInterest]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" blockScrollOnMount={true} scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="60px">
                 <ModalCloseButton />
@@ -97,7 +97,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
                             </Text>
                         </VStack>
 
-                        <VStack w="full" overflowY="auto" h="330px" className="custom-scroll-light">
+                        <VStack w="full" overflowY="auto" h="330px" className="custom-scroll-light" position="relative">
                             {interest?.capital_stage.map((item, index) => (
                                 <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
                                     <CheckCard

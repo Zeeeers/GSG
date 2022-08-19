@@ -106,10 +106,13 @@ const OdsTab: React.FC = () => {
         });
     };
 
+    console.log(user);
+
     useEffect(() => {
         if (user) {
             //@ts-ignore
             setIsActive(user?.newsletter);
+            setIsOnboarding(user?.onboarding);
         }
     }, [user]);
 
@@ -257,7 +260,7 @@ const OdsTab: React.FC = () => {
                             variant="outline"
                             h="40px"
                             onClick={() => {
-                                openOnboarding();
+                                isOnboarding ?? true ? openOnboarding() : router.push('/explorer');
                             }}
                         >
                             Ir al explorador

@@ -54,11 +54,9 @@ const Explorer: NextPage = () => {
         orderBy === 'asc' ? (a.id < b.id ? -1 : 1) : a.id > b.id ? -1 : 1,
     );
 
-    const projectFilter = projectSort?.filter((p) =>
-        Object.values(p.qualities).find((p) => filters?.qualities?.includes(p.name)),
-    );
-
-    const projectFilterSearch = projectSort?.filter((p) => p.title.includes(filters?.search ?? ''));
+    const projectFilter = projectSort
+        ?.filter((p) => Object.values(p.qualities).find((p) => filters?.qualities?.includes(p?.name) ?? []))
+        .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -271,15 +269,17 @@ const Explorer: NextPage = () => {
                         </Stack>
 
                         <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
-                            {gsg?.data?.projects.length !== 0 ? (
+                            {gsg ? (
                                 <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                                    {projectFilter?.length !== 0
-                                        ? projectFilter?.map((project) => (
-                                              <ExplorerCard key={project.id} project={project} />
-                                          ))
-                                        : projectFilterSearch?.map((project) => (
-                                              <ExplorerCard key={project.id} project={project} />
-                                          ))}
+                                    {projectFilter?.length !== 0 ? (
+                                        projectFilter?.map((project) => (
+                                            <ExplorerCard key={project.id} project={project} />
+                                        ))
+                                    ) : (
+                                        <Text fontSize="lg" fontWeight="medium">
+                                            No se encontraron proyectos
+                                        </Text>
+                                    )}
                                 </SimpleGrid>
                             ) : (
                                 <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
