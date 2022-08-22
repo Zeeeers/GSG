@@ -9,13 +9,13 @@ type select = {
     label: string;
 };
 export interface IProjectForm {
-    title?: string;
-    description?: string;
-    main_image?: string;
+    title: string;
+    description: string;
+    main_image: string;
     social_impact?: string;
 
-    more_info?: select;
-    third_parties?: select;
+    more_info: select;
+    third_parties: select;
     stage?: select;
     investment_objective?: select;
     capital_stage?: select;
@@ -26,8 +26,8 @@ export interface IProjectForm {
     qualities?: select;
 
     investment_types?: select;
-    business_model?: string;
-    better_project?: string;
+    business_model: string;
+    better_project: string;
     additional_info?: string;
     business_web?: string;
     additional_document?: string;
@@ -44,14 +44,14 @@ export interface IMember {
 
 // Schema
 const projectShape: ZodShape<IProjectForm> = {
-    title: z.string().optional(),
-    description: z.string().optional(),
-    main_image: z.string().optional(),
+    title: z.string().min(1, 'Campo obligatorio'),
+    description: z.string().min(1, 'Campo obligatorio'),
+    main_image: z.string().min(1, 'Campo obligatorio'),
     social_impact: z.string().optional(),
 
-    more_info: z.object({ value: z.string(), label: z.string() }).optional(),
-    third_parties: z.object({ value: z.string(), label: z.string() }).optional(),
-    stage: z.object({ value: z.string(), label: z.string() }).optional(),
+    more_info: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }),
+    third_parties: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }),
+    stage: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }).optional(),
     investment_objective: z.object({ value: z.string(), label: z.string() }).optional(),
     capital_stage: z.object({ value: z.string(), label: z.string() }).optional(),
 
@@ -61,8 +61,8 @@ const projectShape: ZodShape<IProjectForm> = {
     time_lapse: z.object({ value: z.string(), label: z.string() }).optional(),
 
     investment_types: z.object({ value: z.string(), label: z.string() }).optional(),
-    business_model: z.string().optional(),
-    better_project: z.string().optional(),
+    business_model: z.string().min(1, 'Campo obligatorio'),
+    better_project: z.string().min(1, 'Campo obligatorio'),
     additional_info: z.string().optional(),
     business_web: z.string().optional(),
     additional_document: z.string().optional(),

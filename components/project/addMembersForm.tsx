@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CropperModal from 'common/cropperModal';
+import CropperModalBase64 from 'common/cropperModalBase64';
 import UploadButton from 'common/uploadButton';
 import { IMember, memberSchema } from 'forms/project';
 import React, { useState } from 'react';
@@ -28,7 +28,7 @@ const AddMembersForm = ({ reload }) => {
 
     const member = useCreateGsgProjectStore((s) => s.member);
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
-    const [baseImg, setBaseImg] = useState<string>();
+    const [baseImg, setBaseImg] = useState<string>(member.main_image ?? undefined);
     const [createMember, setCreateMember] = useState(false);
     const {
         register,
@@ -171,7 +171,7 @@ const AddMembersForm = ({ reload }) => {
                 </Button>
             </Stack>
             {isCropperOpen && (
-                <CropperModal
+                <CropperModalBase64
                     title={'Recortar logo'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}

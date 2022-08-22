@@ -27,6 +27,7 @@ import {
     ModalOverlay,
     ModalHeader,
     Img,
+    Tooltip,
 } from '@chakra-ui/react';
 import SlateEditor from 'common/slate/SlateEditor';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -56,6 +57,8 @@ import Rentability from 'components/projectDetail/formatText/rentability';
 import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
 import Time from 'components/projectDetail/formatText/time';
 import { getGsgProject } from '../services/api/lib/gsg';
+import { isValid } from 'zod';
+import CropperModalBase64 from 'common/cropperModalBase64';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -71,6 +74,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const { onOpen: onCropperOpen } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
+    const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
 
     const [createProyect, setCreateProyect] = useState(false);
     const [isStage, setIsStage] = useState(false);
@@ -97,13 +101,16 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const {
         register,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
         reset,
+        setValue,
         handleSubmit,
         control,
         watch,
     } = useForm<IProjectForm>({
+        mode: 'all',
         resolver: zodResolver(projectSchema),
+
         defaultValues: {
             title: project?.title,
             description: project?.description,
@@ -111,6 +118,8 @@ const Creator: NextPage = ({ project, quality }) => {
             third_parties: { value: project?.third_parties, label: ThirdParties(project?.third_parties) },
             more_info: { value: project?.more_info, label: Messure(project?.more_info) },
             stage: { value: project?.stage, label: StageCapital(project?.stage) },
+            capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
+            debt: { value: project?.debt, label: Stage(project?.debt) },
             investment_objective: {
                 value: project?.investment_objective,
                 label: Objetive(project?.investment_objective),
@@ -131,14 +140,6 @@ const Creator: NextPage = ({ project, quality }) => {
     const handleEditField = (values: Descendant[]) => {
         setContenido(values);
     };
-
-    const proyectDescription = watch('description', project?.description ?? '0');
-    const proyectBetter = watch('better_project', project?.better_project ?? '0');
-    const proyectBusiness = watch('business_model', project?.business_model ?? '0');
-    const proyectTitle = watch('title', project?.title ?? '0');
-    const proyectParties = watch('third_parties');
-    const proyectObject = watch('investment_objective');
-    const proyectCapital = watch('capital_stage');
 
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -305,30 +306,34 @@ const Creator: NextPage = ({ project, quality }) => {
     const handleDraft = async (data: IProjectForm) => {
         const dataProject = {
             gsg_project: {
-                title: data.title,
-                description: data.description,
+                title: proyectTitle,
+                description: proyectDescription,
+                business_web: proyectWeb,
                 main_image: baseImgMain,
                 social_impact: baseSocialPdf?.base64,
-                more_info: data.more_info?.value,
-                third_parties: data.third_parties?.value,
-                stage: data.stage?.value,
-                investment_objective: data.investment_objective?.value,
-                capital_stage: data.capital_stage?.value,
-
-                business_model: data.business_model,
-                guarantee: data.guarantee?.value,
-                expected_rentability: data.expected_rentability?.value,
-                finance_goal: data.finance_goal?.value,
-                time_lapse: data.time_lapse?.value,
-                investment_types: data.investment_types?.value,
-                better_project: data.better_project,
+                more_info: proyectMore?.value,
+                third_parties: proyectParties?.value,
+                capital_stage: watch('capital_stage')?.value,
+                debt: proyectDept?.value,
+                investment_types: proyectInvestType?.value,
+                stage: watch('stage')?.value,
+                expected_rentability: watch('expected_rentability')?.value,
+                guarantee: watch('guarantee')?.value,
+                finance_goal: watch('finance_goal')?.value,
+                time_lapse: watch('time_lapse')?.value,
+                business_model: watch('business_model'),
+                investment_objective: watch('investment_objective')?.value,
                 additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
-                business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
-                debt: data.debt?.value,
+                better_project: watch('better_project'),
                 status: 'sketch',
             },
-            qualities: selectedOptions?.map((item) => item.value)?.join(';;'),
+            qualities:
+                selectedOptions?.map((item) => item.value).join(';;') ??
+                Object.values(project?.qualities ?? [])
+                    .map((item) => item.id)
+                    .join(';;'),
+
             members:
                 members?.length !== 0
                     ? JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {})
@@ -410,14 +415,30 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     };
 
+    const proyectTitle = watch('title', project?.title ?? '');
+    const proyectDescription = watch('description', project?.description ?? '');
+    const proyectWeb = watch('business_web');
+    const proyectMainImage = watch('main_image');
+    const proyectOds = watch('qualities');
+    const proyectParties = watch('third_parties');
+    const proyectMore = watch('more_info');
+    const proyectSocial = watch('social_impact');
+    const proyectCapital = watch('capital_stage');
+    const proyectDept = watch('debt');
+    const proyectInvestType = watch('investment_types');
+    const proyectRentability = watch('expected_rentability');
+
+    const proyectBetter = watch('better_project', project?.better_project ?? '');
+    const proyectBusiness = watch('business_model', project?.business_model ?? '');
+
+    const proyectObject = watch('investment_objective');
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {
         proyectCapital && proyectCapital?.value !== 'other' ? setIsStage(true) : setIsStage(false);
-
-        console.log(proyectCapital?.value);
     }, [proyectCapital]);
     return (
         <>
@@ -450,20 +471,29 @@ const Creator: NextPage = ({ project, quality }) => {
                         </Text>
                     </Stack>
                     <HStack spacing="8px" mt={{ base: '10px', md: 0 }}>
-                        <Button onClick={handleSubmit(handleDraft)} type="button" variant="outline" w="full">
+                        <Button onClick={handleDraft} type="button" variant="outline" w="full">
                             Guardar borrador
                         </Button>
 
-                        <Button
-                            isLoading={createProyect}
-                            loadingText="Publicando proyecto"
-                            type="button"
-                            onClick={handleSubmit(handlePublished)}
-                            variant="solid"
-                            w="full"
+                        <Tooltip
+                            hasArrow
+                            label="Hay campos sin completar"
+                            isDisabled={isSubmitted ? isValid : true}
+                            shouldWrapChildren
+                            bg="red.500"
                         >
-                            Postular proyecto
-                        </Button>
+                            <Button
+                                isLoading={createProyect}
+                                loadingText="Publicando proyecto"
+                                type="button"
+                                onClick={handleSubmit(handlePublished)}
+                                variant="solid"
+                                w="full"
+                                disabled={isSubmitted ? !isValid : false}
+                            >
+                                Postular proyecto
+                            </Button>
+                        </Tooltip>
                     </HStack>
                 </Container>
             </HStack>
@@ -486,6 +516,9 @@ const Creator: NextPage = ({ project, quality }) => {
                         >
                             {proyectTitle?.length ?? 0}/40 caractéres
                         </Text>
+                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                            {errors.title?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="description" isInvalid={!!errors.description}>
@@ -516,8 +549,8 @@ const Creator: NextPage = ({ project, quality }) => {
                             {proyectDescription?.length ?? 0}/700 caractéres
                         </Text>
 
-                        <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
-                            {errors.description?.message}
+                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                            {errors?.description?.message}
                         </FormErrorMessage>
                     </FormControl>
 
@@ -532,7 +565,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                     {/*TODO: useCropper for upload image product*/}
 
-                    <FormControl id="main_image">
+                    <FormControl id="main_image" isInvalid={!!errors.main_image}>
                         <FormLabel lineHeight="140%">
                             Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
                             tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 600kB)
@@ -591,14 +624,21 @@ const Creator: NextPage = ({ project, quality }) => {
                                             } else {
                                                 const base = await getBase64(e.target.files![0]);
                                                 setBaseImgMain(base);
-                                                onCropperOpen();
+                                                onCropperOpenMain();
                                             }
                                         }
                                     }}
                                 >
                                     Arrastra o sube tu imagen aquí (min 800x400px)
                                 </UploadButton>
-                                <FormErrorMessage fontWeight={'semibold'}>
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                    textAlign="start"
+                                    w="full"
+                                >
                                     {errors.main_image?.message}
                                 </FormErrorMessage>
                             </VStack>
@@ -661,7 +701,9 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.third_parties?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                            {errors.third_parties?.value?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <FormControl id="more_info" w={{ base: '100%', md: '50%' }}>
@@ -674,7 +716,9 @@ const Creator: NextPage = ({ project, quality }) => {
                             control={control}
                             render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsMore} />}
                         />
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.more_info?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                            {errors.more_info?.value?.message}
+                        </FormErrorMessage>
                     </FormControl>
 
                     <VStack w="100%" align="flex-start" spacing="10px">
@@ -727,6 +771,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                             if (e.target?.files && isPDF(e.target.files[0])) {
                                                 const base = await getBase64(e.target.files![0]);
+                                                setValue('social_impact', e.target.files[0]);
                                                 setBaseSocialPdf({ base64: base, file: e.target.files[0] });
                                             } else {
                                                 toast({
@@ -947,7 +992,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormErrorMessage>
                             </FormControl>
                         </Stack>
-                        <FormControl id="business_model" w="full">
+                        <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
                             <FormLabel>
                                 Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
@@ -979,8 +1024,13 @@ const Creator: NextPage = ({ project, quality }) => {
                             >
                                 {proyectBusiness?.length ?? 0}/700 caractéres
                             </Text>
-                            <FormErrorMessage fontWeight={'semibold'}>
-                                {errors.better_project?.message}
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors.business_model?.message}
                             </FormErrorMessage>
                         </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="baseline" w="full">
@@ -1178,7 +1228,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         )}
                     </FormControl>
 
-                    <FormControl id="better_project">
+                    <FormControl id="better_project" isInvalid={!!errors.better_project}>
                         <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
                             Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
                             <span style={{ color: '#4FD1C5' }}>*</span>
@@ -1206,12 +1256,53 @@ const Creator: NextPage = ({ project, quality }) => {
                             {proyectBetter?.length ?? 0}/700 caractéres
                         </Text>
 
-                        <FormErrorMessage fontSize={{ base: 'xs', md: 'sm' }} fontWeight="medium" color="red.400">
+                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
                             {errors.better_project?.message}
                         </FormErrorMessage>
                     </FormControl>
+
+                    <HStack spacing="20px" mt={{ base: '10px', md: 0 }} w="full">
+                        <Button onClick={handleDraft} type="button" variant="outline" w="full" h="40px">
+                            Guardar borrador
+                        </Button>
+
+                        <Stack w="full">
+                            <Tooltip
+                                hasArrow
+                                label="Hay campos sin completar"
+                                shouldWrapChildren
+                                bg="red.500"
+                                isDisabled={isSubmitted ? isValid : true}
+                            >
+                                <Button
+                                    isLoading={createProyect}
+                                    loadingText="Publicando proyecto"
+                                    type="button"
+                                    onClick={handleSubmit(handlePublished)}
+                                    variant="solid"
+                                    w="full"
+                                    h="40px"
+                                    disabled={isSubmitted ? !isValid : false}
+                                >
+                                    Postular proyecto
+                                </Button>
+                            </Tooltip>
+                        </Stack>
+                    </HStack>
                 </VStack>
             </Container>
+
+            {isCropperOpenMain && (
+                <CropperModalBase64
+                    title={'Recortar imagen'}
+                    baseImg={baseImgMain}
+                    isOpen={isCropperOpenMain}
+                    onClose={onCropperCloseMain}
+                    onCropSave={(img) => {
+                        setValue('main_image', img);
+                    }}
+                />
+            )}
 
             <AddMembersModal isOpen={isOpen} onClose={onClose} reload={mutate} />
             <SuccessModal isOpen={isOpenSuccess} onClose={onCloseSuccess} />
