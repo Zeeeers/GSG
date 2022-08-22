@@ -8,19 +8,22 @@ import { useRouter } from 'next/router';
 import { projects } from 'services/api/data';
 import { useOrganizationProject } from 'services/api/lib/organization/organization.calls';
 import { useUser } from 'services/api/lib/user';
+import { NextSeo } from 'next-seo';
 
-const PublicChallenge: NextPage = ({ project }) => {
+const PublicChallenge: NextPage = ({ project, enriched }) => {
     const router = useRouter();
-    /*const { data: project } = useGsgProject(
-        router.query.projectid ? Number.parseInt(router.query?.projectid as string) : undefined,
-    );*/
-
-    console.log(project);
 
     const { data: userProfile } = useUser();
 
+    console.log(enriched);
+
     return (
         <>
+            <NextSeo
+                title={`${project?.title} - GSG`}
+                description={project?.description}
+                canonical="https://www.gsg-match.com/"
+            />
             <Navbar />
             <Flex flexDir="column" paddingTop={{ base: '60px', md: 20 }}>
                 <Img
@@ -34,7 +37,7 @@ const PublicChallenge: NextPage = ({ project }) => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project} user={userProfile} />
+                <HeaderHero project={project} textEnriched={enriched} user={userProfile} />
             </Flex>
         </>
     );
@@ -51,6 +54,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
         return {
             props: {
                 project: data.data.gsg_project ?? null,
+                enriched: JSON.parse(data?.data.gsg_project.additional_info ?? '[]'),
             },
         };
     } else {

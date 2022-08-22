@@ -30,8 +30,9 @@ import Time from './formatText/time';
 import { info } from 'console';
 import { useEffect, useState } from 'react';
 import StageCapital from './formatText/stageCapital';
+import SlateDisplay from 'common/slate/SlateDisplay';
 
-const Body = forwardRef<any, any>(({ project }, ref) => {
+const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
     const { impact, description_finance, other } = ref?.current;
     const [additional_info, setAdditional_info] = useState([]);
 
@@ -293,7 +294,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                     <Text as="p" fontSize="3xl">
                         Información complementaria
                     </Text>
-                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%"></Text>
+                    <SlateDisplay value={textEnriched} />
                 </VStack>
 
                 {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (

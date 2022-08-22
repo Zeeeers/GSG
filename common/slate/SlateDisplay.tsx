@@ -79,9 +79,10 @@ const Element = (props: { element: CustomElement; children: JSX.Element; attribu
                 <Alert
                     colorScheme="gray"
                     borderLeft="0.5rem solid"
-                    borderColor="gray.500"
+                    borderColor="gray.600"
                     fontSize="md"
                     display="block"
+                    bg="gray.500"
                     p={2}
                     pl={6}
                     my={3}

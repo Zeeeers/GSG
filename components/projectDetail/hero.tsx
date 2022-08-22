@@ -26,10 +26,11 @@ import FinanceGoal from './formatText/financeGoal';
 interface Props {
     project: Gsg | undefined;
     user: User | undefined;
+    textEnriched: Array<any>;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project, user }) => {
+const HeaderHero: React.FC<Props> = ({ project, user, textEnriched }) => {
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
@@ -320,7 +321,7 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                         ></Flex>
                     </VStack>
 
-                    <Body project={project} ref={ref} />
+                    <Body project={project} textEnriched={textEnriched} ref={ref} />
                 </Container>
             </Flex>
 
