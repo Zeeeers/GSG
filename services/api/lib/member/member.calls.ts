@@ -36,11 +36,21 @@ export const deleteMember = async (idMember: number) => {
     return response;
 };
 
+// UPADTE
+export const updateMember = async (idMember: number, data: Members) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME! });
+
+    const response = await api.patch<MemberResponse>(ENDPOINT.DETAIL(idMember), { member: data }, pymeHeaders(token));
+    return response;
+};
+
 // Global
 const memberCalls = {
     create,
     useMembers,
     deleteMember,
+    updateMember,
 };
 
 // Export

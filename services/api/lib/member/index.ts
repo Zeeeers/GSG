@@ -1,1 +1,1 @@
-export { create, useMembers, deleteMember, default as member } from './member.calls';
+export { create, useMembers, deleteMember, updateMember, default as member } from './member.calls';

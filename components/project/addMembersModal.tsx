@@ -23,7 +23,7 @@ const AddMembersModal: React.FC<Props> = ({ isOpen, onClose, reload }) => {
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
                     <VStack alignItems="flex-start" spacing="20px">
-                        <AddMembersForm reload={reload} />
+                        <AddMembersForm reload={reload} closeModal={onClose} />
                     </VStack>
                 </ModalBody>
             </ModalContent>

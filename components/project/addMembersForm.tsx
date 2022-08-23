@@ -21,15 +21,18 @@ import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 
 type MemberProp = {
     reload: () => void;
+    closeModal: void;
 };
 
-const AddMembersForm = ({ reload }) => {
+const AddMembersForm = ({ reload, closeModal }) => {
     //const addMember = useCreateGsgProjectStore((s) => s.setMembers);
 
     const member = useCreateGsgProjectStore((s) => s.member);
+    const clearMember = useCreateGsgProjectStore((s) => s.clearMember);
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
-    const [baseImg, setBaseImg] = useState<string>(member.main_image ?? undefined);
+    const [baseImg, setBaseImg] = useState<string>(member?.main_image ?? undefined);
     const [createMember, setCreateMember] = useState(false);
+
     const {
         register,
         reset,
@@ -39,10 +42,10 @@ const AddMembersForm = ({ reload }) => {
         handleSubmit,
     } = useForm<IMember>({
         defaultValues: {
-            main_image: member.main_imagen ?? '',
-            name: member.name ?? '',
-            position: member.position ?? '',
-            linkedin: member.linkedin ?? '',
+            main_image: member?.main_imagen ?? '',
+            name: member?.name ?? '',
+            position: member?.position ?? '',
+            linkedin: member?.linkedin ?? '',
         },
         resolver: zodResolver(memberSchema),
     });
@@ -51,34 +54,65 @@ const AddMembersForm = ({ reload }) => {
 
     const handleMember = async (data: IMember) => {
         setCreateMember(true);
-        const { create } = await import('../../services/api/lib/member');
-        const { ok } = await create(data);
 
-        if (ok) {
-            setCreateMember(false);
-            toast({
-                title: 'Equipo creado.',
-                description: 'Tu equipo ha sido creado exitosamente.',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-            reload();
-            setBaseImg('');
+        if (!member?.id) {
+            const { create } = await import('../../services/api/lib/member');
+            const { ok } = await create(data);
+
+            if (ok) {
+                setCreateMember(false);
+                toast({
+                    title: 'Equipo creado.',
+                    description: 'Tu equipo ha sido creado exitosamente.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+                reload();
+                setBaseImg('');
+                reset();
+            } else {
+                setCreateMember(false);
+                toast({
+                    title: 'Error al crear el equipo',
+                    description: 'Ha ocurrido un error al intentar crear el equipo, porfavor, intentelo nuevamente.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
         } else {
-            setCreateMember(false);
-            toast({
-                title: 'Error al crear el equipo',
-                description: 'Ha ocurrido un error al intentar crear el equipo, porfavor, intenelo nuevamente.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-        }
+            const { updateMember } = await import('../../services/api/lib/member');
+            const { ok } = await updateMember(member.id, data);
 
-        reset();
+            if (ok) {
+                setCreateMember(false);
+                toast({
+                    title: 'El equipo actualizado.',
+                    description: 'Tu equipo ha sido actualizado exitosamente.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+                closeModal();
+                reload();
+                setBaseImg('');
+            } else {
+                setCreateMember(false);
+                toast({
+                    title: 'Error al actualizar',
+                    description:
+                        'Ha ocurrido un error al intentar actualizar el equipo, porfavor, intentelo nuevamente.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+        }
     };
 
     return (
