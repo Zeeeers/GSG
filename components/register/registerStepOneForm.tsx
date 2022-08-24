@@ -1,26 +1,26 @@
 // Dependencies
-import dynamic from 'next/dynamic';
 import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    VStack,
-    Input,
-    Heading,
-    Checkbox,
     Button,
-    useDisclosure,
+    Checkbox,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    Heading,
+    HStack,
+    Input,
     InputGroup,
     InputLeftAddon,
-    Text,
-    HStack,
     Stack,
+    Text,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
-import { IRegisterOneForm, registerOneShema } from 'forms/register';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRegisterStore } from 'stores/register';
 import InputPassword from 'common/inputPassword';
+import { IRegisterOneForm, registerOneShema } from 'forms/register';
+import dynamic from 'next/dynamic';
+import { useForm } from 'react-hook-form';
+import { useRegisterStore } from 'stores/register';
 
 // Dynamic
 const TermsModal = dynamic(() => import('common/termsModal'));
@@ -31,13 +31,21 @@ const RegisterStepOneForm: React.FC = () => {
     const { isOpen: isTermsOpen, onOpen: onTermsOpen, onClose: onTermsClose } = useDisclosure();
     const setRegisterValues = useRegisterStore((state) => state.updateFormValues);
     const setStep = useRegisterStore((state) => state.setStep);
-
+    const formValues = useRegisterStore((s) => s.formValues);
     const {
         register,
         formState: { errors },
         handleSubmit,
     } = useForm<IRegisterOneForm>({
         resolver: zodResolver(registerOneShema),
+        defaultValues: {
+            userName: formValues?.userName ?? '',
+            userEmail: formValues?.userEmail ?? '',
+            password: formValues?.password ?? '',
+            passwordConfirm: formValues?.passwordConfirm ?? '',
+            legalRepPhone: formValues?.legalRepPhone ?? '',
+            termsCheck: formValues?.termsCheck ?? false,
+        },
     });
 
     // Handlers

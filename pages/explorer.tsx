@@ -1,43 +1,39 @@
 // Dependencies
 //@ts-nocheck
-import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
 import {
+    Button,
     Container,
     Flex,
     Heading,
+    HStack,
+    Icon,
+    Image,
+    Input,
     Menu,
+    MenuButton,
+    MenuItemOption,
     MenuList,
     MenuOptionGroup,
-    MenuItemOption,
-    MenuButton,
-    Text,
-    Button,
-    Icon,
-    Input,
-    HStack,
-    VStack,
     SimpleGrid,
     Stack,
-    MenuItem,
-    Image,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
-import { FaChevronUp, FaChevronDown, FaSearch } from 'react-icons/fa';
-import NavbarFilter from 'components/explorer/navbarFilter/navbarFilter';
 import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
 import Navbar from 'layouts/main/navbar';
+import { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useGsg } from 'services/api/lib/gsg';
 
-import { projects } from 'services/api/data';
-import { NextSeo } from 'next-seo';
-import { useOrganization } from 'services/api/lib/organization';
+import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
 import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
+import { NextSeo } from 'next-seo';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
-import { useFilterStore } from 'stores/filters';
-import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
+import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
-import { OptChImage } from '@clyc/optimized-image';
+import { useFilterStore } from 'stores/filters';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -119,8 +115,9 @@ const Explorer: NextPage = () => {
                                     fontWeight="bold"
                                     w="full"
                                     textAlign="left"
+                                    textTransform="uppercase"
                                 >
-                                    PROYECTOS DE INVERSIÓN
+                                    Todos los proyectos de inversión
                                 </Heading>
                                 <Text>
                                     A continuación se visualizan todos los proyectos activos dentro de Match. Puedes
@@ -191,6 +188,7 @@ const Explorer: NextPage = () => {
                                                             Height={32}
                                                             mr={4}
                                                             src={quality.icon.image}
+                                                            alt={quality.icon.name}
                                                         />
 
                                                         {quality.icon.name}

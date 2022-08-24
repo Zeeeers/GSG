@@ -1,64 +1,57 @@
 // Dependencies
 // @ts-nocheck
-import { NextPage } from 'next';
 import {
+    Avatar,
     Button,
     Container,
+    Divider,
     FormControl,
     FormErrorMessage,
     FormHelperText,
     FormLabel,
     HStack,
+    Image,
     Input,
     InputGroup,
     InputLeftAddon,
+    Link,
+    Stack,
     Text,
     Textarea,
-    useDisclosure,
-    VStack,
-    Stack,
-    Link,
-    Divider,
-    Image,
-    useToast,
-    Avatar,
-    Modal,
-    ModalBody,
-    ModalOverlay,
-    ModalHeader,
-    Img,
     Tooltip,
+    useDisclosure,
+    useToast,
+    VStack,
 } from '@chakra-ui/react';
-import SlateEditor from 'common/slate/SlateEditor';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { IProjectForm, projectSchema } from 'forms/project';
-import { Controller, useForm } from 'react-hook-form';
-import { useCreateGsgProjectStore } from 'stores/createGsgProject';
-import UploadButton from 'common/uploadButton';
-import { useEffect, useState } from 'react';
-import AddMembersModal from 'components/project/addMembersModal';
-import { Descendant } from 'slate';
-import { NextSeo } from 'next-seo';
-import { Select as CharkaSelect } from 'chakra-react-select';
 import { PrivatePage } from '@clyc/next-route-manager';
-import { useMembers } from 'services/api/lib/member';
-import { getQualities, useQualityList } from 'services/api/lib/qualities';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Select as CharkaSelect } from 'chakra-react-select';
+import CropperModalBase64 from 'common/cropperModalBase64';
+import SlateEditor from 'common/slate/SlateEditor';
+import UploadButton from 'common/uploadButton';
+import AddMembersModal from 'components/project/addMembersModal';
+import SuccessModal from 'components/project/successModal';
+import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
+import Garantee from 'components/projectDetail/formatText/garantee';
+import Messure from 'components/projectDetail/formatText/messure';
+import Objetive from 'components/projectDetail/formatText/objective';
+import Rentability from 'components/projectDetail/formatText/rentability';
+import Stage from 'components/projectDetail/formatText/stage';
+import StageCapital from 'components/projectDetail/formatText/stageCapital';
+import ThirdParties from 'components/projectDetail/formatText/thirdParties';
+import Time from 'components/projectDetail/formatText/time';
+import { IProjectForm, projectSchema } from 'forms/project';
+import { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
-import SuccessModal from 'components/project/successModal';
-import { useDraftStore } from 'stores/draftProject';
-import Messure from 'components/projectDetail/formatText/messure';
-import ThirdParties from 'components/projectDetail/formatText/thirdParties';
-import Stage from 'components/projectDetail/formatText/stage';
-import Objetive from 'components/projectDetail/formatText/objective';
-import StageCapital from 'components/projectDetail/formatText/stageCapital';
-import Garantee from 'components/projectDetail/formatText/garantee';
-import Rentability from 'components/projectDetail/formatText/rentability';
-import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
-import Time from 'components/projectDetail/formatText/time';
+import { useMembers } from 'services/api/lib/member';
+import { getQualities } from 'services/api/lib/qualities';
+import { Descendant } from 'slate';
+import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 import { getGsgProject } from '../services/api/lib/gsg';
-import { isValid } from 'zod';
-import CropperModalBase64 from 'common/cropperModalBase64';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -77,6 +70,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
 
     const [createProyect, setCreateProyect] = useState(false);
+    const [saveDraft, setSaveDraft] = useState(false);
     const [isStage, setIsStage] = useState(false);
 
     //const project = useDraftStore((s) => s.project);
@@ -91,7 +85,6 @@ const Creator: NextPage = ({ project, quality }) => {
     };
 
     const { data: members, mutate } = useMembers();
-    //const { data: quality } = useQualityList({ revalidateOnFocus: false });
     const toast = useToast();
 
     const optionsQuality = quality.map((item) => ({
@@ -304,6 +297,7 @@ const Creator: NextPage = ({ project, quality }) => {
     };
 
     const handleDraft = async (data: IProjectForm) => {
+        setSaveDraft(true);
         const dataProject = {
             gsg_project: {
                 title: proyectTitle,
@@ -346,6 +340,7 @@ const Creator: NextPage = ({ project, quality }) => {
             const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
 
             if (ok) {
+                setSaveDraft(false);
                 toast({
                     title: 'Borrador modificado',
                     description: 'El borrador se ha creado con éxito.',
@@ -355,6 +350,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     position: 'top-right',
                 });
             } else {
+                setSaveDraft(false);
                 toast({
                     title: 'Error al modificar el borrador',
                     description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
@@ -368,6 +364,7 @@ const Creator: NextPage = ({ project, quality }) => {
             const { ok } = await create({ project: dataProject });
 
             if (ok) {
+                setSaveDraft(false);
                 toast({
                     title: 'Borrador creado',
                     description: 'El borrador se ha creado con éxito.',
@@ -377,6 +374,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     position: 'top-right',
                 });
             } else {
+                setSaveDraft(false);
                 toast({
                     title: 'Error al crear el borrador',
                     description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
@@ -471,7 +469,14 @@ const Creator: NextPage = ({ project, quality }) => {
                         </Text>
                     </Stack>
                     <HStack spacing="8px" mt={{ base: '10px', md: 0 }}>
-                        <Button onClick={handleDraft} type="button" variant="outline" w="full">
+                        <Button
+                            onClick={handleDraft}
+                            type="button"
+                            variant="outline"
+                            w="full"
+                            isLoading={saveDraft}
+                            loadingText="Guardando proyecto"
+                        >
                             Guardar borrador
                         </Button>
 
@@ -500,9 +505,14 @@ const Creator: NextPage = ({ project, quality }) => {
 
             <Container maxWidth={'container.lg'} paddingTop={{ base: '17rem', sm: '10rem' }} paddingBottom="153px">
                 <VStack as="form" align="start" spacing="40px">
-                    <Text fontSize={'4xl'} fontWeight="bold">
-                        Descripción General
-                    </Text>
+                    <VStack align="start">
+                        <Text fontSize={'4xl'} fontWeight="bold">
+                            Descripción General
+                        </Text>
+                        <Text>
+                            Los campos con el signo <span style={{ color: '#4FD1C5' }}>*</span> son obligatorios
+                        </Text>
+                    </VStack>
                     <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
                         <FormLabel>
                             Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
@@ -531,7 +541,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             control={control}
                             render={({ field }) => (
                                 <Textarea
-                                    maxLength={700}
+                                    maxLength={1000}
                                     {...field}
                                     fontSize={{ base: 'sm', md: 'md' }}
                                     focusBorderColor={'primary.400'}
@@ -546,7 +556,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             fontWeight="medium"
                             color="gray.400"
                         >
-                            {proyectDescription?.length ?? 0}/700 caractéres
+                            {proyectDescription?.length ?? 0}/1000 caractéres
                         </Text>
 
                         <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
@@ -568,7 +578,8 @@ const Creator: NextPage = ({ project, quality }) => {
                     <FormControl id="main_image" isInvalid={!!errors.main_image}>
                         <FormLabel lineHeight="140%">
                             Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
-                            tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 600kB)
+                            tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 600kB){' '}
+                            <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
                         {baseImgMain ? (
                             <Stack position="relative" w="fit-content">
@@ -579,6 +590,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     objectFit="cover"
                                     objectPosition="center"
                                     rounded={3}
+                                    alt="cover"
                                 />
                                 <Button
                                     onClick={() => setBaseImgMain(undefined)}
@@ -1142,6 +1154,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 render={({ field }) => (
                                     <SlateEditor
                                         {...field}
+                                        initialValues={JSON.parse(project?.additional_info ?? '[]')}
                                         handleSaveField={handleEditField}
                                         bg="gray.50"
                                         color="gray.700"
@@ -1262,7 +1275,15 @@ const Creator: NextPage = ({ project, quality }) => {
                     </FormControl>
 
                     <HStack spacing="20px" mt={{ base: '10px', md: 0 }} w="full">
-                        <Button onClick={handleDraft} type="button" variant="outline" w="full" h="40px">
+                        <Button
+                            onClick={handleDraft}
+                            type="button"
+                            variant="outline"
+                            w="full"
+                            h="40px"
+                            isLoading={saveDraft}
+                            loadingText="Guardando proyecto"
+                        >
                             Guardar borrador
                         </Button>
 

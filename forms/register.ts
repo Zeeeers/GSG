@@ -22,7 +22,13 @@ export interface IRegisterTwoForm {
 const registerOneShape: ZodShape<IRegisterOneForm> = {
     userName: z.string().nonempty('Campo obligatorio'),
     userEmail: z.string().email('Correo electrónico inválido').nonempty('Campo obligatorio'),
-    password: z.string().nonempty('Campo obligatorio').min(8, 'Longitud mínima 8 caracteres'),
+    password: z
+        .string()
+        .nonempty('Campo obligatorio')
+        .regex(
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+            'Debe contener 8 carácteres, minúsculas, mayúsculas y al menos 1 número',
+        ),
     passwordConfirm: z.string().nonempty('Campo obligatorio'),
     legalRepPhone: z.string().optional(),
     termsCheck: z.boolean(),

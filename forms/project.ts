@@ -45,7 +45,7 @@ export interface IMember {
 // Schema
 const projectShape: ZodShape<IProjectForm> = {
     title: z.string().min(1, 'Campo obligatorio'),
-    description: z.string().min(1, 'Campo obligatorio'),
+    description: z.string().min(700, 'Mínimo 700 carácteres'),
     main_image: z.string().min(1, 'Campo obligatorio'),
     social_impact: z.string().optional(),
 
