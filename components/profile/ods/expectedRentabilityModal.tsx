@@ -9,13 +9,11 @@ import {
     ModalOverlay,
     Text,
     useCheckboxGroup,
-    useRadioGroup,
     useToast,
     VStack,
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
-import RadioCard from 'common/checkCardBox';
 import Rentability from 'components/projectDetail/formatText/rentability';
 import React, { useEffect, useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
@@ -117,7 +115,7 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
                                         fontWeight="normal"
                                         fontFamily="inter"
                                         fontSize="md"
-                                        _hover={{ bg: 'gray.600' }}
+                                        _hover={{ bg: { base: 'transparent', md: 'gray.600' } }}
                                         _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
                                         {...getCheckboxProps({ value: item })}
                                     >

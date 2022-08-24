@@ -120,7 +120,7 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
                                         fontWeight="normal"
                                         fontFamily="inter"
                                         fontSize="md"
-                                        _hover={{ bg: 'gray.600' }}
+                                        _hover={{ bg: { base: 'transparent', md: 'gray.600' } }}
                                         _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
                                         {...getCheckboxProps({ value: item })}
                                     >

@@ -129,8 +129,12 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, relo
                                 fontWeight="normal"
                                 fontFamily="inter"
                                 fontSize="md"
-                                _hover={{ bg: 'gray.600' }}
-                                _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
+                                _hover={{ bg: { base: 'transparent', md: 'gray.600' } }}
+                                _checked={{
+                                    bg: 'gray.600',
+                                    textColor: 'white',
+                                    _hover: { bg: 'gray.500' },
+                                }}
                                 {...getCheckboxProps({ value: item.id })}
                             >
                                 <Text>{`${item.id})  ${item.icon.name}`}</Text>

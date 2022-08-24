@@ -2,7 +2,6 @@
 import {
     Button,
     Heading,
-    HStack,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -10,18 +9,13 @@ import {
     ModalOverlay,
     Text,
     useCheckboxGroup,
-    useRadioGroup,
     useToast,
     VStack,
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
-import RadioCard from 'common/checkCardBox';
-import CheckCardBox from 'common/checkCardBox';
-import Stage from 'components/projectDetail/formatText/stage';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
 import React, { useEffect, useState } from 'react';
-import { useUser } from 'services/api/lib/user';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -124,7 +118,7 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
                                         fontWeight="normal"
                                         fontFamily="inter"
                                         fontSize="md"
-                                        _hover={{ bg: 'gray.600' }}
+                                        _hover={{ bg: { base: 'transparent', md: 'gray.600' } }}
                                         _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
                                         {...getCheckboxProps({ value: item })}
                                     >
