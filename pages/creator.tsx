@@ -1154,8 +1154,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 render={({ field }) => (
                                     <SlateEditor
                                         {...field}
-                                        initialValues={JSON.parse(project?.additional_info ?? '[]')}
                                         handleSaveField={handleEditField}
+                                        initialValues={
+                                            project?.additional_info !== ''
+                                                ? JSON.parse(project?.additional_info ?? '[]')
+                                                : undefined
+                                        }
                                         bg="gray.50"
                                         color="gray.700"
                                         h="fit-content"
