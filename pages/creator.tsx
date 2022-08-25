@@ -625,9 +625,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         const { validateTypes, getBase64 } = await import('services/images');
 
                                         if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            if (e.target?.files[0].size > 600000) {
+                                            if (e.target?.files[0].size > 2000000) {
                                                 toast({
-                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 600kB',
+                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
                                                     status: 'error',
                                                     duration: 9000,
                                                     isClosable: true,

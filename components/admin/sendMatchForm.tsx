@@ -1,9 +1,9 @@
 // Dependencies
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Stack, useToast } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IMatchData, sendMatchShape } from 'forms/sendMatch';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage, useToast } from '@chakra-ui/react';
-import { IMatchData, sendMatchShape } from 'forms/sendMatch';
 
 // Component
 const SendMatchForm: React.FC = () => {
@@ -65,7 +65,7 @@ const SendMatchForm: React.FC = () => {
                 mt="23px"
                 onSubmit={handleSubmit(handleSendMatch)}
             >
-                <FormControl id="email" isInvalid={!!errors.email}>
+                <FormControl w={{ base: 'full', lg: '537px' }} id="email" isInvalid={!!errors.email}>
                     <FormLabel fontSize="md">Correo electrónico</FormLabel>
 
                     <Input {...register('email')} size="md" />
@@ -73,7 +73,7 @@ const SendMatchForm: React.FC = () => {
                     <FormErrorMessage fontWeight={'semibold'}>{errors.email?.message}</FormErrorMessage>
                 </FormControl>
 
-                <Stack w="full">
+                <Stack w={{ base: 'full', lg: '537px' }}>
                     <Button
                         mt="17px"
                         type="submit"

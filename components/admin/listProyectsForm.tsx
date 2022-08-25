@@ -1,10 +1,27 @@
 //@ts-nocheck
-import { Badge, Button, HStack, Table, Tbody, Td, Th, Thead, Tr, Select, useToast, Link } from '@chakra-ui/react';
+import {
+    Badge,
+    Button,
+    Divider,
+    HStack,
+    Link,
+    Select,
+    Stack,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    useToast,
+    VStack,
+} from '@chakra-ui/react';
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
 
-const ListProyectsForm = () => {
+const ListProyectsForm = (props: Props) => {
     const [status, setStatus] = useState('');
     const { data, mutate } = useAdminGsg();
     const [deleteProduct, setDeleteProduct] = useState(false);
@@ -69,7 +86,7 @@ const ListProyectsForm = () => {
 
     return (
         <>
-            <Table size="lg" p={0}>
+            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0}>
                 <Thead>
                     <Tr>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
@@ -155,6 +172,103 @@ const ListProyectsForm = () => {
                     ))}
                 </Tbody>
             </Table>
+
+            <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
+                {data?.data?.projects?.map((project) => (
+                    <>
+                        <VStack w="full" align="flex-start" pt="30px" spacing="20px">
+                            <HStack w="full" align="center" justify="space-between">
+                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                    Fecha
+                                </Text>
+
+                                <Text>
+                                    {new Date(project.last_status_updated).toLocaleString('es-CL', {
+                                        day: 'numeric',
+                                        month: 'numeric',
+                                        year: 'numeric',
+                                    })}
+                                </Text>
+                            </HStack>
+
+                            <HStack w="full" align="center" justify="space-between">
+                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                    Nombre del proyecto
+                                </Text>
+
+                                <Text>{project.title}</Text>
+                            </HStack>
+
+                            <HStack w="full" align="center" justify="space-between">
+                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                    Empresa
+                                </Text>
+
+                                <Text>{project?.organization.name}</Text>
+                            </HStack>
+
+                            <HStack w="full" align="center" justify="space-between">
+                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                    Etapa
+                                </Text>
+
+                                <Badge
+                                    variant="solid"
+                                    fontFamily="inter"
+                                    colorScheme="green"
+                                    textAlign="center"
+                                    alignItems="center"
+                                    py="2px"
+                                    px="8px"
+                                    rounded="6px"
+                                    mt={0}
+                                >
+                                    {Stage(project.capital_stage)}
+                                </Badge>
+                            </HStack>
+
+                            <HStack w="full" align="center" justify="space-between">
+                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                    Status
+                                </Text>
+                                <Select
+                                    w="163px"
+                                    defaultValue={project.status}
+                                    onChange={(e) => handleStatus(project.id, e)}
+                                    variant="filled"
+                                    _focus={{ color: 'white' }}
+                                >
+                                    <option value="in-review">En revisión</option>
+                                    <option value="sketch">Borrador</option>
+                                    <option value="published">Publicado</option>
+                                    <option value="canceled">Finalizado</option>
+                                </Select>
+                            </HStack>
+
+                            <HStack w="full" align="center" justify="space-between">
+                                <Stack display={{ base: 'none', sm: 'block' }} w="full"></Stack>
+                                <HStack align="flex-start" pb="30px">
+                                    <Link href={`/projectDetail/${project.id}`} target="_blank">
+                                        <Button variant="solid">Ver proyecto</Button>
+                                    </Link>
+                                    <Button
+                                        type="button"
+                                        isLoading={deleteProduct}
+                                        loadingText="Eliminando producto"
+                                        onClick={() => handleDelete(project.id)}
+                                        variant="solid"
+                                        colorScheme="red"
+                                    >
+                                        Eliminar
+                                    </Button>
+                                </HStack>
+                            </HStack>
+                        </VStack>
+
+                        <Divider />
+                    </>
+                ))}
+            </VStack>
         </>
     );
 };

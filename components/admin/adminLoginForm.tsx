@@ -1,21 +1,16 @@
 // Dependencies
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Stack, useToast } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
 import InputPassword from 'common/inputPassword';
-import { loginSchema, ILoginData } from 'forms/login';
-
-// Dynamic
-const DangerAlert = dynamic(() => import('common/alerts/danger'));
+import { ILoginData, loginSchema } from 'forms/login';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 // Component
 const AdminLoginForm: React.FC = () => {
     // State
     const router = useRouter();
-    const [alert, setAlert] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const {
         register,
@@ -24,6 +19,8 @@ const AdminLoginForm: React.FC = () => {
     } = useForm<ILoginData>({
         resolver: zodResolver(loginSchema),
     });
+
+    const toast = useToast();
 
     // Handlers
     const handleLogin = async (data: ILoginData) => {
@@ -47,8 +44,15 @@ const AdminLoginForm: React.FC = () => {
             router.push((router.query.redirect_to as string) ?? '/admin/dashboard');
             setIsLoggingIn(false);
         } else {
+            toast({
+                title: 'No se ha podido iniciar sesión',
+                description: 'La contraseña o correo electrónico son incorrectos',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
             setIsLoggingIn(false);
-            setAlert(true);
         }
     };
 
@@ -78,8 +82,6 @@ const AdminLoginForm: React.FC = () => {
 
                 <FormErrorMessage fontWeight={'semibold'}>{errors.password?.message}</FormErrorMessage>
             </FormControl>
-
-            {alert && <DangerAlert message={'Correo electrónico o contraseña incorrecto'} />}
 
             <Stack w="full">
                 <Button
