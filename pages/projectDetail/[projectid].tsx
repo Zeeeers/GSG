@@ -1,21 +1,16 @@
 //@ts-nocheck
-import { Flex, Img, Text } from '@chakra-ui/react';
+import { Flex, Img } from '@chakra-ui/react';
 import Navbar from 'layouts/main/navbar';
-import HeaderHero from '../../components/projectDetail/hero';
 import { GetServerSideProps, NextPage } from 'next';
-import { useGsgProject, getGsgProject } from 'services/api/lib/gsg/gsg.calls';
-import { useRouter } from 'next/router';
-import { projects } from 'services/api/data';
-import { useOrganizationProject } from 'services/api/lib/organization/organization.calls';
-import { useUser } from 'services/api/lib/user';
 import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+import { getGsgProject } from 'services/api/lib/gsg/gsg.calls';
+import { useUser } from 'services/api/lib/user';
+import HeaderHero from '../../components/projectDetail/hero';
 
 const PublicChallenge: NextPage = ({ project, enriched }) => {
     const router = useRouter();
-
     const { data: userProfile } = useUser();
-
-    console.log(enriched);
 
     return (
         <>

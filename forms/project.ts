@@ -3,7 +3,6 @@ import { ZodShape } from 'services/validation';
 import { z } from 'zod';
 
 // Types
-
 type select = {
     value: string;
     label: string;
@@ -11,7 +10,7 @@ type select = {
 export interface IProjectForm {
     title: string;
     description: string;
-    main_image: string;
+    main_image?: string;
     social_impact?: string;
 
     more_info: select;
@@ -46,7 +45,7 @@ export interface IMember {
 const projectShape: ZodShape<IProjectForm> = {
     title: z.string().min(1, 'Campo obligatorio'),
     description: z.string().min(700, 'Mínimo 700 carácteres'),
-    main_image: z.string().min(1, 'Campo obligatorio'),
+    main_image: z.string().optional(),
     social_impact: z.string().optional(),
 
     more_info: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }),
@@ -73,7 +72,7 @@ const projectShape: ZodShape<IProjectForm> = {
 };
 
 const memberShape: ZodShape<IMember> = {
-    main_image: z.string(),
+    main_image: z.string().min(1, 'Campo obligatorio'),
     name: z.string().nonempty('Campo obligatorio'),
     position: z.string().nonempty('Campo obligatorio'),
     linkedin: z.string().optional(),

@@ -1,12 +1,12 @@
 // Dependencies
 import { Avatar, Flex, HStack, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
-import { useUser } from 'services/api/lib/user';
-import { useOrganization } from 'services/api/lib/organization';
-import InfoSkeleton from './infoForm.skeleton';
+import CropperModalBase64 from 'common/cropperModalBase64';
 import EditableTitle from 'common/editableTitle';
 import UploadButton from 'common/uploadButton';
 import { useState } from 'react';
-import CropperModal from 'common/cropperModal';
+import { useOrganization } from 'services/api/lib/organization';
+import { useUser } from 'services/api/lib/user';
+import InfoSkeleton from './infoForm.skeleton';
 
 // Components
 const InfoForm: React.FC = () => {
@@ -121,14 +121,28 @@ const InfoForm: React.FC = () => {
                                 const { validateTypes, getBase64 } = await import('services/images');
 
                                 if (e.target?.files && validateTypes(e.target.files[0])) {
-                                    const base = await getBase64(e.target.files![0]);
-                                    setBaseImg(base);
-                                    onCropperOpen();
+                                    if (e.target.files[0].size >= 2000000) {
+                                        toast({
+                                            title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
+                                            status: 'error',
+                                            duration: 9000,
+                                            isClosable: true,
+                                            position: 'top-right',
+                                        });
+                                    } else {
+                                        const base = await getBase64(e.target.files![0]);
+                                        setBaseImg(base);
+                                        onCropperOpen();
+                                    }
                                 }
                             }}
                         >
                             Subir imagen de perfil
                         </UploadButton>
+
+                        <Text textColor="gray.400" fontSize="16px">
+                            Tamaño máximo 2MB
+                        </Text>
                     </VStack>
 
                     <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0}>
@@ -151,7 +165,7 @@ const InfoForm: React.FC = () => {
             </Flex>
 
             {isCropperOpen && (
-                <CropperModal
+                <CropperModalBase64
                     title={'Recortar logo'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}

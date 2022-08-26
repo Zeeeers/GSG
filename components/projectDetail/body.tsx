@@ -5,9 +5,7 @@ import {
     Grid,
     GridItem,
     HStack,
-    Icon,
     Image,
-    Img,
     Link,
     Stack,
     Text,
@@ -15,22 +13,19 @@ import {
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
-import { GrDocumentPdf } from 'react-icons/gr';
-import { Gsg } from 'services/api/types/Gsg';
-import { HiHeart } from 'react-icons/hi';
-import { FaLinkedin } from 'react-icons/fa';
-import Messure from './formatText/messure';
-import ThirdParties from './formatText/thirdParties';
-import Objetive from './formatText/objective';
-import Stage from './formatText/stage';
-import Garantee from './formatText/garantee';
-import Rentability from './formatText/rentability';
-import FinanceGoal from './formatText/financeGoal';
-import Time from './formatText/time';
-import { info } from 'console';
-import { useEffect, useState } from 'react';
-import StageCapital from './formatText/stageCapital';
 import SlateDisplay from 'common/slate/SlateDisplay';
+import { useEffect, useState } from 'react';
+import { FaLinkedin } from 'react-icons/fa';
+import { GrDocumentPdf } from 'react-icons/gr';
+import FinanceGoal from './formatText/financeGoal';
+import Garantee from './formatText/garantee';
+import Messure from './formatText/messure';
+import Objetive from './formatText/objective';
+import Rentability from './formatText/rentability';
+import Stage from './formatText/stage';
+import StageCapital from './formatText/stageCapital';
+import ThirdParties from './formatText/thirdParties';
+import Time from './formatText/time';
 
 const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
     const { impact, description_finance, other } = ref?.current;
@@ -294,7 +289,13 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     <Text as="p" fontSize="3xl">
                         Información complementaria
                     </Text>
-                    <SlateDisplay value={textEnriched} />
+                    {textEnriched?.length !== 0 ? (
+                        <Stack pt="15px">
+                            <SlateDisplay value={textEnriched} />
+                        </Stack>
+                    ) : (
+                        'Sin información'
+                    )}
                 </VStack>
 
                 {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (

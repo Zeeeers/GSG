@@ -1,26 +1,27 @@
 // Dependencies
 //@ts-nocheck
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    VStack,
-    Input,
     Button,
+    FormControl,
+    FormErrorMessage,
+    FormHelperText,
+    FormLabel,
+    Input,
+    Stack,
     useDisclosure,
     useToast,
-    Stack,
-    FormHelperText,
+    VStack,
 } from '@chakra-ui/react';
-import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
-import { useRegisterStore } from 'stores/register';
+import { zodResolver } from '@hookform/resolvers/zod';
+import CropperModalBase64 from 'common/cropperModalBase64';
 import UploadButton from 'common/uploadButton';
+import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
+import dynamic from 'next/dynamic';
 import router from 'next/router';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRegisterStore } from 'stores/register';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModal'));
@@ -145,16 +146,26 @@ const RegisterStepTwoForm: React.FC = () => {
                                         const { validateTypes, getBase64 } = await import('services/images');
 
                                         if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            const base = await getBase64(e.target.files![0]);
-                                            setBaseImg(base);
-                                            onCropperOpen();
+                                            if (e.target?.files[0].size >= 2000000) {
+                                                toast({
+                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            } else {
+                                                const base = await getBase64(e.target.files![0]);
+                                                setBaseImg(base);
+                                                onCropperOpen();
+                                            }
                                         }
                                     }}
                                 >
                                     Subir logo
                                 </UploadButton>
 
-                                <FormHelperText color="gray.300">Tamaño máximo 600kB</FormHelperText>
+                                <FormHelperText color="gray.300">Tamaño máximo 2MB</FormHelperText>
 
                                 <Input
                                     visibility="hidden"
@@ -219,7 +230,7 @@ const RegisterStepTwoForm: React.FC = () => {
             </Stack>
 
             {isCropperOpen && (
-                <CropperModal
+                <CropperModalBase64
                     title={'Recortar logo'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}

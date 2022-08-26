@@ -3,9 +3,11 @@ import {
     Button,
     FormControl,
     FormErrorMessage,
+    FormHelperText,
     FormLabel,
     Input,
     Stack,
+    Tooltip,
     useDisclosure,
     useToast,
     VStack,
@@ -38,7 +40,7 @@ const AddMembersForm = ({ reload, closeModal }) => {
         reset,
         watch,
         setValue,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
         handleSubmit,
     } = useForm<IMember>({
         defaultValues: {
@@ -166,14 +168,18 @@ const AddMembersForm = ({ reload, closeModal }) => {
                                 Subir imagen de perfil
                             </UploadButton>
 
-                            <FormErrorMessage
-                                textColor="red.400"
-                                fontFamily="inter"
-                                fontSize="16px"
-                                fontWeight={'medium'}
-                            >
-                                {errors.main_image?.message}
-                            </FormErrorMessage>
+                            <FormHelperText>Tamaño máximo 2MB</FormHelperText>
+
+                            <Stack w="full" align="start">
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors.main_image?.message}
+                                </FormErrorMessage>
+                            </Stack>
                         </VStack>
                     </VStack>
                 </FormControl>
@@ -199,10 +205,24 @@ const AddMembersForm = ({ reload, closeModal }) => {
                     <FormLabel>Linkedin (Opcional)</FormLabel>
                     <Input {...register('linkedin')} />
                 </FormControl>
-
-                <Button isLoading={createMember} loadingText="Creando equipo" type="submit" variant="solid">
-                    Guardar cambios
-                </Button>
+                <Tooltip
+                    hasArrow
+                    label="Hay campos sin completar"
+                    shouldWrapChildren
+                    bg="red.500"
+                    isDisabled={isSubmitted ? isValid : true}
+                >
+                    <Button
+                        disabled={isSubmitted ? !isValid : false}
+                        isLoading={createMember}
+                        loadingText="Creando equipo"
+                        type="submit"
+                        variant="solid"
+                        w="full"
+                    >
+                        Guardar cambios
+                    </Button>
+                </Tooltip>
             </Stack>
             {isCropperOpen && (
                 <CropperModalBase64

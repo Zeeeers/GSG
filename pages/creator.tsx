@@ -3,6 +3,7 @@
 import {
     Avatar,
     Button,
+    Checkbox,
     Container,
     Divider,
     FormControl,
@@ -79,6 +80,9 @@ const Creator: NextPage = ({ project, quality }) => {
     const [contenido, setContenido] = useState<Descendant[]>();
     const [selectedOptions, setSelectedOptions] = useState();
     const [isOtherParties, setIsOtherParties] = useState(false);
+
+    const [isCheckCapital, setIsCheckCapital] = useState(false);
+    const [isCheckDeuda, setIsCheckDeuda] = useState(false);
 
     const getNameFile = (url) => {
         return url(url.indexOf('/') + 2).split('/');
@@ -167,13 +171,11 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'series-b', label: 'Serie B' },
         { value: 'series-c', label: 'Serie C' },
         { value: 'series-d', label: 'Serie D' },
-        { value: 'other', label: 'No busco financiamiento de capital social' },
     ];
 
     const optionsDeuda = [
         { value: 'senior-debt', label: 'Deuda senior' },
         { value: 'mezzanine-debt', label: 'Deuda mezzanine' },
-        { value: 'other', label: 'No busco financiamiento de deuda' },
     ];
 
     const optionsObject = [
@@ -245,7 +247,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: data.time_lapse?.value,
                 investment_types: data.investment_types?.value,
                 better_project: data.better_project,
-                additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
+                additional_info: JSON.stringify(contenido),
                 business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
                 debt: data.debt?.value,
@@ -317,7 +319,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: watch('time_lapse')?.value,
                 business_model: watch('business_model'),
                 investment_objective: watch('investment_objective')?.value,
-                additional_info: JSON.stringify(contenido?.filter((item) => item.type !== 'image')),
+                additional_info: JSON.stringify(contenido),
                 additional_document: baseAdditional?.base64,
                 better_project: watch('better_project'),
                 status: 'sketch',
@@ -436,8 +438,15 @@ const Creator: NextPage = ({ project, quality }) => {
     }, []);
 
     useEffect(() => {
-        proyectCapital && proyectCapital?.value !== 'other' ? setIsStage(true) : setIsStage(false);
-    }, [proyectCapital]);
+        if (project?.capital_stage) {
+            setIsCheckCapital(true);
+        }
+
+        if (project?.debt) {
+            setIsCheckDeuda(true);
+        }
+    }, [project?.debt, project?.capital_stage]);
+
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
@@ -578,7 +587,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     <FormControl id="main_image" isInvalid={!!errors.main_image}>
                         <FormLabel lineHeight="140%">
                             Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
-                            tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 600kB){' '}
+                            tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 2MB){' '}
                             <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
                         {baseImgMain ? (
@@ -625,7 +634,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         const { validateTypes, getBase64 } = await import('services/images');
 
                                         if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            if (e.target?.files[0].size > 2000000) {
+                                            if (e.target?.files[0].size >= 2000000) {
                                                 toast({
                                                     title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
                                                     status: 'error',
@@ -737,7 +746,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <FormControl id="social_impact">
                             <FormLabel>
                                 Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
-                                valíde la medición de resultados. (opcional) (Tamaño máximo 600kB)
+                                valíde la medición de resultados. (Tamaño máximo 2MB) (opcional)
                             </FormLabel>
 
                             {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
@@ -782,9 +791,19 @@ const Creator: NextPage = ({ project, quality }) => {
                                             const { getBase64, isPDF } = await import('services/images');
 
                                             if (e.target?.files && isPDF(e.target.files[0])) {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setValue('social_impact', e.target.files[0]);
-                                                setBaseSocialPdf({ base64: base, file: e.target.files[0] });
+                                                if (e.target?.files[0].size >= 2000000) {
+                                                    toast({
+                                                        title: 'El archivo es muy grande, porfavor, suba una PDF menor o igual a 2MB',
+                                                        status: 'error',
+                                                        duration: 9000,
+                                                        isClosable: true,
+                                                        position: 'top-right',
+                                                    });
+                                                } else {
+                                                    const base = await getBase64(e.target.files![0]);
+                                                    setValue('social_impact', e.target.files[0]);
+                                                    setBaseSocialPdf({ base64: base, file: e.target.files[0] });
+                                                }
                                             } else {
                                                 toast({
                                                     title: 'Archivo inválido.',
@@ -830,12 +849,27 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <Text fontSize={'2xl'} fontWeight="medium">
                                     ¿Qué tipo de financiamiento buscas?
                                 </Text>
-                                <Text>
-                                    Selecciona al menos 1 <span style={{ color: '#4FD1C5' }}>*</span>
-                                </Text>
+                                <Text textColor="gray.300">Puedes elegir seleccionar capital, deuda o ambos</Text>
                             </VStack>
-                            <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                                <FormControl id="capital_stage" w={{ base: '100%', md: '47%' }}>
+
+                            <HStack spacing="60px" pt="20px" pb="20px">
+                                <Checkbox
+                                    isChecked={isCheckCapital}
+                                    onChange={(e) => setIsCheckCapital(e.target.checked)}
+                                >
+                                    Capital
+                                </Checkbox>
+                                <Checkbox isChecked={isCheckDeuda} onChange={(e) => setIsCheckDeuda(e.target.checked)}>
+                                    Deuda
+                                </Checkbox>
+                            </HStack>
+                        </VStack>
+                        {isCheckCapital && (
+                            <VStack w={'full'} align="flex-start" spacing="40px">
+                                <FormControl id="capital_stage" w={{ base: '100%', md: '50%' }}>
+                                    <FormLabel>
+                                        Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
+                                    </FormLabel>
                                     <Controller
                                         name="capital_stage"
                                         control={control}
@@ -859,151 +893,125 @@ const Creator: NextPage = ({ project, quality }) => {
                                         {errors.capital_stage?.message}
                                     </FormErrorMessage>
                                 </FormControl>
-                                <FormControl id="debt" w={{ base: '100%', md: '47%' }}>
+
+                                <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
+                                    <FormLabel>
+                                        ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
+                                    </FormLabel>
+
                                     <Controller
-                                        name="debt"
+                                        name="investment_types"
                                         control={control}
                                         render={({ field }) => (
-                                            <CharkaSelect
-                                                {...field}
-                                                useBasicStyles
-                                                options={optionsDeuda}
-                                                defaultValue={
-                                                    project?.debt
-                                                        ? {
-                                                              label: Stage(project?.debt),
-                                                              value: project?.debt,
-                                                          }
-                                                        : [optionsDeuda[2]]
-                                                }
-                                            />
+                                            <CharkaSelect {...field} useBasicStyles options={optionsInvestor} />
                                         )}
                                     />
+                                    {errors.investment_types?.message}
                                 </FormControl>
-                            </Stack>
-                        </VStack>
 
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} w="full">
-                            <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
+                                <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
+                                    <FormLabel lineHeight="140%">
+                                        ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
+                                        <span style={{ color: '#4FD1C5' }}>*</span>
+                                    </FormLabel>
+                                    <Controller
+                                        name="expected_rentability"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <CharkaSelect {...field} useBasicStyles options={optionsRenta} />
+                                        )}
+                                    />
+                                    <FormErrorMessage fontWeight={'semibold'}>
+                                        {errors.expected_rentability?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                            </VStack>
+                        )}
+
+                        {isCheckDeuda && (
+                            <FormControl id="debt" w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>
-                                    ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-
-                                <Controller
-                                    name="investment_types"
-                                    control={control}
-                                    render={({ field }) => {
-                                        if (isStage) {
-                                            return <CharkaSelect {...field} useBasicStyles options={optionsInvestor} />;
-                                        } else {
-                                            return (
-                                                <CharkaSelect
-                                                    {...field}
-                                                    useBasicStyles
-                                                    options={optionsInvestor}
-                                                    isDisabled
-                                                />
-                                            );
-                                        }
-                                    }}
-                                />
-                                {errors.investment_types?.message}
-                            </FormControl>
-
-                            <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel lineHeight="140%">
-                                    ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                    Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
-                                    name="expected_rentability"
-                                    control={control}
-                                    render={({ field }) => {
-                                        if (isStage) {
-                                            return <CharkaSelect {...field} useBasicStyles options={optionsRenta} />;
-                                        } else {
-                                            return (
-                                                <CharkaSelect
-                                                    {...field}
-                                                    useBasicStyles
-                                                    options={optionsRenta}
-                                                    isDisabled
-                                                />
-                                            );
-                                        }
-                                    }}
-                                />
-                                <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.expected_rentability?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </Stack>
-
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
-                            <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel lineHeight="140%">
-                                    ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="guarantee"
+                                    name="debt"
                                     control={control}
                                     render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsGuarantee} />
+                                        <CharkaSelect
+                                            {...field}
+                                            useBasicStyles
+                                            options={optionsDeuda}
+                                            defaultValue={
+                                                project?.debt
+                                                    ? {
+                                                          label: Stage(project?.debt),
+                                                          value: project?.debt,
+                                                      }
+                                                    : [optionsDeuda[2]]
+                                            }
+                                        />
                                     )}
                                 />
-                                <FormErrorMessage fontWeight={'semibold'}>{errors.guarantee?.message}</FormErrorMessage>
                             </FormControl>
+                        )}
 
-                            <FormControl id="stage" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
-                                    ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="stage"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsStage} />
-                                    )}
-                                />
-                                <FormErrorMessage fontWeight={'semibold'}>{errors.stage?.message}</FormErrorMessage>
-                            </FormControl>
-                        </Stack>
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="end" w="full">
-                            <FormControl id="finance_goal" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel lineHeight="140%">
-                                    Por favor selecciona el rango del monto de aporte aproximado que estás buscando
-                                    (CLP) <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="finance_goal"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsFinance} />
-                                    )}
-                                />
-                                <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.finance_goal?.message}
-                                </FormErrorMessage>
-                            </FormControl>
+                        <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
+                            <FormLabel lineHeight="140%">
+                                ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="guarantee"
+                                control={control}
+                                render={({ field }) => (
+                                    <CharkaSelect {...field} useBasicStyles options={optionsGuarantee} />
+                                )}
+                            />
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.guarantee?.message}</FormErrorMessage>
+                        </FormControl>
 
-                            <FormControl id="time_lapse" w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
-                                    Selecciona los plazos de inversión que buscas{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="time_lapse"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsTime} />
-                                    )}
-                                />
-                                <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.time_lapse?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </Stack>
+                        <FormControl id="stage" w={{ base: '100%', md: '50%' }}>
+                            <FormLabel>
+                                ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="stage"
+                                control={control}
+                                render={({ field }) => (
+                                    <CharkaSelect {...field} useBasicStyles options={optionsStage} />
+                                )}
+                            />
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.stage?.message}</FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl id="finance_goal" w={{ base: '100%', md: '50%' }}>
+                            <FormLabel lineHeight="140%">
+                                Por favor selecciona el rango del monto de aporte aproximado que estás buscando (CLP){' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="finance_goal"
+                                control={control}
+                                render={({ field }) => (
+                                    <CharkaSelect {...field} useBasicStyles options={optionsFinance} />
+                                )}
+                            />
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.finance_goal?.message}</FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl id="time_lapse" w={{ base: '100%', md: '50%' }}>
+                            <FormLabel>
+                                Selecciona los plazos de inversión que buscas{' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="time_lapse"
+                                control={control}
+                                render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsTime} />}
+                            />
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.time_lapse?.message}</FormErrorMessage>
+                        </FormControl>
+
                         <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
                             <FormLabel>
                                 Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
@@ -1173,7 +1181,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     <FormControl id="additional_document">
                         <FormLabel>
                             ¿Tienes algún archivo (PDF) que consideres necesario subir como información complementaria
-                            para que sea vista por el inversionista? (Opcional) (Tamaño máximo 600kB)
+                            para que sea vista por el inversionista? (Tamaño máximo 2MB) (Opcional)
                         </FormLabel>
 
                         {baseAdditional !== 'https://api.gsg-match.com/cuadrado.png' && baseAdditional !== undefined ? (
@@ -1211,28 +1219,28 @@ const Creator: NextPage = ({ project, quality }) => {
                                         const { getBase64, isPDF } = await import('services/images');
 
                                         if (e.target?.files && isPDF(e.target.files[0])) {
-                                            const base = await getBase64(e.target.files![0]);
-                                            setBaseAdditional({ base64: base, file: e.target.files[0] });
-                                        } else {
-                                            if (e.target?.files[0].size > 600000) {
+                                            if (e.target?.files[0].size >= 2000000) {
                                                 toast({
-                                                    title: 'El PDF es muy grande, porfavor, suba una PDF menor o igual a 600kB',
+                                                    title: 'El archivo es muy grande, porfavor, suba una PDF menor o igual a 2MB',
                                                     status: 'error',
                                                     duration: 9000,
                                                     isClosable: true,
                                                     position: 'top-right',
                                                 });
                                             } else {
-                                                toast({
-                                                    title: 'Archivo inválido.',
-                                                    description:
-                                                        'El archivo subido no es correcto, porfavor, carge un PDF válido.',
-                                                    status: 'error',
-                                                    duration: 9000,
-                                                    isClosable: true,
-                                                    position: 'top-right',
-                                                });
+                                                const base = await getBase64(e.target.files![0]);
+                                                setBaseAdditional({ base64: base, file: e.target.files[0] });
                                             }
+                                        } else {
+                                            toast({
+                                                title: 'Archivo inválido.',
+                                                description:
+                                                    'El archivo subido no es correcto, porfavor, carge un PDF válido.',
+                                                status: 'error',
+                                                duration: 9000,
+                                                isClosable: true,
+                                                position: 'top-right',
+                                            });
                                         }
                                     }}
                                 >
