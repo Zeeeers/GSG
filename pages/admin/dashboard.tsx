@@ -8,7 +8,6 @@ import {
     DrawerHeader,
     DrawerOverlay,
     HStack,
-    Icon,
     Input,
     Menu,
     MenuButton,
@@ -33,12 +32,16 @@ import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import router from 'next/router';
 import React, { useState } from 'react';
-import { FaBars, FaSearch } from 'react-icons/fa';
+import { FaBars } from 'react-icons/fa';
 
 const Panel: NextPage = () => {
     const [page, setPage] = useState(0);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [filters, setFilters] = useState({
+        title: '',
+        status: '',
+    });
 
     const handleLogOut = async () => {
         const auth = (await import('@clyc/next-route-manager/libs/AuthManager')).default;
@@ -258,7 +261,17 @@ const Panel: NextPage = () => {
                                     </Text>
 
                                     <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
-                                        <Select w="fit-content" variant="filled" _focus={{ color: 'white' }} h="40px">
+                                        <Select
+                                            onChange={(e) =>
+                                                setFilters({
+                                                    ...filters,
+                                                    status: e.target.value !== 'select' ? e.target.value : '',
+                                                })
+                                            }
+                                            w="fit-content"
+                                            variant="outline"
+                                            h="40px"
+                                        >
                                             <option value="select">Filtrar por estado</option>
                                             <option value="in-review">En revisión</option>
                                             <option value="sketch">Borrador</option>
@@ -272,28 +285,12 @@ const Panel: NextPage = () => {
                                                 h="40px"
                                                 variant="outline"
                                                 placeholder="Buscar"
+                                                onChange={(e) => setFilters({ ...filters, title: e.target.value })}
                                             />
-
-                                            <Button
-                                                w="fit-content"
-                                                variant="solid"
-                                                bg="gray.600"
-                                                _focus={{ outline: 'none' }}
-                                                aria-label="Buscar"
-                                                textColor="white"
-                                                py="6px"
-                                                px="12px"
-                                                h="40px"
-                                            >
-                                                <HStack w="fit-content" py="6px" px="12px" spacing="10px">
-                                                    <Icon as={FaSearch} />
-                                                    <Text>Buscar</Text>
-                                                </HStack>
-                                            </Button>
                                         </HStack>
                                     </Stack>
                                 </Stack>
-                                <ListProyectsForm />
+                                <ListProyectsForm filters={filters} />
                             </VStack>
                         </TabPanel>
 

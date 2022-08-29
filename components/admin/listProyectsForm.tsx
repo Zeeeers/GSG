@@ -27,6 +27,7 @@ const ListProyectsForm = (props: Props) => {
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
 
+    console.log(props.filters);
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
         const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e?.target?.value } });
@@ -108,68 +109,73 @@ const ListProyectsForm = (props: Props) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {data?.data?.projects?.map((proyect, i) => (
-                        <Tr key={i}>
-                            <Td fontFamily="inter" pl={0} py="30px" w="13%">
-                                {new Date(proyect.last_status_updated).toLocaleString('es-CL', {
-                                    day: 'numeric',
-                                    month: 'numeric',
-                                    year: 'numeric',
-                                })}
-                            </Td>
-                            <Td fontFamily="inter" pl={0} py="30px">
-                                {proyect.title}
-                            </Td>
-                            <Td fontFamily="inter" pl={0}>
-                                {proyect?.organization.name}
-                            </Td>
-                            <Td fontFamily="inter" pl={0}>
-                                <Badge
-                                    variant="solid"
-                                    fontFamily="inter"
-                                    colorScheme="green"
-                                    textAlign="center"
-                                    alignItems="center"
-                                    py="2px"
-                                    px="8px"
-                                    rounded="6px"
-                                    mt={0}
-                                >
-                                    {Stage(proyect.capital_stage)}
-                                </Badge>
-                            </Td>
-                            <Td fontFamily="inter" pl={0}>
-                                <Select
-                                    defaultValue={proyect.status}
-                                    onChange={(e) => handleStatus(proyect.id, e)}
-                                    variant="filled"
-                                    _focus={{ color: 'white' }}
-                                >
-                                    <option value="in-review">En revisión</option>
-                                    <option value="sketch">Borrador</option>
-                                    <option value="published">Publicado</option>
-                                    <option value="canceled">Finalizado</option>
-                                </Select>
-                            </Td>
-                            <Td fontFamily="inter" pl={0}>
-                                <HStack spacing="20px">
-                                    <Link href={`/projectDetail/${proyect.id}`} target="_blank">
-                                        <Button variant="solid">Ver proyecto</Button>
-                                    </Link>
-                                    <Button
-                                        type="button"
-                                        isLoading={deleteProduct}
-                                        loadingText="Eliminando producto"
-                                        onClick={() => handleDelete(proyect.id)}
+                    {data?.data?.projects
+                        ?.filter((project) =>
+                            project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''),
+                        )
+                        .filter((project) => project.status.includes(props.filters?.status ?? ''))
+                        .map((proyect, i) => (
+                            <Tr key={i}>
+                                <Td fontFamily="inter" pl={0} py="30px" w="13%">
+                                    {new Date(proyect.last_status_updated).toLocaleString('es-CL', {
+                                        day: 'numeric',
+                                        month: 'numeric',
+                                        year: 'numeric',
+                                    })}
+                                </Td>
+                                <Td fontFamily="inter" pl={0} py="30px">
+                                    {proyect.title}
+                                </Td>
+                                <Td fontFamily="inter" pl={0}>
+                                    {proyect?.organization.name}
+                                </Td>
+                                <Td fontFamily="inter" pl={0}>
+                                    <Badge
                                         variant="solid"
-                                        colorScheme="red"
+                                        fontFamily="inter"
+                                        colorScheme="green"
+                                        textAlign="center"
+                                        alignItems="center"
+                                        py="2px"
+                                        px="8px"
+                                        rounded="6px"
+                                        mt={0}
                                     >
-                                        Eliminar
-                                    </Button>
-                                </HStack>
-                            </Td>
-                        </Tr>
-                    ))}
+                                        {Stage(proyect.capital_stage)}
+                                    </Badge>
+                                </Td>
+                                <Td fontFamily="inter" pl={0}>
+                                    <Select
+                                        defaultValue={proyect.status}
+                                        onChange={(e) => handleStatus(proyect.id, e)}
+                                        variant="outline"
+                                        _focus={{ color: 'white' }}
+                                    >
+                                        <option value="in-review">En revisión</option>
+                                        <option value="sketch">Borrador</option>
+                                        <option value="published">Publicado</option>
+                                        <option value="canceled">Finalizado</option>
+                                    </Select>
+                                </Td>
+                                <Td fontFamily="inter" pl={0}>
+                                    <HStack spacing="20px">
+                                        <Link href={`/projectDetail/${proyect.id}`} target="_blank">
+                                            <Button variant="solid">Ver proyecto</Button>
+                                        </Link>
+                                        <Button
+                                            type="button"
+                                            isLoading={deleteProduct}
+                                            loadingText="Eliminando producto"
+                                            onClick={() => handleDelete(proyect.id)}
+                                            variant="solid"
+                                            colorScheme="red"
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    </HStack>
+                                </Td>
+                            </Tr>
+                        ))}
                 </Tbody>
             </Table>
 

@@ -1,7 +1,7 @@
 const parts = ['item', 'command', 'list', 'button', 'groupTitle', 'divider'];
 
 const baseStyleList = {
-    bg: `gray.800`,
+    bg: `gray.700`,
     boxShadow: `sm`,
     color: 'inherit',
     minW: '168px',
