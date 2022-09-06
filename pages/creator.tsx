@@ -138,6 +138,8 @@ const Creator: NextPage = ({ project, quality }) => {
         setContenido(values);
     };
 
+    console.log(contenido);
+
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
         { value: 'prize-org', label: 'Premio o reconocimiento de empresa u organización' },
@@ -709,7 +711,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <FormErrorMessage fontWeight={'semibold'}>{errors.qualities?.message}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl id="third_parties" w={{ base: '100%', md: '50%' }}>
+                    <FormControl id="third_parties" isInvalid={!!errors.third_parties} w={{ base: '100%', md: '50%' }}>
                         <FormLabel lineHeight="140%">
                             Selecciona el respaldo con el que cuentas de una tercera organización{' '}
                             <span style={{ color: '#4FD1C5' }}>*</span>
@@ -727,7 +729,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormErrorMessage>
                     </FormControl>
 
-                    <FormControl id="more_info" w={{ base: '100%', md: '50%' }}>
+                    <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '50%' }}>
                         <FormLabel lineHeight="140%">
                             Actualmente tienes información sobre cómo mides tus resultados de impacto{' '}
                             <span style={{ color: '#4FD1C5' }}>*</span>
@@ -852,17 +854,25 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <Text textColor="gray.300">Puedes elegir seleccionar capital, deuda o ambos</Text>
                             </VStack>
 
-                            <HStack spacing="60px" pt="20px" pb="20px">
-                                <Checkbox
-                                    isChecked={isCheckCapital}
-                                    onChange={(e) => setIsCheckCapital(e.target.checked)}
-                                >
-                                    Capital
-                                </Checkbox>
-                                <Checkbox isChecked={isCheckDeuda} onChange={(e) => setIsCheckDeuda(e.target.checked)}>
-                                    Deuda
-                                </Checkbox>
-                            </HStack>
+                            <VStack>
+                                <HStack spacing="60px" pt="20px">
+                                    <Checkbox
+                                        isChecked={isCheckCapital}
+                                        onChange={(e) => setIsCheckCapital(e.target.checked)}
+                                    >
+                                        Capital
+                                    </Checkbox>
+                                    <Checkbox
+                                        isChecked={isCheckDeuda}
+                                        onChange={(e) => setIsCheckDeuda(e.target.checked)}
+                                    >
+                                        Deuda
+                                    </Checkbox>
+                                </HStack>
+                                <Text color="red.400" fontSize="18px" fontWeight="semibold">
+                                    {!isCheckCapital && !isCheckDeuda && 'Seleccione almenos 1 opción'}
+                                </Text>
+                            </VStack>
                         </VStack>
                         {isCheckCapital && (
                             <VStack w={'full'} align="flex-start" spacing="40px">
@@ -955,7 +965,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormControl>
                         )}
 
-                        <FormControl id="guarantee" w={{ base: '100%', md: '50%' }}>
+                        <FormControl id="guarantee" isInvalid={!!errors.guarantee} w={{ base: '100%', md: '50%' }}>
                             <FormLabel lineHeight="140%">
                                 ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
@@ -967,10 +977,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <CharkaSelect {...field} useBasicStyles options={optionsGuarantee} />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.guarantee?.message}</FormErrorMessage>
+                            <FormErrorMessage fontWeight={'semibold'}>
+                                {errors?.guarantee?.value?.message}
+                            </FormErrorMessage>
                         </FormControl>
 
-                        <FormControl id="stage" w={{ base: '100%', md: '50%' }}>
+                        <FormControl id="stage" isInvalid={!!errors.stage} w={{ base: '100%', md: '50%' }}>
                             <FormLabel>
                                 ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
@@ -981,10 +993,14 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <CharkaSelect {...field} useBasicStyles options={optionsStage} />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.stage?.message}</FormErrorMessage>
+                            <FormErrorMessage fontWeight={'semibold'}>{errors?.stage?.value?.message}</FormErrorMessage>
                         </FormControl>
 
-                        <FormControl id="finance_goal" w={{ base: '100%', md: '50%' }}>
+                        <FormControl
+                            id="finance_goal"
+                            isInvalid={!!errors.finance_goal}
+                            w={{ base: '100%', md: '50%' }}
+                        >
                             <FormLabel lineHeight="140%">
                                 Por favor selecciona el rango del monto de aporte aproximado que estás buscando (CLP){' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
@@ -996,10 +1012,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <CharkaSelect {...field} useBasicStyles options={optionsFinance} />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.finance_goal?.message}</FormErrorMessage>
+                            <FormErrorMessage fontWeight={'semibold'}>
+                                {errors?.finance_goal?.value?.message}
+                            </FormErrorMessage>
                         </FormControl>
 
-                        <FormControl id="time_lapse" w={{ base: '100%', md: '50%' }}>
+                        <FormControl id="time_lapse" isInvalid={!!errors.time_lapse} w={{ base: '100%', md: '50%' }}>
                             <FormLabel>
                                 Selecciona los plazos de inversión que buscas{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
@@ -1009,7 +1027,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                 control={control}
                                 render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsTime} />}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors.time_lapse?.message}</FormErrorMessage>
+                            <FormErrorMessage fontWeight={'semibold'}>
+                                {errors?.time_lapse?.value?.message}
+                            </FormErrorMessage>
                         </FormControl>
 
                         <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
@@ -1054,7 +1074,11 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormErrorMessage>
                         </FormControl>
                         <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="baseline" w="full">
-                            <FormControl id="investment_objective" w={{ base: '100%', md: '50%' }}>
+                            <FormControl
+                                id="investment_objective"
+                                isInvalid={!!errors.investment_objective}
+                                w={{ base: '100%', md: '50%' }}
+                            >
                                 <FormLabel>
                                     ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
@@ -1068,7 +1092,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 />
                                 {proyectObject?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
                                 <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.investment_objective?.message}
+                                    {errors?.investment_objective?.value?.message}
                                 </FormErrorMessage>
                             </FormControl>
                         </Stack>
@@ -1164,7 +1188,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         {...field}
                                         handleSaveField={handleEditField}
                                         initialValues={
-                                            project?.additional_info !== ''
+                                            (project?.additional_info ?? '') !== ''
                                                 ? JSON.parse(project?.additional_info ?? '[]')
                                                 : undefined
                                         }

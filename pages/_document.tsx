@@ -1,5 +1,5 @@
 // Dependencies
-import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
+import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
 
 // Document Component
 class CustomDocument extends Document {

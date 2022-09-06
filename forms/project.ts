@@ -4,8 +4,8 @@ import { z } from 'zod';
 
 // Types
 type select = {
-    value: string;
-    label: string;
+    value?: string;
+    label?: string;
 };
 export interface IProjectForm {
     title: string;
@@ -20,8 +20,8 @@ export interface IProjectForm {
     capital_stage?: select;
     guarantee?: select;
     expected_rentability?: select;
-    finance_goal?: select;
-    time_lapse?: select;
+    finance_goal: select;
+    time_lapse: select;
     qualities?: select;
 
     investment_types?: select;
@@ -44,31 +44,31 @@ export interface IMember {
 // Schema
 const projectShape: ZodShape<IProjectForm> = {
     title: z.string().min(1, 'Campo obligatorio'),
-    description: z.string().min(700, 'Mínimo 700 carácteres'),
+    description: z.string().nonempty('Campo obligatorio').min(700, 'Mínimo 700 carácteres'),
     main_image: z.string().optional(),
     social_impact: z.string().optional(),
 
-    more_info: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }),
-    third_parties: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }),
-    stage: z.object({ value: z.string().min(1, 'Campo obligatorio'), label: z.string() }).optional(),
+    more_info: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
+    third_parties: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
+    stage: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
     investment_objective: z.object({ value: z.string(), label: z.string() }).optional(),
     capital_stage: z.object({ value: z.string(), label: z.string() }).optional(),
 
     guarantee: z.object({ value: z.string(), label: z.string() }).optional(),
-    expected_rentability: z.object({ value: z.string(), label: z.string() }).optional(),
-    finance_goal: z.object({ value: z.string(), label: z.string() }).optional(),
-    time_lapse: z.object({ value: z.string(), label: z.string() }).optional(),
+    expected_rentability: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
+    finance_goal: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
+    time_lapse: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
 
-    investment_types: z.object({ value: z.string(), label: z.string() }).optional(),
-    business_model: z.string().min(1, 'Campo obligatorio'),
-    better_project: z.string().min(1, 'Campo obligatorio'),
+    investment_types: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
+    business_model: z.string().nonempty('Campo obligatorio'),
+    better_project: z.string().nonempty('Campo obligatorio'),
     additional_info: z.string().optional(),
     business_web: z.string().optional(),
     additional_document: z.string().optional(),
 
     qualities: z.object({ value: z.string(), label: z.string() }).optional(),
 
-    debt: z.object({ value: z.string(), label: z.string() }).optional(),
+    debt: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
 };
 
 const memberShape: ZodShape<IMember> = {

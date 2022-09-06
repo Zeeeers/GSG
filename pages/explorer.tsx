@@ -20,16 +20,15 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
-import Navbar from 'layouts/main/navbar';
-import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import { useGsg } from 'services/api/lib/gsg';
-
 import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
 import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
+import Navbar from 'layouts/main/navbar';
+import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import { useEffect, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { useGsg } from 'services/api/lib/gsg';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
@@ -158,6 +157,7 @@ const Explorer: NextPage = () => {
                                         overflowY="auto"
                                         maxHeight="55vh"
                                         className="custom-scroll"
+                                        bg="gray.800"
                                     >
                                         <MenuOptionGroup
                                             title="Filtro"
