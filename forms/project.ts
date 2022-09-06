@@ -44,17 +44,17 @@ export interface IMember {
 // Schema
 const projectShape: ZodShape<IProjectForm> = {
     title: z.string().min(1, 'Campo obligatorio'),
-    description: z.string().nonempty('Campo obligatorio').min(700, 'Mínimo 700 carácteres'),
+    description: z.string().nonempty({ message: 'Campo obligatorio' }).min(700, 'Máximo 700 caracteres'),
     main_image: z.string().optional(),
     social_impact: z.string().optional(),
 
     more_info: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     third_parties: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     stage: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
-    investment_objective: z.object({ value: z.string(), label: z.string() }).optional(),
-    capital_stage: z.object({ value: z.string(), label: z.string() }).optional(),
+    investment_objective: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
+    capital_stage: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
 
-    guarantee: z.object({ value: z.string(), label: z.string() }).optional(),
+    guarantee: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
     expected_rentability: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
     finance_goal: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     time_lapse: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),

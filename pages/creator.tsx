@@ -109,28 +109,28 @@ const Creator: NextPage = ({ project, quality }) => {
         resolver: zodResolver(projectSchema),
 
         defaultValues: {
-            title: project?.title,
-            description: project?.description,
+            title: project?.title ?? '',
+            description: project?.description ?? '',
             business_web: project?.business_web,
-            third_parties: { value: project?.third_parties, label: ThirdParties(project?.third_parties) },
-            more_info: { value: project?.more_info, label: Messure(project?.more_info) },
-            stage: { value: project?.stage, label: StageCapital(project?.stage) },
+            third_parties: { value: project?.third_parties ?? '', label: ThirdParties(project?.third_parties) },
+            more_info: { value: project?.more_info ?? '', label: Messure(project?.more_info) },
+            stage: { value: project?.stage ?? '', label: StageCapital(project?.stage) },
             capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
             debt: { value: project?.debt, label: Stage(project?.debt) },
             investment_objective: {
-                value: project?.investment_objective,
+                value: project?.investment_objective ?? '',
                 label: Objetive(project?.investment_objective),
             },
-            guarantee: { value: project?.guarantee, label: Garantee(project?.guarantee) },
+            guarantee: { value: project?.guarantee ?? '', label: Garantee(project?.guarantee) },
             expected_rentability: {
-                value: project?.expected_rentability,
+                value: project?.expected_rentability ?? '',
                 label: Rentability(project?.expected_rentability),
             },
-            finance_goal: { value: project?.finance_goal, label: FinanceGoal(project?.finance_goal) },
-            time_lapse: { value: project?.time_lapse, label: Time(project?.time_lapse) },
-            business_model: project?.business_model,
-            investment_types: { value: project?.investment_types, label: project?.investment_types },
-            better_project: project?.better_project,
+            finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
+            time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
+            business_model: project?.business_model ?? '',
+            investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
+            better_project: project?.better_project ?? '',
         },
     });
 
@@ -869,7 +869,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         Deuda
                                     </Checkbox>
                                 </HStack>
-                                <Text color="red.400" fontSize="18px" fontWeight="semibold">
+                                <Text textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
                                     {!isCheckCapital && !isCheckDeuda && 'Seleccione almenos 1 opción'}
                                 </Text>
                             </VStack>
@@ -977,7 +977,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <CharkaSelect {...field} useBasicStyles options={optionsGuarantee} />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
                                 {errors?.guarantee?.value?.message}
                             </FormErrorMessage>
                         </FormControl>
@@ -993,7 +998,14 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <CharkaSelect {...field} useBasicStyles options={optionsStage} />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>{errors?.stage?.value?.message}</FormErrorMessage>
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors?.stage?.value?.message}
+                            </FormErrorMessage>
                         </FormControl>
 
                         <FormControl
@@ -1012,7 +1024,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <CharkaSelect {...field} useBasicStyles options={optionsFinance} />
                                 )}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
                                 {errors?.finance_goal?.value?.message}
                             </FormErrorMessage>
                         </FormControl>
@@ -1027,7 +1044,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 control={control}
                                 render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsTime} />}
                             />
-                            <FormErrorMessage fontWeight={'semibold'}>
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
                                 {errors?.time_lapse?.value?.message}
                             </FormErrorMessage>
                         </FormControl>
@@ -1091,7 +1113,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                     )}
                                 />
                                 {proyectObject?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
-                                <FormErrorMessage fontWeight={'semibold'}>
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
                                     {errors?.investment_objective?.value?.message}
                                 </FormErrorMessage>
                             </FormControl>

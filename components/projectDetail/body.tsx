@@ -51,31 +51,32 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     El impacto de {project?.organization.name}
                 </Text>
             </Stack>
+            {Object.values(project?.qualities || {}).length > 0 && (
+                <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
+                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                        ODS que incorpora el proyecto
+                    </Text>
 
-            <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
-                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                    ODS que incorpora el proyecto
-                </Text>
-
-                <Wrap spacingX="60px" spacingY="15px" pt="30px">
-                    {Object.values(project?.qualities || {}).map((item, i) => (
-                        <WrapItem key={i}>
-                            <HStack spacing="20px">
-                                <Image src={item.image} w="60px" h="60px" rounded="15px" />
-                                <Text
-                                    fontFamily="inter"
-                                    lineHeight="140%"
-                                    fontWeight="medium"
-                                    fontSize="20px"
-                                    color={item.color}
-                                >
-                                    {item.name}
-                                </Text>
-                            </HStack>
-                        </WrapItem>
-                    ))}
-                </Wrap>
-            </Stack>
+                    <Wrap spacingX="60px" spacingY="15px" pt="30px">
+                        {Object.values(project?.qualities || {}).map((item, i) => (
+                            <WrapItem key={i}>
+                                <HStack spacing="20px">
+                                    <Image src={item.image} w="60px" h="60px" rounded="15px" />
+                                    <Text
+                                        fontFamily="inter"
+                                        lineHeight="140%"
+                                        fontWeight="medium"
+                                        fontSize="20px"
+                                        color={item.color}
+                                    >
+                                        {item.name}
+                                    </Text>
+                                </HStack>
+                            </WrapItem>
+                        ))}
+                    </Wrap>
+                </Stack>
+            )}
 
             <VStack pl="27px" pr="27px" align="flex-start" spacing="40px" w="full">
                 <VStack align="flex-start" spacing="5px">
