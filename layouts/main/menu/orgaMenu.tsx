@@ -2,8 +2,8 @@
 import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, Text } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useState } from 'react';
-import { useOrganization } from 'services/api/lib/organization';
 import { HiChevronDown } from 'react-icons/hi';
+import { useOrganization } from 'services/api/lib/organization';
 
 // Types
 interface Props {
@@ -74,7 +74,7 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                         color={'white.base'}
                     />
                     <Text fontSize="20px" fontWeight="medium">
-                        {organization?.legal_name ?? 'GSG'}
+                        {organization?.name ?? 'GSG'}
                     </Text>
                 </Stack>
 

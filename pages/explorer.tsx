@@ -23,6 +23,7 @@ import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
 import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
 import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from 'layouts/main/navbar';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -59,7 +60,7 @@ const Explorer: NextPage = () => {
         if (!orga) {
             setIsVisible(true);
         } else {
-            return setIsVisible(false);
+            setIsVisible(false);
         }
     }, [orga]);
 
@@ -104,193 +105,213 @@ const Explorer: NextPage = () => {
                     </HStack>
                 )}
 
-                {isVisible ? (
-                    <>
-                        <Stack justify="flex-start" direction="column" justifyContent="end" w="full">
-                            <VStack w="full" align="flex-start" spacing="10px">
-                                <Heading
-                                    fontSize={{ base: '2xl', md: '4xl' }}
-                                    lineHeight="130%"
-                                    fontWeight="bold"
-                                    w="full"
-                                    textAlign="left"
-                                    textTransform="uppercase"
-                                >
-                                    Todos los proyectos de inversión
-                                </Heading>
-                                <Text>
-                                    A continuación se visualizan todos los proyectos activos dentro de Match. Puedes
-                                    filtrarlos según lo requieras.
-                                </Text>
-                            </VStack>
-
-                            <Stack
-                                pt="20px"
-                                spacing="13px"
-                                direction={{ base: 'column', md: 'row' }}
-                                alignItems={{ base: 'center', sm: 'flex-end' }}
-                                justifyContent="space-between"
-                                w="full"
-                            >
-                                <Menu closeOnSelect={false}>
-                                    <MenuButton
-                                        as={Button}
-                                        border="1px"
-                                        borderColor="gray.500"
-                                        whiteSpace="break-spaces"
+                <AnimatePresence>
+                    {isVisible && (
+                        <Stack
+                            as={motion.div}
+                            initial={{ opacity: 0, y: -50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ type: 'spring', duration: 0.8 }}
+                            spacing="40px"
+                            justify="flex-start"
+                            direction="column"
+                            justifyContent="end"
+                            w="full"
+                        >
+                            <Stack justify="flex-start" direction="column" justifyContent="end" w="full">
+                                <VStack w="full" align="flex-start" spacing="10px">
+                                    <Heading
+                                        fontSize={{ base: '2xl', md: '4xl' }}
+                                        lineHeight="130%"
+                                        fontWeight="bold"
+                                        w="full"
                                         textAlign="left"
-                                        w={{ base: 'full', md: '332px' }}
-                                        h="40px"
+                                        textTransform="uppercase"
                                     >
-                                        <Flex alignItems="center" justify="center">
-                                            <Text as="p" fontFamily="inter" fontSize="16px">
-                                                Objetivos de desarrollo sostenible{' '}
-                                                {filters?.qualities && `(${filters?.qualities?.length})`}
-                                            </Text>
-
-                                            <Icon ml={2} as={FaChevronDown} />
-                                        </Flex>
-                                    </MenuButton>
-
-                                    <MenuList
-                                        minWidth="240px"
-                                        overflowY="auto"
-                                        maxHeight="55vh"
-                                        className="custom-scroll"
-                                        bg="gray.800"
-                                    >
-                                        <MenuOptionGroup
-                                            title="Filtro"
-                                            type="checkbox"
-                                            defaultValue={filters?.qualities?.map((qt) => qt)}
-                                            onChange={(value: Array<string>) =>
-                                                setFilters({
-                                                    qualities: value.length === 0 ? undefined : value,
-                                                })
-                                            }
-                                        >
-                                            {qualities?.qualities?.map((quality) => (
-                                                <MenuItemOption
-                                                    key={`${quality.id}-Filter`}
-                                                    value={quality.icon.name.toString()}
-                                                    _checked={{
-                                                        bgColor: 'gray.700',
-                                                    }}
-                                                    rounded="none"
-                                                    fontWeight="medium"
-                                                    icon={<></>}
-                                                    iconSpacing={'unset'}
-                                                >
-                                                    <Flex align="center" justify="flex-start">
-                                                        <Image
-                                                            rounded="full"
-                                                            Width={32}
-                                                            Height={32}
-                                                            mr={4}
-                                                            src={quality.icon.image}
-                                                            alt={quality.icon.name}
-                                                        />
-
-                                                        {quality.icon.name}
-                                                    </Flex>
-                                                </MenuItemOption>
-                                            ))}
-                                        </MenuOptionGroup>
-                                    </MenuList>
-                                </Menu>
+                                        Todos los proyectos de inversión
+                                    </Heading>
+                                    <Text>
+                                        A continuación se visualizan todos los proyectos activos dentro de Match. Puedes
+                                        filtrarlos según lo requieras.
+                                    </Text>
+                                </VStack>
 
                                 <Stack
+                                    spacing="13px"
+                                    pt="20px"
                                     direction={{ base: 'column', md: 'row' }}
-                                    w={{ base: 'full', md: 'fit-content' }}
+                                    alignItems={{ base: 'center', sm: 'flex-end' }}
+                                    justifyContent="space-between"
+                                    w="full"
                                 >
-                                    <HStack spacing="20px" justifyContent="flex-end" w={{ base: 'full', lg: '194px' }}>
-                                        <Menu>
-                                            {({ isOpen }) => (
-                                                <>
-                                                    <MenuButton
-                                                        border="1px"
-                                                        borderColor="gray.500"
-                                                        h="40px"
-                                                        w="full"
-                                                        as={Button}
+                                    <Menu closeOnSelect={false}>
+                                        <MenuButton
+                                            as={Button}
+                                            border="1px"
+                                            borderColor="gray.500"
+                                            whiteSpace="break-spaces"
+                                            textAlign="left"
+                                            w={{ base: 'full', md: '332px' }}
+                                            h="40px"
+                                        >
+                                            <Flex alignItems="center" justify="center">
+                                                <Text as="p" fontFamily="inter" fontSize="16px">
+                                                    Objetivos de desarrollo sostenible{' '}
+                                                    {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                </Text>
+
+                                                <Icon ml={2} as={FaChevronDown} />
+                                            </Flex>
+                                        </MenuButton>
+
+                                        <MenuList
+                                            minWidth="240px"
+                                            overflowY="auto"
+                                            maxHeight="55vh"
+                                            className="custom-scroll"
+                                            bg="gray.800"
+                                        >
+                                            <MenuOptionGroup
+                                                title="Filtro"
+                                                type="checkbox"
+                                                defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                onChange={(value: Array<string>) =>
+                                                    setFilters({
+                                                        qualities: value.length === 0 ? undefined : value,
+                                                    })
+                                                }
+                                            >
+                                                {qualities?.qualities?.map((quality) => (
+                                                    <MenuItemOption
+                                                        key={`${quality.id}-Filter`}
+                                                        value={quality.icon.name.toString()}
+                                                        _checked={{
+                                                            bgColor: 'gray.700',
+                                                        }}
+                                                        rounded="none"
+                                                        fontWeight="medium"
+                                                        icon={<></>}
+                                                        iconSpacing={'unset'}
                                                     >
-                                                        <Flex
-                                                            py="8px"
-                                                            px="16px"
-                                                            justifyContent="space-between"
-                                                            w="full"
-                                                            alignItems="center"
-                                                            fontWeight="normal"
-                                                            fontSize="md"
-                                                        >
-                                                            <Text>
-                                                                {orderBy === 'desc' ? 'Más recientes' : 'Más antiguos'}
-                                                            </Text>
-                                                            <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
+                                                        <Flex align="center" justify="flex-start">
+                                                            <Image
+                                                                rounded="full"
+                                                                Width={32}
+                                                                Height={32}
+                                                                mr={4}
+                                                                src={quality.icon.image}
+                                                                alt={quality.icon.name}
+                                                            />
+
+                                                            {quality.icon.name}
                                                         </Flex>
-                                                    </MenuButton>
-                                                    <MenuList w={{ base: 'full', md: '194px' }}>
-                                                        <MenuOptionGroup
-                                                            value={orderBy}
-                                                            onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
-                                                        >
-                                                            <MenuItemOption value="desc" fontWeight="normal">
-                                                                Más recientes
-                                                            </MenuItemOption>
-                                                            <MenuItemOption value="asc" fontWeight="normal">
-                                                                Más antiguos
-                                                            </MenuItemOption>
-                                                        </MenuOptionGroup>
-                                                    </MenuList>
-                                                </>
-                                            )}
-                                        </Menu>
-                                    </HStack>
+                                                    </MenuItemOption>
+                                                ))}
+                                            </MenuOptionGroup>
+                                        </MenuList>
+                                    </Menu>
+
                                     <Stack
-                                        flexDirection="row"
-                                        alignItems={{ base: 'center', sm: 'flex-end' }}
-                                        justify={{ base: 'space-between', md: 'center' }}
-                                        w="full"
+                                        direction={{ base: 'column', md: 'row' }}
+                                        w={{ base: 'full', md: 'fit-content' }}
                                     >
-                                        <Input
-                                            w={{ base: 'full', sm: 'full', md: '184px' }}
-                                            variant="outline"
-                                            borderColor="gray.400"
-                                            placeholder="Buscar"
-                                            mr="5px"
-                                            textColor="white"
-                                            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                                        />
+                                        <HStack
+                                            spacing="20px"
+                                            justifyContent="flex-end"
+                                            w={{ base: 'full', lg: '194px' }}
+                                        >
+                                            <Menu>
+                                                {({ isOpen }) => (
+                                                    <>
+                                                        <MenuButton
+                                                            border="1px"
+                                                            borderColor="gray.500"
+                                                            h="40px"
+                                                            w="full"
+                                                            as={Button}
+                                                        >
+                                                            <Flex
+                                                                py="8px"
+                                                                px="16px"
+                                                                justifyContent="space-between"
+                                                                w="full"
+                                                                alignItems="center"
+                                                                fontWeight="normal"
+                                                                fontSize="md"
+                                                            >
+                                                                <Text>
+                                                                    {orderBy === 'desc'
+                                                                        ? 'Más recientes'
+                                                                        : 'Más antiguos'}
+                                                                </Text>
+                                                                <Icon
+                                                                    as={isOpen ? FaChevronUp : FaChevronDown}
+                                                                    ml={2}
+                                                                />
+                                                            </Flex>
+                                                        </MenuButton>
+                                                        <MenuList w={{ base: 'full', md: '194px' }}>
+                                                            <MenuOptionGroup
+                                                                value={orderBy}
+                                                                onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
+                                                            >
+                                                                <MenuItemOption value="desc" fontWeight="normal">
+                                                                    Más recientes
+                                                                </MenuItemOption>
+                                                                <MenuItemOption value="asc" fontWeight="normal">
+                                                                    Más antiguos
+                                                                </MenuItemOption>
+                                                            </MenuOptionGroup>
+                                                        </MenuList>
+                                                    </>
+                                                )}
+                                            </Menu>
+                                        </HStack>
+                                        <Stack
+                                            flexDirection="row"
+                                            alignItems={{ base: 'center', sm: 'flex-end' }}
+                                            justify={{ base: 'space-between', md: 'center' }}
+                                            w="full"
+                                        >
+                                            <Input
+                                                w={{ base: 'full', sm: 'full', md: '184px' }}
+                                                variant="outline"
+                                                borderColor="gray.400"
+                                                placeholder="Buscar"
+                                                mr="5px"
+                                                textColor="white"
+                                                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                                            />
+                                        </Stack>
                                     </Stack>
                                 </Stack>
                             </Stack>
-                        </Stack>
 
-                        <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
-                            {gsg ? (
-                                <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                                    {projectFilter?.length !== 0 ? (
-                                        projectFilter?.map((project) => (
-                                            <ExplorerCard key={project.id} project={project} />
-                                        ))
-                                    ) : (
-                                        <Text fontSize="lg" fontWeight="medium">
-                                            No se encontraron proyectos
-                                        </Text>
-                                    )}
-                                </SimpleGrid>
-                            ) : (
-                                <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                                    {[0, 2, 3, 4, 5, 6].map((item, index) => (
-                                        <CardSkeleton key={index} />
-                                    ))}
-                                </SimpleGrid>
-                            )}
-                        </VStack>
-                    </>
-                ) : (
-                    ''
-                )}
+                            <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
+                                {gsg ? (
+                                    <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
+                                        {projectFilter?.length !== 0 ? (
+                                            projectFilter?.map((project) => (
+                                                <ExplorerCard key={project.id} project={project} />
+                                            ))
+                                        ) : (
+                                            <Text fontSize="lg" fontWeight="medium">
+                                                No se encontraron proyectos
+                                            </Text>
+                                        )}
+                                    </SimpleGrid>
+                                ) : (
+                                    <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
+                                        {[0, 2, 3, 4, 5, 6].map((item, index) => (
+                                            <CardSkeleton key={index} />
+                                        ))}
+                                    </SimpleGrid>
+                                )}
+                            </VStack>
+                        </Stack>
+                    )}
+                </AnimatePresence>
             </Container>
         </>
     );

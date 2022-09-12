@@ -3,10 +3,9 @@ import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useOrganization } from 'services/api/lib/organization';
-import { useUser } from 'services/api/lib/user';
 import { HiChevronDown } from 'react-icons/hi';
 import { RiLogoutBoxRLine, RiUser3Fill } from 'react-icons/ri';
+import { useUser } from 'services/api/lib/user';
 
 // Types
 interface Props {
@@ -18,7 +17,6 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
     // States
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
-    const { data: organization } = useOrganization();
     const { data: user } = useUser();
 
     return (
@@ -46,14 +44,15 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                 <HStack align="center" spacing={0} py="10px">
                     <Avatar
                         size="sm"
-                        name={organization?.name ?? 'GSG'}
-                        src={organization?.image}
-                        alt={organization?.name ?? ''}
+                        //@ts-ignore
+                        src={user?.organization?.image}
+                        alt={user?.name ?? ''}
                         tHeight={32}
                         tWidth={32}
                         mr="10px"
                         icon={<></>}
-                        bgColor={organization?.image ? 'transparent' : 'primary.500'}
+                        //@ts-ignore
+                        bgColor={user?.organization?.image ? 'transparent' : 'primary.500'}
                         color={'white.base'}
                     />
 
