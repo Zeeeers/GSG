@@ -283,7 +283,8 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         Información complementaria
                     </Text>
                     <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
-                        {project?.additional_info ?? 'Sin información'}
+                        {(project?.additional_info || JSON.parse(project?.additional_info ?? '[]').length >= 0) &&
+                            'Sin información'}
                     </Text>
                 </VStack>
 
