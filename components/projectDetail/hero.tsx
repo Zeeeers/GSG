@@ -257,7 +257,8 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                                         </Text>
                                     </VStack>
                                     <HStack>
-                                        <BadgeStage capitalStage={project?.capital_stage} />
+                                        {project?.capital_stage && <BadgeStage capitalStage={project?.capital_stage} />}
+
                                         {!project?.debt ||
                                             (project?.debt !== 'other' && <BadgeStage capitalStage={project?.debt} />)}
                                     </HStack>

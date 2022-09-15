@@ -1,8 +1,5 @@
 // Dependencies
 //@ts-nocheck
-import { GetServerSideProps, NextPage } from 'next';
-import Link from 'next/link';
-import { NextSeo } from 'next-seo';
 import {
     Button,
     Flex,
@@ -18,11 +15,14 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
-import LogoBar from 'layouts/guest/logoBar';
 import LoginForm from 'components/login/loginForm';
-import { useEffect } from 'react';
 import LoginOrgaForm from 'components/organization/loginOrgaForm';
+import LogoBar from 'layouts/guest/logoBar';
+import { GetServerSideProps, NextPage } from 'next';
+import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 // Page
 const LoginPage: NextPage = ({ token }) => {
@@ -57,6 +57,10 @@ const LoginPage: NextPage = ({ token }) => {
 
             {process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME && (
                 <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dashboard" />
+            )}
+
+            {process.env.NEXT_PUBLIC_COOKIE_NAME && (
+                <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/explorer" />
             )}
 
             <LogoBar>

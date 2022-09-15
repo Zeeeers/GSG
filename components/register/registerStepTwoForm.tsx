@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CropperModalBase64 from 'common/cropperModalBase64';
+import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
 import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
 import dynamic from 'next/dynamic';
@@ -230,7 +230,7 @@ const RegisterStepTwoForm: React.FC = () => {
             </Stack>
 
             {isCropperOpen && (
-                <CropperModalBase64
+                <CropperModalAvatar
                     title={'Recortar logo'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}

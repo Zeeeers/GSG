@@ -40,20 +40,22 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
             <Box display={'flex'} flexDirection="column" justifyContent={'space-between'} h="283px" px="20px" py="18px">
                 <VStack align="flex-start">
                     <HStack>
-                        <HStack
-                            display="flex"
-                            justifyContent="center"
-                            rounded="6px"
-                            px="8px"
-                            py="2px"
-                            fontSize="sm"
-                            fontWeight="medium"
-                            bg="green.100"
-                            color="green.800"
-                            fontFamily="inter"
-                        >
-                            <Text>{Stage(project.capital_stage)}</Text>
-                        </HStack>
+                        {project.capital_stage && (
+                            <HStack
+                                display="flex"
+                                justifyContent="center"
+                                rounded="6px"
+                                px="8px"
+                                py="2px"
+                                fontSize="sm"
+                                fontWeight="medium"
+                                bg="green.100"
+                                color="green.800"
+                                fontFamily="inter"
+                            >
+                                <Text>{Stage(project.capital_stage)}</Text>
+                            </HStack>
+                        )}
 
                         {!project?.debt ||
                             (project?.debt !== 'other' && (

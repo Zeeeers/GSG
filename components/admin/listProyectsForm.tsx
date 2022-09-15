@@ -130,19 +130,39 @@ const ListProyectsForm = (props: Props) => {
                                     {proyect?.organization.name}
                                 </Td>
                                 <Td fontFamily="inter" pl={0}>
-                                    <Badge
-                                        variant="solid"
-                                        fontFamily="inter"
-                                        colorScheme="green"
-                                        textAlign="center"
-                                        alignItems="center"
-                                        py="2px"
-                                        px="8px"
-                                        rounded="6px"
-                                        mt={0}
-                                    >
-                                        {Stage(proyect.capital_stage)}
-                                    </Badge>
+                                    <HStack>
+                                        {proyect?.capital_stage && (
+                                            <Badge
+                                                variant="solid"
+                                                fontFamily="inter"
+                                                colorScheme="green"
+                                                textAlign="center"
+                                                alignItems="center"
+                                                py="2px"
+                                                px="8px"
+                                                rounded="6px"
+                                                mt={0}
+                                            >
+                                                {Stage(proyect?.capital_stage)}
+                                            </Badge>
+                                        )}
+
+                                        {proyect?.debt && (
+                                            <Badge
+                                                variant="solid"
+                                                fontFamily="inter"
+                                                colorScheme="green"
+                                                textAlign="center"
+                                                alignItems="center"
+                                                py="2px"
+                                                px="8px"
+                                                rounded="6px"
+                                                mt={0}
+                                            >
+                                                {Stage(proyect?.debt)}
+                                            </Badge>
+                                        )}
+                                    </HStack>
                                 </Td>
                                 <Td fontFamily="inter" pl={0}>
                                     <Select

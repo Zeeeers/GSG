@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CropperModalBase64 from 'common/cropperModalBase64';
+import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
 import { IMember, memberSchema } from 'forms/project';
 import React, { useState } from 'react';
@@ -44,7 +44,7 @@ const AddMembersForm = ({ reload, closeModal }) => {
         handleSubmit,
     } = useForm<IMember>({
         defaultValues: {
-            main_image: member?.main_imagen ?? '',
+            main_image: baseImg ?? '',
             name: member?.name ?? '',
             position: member?.position ?? '',
             linkedin: member?.linkedin ?? '',
@@ -128,7 +128,7 @@ const AddMembersForm = ({ reload, closeModal }) => {
                                 tWidth={100}
                                 alt={watch().name}
                                 size="2xl"
-                                src={baseImg}
+                                src={watch().main_image ?? member?.main_imagen}
                                 icon={<></>}
                                 shadow="lg"
                                 bgColor={'gray.700'}
@@ -228,8 +228,8 @@ const AddMembersForm = ({ reload, closeModal }) => {
                 </Tooltip>
             </Stack>
             {isCropperOpen && (
-                <CropperModalBase64
-                    title={'Recortar logo'}
+                <CropperModalAvatar
+                    title={'Recortar imagen'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}
                     onClose={onCropperClose}

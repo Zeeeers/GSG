@@ -148,16 +148,18 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     </VStack>
                 </VStack>
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            El levantamiento actual de capital en la cual se encuentra es:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {Stage(project?.capital_stage)}
-                        </Text>
+                {project?.capital_stage && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                El levantamiento actual de capital en la cual se encuentra es:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {Stage(project?.capital_stage)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
 
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
@@ -170,16 +172,18 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     </VStack>
                 </VStack>
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            La rentabilidad que {project?.organization.name} espera obtener es:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {Rentability(project?.expected_rentability)}
-                        </Text>
+                {project?.expected_rentability && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                La rentabilidad que {project?.organization.name} espera obtener es:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {Rentability(project?.expected_rentability)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
 
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
@@ -214,16 +218,18 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     </VStack>
                 </VStack>
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            El tipo de inversionista que busca es:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {project?.investment_types}
-                        </Text>
+                {project?.investment_types && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                El tipo de inversionista que busca es:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {project?.investment_types}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
             </Stack>
 
             <Stack pl="27px" spacing="27px" w="full" ref={other} scrollMarginTop="100px">

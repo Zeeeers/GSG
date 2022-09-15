@@ -27,7 +27,7 @@ import {
 import { PrivatePage } from '@clyc/next-route-manager';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select as CharkaSelect } from 'chakra-react-select';
-import CropperModalAvatar from 'common/cropperModalAvatar';
+import CropperModalBase64 from 'common/cropperModalBase64';
 import UploadButton from 'common/uploadButton';
 import AddMembersModal from 'components/project/addMembersModal';
 import SuccessModal from 'components/project/successModal';
@@ -238,10 +238,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 debt: isCheckDeuda ? data.debt?.value : null,
                 business_model: data.business_model,
                 guarantee: data.guarantee?.value,
-                expected_rentability: data.expected_rentability?.value,
+                expected_rentability: isCheckCapital ? data.expected_rentability?.value : null,
                 finance_goal: data.finance_goal?.value,
                 time_lapse: data.time_lapse?.value,
-                investment_types: data.investment_types?.value,
+                investment_types: isCheckCapital ? data.investment_types?.value : null,
                 better_project: data.better_project,
                 additional_info: data.additional_info,
                 business_web: data.business_web,
@@ -308,9 +308,9 @@ const Creator: NextPage = ({ project, quality }) => {
                 third_parties: proyectParties?.value,
                 capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
                 debt: isCheckDeuda ? proyectDept?.value : null,
-                investment_types: proyectInvestType?.value,
+                investment_types: isCheckCapital ? proyectInvestType?.value : null,
+                expected_rentability: isCheckCapital ? watch('expected_rentability')?.value : null,
                 stage: watch('stage')?.value,
-                expected_rentability: watch('expected_rentability')?.value,
                 guarantee: watch('guarantee')?.value,
                 finance_goal: watch('finance_goal')?.value,
                 time_lapse: watch('time_lapse')?.value,
@@ -856,6 +856,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                         onChange={(e) => {
                                             setIsCheckCapital(e.target.checked);
                                             setValue('capital_stage', e.target.checked === false && undefined);
+                                            setValue('investment_types', e.target.checked === false && undefined);
+                                            setValue('expected_rentability', e.target.checked === false && undefined);
                                         }}
                                     >
                                         Capital
@@ -1392,7 +1394,7 @@ const Creator: NextPage = ({ project, quality }) => {
             </Container>
 
             {isCropperOpenMain && (
-                <CropperModalAvatar
+                <CropperModalBase64
                     title={'Recortar imagen'}
                     baseImg={baseImgMain}
                     isOpen={isCropperOpenMain}
