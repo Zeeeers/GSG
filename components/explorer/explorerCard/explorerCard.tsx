@@ -1,11 +1,10 @@
 // Dependencies
 
 //@ts-nocheck
-import { Text, Box, Stack, Image, Button, Badge, HStack, VStack } from '@chakra-ui/react';
-import Link from 'next/link';
-import { Gsg } from 'services/api/types/Gsg';
-import { projects } from 'services/api/data';
+import { Box, Button, HStack, Image, Link, Stack, Text, VStack } from '@chakra-ui/react';
 import Stage from 'components/projectDetail/formatText/stage';
+import { Gsg } from 'services/api/types/Gsg';
+
 // Types
 interface Props {
     project: Gsg;
@@ -92,8 +91,8 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                     </Stack>
                 </VStack>
 
-                <Box display={'flex'} flexDirection="column" textAlign="center" alignItems={'flex-end'} mt="13px">
-                    <Link href={`/projectDetail/${project.id} `} passHref>
+                <Box display={'flex'} flexDirection="column" textAlign="center" w="full" mt="13px">
+                    <Link href={`/projectDetail/${project.id} `} target="_blank" passHref>
                         <Button variant="solid" h="32px" w="full">
                             Ver proyecto
                         </Button>

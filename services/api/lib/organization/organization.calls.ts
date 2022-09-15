@@ -27,7 +27,7 @@ export const create: CreateOrganizationCall = async ({ organization, user, isPym
 };
 
 // READ
-const organizationFetcher = async (endpoint: string, isPyme?: boolean) => {
+export const organizationFetcher = async (endpoint: string, isPyme?: boolean) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
     const { token } = new AuthManager({
         cookieName: isPyme ? process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME! : process.env.NEXT_PUBLIC_COOKIE_NAME!,
@@ -38,8 +38,11 @@ const organizationFetcher = async (endpoint: string, isPyme?: boolean) => {
     return data?.organization;
 };
 
-export const useOrganization = (isPyme?: boolean): SWRResponse<Organization | undefined, unknown> => {
-    return useSWR(isPyme ? [ENDPOINT.BASE, isPyme] : null, organizationFetcher, { revalidateOnFocus: false });
+export const useOrganization = (isPyme?: boolean, falldata?: any): SWRResponse<Organization | undefined, unknown> => {
+    return useSWR(isPyme ? [ENDPOINT.BASE, isPyme] : null, organizationFetcher, {
+        revalidateOnFocus: false,
+        initialData: falldata,
+    });
 };
 
 // READ
@@ -70,6 +73,7 @@ const organizationCalls = {
     create,
     update,
     useOrganization,
+    organizationFetcher,
 };
 
 // Export

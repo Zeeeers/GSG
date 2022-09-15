@@ -13,8 +13,6 @@ import {
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
-import SlateDisplay from 'common/slate/SlateDisplay';
-import { useEffect, useState } from 'react';
 import { FaLinkedin } from 'react-icons/fa';
 import { GrDocumentPdf } from 'react-icons/gr';
 import FinanceGoal from './formatText/financeGoal';
@@ -29,20 +27,13 @@ import Time from './formatText/time';
 
 const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
     const { impact, description_finance, other } = ref?.current;
-    const [additional_info, setAdditional_info] = useState([]);
-
-    useEffect(() => {
-        if (JSON.parse(project?.additional_info ?? '[]').length === 0) {
-            setAdditional_info(JSON.parse(project?.additional_info ?? '[]'));
-        }
-    }, [JSON.parse(project?.additional_info ?? '[]')]);
 
     return (
         <Stack
             alignItems="start"
             mt={{ md: '5rem' }}
             px={{ xl: '227px' }}
-            spacing="50px"
+            spacing="40px"
             py={{ base: '30px', md: '207px' }}
             scrollPaddingTop="100px"
         >
@@ -262,10 +253,11 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                                   {member.position}
                                               </Text>
                                           </VStack>
-
-                                          <Link href={member.linkedin} target="_blank" w="fit-content">
-                                              <FaLinkedin size={30} />
-                                          </Link>
+                                          {member.linkedin && (
+                                              <Link href={member.linkedin} target="_blank" w="fit-content">
+                                                  <FaLinkedin size={30} />
+                                              </Link>
+                                          )}
                                       </Stack>
                                   </GridItem>
                               ))
@@ -290,13 +282,9 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     <Text as="p" fontSize="3xl">
                         Información complementaria
                     </Text>
-                    {textEnriched?.length !== 0 ? (
-                        <Stack pt="15px">
-                            <SlateDisplay value={textEnriched} />
-                        </Stack>
-                    ) : (
-                        'Sin información'
-                    )}
+                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
+                        {project?.additional_info ?? 'Sin información'}
+                    </Text>
                 </VStack>
 
                 {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (

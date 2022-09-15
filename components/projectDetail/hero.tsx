@@ -1,22 +1,7 @@
 // Dependencies
 //@ts-nocheck
-import {
-    Img,
-    Badge,
-    Container,
-    Flex,
-    VStack,
-    Text,
-    Stack,
-    Button,
-    useDisclosure,
-    HStack,
-    Avatar,
-} from '@chakra-ui/react';
-import { impact } from '@clyc/api-wrapper';
-import CurrencyFormat from 'common/currencyFormat';
+import { Avatar, Button, Container, Flex, HStack, Img, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
-import { useUser } from 'services/api/lib/user';
 import { Gsg } from 'services/api/types/Gsg';
 import Body from './body';
 import ContactModal from './contactModal';
@@ -30,7 +15,7 @@ interface Props {
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project, user, textEnriched }) => {
+const HeaderHero: React.FC<Props> = ({ project, user }) => {
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
@@ -321,7 +306,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, textEnriched }) => {
                         ></Flex>
                     </VStack>
 
-                    <Body project={project} textEnriched={textEnriched} ref={ref} />
+                    <Body project={project} ref={ref} />
                 </Container>
             </Flex>
 

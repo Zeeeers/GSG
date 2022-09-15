@@ -204,6 +204,9 @@ const AddMembersForm = ({ reload, closeModal }) => {
                 <FormControl id="linkedin" isInvalid={!!errors.linkedin}>
                     <FormLabel>Linkedin (Opcional)</FormLabel>
                     <Input {...register('linkedin')} />
+                    <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                        {errors.linkedin?.message}
+                    </FormErrorMessage>
                 </FormControl>
                 <Tooltip
                     hasArrow

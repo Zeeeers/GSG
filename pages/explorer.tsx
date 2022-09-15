@@ -33,6 +33,7 @@ import { useGsg } from 'services/api/lib/gsg';
 import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
+import { useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
 
 const Explorer: NextPage = () => {
@@ -41,6 +42,7 @@ const Explorer: NextPage = () => {
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
+    const { data: user } = useUser();
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
     const filters = useFilterStore((s) => s.filters);
@@ -54,15 +56,13 @@ const Explorer: NextPage = () => {
         ?.filter((p) => Object.values(p.qualities).find((p) => filters?.qualities?.includes(p?.name) ?? []))
         .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        if (!orga) {
+        if (user) {
             setIsVisible(true);
-        } else {
-            setIsVisible(false);
         }
-    }, [orga]);
+    }, [user]);
 
     return (
         <>

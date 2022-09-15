@@ -1,6 +1,6 @@
 // Dependencies
 import { Avatar, Flex, HStack, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
-import CropperModalBase64 from 'common/cropperModalBase64';
+import CropperModalAvatar from 'common/cropperModalAvatar';
 import EditableTitle from 'common/editableTitle';
 import UploadButton from 'common/uploadButton';
 import { useState } from 'react';
@@ -165,7 +165,7 @@ const InfoForm: React.FC = () => {
             </Flex>
 
             {isCropperOpen && (
-                <CropperModalBase64
+                <CropperModalAvatar
                     title={'Recortar logo'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}

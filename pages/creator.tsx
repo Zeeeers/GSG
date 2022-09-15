@@ -27,8 +27,7 @@ import {
 import { PrivatePage } from '@clyc/next-route-manager';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select as CharkaSelect } from 'chakra-react-select';
-import CropperModalBase64 from 'common/cropperModalBase64';
-import SlateEditor from 'common/slate/SlateEditor';
+import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
 import AddMembersModal from 'components/project/addMembersModal';
 import SuccessModal from 'components/project/successModal';
@@ -131,14 +130,9 @@ const Creator: NextPage = ({ project, quality }) => {
             business_model: project?.business_model ?? '',
             investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
             better_project: project?.better_project ?? '',
+            additional_info: project?.better_project ?? '',
         },
     });
-
-    const handleEditField = (values: Descendant[]) => {
-        setContenido(values);
-    };
-
-    console.log(contenido);
 
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -240,8 +234,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 third_parties: data.third_parties?.value,
                 stage: data.stage?.value,
                 investment_objective: data.investment_objective?.value,
-                capital_stage: data.capital_stage?.value,
-
+                capital_stage: isCheckCapital ? data.capital_stage?.value : null,
+                debt: isCheckDeuda ? data.debt?.value : null,
                 business_model: data.business_model,
                 guarantee: data.guarantee?.value,
                 expected_rentability: data.expected_rentability?.value,
@@ -249,10 +243,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: data.time_lapse?.value,
                 investment_types: data.investment_types?.value,
                 better_project: data.better_project,
-                additional_info: JSON.stringify(contenido),
+                additional_info: data.additional_info,
                 business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
-                debt: data.debt?.value,
+
                 status: 'in-review',
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
@@ -301,6 +295,7 @@ const Creator: NextPage = ({ project, quality }) => {
     };
 
     const handleDraft = async (data: IProjectForm) => {
+        console.log(isCheckDeuda);
         setSaveDraft(true);
         const dataProject = {
             gsg_project: {
@@ -311,8 +306,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 social_impact: baseSocialPdf?.base64,
                 more_info: proyectMore?.value,
                 third_parties: proyectParties?.value,
-                capital_stage: watch('capital_stage')?.value,
-                debt: proyectDept?.value,
+                capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
+                debt: isCheckDeuda ? proyectDept?.value : null,
                 investment_types: proyectInvestType?.value,
                 stage: watch('stage')?.value,
                 expected_rentability: watch('expected_rentability')?.value,
@@ -321,7 +316,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: watch('time_lapse')?.value,
                 business_model: watch('business_model'),
                 investment_objective: watch('investment_objective')?.value,
-                additional_info: JSON.stringify(contenido),
+                additional_info: watch('additional_info')?.value,
                 additional_document: baseAdditional?.base64,
                 better_project: watch('better_project'),
                 status: 'sketch',
@@ -567,7 +562,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             fontWeight="medium"
                             color="gray.400"
                         >
-                            {proyectDescription?.length ?? 0}/1000 caractéres
+                            {proyectDescription?.length ?? 0}/1000 caracteres (Mínimo 700 caracteres)
                         </Text>
 
                         <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
@@ -595,7 +590,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         {baseImgMain ? (
                             <Stack position="relative" w="fit-content">
                                 <Image
-                                    src={baseImgMain}
+                                    src={watch().main_image}
                                     w="332px"
                                     h="165px"
                                     objectFit="cover"
@@ -748,7 +743,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <FormControl id="social_impact">
                             <FormLabel>
                                 Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
-                                valíde la medición de resultados. (Tamaño máximo 2MB) (opcional)
+                                valide la medición de resultados. (Tamaño máximo 2MB) (opcional)
                             </FormLabel>
 
                             {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
@@ -858,13 +853,19 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <HStack spacing="60px" pt="20px">
                                     <Checkbox
                                         isChecked={isCheckCapital}
-                                        onChange={(e) => setIsCheckCapital(e.target.checked)}
+                                        onChange={(e) => {
+                                            setIsCheckCapital(e.target.checked);
+                                            setValue('capital_stage', e.target.checked === false && undefined);
+                                        }}
                                     >
                                         Capital
                                     </Checkbox>
                                     <Checkbox
                                         isChecked={isCheckDeuda}
-                                        onChange={(e) => setIsCheckDeuda(e.target.checked)}
+                                        onChange={(e) => {
+                                            setIsCheckDeuda(e.target.checked);
+                                            setValue('debt', e.target.checked === false && undefined);
+                                        }}
                                     >
                                         Deuda
                                     </Checkbox>
@@ -876,7 +877,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
                         {isCheckCapital && (
                             <VStack w={'full'} align="flex-start" spacing="40px">
-                                <FormControl id="capital_stage" w={{ base: '100%', md: '50%' }}>
+                                <FormControl w={{ base: '100%', md: '50%' }}>
                                     <FormLabel>
                                         Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
                                     </FormLabel>
@@ -939,7 +940,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         )}
 
                         {isCheckDeuda && (
-                            <FormControl id="debt" w={{ base: '100%', md: '50%' }}>
+                            <FormControl w={{ base: '100%', md: '50%' }}>
                                 <FormLabel>
                                     Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
@@ -1198,7 +1199,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Text fontSize="2xl" fontWeight="medium">
                             Información Complementaria
                         </Text>
-                        <FormControl>
+                        <FormControl name="additional_info" isInvalid={!!errors.additional_info}>
                             <FormLabel lineHeight="140%">
                                 Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
                                 que el inversionista comprenda mejor tu proyecto{' '}
@@ -1207,25 +1208,39 @@ const Creator: NextPage = ({ project, quality }) => {
                             <FormHelperText textColor="gray.300">
                                 Ejemplo: Aparición en prensa, prospección de mercado etc.
                             </FormHelperText>
+
                             <Controller
                                 name="additional_info"
                                 control={control}
                                 render={({ field }) => (
-                                    <SlateEditor
+                                    <Textarea
+                                        mt="10px"
+                                        maxLength={1000}
                                         {...field}
-                                        handleSaveField={handleEditField}
-                                        initialValues={
-                                            (project?.additional_info ?? '') !== ''
-                                                ? JSON.parse(project?.additional_info ?? '[]')
-                                                : undefined
-                                        }
-                                        bg="gray.50"
-                                        color="gray.700"
-                                        h="fit-content"
-                                        mt="15px"
+                                        fontSize={{ base: 'sm', md: 'md' }}
+                                        focusBorderColor={'primary.400'}
+                                        errorBorderColor={'red.400'}
                                     />
                                 )}
                             />
+
+                            <Text
+                                textColor="gray.300"
+                                fontSize={{ base: 'xs', md: 'sm' }}
+                                fontWeight="medium"
+                                color="gray.400"
+                            >
+                                {watch().additional_info?.length ?? 0}/1000 caracteres
+                            </Text>
+
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors?.additional_info?.message}
+                            </FormErrorMessage>
                         </FormControl>
                     </VStack>
 
@@ -1377,7 +1392,7 @@ const Creator: NextPage = ({ project, quality }) => {
             </Container>
 
             {isCropperOpenMain && (
-                <CropperModalBase64
+                <CropperModalAvatar
                     title={'Recortar imagen'}
                     baseImg={baseImgMain}
                     isOpen={isCropperOpenMain}

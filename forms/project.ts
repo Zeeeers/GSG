@@ -27,7 +27,7 @@ export interface IProjectForm {
     investment_types?: select;
     business_model: string;
     better_project: string;
-    additional_info?: string;
+    additional_info: string;
     business_web?: string;
     additional_document?: string;
 
@@ -44,7 +44,11 @@ export interface IMember {
 // Schema
 const projectShape: ZodShape<IProjectForm> = {
     title: z.string().min(1, 'Campo obligatorio'),
-    description: z.string().nonempty({ message: 'Campo obligatorio' }).min(700, 'Máximo 700 caracteres'),
+    description: z
+        .string()
+        .nonempty({ message: 'Campo obligatorio' })
+        .min(700, 'Mínimo 700 caracteres')
+        .max(1000, 'Máximo 1000 caracteres'),
     main_image: z.string().optional(),
     social_impact: z.string().optional(),
 
@@ -62,7 +66,7 @@ const projectShape: ZodShape<IProjectForm> = {
     investment_types: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
     business_model: z.string().nonempty('Campo obligatorio'),
     better_project: z.string().nonempty('Campo obligatorio'),
-    additional_info: z.string().optional(),
+    additional_info: z.string().nonempty({ message: 'Campo obligatorio' }).max(1000, 'Máximo 1000 caracteres'),
     business_web: z.string().optional(),
     additional_document: z.string().optional(),
 
@@ -75,7 +79,7 @@ const memberShape: ZodShape<IMember> = {
     main_image: z.string().min(1, 'Campo obligatorio'),
     name: z.string().nonempty('Campo obligatorio'),
     position: z.string().nonempty('Campo obligatorio'),
-    linkedin: z.string().optional(),
+    linkedin: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
 };
 
 export const projectSchema = z.object(projectShape);

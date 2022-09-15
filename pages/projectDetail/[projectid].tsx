@@ -8,7 +8,7 @@ import { getGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useUser } from 'services/api/lib/user';
 import HeaderHero from '../../components/projectDetail/hero';
 
-const PublicChallenge: NextPage = ({ project, enriched }) => {
+const PublicChallenge: NextPage = ({ project }) => {
     const router = useRouter();
     const { data: userProfile } = useUser();
 
@@ -32,7 +32,7 @@ const PublicChallenge: NextPage = ({ project, enriched }) => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project} textEnriched={enriched} user={userProfile} />
+                <HeaderHero project={project} user={userProfile} />
             </Flex>
         </>
     );
@@ -48,8 +48,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 
         return {
             props: {
-                project: data.data.gsg_project ?? null,
-                enriched: JSON.parse(data?.data.gsg_project.additional_info ?? '[]'),
+                project: data?.data?.gsg_project ?? null,
             },
         };
     } else {
