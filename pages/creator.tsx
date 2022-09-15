@@ -1203,9 +1203,8 @@ const Creator: NextPage = ({ project, quality }) => {
                         </Text>
                         <FormControl name="additional_info" isInvalid={!!errors.additional_info}>
                             <FormLabel lineHeight="140%">
-                                Agrega cualquier descripción, comentario, fuente o recurso que consideres necesario para
-                                que el inversionista comprenda mejor tu proyecto{' '}
-                                <span style={{ color: '#4FD1C5' }}>*</span>
+                                Agrega cualquier descripción o comentario que consideres necesario para que el
+                                inversionista comprenda mejor tu proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <FormHelperText textColor="gray.300">
                                 Ejemplo: Aparición en prensa, prospección de mercado etc.

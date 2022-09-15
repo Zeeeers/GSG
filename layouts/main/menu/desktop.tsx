@@ -52,7 +52,7 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                         mr="10px"
                         icon={<></>}
                         //@ts-ignore
-                        bgColor={user?.organization?.image ? 'transparent' : 'primary.500'}
+                        bgColor={user?.organization?.image ? 'transparent' : 'teal.400'}
                         color={'white.base'}
                     />
 

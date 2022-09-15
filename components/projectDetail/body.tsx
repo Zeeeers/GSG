@@ -43,7 +43,14 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 </Text>
             </Stack>
             {Object.values(project?.qualities || {}).length > 0 && (
-                <Stack bg="gray.800" w="full" rounded="16px" py="40px" px={{ base: '24px', md: '35px' }}>
+                <Stack
+                    bg="gray.800"
+                    w="full"
+                    rounded="16px"
+                    py="40px"
+                    px={{ base: '24px', md: '35px' }}
+                    style={{ marginTop: '30px' }}
+                >
                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                         ODS que incorpora el proyecto
                     </Text>
@@ -69,7 +76,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 </Stack>
             )}
 
-            <VStack pl="27px" pr="27px" align="flex-start" spacing="40px" w="full">
+            <VStack pl="27px" pr="27px" align="flex-start" spacing="40px" w="full" pb="20px">
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize={'md'} color="gray.400">
                         Medición de resultados asociados al impacto social y/o mediambiental
@@ -136,6 +143,19 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         </Text>
                     </VStack>
                 </VStack>
+
+                {project?.debt && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                Tipo de financiamiento buscado:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {Stage(project?.debt)}
+                            </Text>
+                        </VStack>
+                    </VStack>
+                )}
 
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">

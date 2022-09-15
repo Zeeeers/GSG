@@ -103,11 +103,11 @@ const InfoForm: React.FC = () => {
                             size={'lg'}
                             name={user.name ?? 'GSG'}
                             //@ts-ignore
-                            src={user?.organization?.image ?? baseImg}
+                            src={user?.organization?.image ?? ''}
                             height={100}
                             width={100}
                             mr={2}
-                            bgColor={organization?.image ? 'transparent' : 'primary.500'}
+                            bgColor={organization?.image ? 'transparent' : 'teal.400'}
                             color={'white'}
                         />
 

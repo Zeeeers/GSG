@@ -134,7 +134,6 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
             <Flex w="full" h="90px" position="absolute" ref={description_general}>
                 <Container
                     maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
-                    pt={{ base: 0, md: 4 }}
                     pb={16}
                     px={{ base: 0, md: 4, lg: 12, xl: 6 }}
                 >
