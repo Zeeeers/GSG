@@ -1,22 +1,22 @@
 // Dependencies
 //@ts-nocheck
 import {
+    Button,
     Checkbox,
     HStack,
     Img,
     Stack,
     Text,
+    useDisclosure,
+    useToast,
     VStack,
     Wrap,
     WrapItem,
-    useDisclosure,
-    useToast,
-    Button,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
-import { update, useUser } from 'services/api/lib/user';
+import { useUser } from 'services/api/lib/user';
 import CapitalStageModal from './capitalStageModal';
 import ExpectedRentabilityModal from './expectedRentabilityModal';
 import FinanceGoalModal from './FinanceGoalModal';

@@ -6,6 +6,8 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
+    ModalFooter,
+    ModalHeader,
     ModalOverlay,
     Text,
     useCheckboxGroup,
@@ -14,9 +16,8 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import CheckCard from 'common/checkCard';
-
 import Time from 'components/projectDetail/formatText/time';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Interest } from 'services/api/types/Interest';
 
 // Types
@@ -37,6 +38,7 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
     });
 
     const toast = useToast();
+    const initialRef = useRef(null);
 
     const handleSave = async () => {
         const { update } = await import('../../../services/api/lib/interest');
@@ -81,56 +83,63 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
     }, [myInterest]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" blockScrollOnMount={true} scrollBehavior="inside">
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered
+            size="xl"
+            blockScrollOnMount={true}
+            scrollBehavior="inside"
+            initialFocusRef={initialRef}
+        >
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="60px">
                 <ModalCloseButton />
-                <ModalBody mb={6} pt={0}>
-                    <VStack alignItems="flex-start" spacing="30px" w="full">
-                        <VStack alignItems="flex-start" spacing="5px">
-                            <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                PLAZOS DE INVERSIÓN
-                            </Heading>
-                            <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                Selecciona los plazos de inversión para recibir correos con recomendaciones de proyectos
-                                asociados a esta categoría.
-                            </Text>
-                        </VStack>
-
-                        <VStack w="full" overflowY="auto" h="330px">
-                            {interest?.time_lapse.map((item, index) => (
-                                <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
-                                    <CheckCard
-                                        w="full"
-                                        width="full"
-                                        key={`${index}-explorerFilter`}
-                                        as={WrapItem}
-                                        v
-                                        value={item}
-                                        cursor="pointer"
-                                        px={'16px'}
-                                        py={'8px'}
-                                        rounded="8px"
-                                        bg="gray.700"
-                                        textColor="white"
-                                        fontWeight="normal"
-                                        fontFamily="inter"
-                                        fontSize="md"
-                                        _hover={{ bg: { base: 'transparent', md: 'gray.600' } }}
-                                        _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
-                                        {...getCheckboxProps({ value: item })}
-                                    >
-                                        <Text>{Time(item)}</Text>
-                                    </CheckCard>
-                                </VStack>
-                            ))}
-                        </VStack>
-
-                        <Button w="full" h="40px" variant="solid" onClick={handleSave}>
-                            Guardar
-                        </Button>
+                <ModalHeader p={0} mb="20px" ref={initialRef} tabIndex={2}>
+                    <VStack alignItems="flex-start" spacing="10px">
+                        <Heading fontFamily="barlow" fontSize="24px" lineHeight="20.8px" textTransform="uppercase">
+                            PLAZOS DE INVERSIÓN
+                        </Heading>
+                        <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
+                            Selecciona los plazos de inversión para recibir correos con recomendaciones de proyectos
+                            asociados a esta categoría.
+                        </Text>
                     </VStack>
+                </ModalHeader>
+                <ModalBody m={0} pt={0} h="330px" className="custom-scroll-light" position={'relative'}>
+                    {interest?.time_lapse.map((item, index) => (
+                        <VStack key={index} w="full" borderBottom="1px" borderBottomColor="gray.500" pb="10px">
+                            <CheckCard
+                                w="full"
+                                width="full"
+                                key={`${index}-explorerFilter`}
+                                as={WrapItem}
+                                v
+                                value={item}
+                                cursor="pointer"
+                                px={'16px'}
+                                py={'8px'}
+                                mt="8px"
+                                rounded="8px"
+                                bg="gray.700"
+                                textColor="white"
+                                fontWeight="normal"
+                                fontFamily="inter"
+                                fontSize="md"
+                                _hover={{ bg: { base: 'transparent', md: 'gray.600' } }}
+                                _checked={{ bg: 'gray.600', textColor: 'white', _hover: { bg: 'gray.500' } }}
+                                {...getCheckboxProps({ value: item })}
+                            >
+                                <Text>{Time(item)}</Text>
+                            </CheckCard>
+                        </VStack>
+                    ))}
                 </ModalBody>
+                <ModalFooter>
+                    <Button w="full" h="40px" variant="solid" onClick={handleSave}>
+                        Guardar
+                    </Button>
+                </ModalFooter>
             </ModalContent>
         </Modal>
     );

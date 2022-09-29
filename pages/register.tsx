@@ -33,7 +33,7 @@ const RegisterPage: NextPage = () => {
             <LogoBar>
                 {registerStatus === 'FORM' ? (
                     <>
-                        <Heading as="h1" size="4xl" fontWeight="bold">
+                        <Heading w="full" as="h1" size="4xl" fontWeight="bold" mt="30px" textAlign="start">
                             REGISTRO
                         </Heading>
                         {step === 'ONE' ? <RegisterStepOneForm /> : <RegisterStepTwoForm />}

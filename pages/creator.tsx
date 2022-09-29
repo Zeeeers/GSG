@@ -109,6 +109,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
         defaultValues: {
             title: project?.title ?? '',
+            main_image: baseImgMain ?? '',
             description: project?.description ?? '',
             business_web: project?.business_web,
             third_parties: { value: project?.third_parties ?? '', label: ThirdParties(project?.third_parties) },
@@ -666,7 +667,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     <FormControl id="qualities" w={{ base: '100%', md: '50%' }}>
                         <FormLabel>Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
                         <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
-                            Los Objetivos de desarrollo sostenible son el plan maestro para conseguir un futuro
+                            Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para conseguir un futuro
                             sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos globales a los
                             que nos enfrentamos día a día, como la pobreza, la desigualdad, el clima, la degradación
                             ambiental, la prosperidad, la paz y la justicia.{' '}
@@ -726,7 +727,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                     <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '50%' }}>
                         <FormLabel lineHeight="140%">
-                            Actualmente tienes información sobre cómo mides tus resultados de impacto{' '}
+                            ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
                             <span style={{ color: '#4FD1C5' }}>*</span>
                         </FormLabel>
                         <Controller

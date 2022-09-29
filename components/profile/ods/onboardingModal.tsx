@@ -33,7 +33,7 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboard
                     <VStack alignItems="flex-start" spacing="30px" w="full">
                         <VStack alignItems="flex-start" spacing="10px">
                             <Heading fontFamily="barlow" fontSize="24px" lineHeight="24px" textTransform="uppercase">
-                                Tus intereses se han guardado
+                                Tus intereses están guardados
                             </Heading>
                             <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
                                 Si seleccionaste que deseas recibir correos semanalmente, te comenzaremos a enviar
@@ -41,12 +41,12 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboard
                             </Text>
                         </VStack>
 
-                        <Image src="/images/preview-email.jpg" />
+                        <Image src="/images/preview-email.png" />
 
                         <VStack w="full">
-                            <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px">
-                                Si quieres ver todos los proyectos que han postulado a GSG NAB Chile, te invitamos a
-                                explorarlos.
+                            <Text fontFamily="inter" fontSize="16px" fontWeight="normal" lineHeight="20.8px">
+                                Si quieres ver todos los proyectos de GSG NAB Chile, te invitamos a nuestro explorador
+                                de proyectos en el siguiente botón.
                             </Text>
                         </VStack>
 

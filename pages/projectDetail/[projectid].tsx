@@ -12,6 +12,8 @@ const PublicChallenge: NextPage = ({ project }) => {
     const router = useRouter();
     const { data: userProfile } = useUser();
 
+    console.log(project);
+
     return (
         <>
             <NextSeo

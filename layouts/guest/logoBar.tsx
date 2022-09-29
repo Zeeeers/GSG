@@ -1,7 +1,7 @@
 // Dependencies
 //@ts-nocheck
-import Link from 'next/link';
 import { Flex, HStack, Img, Text, VStack } from '@chakra-ui/react';
+import Link from 'next/link';
 
 // Component
 const LogoBar: React.FC = ({ children }) => {
@@ -33,7 +33,7 @@ const LogoBar: React.FC = ({ children }) => {
                     rounded="16px"
                 >
                     <Link href="/explorer" passHref>
-                        <HStack spacing={3} alignItems="center" cursor="pointer">
+                        <HStack w="full" spacing={3} alignItems="center" cursor="pointer">
                             <Img
                                 src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
                                 w="40px"
