@@ -96,8 +96,6 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
             blockScrollOnMount={true}
             scrollBehavior="inside"
             initialFocusRef={initialRef}
-            blockScrollOnMount={true}
-            scrollBehavior="inside"
         >
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="60px">
