@@ -12,6 +12,7 @@ import {
     FormLabel,
     HStack,
     Image,
+    Img,
     Input,
     InputGroup,
     InputLeftAddon,
@@ -456,25 +457,17 @@ const Creator: NextPage = ({ project, quality }) => {
                     justifyContent={{ base: 'center', md: 'space-between' }}
                     maxWidth={'container.lg'}
                 >
-                    <Stack direction={{ base: 'column', sm: 'row' }} spacing={{ base: '10px', md: '23px' }}>
-                        <Link href="/explorer">
-                            <Button
-                                variant="solid"
-                                background="gray.100"
-                                textColor="gray.800"
-                                fontWeight="bold"
-                                _hover={{ background: 'gray.300' }}
-                                borderRadius="full"
-                                w="40px"
-                                h="40px"
-                            >
+                    <Link href="/explorer">
+                        <Stack align="center" direction={{ base: 'column', sm: 'row' }} spacing="8px">
+                            <Button variant="unstyled" textColor="gray.50" fontWeight="bold">
                                 {'<-'}
                             </Button>
-                        </Link>
-                        <Text fontSize="3xl" fontWeight="medium">
-                            Creador de proyecto
-                        </Text>
-                    </Stack>
+
+                            <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
+                                Volver al inicio
+                            </Text>
+                        </Stack>
+                    </Link>
                     <HStack spacing="8px" mt={{ base: '10px', md: 0 }}>
                         <Button
                             onClick={handleDraft}
@@ -512,6 +505,13 @@ const Creator: NextPage = ({ project, quality }) => {
 
             <Container maxWidth={'container.lg'} paddingTop={{ base: '17rem', sm: '10rem' }} paddingBottom="153px">
                 <VStack as="form" align="start" spacing="40px">
+                    <HStack align="center" spacing="10px">
+                        <Img src="/images/logo_empty.png" w="60px" h="60px" />
+                        <Text fontSize="30px" fontWeight="bold" textTransform="uppercase">
+                            Tu proyecto general
+                        </Text>
+                    </HStack>
+
                     <VStack align="start">
                         <Text fontSize={'4xl'} fontWeight="bold">
                             Descripción General
