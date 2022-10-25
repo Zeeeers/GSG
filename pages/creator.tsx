@@ -46,8 +46,9 @@ import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FaTrash } from 'react-icons/fa';
+import { FaCheck, FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
+import { IoMdEye } from 'react-icons/io';
 import { useMembers } from 'services/api/lib/member';
 import { getQualities } from 'services/api/lib/qualities';
 import { Descendant } from 'slate';
@@ -83,6 +84,9 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const [isCheckCapital, setIsCheckCapital] = useState(false);
     const [isCheckDeuda, setIsCheckDeuda] = useState(false);
+
+    const [postulationEmployee, setPostulationEmployee] = useState(false);
+    const [postulationProject, setPostulationProject] = useState(false);
 
     const getNameFile = (url) => {
         return url(url.indexOf('/') + 2).split('/');
@@ -450,322 +454,899 @@ const Creator: NextPage = ({ project, quality }) => {
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
-            <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
-                <Container
-                    display="flex"
-                    flexDirection={{ base: 'column', md: 'row' }}
-                    justifyContent={{ base: 'center', md: 'space-between' }}
-                    maxWidth={'container.lg'}
-                >
-                    <Link href="/explorer">
-                        <Stack align="center" direction={{ base: 'column', sm: 'row' }} spacing="8px">
-                            <Button variant="unstyled" textColor="gray.50" fontWeight="bold">
-                                {'<-'}
-                            </Button>
 
-                            <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
-                                Volver al inicio
+            <Stack align="center">
+                <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
+                    <Container
+                        display="flex"
+                        flexDirection={{ base: 'column', md: 'row' }}
+                        justifyContent={{ base: 'center', md: 'space-between' }}
+                        maxWidth={'container.lg'}
+                    >
+                        <HStack spacing="10px">
+                            <Img src="/images/logo_empty.png" w="40px" h="40px" />
+                            <Text fontSize="24px" fontWeight="bold">
+                                MATCH
                             </Text>
-                        </Stack>
-                    </Link>
-                    <HStack spacing="8px" mt={{ base: '10px', md: 0 }}>
+                        </HStack>
+
                         <Button
-                            onClick={handleDraft}
-                            type="button"
-                            variant="outline"
-                            w="full"
-                            isLoading={saveDraft}
-                            loadingText="Guardando proyecto"
+                            variant="solid"
+                            background="blue.700"
+                            leftIcon={<IoMdEye />}
+                            fontSize="14px"
+                            _hover={{ background: 'blue.600' }}
                         >
-                            Guardar borrador
+                            Vista previa
                         </Button>
+                    </Container>
+                </HStack>
 
-                        <Tooltip
-                            hasArrow
-                            label="Hay campos sin completar"
-                            isDisabled={isSubmitted ? isValid : true}
-                            shouldWrapChildren
-                            bg="red.500"
-                        >
-                            <Button
-                                isLoading={createProyect}
-                                loadingText="Publicando proyecto"
-                                type="button"
-                                onClick={handleSubmit(handlePublished)}
-                                variant="solid"
-                                w="full"
-                                disabled={isSubmitted ? !isValid : false}
-                            >
-                                Postular proyecto
-                            </Button>
-                        </Tooltip>
-                    </HStack>
-                </Container>
-            </HStack>
-
-            <Container maxWidth={'container.lg'} paddingTop={{ base: '17rem', sm: '10rem' }} paddingBottom="153px">
-                <VStack as="form" align="start" spacing="40px">
-                    <HStack align="center" spacing="10px">
-                        <Img src="/images/logo_empty.png" w="60px" h="60px" />
-                        <Text fontSize="30px" fontWeight="bold" textTransform="uppercase">
-                            Tu proyecto general
-                        </Text>
-                    </HStack>
-
-                    <VStack align="start">
-                        <Text fontSize={'4xl'} fontWeight="bold">
-                            Descripción General
-                        </Text>
-                        <Text>
-                            Los campos con el signo <span style={{ color: '#4FD1C5' }}>*</span> son obligatorios
-                        </Text>
-                    </VStack>
-                    <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>
-                            Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
-                        <Input maxLength={40} {...register('title')} />
-                        <Text
-                            textColor="gray.300"
-                            fontSize={{ base: 'xs', md: 'sm' }}
-                            fontWeight="medium"
-                            color="gray.400"
-                        >
-                            {proyectTitle?.length ?? 0}/40 caractéres
-                        </Text>
-                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
-                            {errors.title?.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="description" isInvalid={!!errors.description}>
-                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                            Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
-
-                        <Controller
-                            name="description"
-                            control={control}
-                            render={({ field }) => (
-                                <Textarea
-                                    maxLength={1000}
-                                    {...field}
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-                            )}
-                        />
-
-                        <Text
-                            textColor="gray.300"
-                            fontSize={{ base: 'xs', md: 'sm' }}
-                            fontWeight="medium"
-                            color="gray.400"
-                        >
-                            {proyectDescription?.length ?? 0}/1000 caracteres (Mínimo 700 caracteres)
-                        </Text>
-
-                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
-                            {errors?.description?.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="business_web" isInvalid={!!errors.business_web} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Sitio web (opcional)</FormLabel>
-                        <InputGroup>
-                            <InputLeftAddon>www.</InputLeftAddon>
-                            <Input {...register('business_web')} />
-                        </InputGroup>
-                        <FormErrorMessage>{errors.business_web?.message}</FormErrorMessage>
-                    </FormControl>
-
-                    {/*TODO: useCropper for upload image product*/}
-
-                    <FormControl id="main_image" isInvalid={!!errors.main_image}>
-                        <FormLabel lineHeight="140%">
-                            Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
-                            tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 2MB){' '}
-                            <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
-                        {baseImgMain ? (
-                            <Stack position="relative" w="fit-content">
-                                <Image
-                                    src={watch().main_image}
-                                    w="332px"
-                                    h="165px"
-                                    objectFit="cover"
-                                    objectPosition="center"
-                                    rounded={3}
-                                    alt="cover"
-                                />
+                <Container maxWidth={'container.lg'} paddingTop={{ base: '17rem', sm: '100px' }} paddingBottom="153px">
+                    <VStack as="form" align="start" spacing="40px">
+                        <Link href="/explorer">
+                            <Stack align="center" direction={{ base: 'column', sm: 'row' }} spacing="10px">
                                 <Button
-                                    onClick={() => setBaseImgMain(undefined)}
-                                    position="absolute"
-                                    right={3}
-                                    m={0}
-                                    pl="11px"
-                                    pr="10px"
-                                    alignContent="center"
-                                    alignItems={'center'}
-                                    bg="teal.300"
-                                    textColor="white"
-                                    _hover={{ bg: 'teal.200' }}
+                                    variant="unstyled"
+                                    textColor="black"
+                                    fontWeight="bold"
+                                    rounded="full"
+                                    w="30px"
+                                    h="40px"
+                                    background="gray.100"
                                 >
-                                    <FaTrash />
+                                    {'<-'}
                                 </Button>
-                            </Stack>
-                        ) : (
-                            <VStack>
-                                <Input type="hidden" {...register('main_image')} />
-                                <UploadButton
-                                    variant="solid"
-                                    bg="gray.700"
-                                    color="gray.50"
-                                    borderColor="gray.50"
-                                    border="1px dashed"
-                                    w="full"
-                                    h="300px"
-                                    colorScheme="basic"
-                                    fontWeight="normal"
-                                    onChange={async (e) => {
-                                        const { validateTypes, getBase64 } = await import('services/images');
 
-                                        if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            if (e.target?.files[0].size >= 2000000) {
-                                                toast({
-                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
-                                                    status: 'error',
-                                                    duration: 9000,
-                                                    isClosable: true,
-                                                    position: 'top-right',
-                                                });
-                                            } else {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setBaseImgMain(base);
-                                                onCropperOpenMain();
-                                            }
-                                        }
+                                <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
+                                    Volver al inicio
+                                </Text>
+                            </Stack>
+                        </Link>
+
+                        <VStack align="start">
+                            <Text fontSize={'4xl'} fontWeight="bold">
+                                Descripción General
+                            </Text>
+                            <Text>
+                                Los campos con el signo <span style={{ color: '#4FD1C5' }}>*</span> son obligatorios
+                            </Text>
+                        </VStack>
+                        <VStack spacing="15px">
+                            <Text fontSize="16px" fontFamily="inter">
+                                1. En relación a la búsqueda de capital que estás realizando, ¿Esta es para un proyecto
+                                específico dentro de tu empresa o es para tu empresa? Selecciona solo una opción *
+                            </Text>
+                            <HStack justify="start" w="full">
+                                <Button
+                                    fontSize="16px"
+                                    fontWeight="normal"
+                                    height="42px"
+                                    px="30px"
+                                    variant="solid"
+                                    background="gray.700"
+                                    _hover={{ background: 'gray.600' }}
+                                    leftIcon={postulationProject && <FaCheck color="#319795" />}
+                                    onClick={() => {
+                                        setPostulationProject(true);
+                                        setPostulationEmployee(false);
                                     }}
                                 >
-                                    Arrastra o sube tu imagen aquí (min 800x400px)
-                                </UploadButton>
+                                    Proyecto específico
+                                </Button>
+                                <Button
+                                    fontSize="16px"
+                                    fontWeight="normal"
+                                    variant="solid"
+                                    height="42px"
+                                    px="30px"
+                                    background="gray.700"
+                                    _hover={{ background: 'gray.600' }}
+                                    leftIcon={postulationEmployee && <FaCheck color="#319795" />}
+                                    onClick={() => {
+                                        setPostulationEmployee(true);
+                                        setPostulationProject(false);
+                                    }}
+                                >
+                                    Empresa
+                                </Button>
+                            </HStack>
+                        </VStack>
+
+                        <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
+                            <FormLabel>
+                                Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Input maxLength={40} {...register('title')} />
+                            <Text
+                                textColor="gray.300"
+                                fontSize={{ base: 'xs', md: 'sm' }}
+                                fontWeight="medium"
+                                color="gray.400"
+                            >
+                                {proyectTitle?.length ?? 0}/40 caractéres
+                            </Text>
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors.title?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl id="description" isInvalid={!!errors.description}>
+                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                                Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+
+                            <Controller
+                                name="description"
+                                control={control}
+                                render={({ field }) => (
+                                    <Textarea
+                                        maxLength={1000}
+                                        {...field}
+                                        fontSize={{ base: 'sm', md: 'md' }}
+                                        focusBorderColor={'primary.400'}
+                                        errorBorderColor={'red.400'}
+                                    />
+                                )}
+                            />
+
+                            <Text
+                                textColor="gray.300"
+                                fontSize={{ base: 'xs', md: 'sm' }}
+                                fontWeight="medium"
+                                color="gray.400"
+                            >
+                                {proyectDescription?.length ?? 0}/1000 caracteres (Mínimo 700 caracteres)
+                            </Text>
+
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors?.description?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        {/*TODO: useCropper for upload image product*/}
+
+                        <FormControl id="main_image" isInvalid={!!errors.main_image}>
+                            <FormLabel lineHeight="140%">
+                                Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
+                                tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 2MB){' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            {baseImgMain ? (
+                                <Stack position="relative" w="fit-content">
+                                    <Image
+                                        src={watch().main_image}
+                                        w="332px"
+                                        h="165px"
+                                        objectFit="cover"
+                                        objectPosition="center"
+                                        rounded={3}
+                                        alt="cover"
+                                    />
+                                    <Button
+                                        onClick={() => setBaseImgMain(undefined)}
+                                        position="absolute"
+                                        right={3}
+                                        m={0}
+                                        pl="11px"
+                                        pr="10px"
+                                        alignContent="center"
+                                        alignItems={'center'}
+                                        bg="teal.300"
+                                        textColor="white"
+                                        _hover={{ bg: 'teal.200' }}
+                                    >
+                                        <FaTrash />
+                                    </Button>
+                                </Stack>
+                            ) : (
+                                <VStack>
+                                    <Input type="hidden" {...register('main_image')} />
+                                    <UploadButton
+                                        variant="solid"
+                                        bg="gray.700"
+                                        color="gray.50"
+                                        borderColor="gray.50"
+                                        border="1px dashed"
+                                        w="full"
+                                        h="300px"
+                                        colorScheme="basic"
+                                        fontWeight="normal"
+                                        onChange={async (e) => {
+                                            const { validateTypes, getBase64 } = await import('services/images');
+
+                                            if (e.target?.files && validateTypes(e.target.files[0])) {
+                                                if (e.target?.files[0].size >= 2000000) {
+                                                    toast({
+                                                        title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                        status: 'error',
+                                                        duration: 9000,
+                                                        isClosable: true,
+                                                        position: 'top-right',
+                                                    });
+                                                } else {
+                                                    const base = await getBase64(e.target.files![0]);
+                                                    setBaseImgMain(base);
+                                                    onCropperOpenMain();
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        Arrastra o sube tu imagen aquí (min 800x400px)
+                                    </UploadButton>
+                                    <FormErrorMessage
+                                        textColor="red.400"
+                                        fontFamily="inter"
+                                        fontSize="16px"
+                                        fontWeight={'medium'}
+                                        textAlign="start"
+                                        w="full"
+                                    >
+                                        {errors.main_image?.message}
+                                    </FormErrorMessage>
+                                </VStack>
+                            )}
+                        </FormControl>
+
+                        <FormControl id="qualities" w={{ base: '100%', md: '50%' }}>
+                            <FormLabel>Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
+                            <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
+                                Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para conseguir un
+                                futuro sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos
+                                globales a los que nos enfrentamos día a día, como la pobreza, la desigualdad, el clima,
+                                la degradación ambiental, la prosperidad, la paz y la justicia.{' '}
+                                <Link
+                                    href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                    color="#fff"
+                                >
+                                    Ver más
+                                </Link>
+                            </FormHelperText>
+                            <Controller
+                                name="qualities"
+                                control={control}
+                                render={({ field }) => (
+                                    <CharkaSelect
+                                        {...field}
+                                        defaultValue={Object.values(project?.qualities ?? []).map(
+                                            (item) => optionsQuality[item.id - 1],
+                                        )}
+                                        tagVariant="solid"
+                                        colorScheme="teal"
+                                        isOptionDisabled={() => selectedOptions?.length >= 3}
+                                        onChange={(o) => setSelectedOptions(o)}
+                                        isMulti
+                                        useBasicStyles
+                                        options={optionsQuality}
+                                    />
+                                )}
+                            />
+
+                            <FormHelperText textColor="gray.300" lineHeight="140%">
+                                Máximo 3 ODS
+                            </FormHelperText>
+
+                            <FormErrorMessage fontWeight={'semibold'}>{errors.qualities?.message}</FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl
+                            id="third_parties"
+                            isInvalid={!!errors.third_parties}
+                            w={{ base: '100%', md: '50%' }}
+                        >
+                            <FormLabel lineHeight="140%">
+                                Selecciona el respaldo con el que cuentas de una tercera organización{' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="third_parties"
+                                control={control}
+                                render={({ field }) => (
+                                    <CharkaSelect {...field} useBasicStyles options={optionsThirty} />
+                                )}
+                            />
+
+                            {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
+
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors.third_parties?.value?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '50%' }}>
+                            <FormLabel lineHeight="140%">
+                                ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
+                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="more_info"
+                                control={control}
+                                render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsMore} />}
+                            />
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors.more_info?.value?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        <VStack w="100%" align="flex-start" spacing="10px">
+                            <FormControl id="social_impact">
+                                <FormLabel>
+                                    Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
+                                    valide la medición de resultados. (Tamaño máximo 2MB) (opcional)
+                                </FormLabel>
+
+                                {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
+                                baseSocialPdf !== undefined ? (
+                                    <HStack align="center">
+                                        <FiPaperclip />
+                                        {baseSocialPdf?.file?.name ? (
+                                            <Text fontWeight="bold">{baseSocialPdf?.file.name}</Text>
+                                        ) : (
+                                            <Link
+                                                fontFamily="inter"
+                                                fontWeight="medium"
+                                                href={baseSocialPdf}
+                                                target="_blank"
+                                            >
+                                                Ver PDF
+                                            </Link>
+                                        )}
+
+                                        <Button
+                                            onClick={() => setBaseSocialPdf(undefined)}
+                                            bg="teal.400"
+                                            pl="6px"
+                                            _hover={{ bg: 'teal.300' }}
+                                            leftIcon={<FaTrash />}
+                                        ></Button>
+                                    </HStack>
+                                ) : (
+                                    <Stack>
+                                        <Input type="hidden" {...register('social_impact')} />
+                                        <UploadButton
+                                            variant="solid"
+                                            bg="gray.700"
+                                            color="gray.50"
+                                            borderColor="gray.50"
+                                            border="1px dashed"
+                                            w="full"
+                                            h="300px"
+                                            colorScheme="basic"
+                                            fontWeight="normal"
+                                            onChange={async (e) => {
+                                                const { getBase64, isPDF } = await import('services/images');
+
+                                                if (e.target?.files && isPDF(e.target.files[0])) {
+                                                    if (e.target?.files[0].size >= 2000000) {
+                                                        toast({
+                                                            title: 'El archivo es muy grande, porfavor, suba una PDF menor o igual a 2MB',
+                                                            status: 'error',
+                                                            duration: 9000,
+                                                            isClosable: true,
+                                                            position: 'top-right',
+                                                        });
+                                                    } else {
+                                                        const base = await getBase64(e.target.files![0]);
+                                                        setValue('social_impact', e.target.files[0]);
+                                                        setBaseSocialPdf({ base64: base, file: e.target.files[0] });
+                                                    }
+                                                } else {
+                                                    toast({
+                                                        title: 'Archivo inválido.',
+                                                        description:
+                                                            'El archivo subido no es correcto, porfavor, carge un PDF válido.',
+                                                        status: 'error',
+                                                        duration: 9000,
+                                                        isClosable: true,
+                                                        position: 'top-right',
+                                                    });
+                                                }
+                                            }}
+                                        >
+                                            Arrasta o sube tu PDF aquí
+                                        </UploadButton>
+                                        <FormErrorMessage fontWeight={'semibold'}>
+                                            {errors.main_image?.message}
+                                        </FormErrorMessage>
+                                    </Stack>
+                                )}
+                            </FormControl>
+                        </VStack>
+
+                        <Divider paddingTop={'60px'} />
+
+                        <VStack align="flex-start">
+                            <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
+                                Descripción financiera
+                            </Text>
+
+                            <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                                Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo
+                                capital a través de inversores. En este proceso, entran nuevos socios que adquieren una
+                                parte del capital social de la empresa y, por tanto, el control de una parte de ésta.
+                                Por otro lado, la deuda comprende el entregar al equipo emprendedor un monto de dinero
+                                con el compromiso de ser devuelto en su totalidad e incluyendo intereses.
+                            </Text>
+                        </VStack>
+
+                        <VStack w={'full'} align="flex-start" spacing="40px">
+                            <VStack align="flex-start" w="full" spacing="20px">
+                                <VStack spacing="5px" align="flex-start" w="full">
+                                    <Text fontSize={'2xl'} fontWeight="medium">
+                                        ¿Qué tipo de financiamiento buscas?
+                                    </Text>
+                                    <Text textColor="gray.300">Puedes elegir seleccionar capital, deuda o ambos</Text>
+                                </VStack>
+
+                                <VStack>
+                                    <HStack spacing="60px" pt="20px">
+                                        <Checkbox
+                                            isChecked={isCheckCapital}
+                                            onChange={(e) => {
+                                                setIsCheckCapital(e.target.checked);
+                                                setValue('capital_stage', e.target.checked === false && undefined);
+                                                setValue('investment_types', e.target.checked === false && undefined);
+                                                setValue(
+                                                    'expected_rentability',
+                                                    e.target.checked === false && undefined,
+                                                );
+                                            }}
+                                        >
+                                            Capital
+                                        </Checkbox>
+                                        <Checkbox
+                                            isChecked={isCheckDeuda}
+                                            onChange={(e) => {
+                                                setIsCheckDeuda(e.target.checked);
+                                                setValue('debt', e.target.checked === false && undefined);
+                                            }}
+                                        >
+                                            Deuda
+                                        </Checkbox>
+                                    </HStack>
+                                    <Text textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                                        {!isCheckCapital && !isCheckDeuda && 'Seleccione almenos 1 opción'}
+                                    </Text>
+                                </VStack>
+                            </VStack>
+                            {isCheckCapital && (
+                                <VStack w={'full'} align="flex-start" spacing="40px">
+                                    <FormControl w={{ base: '100%', md: '50%' }}>
+                                        <FormLabel>
+                                            Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <Controller
+                                            name="capital_stage"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CharkaSelect
+                                                    {...field}
+                                                    defaultValue={
+                                                        project?.capital_stage
+                                                            ? {
+                                                                  label: Stage(project?.capital_stage),
+                                                                  value: project?.capital_stage,
+                                                              }
+                                                            : [optionsCapital[6]]
+                                                    }
+                                                    useBasicStyles
+                                                    options={optionsCapital}
+                                                />
+                                            )}
+                                        />
+                                        <FormErrorMessage fontWeight={'semibold'}>
+                                            {errors.capital_stage?.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+
+                                    <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
+                                        <FormLabel>
+                                            ¿Qué tipo de inversionista buscas?{' '}
+                                            <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+
+                                        <Controller
+                                            name="investment_types"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CharkaSelect {...field} useBasicStyles options={optionsInvestor} />
+                                            )}
+                                        />
+                                        {errors.investment_types?.message}
+                                    </FormControl>
+
+                                    <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
+                                        <FormLabel lineHeight="140%">
+                                            ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
+                                            <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <Controller
+                                            name="expected_rentability"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CharkaSelect {...field} useBasicStyles options={optionsRenta} />
+                                            )}
+                                        />
+                                        <FormErrorMessage fontWeight={'semibold'}>
+                                            {errors.expected_rentability?.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                </VStack>
+                            )}
+
+                            {isCheckDeuda && (
+                                <FormControl w={{ base: '100%', md: '50%' }}>
+                                    <FormLabel>
+                                        Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
+                                    </FormLabel>
+                                    <Controller
+                                        name="debt"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <CharkaSelect
+                                                {...field}
+                                                useBasicStyles
+                                                options={optionsDeuda}
+                                                defaultValue={
+                                                    project?.debt
+                                                        ? {
+                                                              label: Stage(project?.debt),
+                                                              value: project?.debt,
+                                                          }
+                                                        : [optionsDeuda[2]]
+                                                }
+                                            />
+                                        )}
+                                    />
+                                </FormControl>
+                            )}
+
+                            <FormControl id="guarantee" isInvalid={!!errors.guarantee} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel lineHeight="140%">
+                                    ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+                                <Controller
+                                    name="guarantee"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <CharkaSelect {...field} useBasicStyles options={optionsGuarantee} />
+                                    )}
+                                />
                                 <FormErrorMessage
                                     textColor="red.400"
                                     fontFamily="inter"
                                     fontSize="16px"
                                     fontWeight={'medium'}
-                                    textAlign="start"
-                                    w="full"
                                 >
-                                    {errors.main_image?.message}
+                                    {errors?.guarantee?.value?.message}
                                 </FormErrorMessage>
-                            </VStack>
-                        )}
-                    </FormControl>
+                            </FormControl>
 
-                    <FormControl id="qualities" w={{ base: '100%', md: '50%' }}>
-                        <FormLabel>Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
-                        <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
-                            Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para conseguir un futuro
-                            sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos globales a los
-                            que nos enfrentamos día a día, como la pobreza, la desigualdad, el clima, la degradación
-                            ambiental, la prosperidad, la paz y la justicia.{' '}
-                            <Link
-                                href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/"
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                color="#fff"
-                            >
-                                Ver más
-                            </Link>
-                        </FormHelperText>
-                        <Controller
-                            name="qualities"
-                            control={control}
-                            render={({ field }) => (
-                                <CharkaSelect
-                                    {...field}
-                                    defaultValue={Object.values(project?.qualities ?? []).map(
-                                        (item) => optionsQuality[item.id - 1],
+                            <FormControl id="stage" isInvalid={!!errors.stage} w={{ base: '100%', md: '50%' }}>
+                                <FormLabel>
+                                    ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+                                <Controller
+                                    name="stage"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <CharkaSelect {...field} useBasicStyles options={optionsStage} />
                                     )}
-                                    tagVariant="solid"
-                                    colorScheme="teal"
-                                    isOptionDisabled={() => selectedOptions?.length >= 3}
-                                    onChange={(o) => setSelectedOptions(o)}
-                                    isMulti
-                                    useBasicStyles
-                                    options={optionsQuality}
                                 />
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors?.stage?.value?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <FormControl
+                                id="finance_goal"
+                                isInvalid={!!errors.finance_goal}
+                                w={{ base: '100%', md: '50%' }}
+                            >
+                                <FormLabel lineHeight="140%">
+                                    Por favor selecciona el rango del monto de aporte aproximado que estás buscando
+                                    (CLP) <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+                                <Controller
+                                    name="finance_goal"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <CharkaSelect {...field} useBasicStyles options={optionsFinance} />
+                                    )}
+                                />
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors?.finance_goal?.value?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <FormControl
+                                id="time_lapse"
+                                isInvalid={!!errors.time_lapse}
+                                w={{ base: '100%', md: '50%' }}
+                            >
+                                <FormLabel>
+                                    Selecciona los plazos de inversión que buscas{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+                                <Controller
+                                    name="time_lapse"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <CharkaSelect {...field} useBasicStyles options={optionsTime} />
+                                    )}
+                                />
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors?.time_lapse?.value?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
+                                <FormLabel>
+                                    Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+                                <FormHelperText pb="15px" justifyContent="flex-start">
+                                    <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                                        Coméntanos de tus ventas de los últimos 12 meses, EBITDA último año fiscal,
+                                        Deuda/Patrimonio último año fiscal, Activo circulante vs Patrimonio último año
+                                        fiscal, Impuesto declarado en el último año fiscal.
+                                    </Text>
+                                </FormHelperText>
+                                <Controller
+                                    name="business_model"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Textarea
+                                            maxLength={700}
+                                            {...field}
+                                            fontSize={{ base: 'sm', md: 'md' }}
+                                            focusBorderColor={'primary.400'}
+                                            errorBorderColor={'red.400'}
+                                        />
+                                    )}
+                                />
+                                <Text
+                                    textColor="gray.300"
+                                    fontSize={{ base: 'xs', md: 'sm' }}
+                                    fontWeight="medium"
+                                    color="gray.400"
+                                >
+                                    {proyectBusiness?.length ?? 0}/700 caractéres
+                                </Text>
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors.business_model?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+                            <Stack
+                                spacing="60px"
+                                direction={{ base: 'column', md: 'row' }}
+                                alignItems="baseline"
+                                w="full"
+                            >
+                                <FormControl
+                                    id="investment_objective"
+                                    isInvalid={!!errors.investment_objective}
+                                    w={{ base: '100%', md: '50%' }}
+                                >
+                                    <FormLabel>
+                                        ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
+                                        <span style={{ color: '#4FD1C5' }}>*</span>
+                                    </FormLabel>
+                                    <Controller
+                                        name="investment_objective"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <CharkaSelect {...field} useBasicStyles options={optionsObject} />
+                                        )}
+                                    />
+                                    {proyectObject?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
+                                    <FormErrorMessage
+                                        textColor="red.400"
+                                        fontFamily="inter"
+                                        fontSize="16px"
+                                        fontWeight={'medium'}
+                                    >
+                                        {errors?.investment_objective?.value?.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                            </Stack>
+                        </VStack>
+
+                        <Divider pt="60px" />
+
+                        <Text fontSize="4xl" fontWeight="bold" pt="60px">
+                            Otra información relevante
+                        </Text>
+
+                        <VStack w="100%" align="flex-start" spacing="10px">
+                            <Text fontSize="2xl" fontWeight="medium">
+                                Miembros del equipo
+                            </Text>
+                            <Text fontSize="lg" fontWeight="normal">
+                                Máximo 10 miembros
+                            </Text>
+
+                            {members?.length <= 10 && (
+                                <Button onClick={onOpen} variant="solid">
+                                    Agregar perfil
+                                </Button>
                             )}
-                        />
 
-                        <FormHelperText textColor="gray.300" lineHeight="140%">
-                            Máximo 3 ODS
-                        </FormHelperText>
+                            <Stack w="full" pt="40px">
+                                {members
+                                    ? members?.map((member, i) => (
+                                          <HStack
+                                              key={i}
+                                              w="full"
+                                              spacing="15px"
+                                              justifyContent="space-between"
+                                              borderBottom="2px"
+                                              borderColor="gray.700"
+                                              pb="15px"
+                                          >
+                                              <Avatar src={member.main_image} name={member.name} alt={member.name} />
+                                              <VStack alignItems="start">
+                                                  <Text textColor="gray.500">Nombre</Text>
+                                                  <Text>{member.name}</Text>
+                                              </VStack>
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.qualities?.message}</FormErrorMessage>
-                    </FormControl>
+                                              <VStack alignItems="start">
+                                                  <Text textColor="gray.500">Posición dentro de la empresa</Text>
+                                                  <Text>{member.position}</Text>
+                                              </VStack>
 
-                    <FormControl id="third_parties" isInvalid={!!errors.third_parties} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel lineHeight="140%">
-                            Selecciona el respaldo con el que cuentas de una tercera organización{' '}
-                            <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
-                        <Controller
-                            name="third_parties"
-                            control={control}
-                            render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsThirty} />}
-                        />
+                                              <HStack>
+                                                  <Button
+                                                      onClick={() => handleDelete(member.id)}
+                                                      colorScheme="red"
+                                                      variant="solid"
+                                                      w="85px"
+                                                  >
+                                                      Eliminar
+                                                  </Button>
+                                                  <Button
+                                                      variant={'outline'}
+                                                      onClick={() => {
+                                                          setMember(member);
+                                                          onOpen();
+                                                      }}
+                                                      w="64px"
+                                                  >
+                                                      Editar
+                                                  </Button>
+                                              </HStack>
+                                          </HStack>
+                                      ))
+                                    : 'No hay equipo creado'}
+                            </Stack>
+                        </VStack>
 
-                        {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
-
-                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
-                            {errors.third_parties?.value?.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '50%' }}>
-                        <FormLabel lineHeight="140%">
-                            ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
-                            <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
-                        <Controller
-                            name="more_info"
-                            control={control}
-                            render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsMore} />}
-                        />
-                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
-                            {errors.more_info?.value?.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <FormControl id="social_impact">
+                        <FormControl id="business_web" isInvalid={!!errors.business_web} w="100%">
                             <FormLabel>
-                                Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
-                                valide la medición de resultados. (Tamaño máximo 2MB) (opcional)
+                                Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes para
+                                que inversionistas conozcan mejor tu proyecto.
+                            </FormLabel>
+                            <InputGroup>
+                                <InputLeftAddon>www.</InputLeftAddon>
+                                <Input {...register('business_web')} />
+                            </InputGroup>
+                        </FormControl>
+
+                        <VStack w="100%" align="flex-start" spacing="10px">
+                            <Text fontSize="2xl" fontWeight="medium">
+                                Información Complementaria
+                            </Text>
+                            <FormControl name="additional_info" isInvalid={!!errors.additional_info}>
+                                <FormLabel lineHeight="140%">
+                                    Agrega cualquier descripción o comentario que consideres necesario para que el
+                                    inversionista comprenda mejor tu proyecto{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+                                <FormHelperText textColor="gray.300">
+                                    Ejemplo: Aparición en prensa, prospección de mercado etc.
+                                </FormHelperText>
+
+                                <Controller
+                                    name="additional_info"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Textarea
+                                            mt="10px"
+                                            maxLength={1000}
+                                            {...field}
+                                            fontSize={{ base: 'sm', md: 'md' }}
+                                            focusBorderColor={'primary.400'}
+                                            errorBorderColor={'red.400'}
+                                        />
+                                    )}
+                                />
+
+                                <Text
+                                    textColor="gray.300"
+                                    fontSize={{ base: 'xs', md: 'sm' }}
+                                    fontWeight="medium"
+                                    color="gray.400"
+                                >
+                                    {watch().additional_info?.length ?? 0}/1000 caracteres
+                                </Text>
+
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors?.additional_info?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+                        </VStack>
+
+                        <FormControl id="additional_document">
+                            <FormLabel>
+                                ¿Tienes algún archivo (PDF) que consideres necesario subir como información
+                                complementaria para que sea vista por el inversionista? (Tamaño máximo 2MB) (Opcional)
                             </FormLabel>
 
-                            {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
-                            baseSocialPdf !== undefined ? (
+                            {baseAdditional !== 'https://api.gsg-match.com/cuadrado.png' &&
+                            baseAdditional !== undefined ? (
                                 <HStack align="center">
                                     <FiPaperclip />
-                                    {baseSocialPdf?.file?.name ? (
-                                        <Text fontWeight="bold">{baseSocialPdf?.file.name}</Text>
+                                    {baseAdditional?.file?.name ? (
+                                        <Text fontWeight="bold">{baseAdditional?.file.name}</Text>
                                     ) : (
                                         <Link
                                             fontFamily="inter"
                                             fontWeight="medium"
-                                            href={baseSocialPdf}
+                                            href={baseAdditional}
                                             target="_blank"
                                         >
                                             Ver PDF
                                         </Link>
                                     )}
-
                                     <Button
-                                        onClick={() => setBaseSocialPdf(undefined)}
+                                        onClick={() => setBaseAdditional(undefined)}
                                         bg="teal.400"
                                         pl="6px"
                                         _hover={{ bg: 'teal.300' }}
@@ -774,7 +1355,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </HStack>
                             ) : (
                                 <Stack>
-                                    <Input type="hidden" {...register('social_impact')} />
+                                    <Input type="hidden" {...register('additional_document')} />
                                     <UploadButton
                                         variant="solid"
                                         bg="gray.700"
@@ -799,8 +1380,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                                     });
                                                 } else {
                                                     const base = await getBase64(e.target.files![0]);
-                                                    setValue('social_impact', e.target.files[0]);
-                                                    setBaseSocialPdf({ base64: base, file: e.target.files[0] });
+                                                    setBaseAdditional({ base64: base, file: e.target.files[0] });
                                                 }
                                             } else {
                                                 toast({
@@ -818,263 +1398,23 @@ const Creator: NextPage = ({ project, quality }) => {
                                         Arrasta o sube tu PDF aquí
                                     </UploadButton>
                                     <FormErrorMessage fontWeight={'semibold'}>
-                                        {errors.main_image?.message}
+                                        {errors.additional_document?.message}
                                     </FormErrorMessage>
                                 </Stack>
                             )}
                         </FormControl>
-                    </VStack>
 
-                    <Divider paddingTop={'60px'} />
-
-                    <VStack align="flex-start">
-                        <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
-                            Descripción financiera
-                        </Text>
-
-                        <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                            Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo capital a
-                            través de inversores. En este proceso, entran nuevos socios que adquieren una parte del
-                            capital social de la empresa y, por tanto, el control de una parte de ésta. Por otro lado,
-                            la deuda comprende el entregar al equipo emprendedor un monto de dinero con el compromiso de
-                            ser devuelto en su totalidad e incluyendo intereses.
-                        </Text>
-                    </VStack>
-
-                    <VStack w={'full'} align="flex-start" spacing="40px">
-                        <VStack align="flex-start" w="full" spacing="20px">
-                            <VStack spacing="5px" align="flex-start" w="full">
-                                <Text fontSize={'2xl'} fontWeight="medium">
-                                    ¿Qué tipo de financiamiento buscas?
-                                </Text>
-                                <Text textColor="gray.300">Puedes elegir seleccionar capital, deuda o ambos</Text>
-                            </VStack>
-
-                            <VStack>
-                                <HStack spacing="60px" pt="20px">
-                                    <Checkbox
-                                        isChecked={isCheckCapital}
-                                        onChange={(e) => {
-                                            setIsCheckCapital(e.target.checked);
-                                            setValue('capital_stage', e.target.checked === false && undefined);
-                                            setValue('investment_types', e.target.checked === false && undefined);
-                                            setValue('expected_rentability', e.target.checked === false && undefined);
-                                        }}
-                                    >
-                                        Capital
-                                    </Checkbox>
-                                    <Checkbox
-                                        isChecked={isCheckDeuda}
-                                        onChange={(e) => {
-                                            setIsCheckDeuda(e.target.checked);
-                                            setValue('debt', e.target.checked === false && undefined);
-                                        }}
-                                    >
-                                        Deuda
-                                    </Checkbox>
-                                </HStack>
-                                <Text textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
-                                    {!isCheckCapital && !isCheckDeuda && 'Seleccione almenos 1 opción'}
-                                </Text>
-                            </VStack>
-                        </VStack>
-                        {isCheckCapital && (
-                            <VStack w={'full'} align="flex-start" spacing="40px">
-                                <FormControl w={{ base: '100%', md: '50%' }}>
-                                    <FormLabel>
-                                        Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
-                                    </FormLabel>
-                                    <Controller
-                                        name="capital_stage"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <CharkaSelect
-                                                {...field}
-                                                defaultValue={
-                                                    project?.capital_stage
-                                                        ? {
-                                                              label: Stage(project?.capital_stage),
-                                                              value: project?.capital_stage,
-                                                          }
-                                                        : [optionsCapital[6]]
-                                                }
-                                                useBasicStyles
-                                                options={optionsCapital}
-                                            />
-                                        )}
-                                    />
-                                    <FormErrorMessage fontWeight={'semibold'}>
-                                        {errors.capital_stage?.message}
-                                    </FormErrorMessage>
-                                </FormControl>
-
-                                <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
-                                    <FormLabel>
-                                        ¿Qué tipo de inversionista buscas? <span style={{ color: '#4FD1C5' }}>*</span>
-                                    </FormLabel>
-
-                                    <Controller
-                                        name="investment_types"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <CharkaSelect {...field} useBasicStyles options={optionsInvestor} />
-                                        )}
-                                    />
-                                    {errors.investment_types?.message}
-                                </FormControl>
-
-                                <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
-                                    <FormLabel lineHeight="140%">
-                                        ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
-                                        <span style={{ color: '#4FD1C5' }}>*</span>
-                                    </FormLabel>
-                                    <Controller
-                                        name="expected_rentability"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <CharkaSelect {...field} useBasicStyles options={optionsRenta} />
-                                        )}
-                                    />
-                                    <FormErrorMessage fontWeight={'semibold'}>
-                                        {errors.expected_rentability?.message}
-                                    </FormErrorMessage>
-                                </FormControl>
-                            </VStack>
-                        )}
-
-                        {isCheckDeuda && (
-                            <FormControl w={{ base: '100%', md: '50%' }}>
-                                <FormLabel>
-                                    Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="debt"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect
-                                            {...field}
-                                            useBasicStyles
-                                            options={optionsDeuda}
-                                            defaultValue={
-                                                project?.debt
-                                                    ? {
-                                                          label: Stage(project?.debt),
-                                                          value: project?.debt,
-                                                      }
-                                                    : [optionsDeuda[2]]
-                                            }
-                                        />
-                                    )}
-                                />
-                            </FormControl>
-                        )}
-
-                        <FormControl id="guarantee" isInvalid={!!errors.guarantee} w={{ base: '100%', md: '50%' }}>
-                            <FormLabel lineHeight="140%">
-                                ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
+                        <FormControl id="better_project" isInvalid={!!errors.better_project}>
+                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                                Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
-                            <Controller
-                                name="guarantee"
-                                control={control}
-                                render={({ field }) => (
-                                    <CharkaSelect {...field} useBasicStyles options={optionsGuarantee} />
-                                )}
-                            />
-                            <FormErrorMessage
-                                textColor="red.400"
-                                fontFamily="inter"
-                                fontSize="16px"
-                                fontWeight={'medium'}
-                            >
-                                {errors?.guarantee?.value?.message}
-                            </FormErrorMessage>
-                        </FormControl>
 
-                        <FormControl id="stage" isInvalid={!!errors.stage} w={{ base: '100%', md: '50%' }}>
-                            <FormLabel>
-                                ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
                             <Controller
-                                name="stage"
-                                control={control}
-                                render={({ field }) => (
-                                    <CharkaSelect {...field} useBasicStyles options={optionsStage} />
-                                )}
-                            />
-                            <FormErrorMessage
-                                textColor="red.400"
-                                fontFamily="inter"
-                                fontSize="16px"
-                                fontWeight={'medium'}
-                            >
-                                {errors?.stage?.value?.message}
-                            </FormErrorMessage>
-                        </FormControl>
-
-                        <FormControl
-                            id="finance_goal"
-                            isInvalid={!!errors.finance_goal}
-                            w={{ base: '100%', md: '50%' }}
-                        >
-                            <FormLabel lineHeight="140%">
-                                Por favor selecciona el rango del monto de aporte aproximado que estás buscando (CLP){' '}
-                                <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
-                            <Controller
-                                name="finance_goal"
-                                control={control}
-                                render={({ field }) => (
-                                    <CharkaSelect {...field} useBasicStyles options={optionsFinance} />
-                                )}
-                            />
-                            <FormErrorMessage
-                                textColor="red.400"
-                                fontFamily="inter"
-                                fontSize="16px"
-                                fontWeight={'medium'}
-                            >
-                                {errors?.finance_goal?.value?.message}
-                            </FormErrorMessage>
-                        </FormControl>
-
-                        <FormControl id="time_lapse" isInvalid={!!errors.time_lapse} w={{ base: '100%', md: '50%' }}>
-                            <FormLabel>
-                                Selecciona los plazos de inversión que buscas{' '}
-                                <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
-                            <Controller
-                                name="time_lapse"
-                                control={control}
-                                render={({ field }) => <CharkaSelect {...field} useBasicStyles options={optionsTime} />}
-                            />
-                            <FormErrorMessage
-                                textColor="red.400"
-                                fontFamily="inter"
-                                fontSize="16px"
-                                fontWeight={'medium'}
-                            >
-                                {errors?.time_lapse?.value?.message}
-                            </FormErrorMessage>
-                        </FormControl>
-
-                        <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
-                            <FormLabel>
-                                Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
-                            <FormHelperText pb="15px" justifyContent="flex-start">
-                                <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                                    Coméntanos de tus ventas de los últimos 12 meses, EBITDA último año fiscal,
-                                    Deuda/Patrimonio último año fiscal, Activo circulante vs Patrimonio último año
-                                    fiscal, Impuesto declarado en el último año fiscal.
-                                </Text>
-                            </FormHelperText>
-                            <Controller
-                                name="business_model"
+                                name="better_project"
                                 control={control}
                                 render={({ field }) => (
                                     <Textarea
-                                        maxLength={700}
                                         {...field}
                                         fontSize={{ base: 'sm', md: 'md' }}
                                         focusBorderColor={'primary.400'}
@@ -1082,298 +1422,129 @@ const Creator: NextPage = ({ project, quality }) => {
                                     />
                                 )}
                             />
+
                             <Text
                                 textColor="gray.300"
                                 fontSize={{ base: 'xs', md: 'sm' }}
                                 fontWeight="medium"
                                 color="gray.400"
                             >
-                                {proyectBusiness?.length ?? 0}/700 caractéres
+                                {proyectBetter?.length ?? 0}/700 caractéres
                             </Text>
+
                             <FormErrorMessage
                                 textColor="red.400"
                                 fontFamily="inter"
                                 fontSize="16px"
                                 fontWeight={'medium'}
                             >
-                                {errors.business_model?.message}
+                                {errors.better_project?.message}
                             </FormErrorMessage>
                         </FormControl>
-                        <Stack spacing="60px" direction={{ base: 'column', md: 'row' }} alignItems="baseline" w="full">
-                            <FormControl
-                                id="investment_objective"
-                                isInvalid={!!errors.investment_objective}
-                                w={{ base: '100%', md: '50%' }}
+
+                        <HStack spacing="20px" mt={{ base: '10px', md: 0 }} w="full">
+                            <Button
+                                onClick={handleDraft}
+                                type="button"
+                                variant="outline"
+                                w="full"
+                                h="40px"
+                                isLoading={saveDraft}
+                                loadingText="Guardando proyecto"
                             >
-                                <FormLabel>
-                                    ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <Controller
-                                    name="investment_objective"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <CharkaSelect {...field} useBasicStyles options={optionsObject} />
-                                    )}
-                                />
-                                {proyectObject?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
-                                <FormErrorMessage
-                                    textColor="red.400"
-                                    fontFamily="inter"
-                                    fontSize="16px"
-                                    fontWeight={'medium'}
-                                >
-                                    {errors?.investment_objective?.value?.message}
-                                </FormErrorMessage>
-                            </FormControl>
-                        </Stack>
-                    </VStack>
-
-                    <Divider pt="60px" />
-
-                    <Text fontSize="4xl" fontWeight="bold" pt="60px">
-                        Otra información relevante
-                    </Text>
-
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Miembros del equipo
-                        </Text>
-                        <Text fontSize="lg" fontWeight="normal">
-                            Máximo 10 miembros
-                        </Text>
-
-                        {members?.length <= 10 && (
-                            <Button onClick={onOpen} variant="solid">
-                                Agregar perfil
+                                Guardar borrador
                             </Button>
-                        )}
 
-                        <Stack w="full" pt="40px">
-                            {members
-                                ? members?.map((member, i) => (
-                                      <HStack
-                                          key={i}
-                                          w="full"
-                                          spacing="15px"
-                                          justifyContent="space-between"
-                                          borderBottom="2px"
-                                          borderColor="gray.700"
-                                          pb="15px"
-                                      >
-                                          <Avatar src={member.main_image} name={member.name} alt={member.name} />
-                                          <VStack alignItems="start">
-                                              <Text textColor="gray.500">Nombre</Text>
-                                              <Text>{member.name}</Text>
-                                          </VStack>
+                            <Stack w="full">
+                                <Tooltip
+                                    hasArrow
+                                    label="Hay campos sin completar"
+                                    shouldWrapChildren
+                                    bg="red.500"
+                                    isDisabled={isSubmitted ? isValid : true}
+                                >
+                                    <Button
+                                        isLoading={createProyect}
+                                        loadingText="Publicando proyecto"
+                                        type="button"
+                                        onClick={handleSubmit(handlePublished)}
+                                        variant="solid"
+                                        w="full"
+                                        h="40px"
+                                        disabled={isSubmitted ? !isValid : false}
+                                    >
+                                        Postular proyecto
+                                    </Button>
+                                </Tooltip>
+                            </Stack>
+                        </HStack>
+                    </VStack>
+                </Container>
 
-                                          <VStack alignItems="start">
-                                              <Text textColor="gray.500">Posición dentro de la empresa</Text>
-                                              <Text>{member.position}</Text>
-                                          </VStack>
+                <Stack
+                    justify="space-between"
+                    maxWidth="271px"
+                    h="389px"
+                    alignItems="center"
+                    position="fixed"
+                    top="200px"
+                    background="gray.800"
+                    py="20px"
+                    px="15px"
+                    rounded="16px"
+                    right="30px"
+                >
+                    <VStack w="100%">
+                        <HStack w="full" justify="space-between" color="gray.500" fontFamily="inter">
+                            <Text fontSize="15px">Tu progreso actual</Text>
+                            <Text fontSize="15px" fontWeight="semibold">
+                                5%
+                            </Text>
+                        </HStack>
 
-                                          <HStack>
-                                              <Button
-                                                  onClick={() => handleDelete(member.id)}
-                                                  colorScheme="red"
-                                                  variant="solid"
-                                                  w="85px"
-                                              >
-                                                  Eliminar
-                                              </Button>
-                                              <Button
-                                                  variant={'outline'}
-                                                  onClick={() => {
-                                                      setMember(member);
-                                                      onOpen();
-                                                  }}
-                                                  w="64px"
-                                              >
-                                                  Editar
-                                              </Button>
-                                          </HStack>
-                                      </HStack>
-                                  ))
-                                : 'No hay equipo creado'}
+                        <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
+                            <Stack w="5%" h="full" background="teal.400" rounded="20px"></Stack>
                         </Stack>
                     </VStack>
 
-                    <VStack w="100%" align="flex-start" spacing="10px">
-                        <Text fontSize="2xl" fontWeight="medium">
-                            Información Complementaria
-                        </Text>
-                        <FormControl name="additional_info" isInvalid={!!errors.additional_info}>
-                            <FormLabel lineHeight="140%">
-                                Agrega cualquier descripción o comentario que consideres necesario para que el
-                                inversionista comprenda mejor tu proyecto <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
-                            <FormHelperText textColor="gray.300">
-                                Ejemplo: Aparición en prensa, prospección de mercado etc.
-                            </FormHelperText>
+                    <VStack align="flex-start" fontSize="16px" fontFamily="inter">
+                        <HStack py="10px" pr="10px" background="gray.700">
+                            <Stack h="22px" w="2px" background="#319795" rounded="16px"></Stack>
+                            <Text>Descripción general</Text>
+                        </HStack>
 
-                            <Controller
-                                name="additional_info"
-                                control={control}
-                                render={({ field }) => (
-                                    <Textarea
-                                        mt="10px"
-                                        maxLength={1000}
-                                        {...field}
-                                        fontSize={{ base: 'sm', md: 'md' }}
-                                        focusBorderColor={'primary.400'}
-                                        errorBorderColor={'red.400'}
-                                    />
-                                )}
-                            />
+                        <HStack>
+                            <Text>Descripción financiera</Text>
+                        </HStack>
 
-                            <Text
-                                textColor="gray.300"
-                                fontSize={{ base: 'xs', md: 'sm' }}
-                                fontWeight="medium"
-                                color="gray.400"
-                            >
-                                {watch().additional_info?.length ?? 0}/1000 caracteres
-                            </Text>
-
-                            <FormErrorMessage
-                                textColor="red.400"
-                                fontFamily="inter"
-                                fontSize="16px"
-                                fontWeight={'medium'}
-                            >
-                                {errors?.additional_info?.message}
-                            </FormErrorMessage>
-                        </FormControl>
+                        <HStack>
+                            <Text>Otra información relevante</Text>
+                        </HStack>
                     </VStack>
 
-                    <FormControl id="additional_document">
-                        <FormLabel>
-                            ¿Tienes algún archivo (PDF) que consideres necesario subir como información complementaria
-                            para que sea vista por el inversionista? (Tamaño máximo 2MB) (Opcional)
-                        </FormLabel>
+                    <VStack spacing="30px">
+                        <VStack spacing="8px" w="full">
+                            <Button
+                                onClick={handleDraft}
+                                type="button"
+                                variant="solid"
+                                background="gray.200"
+                                _hover={{ background: 'gray.100' }}
+                                color="gray.800"
+                                w="full"
+                                isLoading={saveDraft}
+                                loadingText="Guardando proyecto"
+                            >
+                                Guardar borrador
+                            </Button>
 
-                        {baseAdditional !== 'https://api.gsg-match.com/cuadrado.png' && baseAdditional !== undefined ? (
-                            <HStack align="center">
-                                <FiPaperclip />
-                                {baseAdditional?.file?.name ? (
-                                    <Text fontWeight="bold">{baseAdditional?.file.name}</Text>
-                                ) : (
-                                    <Link fontFamily="inter" fontWeight="medium" href={baseAdditional} target="_blank">
-                                        Ver PDF
-                                    </Link>
-                                )}
-                                <Button
-                                    onClick={() => setBaseAdditional(undefined)}
-                                    bg="teal.400"
-                                    pl="6px"
-                                    _hover={{ bg: 'teal.300' }}
-                                    leftIcon={<FaTrash />}
-                                ></Button>
-                            </HStack>
-                        ) : (
-                            <Stack>
-                                <Input type="hidden" {...register('additional_document')} />
-                                <UploadButton
-                                    variant="solid"
-                                    bg="gray.700"
-                                    color="gray.50"
-                                    borderColor="gray.50"
-                                    border="1px dashed"
-                                    w="full"
-                                    h="300px"
-                                    colorScheme="basic"
-                                    fontWeight="normal"
-                                    onChange={async (e) => {
-                                        const { getBase64, isPDF } = await import('services/images');
-
-                                        if (e.target?.files && isPDF(e.target.files[0])) {
-                                            if (e.target?.files[0].size >= 2000000) {
-                                                toast({
-                                                    title: 'El archivo es muy grande, porfavor, suba una PDF menor o igual a 2MB',
-                                                    status: 'error',
-                                                    duration: 9000,
-                                                    isClosable: true,
-                                                    position: 'top-right',
-                                                });
-                                            } else {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setBaseAdditional({ base64: base, file: e.target.files[0] });
-                                            }
-                                        } else {
-                                            toast({
-                                                title: 'Archivo inválido.',
-                                                description:
-                                                    'El archivo subido no es correcto, porfavor, carge un PDF válido.',
-                                                status: 'error',
-                                                duration: 9000,
-                                                isClosable: true,
-                                                position: 'top-right',
-                                            });
-                                        }
-                                    }}
-                                >
-                                    Arrasta o sube tu PDF aquí
-                                </UploadButton>
-                                <FormErrorMessage fontWeight={'semibold'}>
-                                    {errors.additional_document?.message}
-                                </FormErrorMessage>
-                            </Stack>
-                        )}
-                    </FormControl>
-
-                    <FormControl id="better_project" isInvalid={!!errors.better_project}>
-                        <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                            Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
-                            <span style={{ color: '#4FD1C5' }}>*</span>
-                        </FormLabel>
-
-                        <Controller
-                            name="better_project"
-                            control={control}
-                            render={({ field }) => (
-                                <Textarea
-                                    {...field}
-                                    fontSize={{ base: 'sm', md: 'md' }}
-                                    focusBorderColor={'primary.400'}
-                                    errorBorderColor={'red.400'}
-                                />
-                            )}
-                        />
-
-                        <Text
-                            textColor="gray.300"
-                            fontSize={{ base: 'xs', md: 'sm' }}
-                            fontWeight="medium"
-                            color="gray.400"
-                        >
-                            {proyectBetter?.length ?? 0}/700 caractéres
-                        </Text>
-
-                        <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
-                            {errors.better_project?.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <HStack spacing="20px" mt={{ base: '10px', md: 0 }} w="full">
-                        <Button
-                            onClick={handleDraft}
-                            type="button"
-                            variant="outline"
-                            w="full"
-                            h="40px"
-                            isLoading={saveDraft}
-                            loadingText="Guardando proyecto"
-                        >
-                            Guardar borrador
-                        </Button>
-
-                        <Stack w="full">
                             <Tooltip
                                 hasArrow
                                 label="Hay campos sin completar"
+                                isDisabled={isSubmitted ? isValid : true}
                                 shouldWrapChildren
                                 bg="red.500"
-                                isDisabled={isSubmitted ? isValid : true}
+                                w="full"
                             >
                                 <Button
                                     isLoading={createProyect}
@@ -1381,17 +1552,20 @@ const Creator: NextPage = ({ project, quality }) => {
                                     type="button"
                                     onClick={handleSubmit(handlePublished)}
                                     variant="solid"
-                                    w="full"
-                                    h="40px"
+                                    w="241px"
                                     disabled={isSubmitted ? !isValid : false}
                                 >
                                     Postular proyecto
                                 </Button>
                             </Tooltip>
-                        </Stack>
-                    </HStack>
-                </VStack>
-            </Container>
+                        </VStack>
+
+                        <Text fontFamily="inter" fontSize="14px">
+                            ¿Necesitas ayuda?, Contáctanos
+                        </Text>
+                    </VStack>
+                </Stack>
+            </Stack>
 
             {isCropperOpenMain && (
                 <CropperModalBase64
