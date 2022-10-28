@@ -2045,7 +2045,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     } catch (error) {
         return {
             props: {
-                quality: quality?.qualities ?? null,
+                quality: {},
             },
         };
     }
