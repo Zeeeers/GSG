@@ -116,7 +116,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const { data: members, mutate } = useMembers();
     const toast = useToast();
 
-    const optionsQuality = quality.map((item) => ({
+    const optionsQuality = quality?.map((item) => ({
         value: item.id,
         label: `${item.id}) ${'  '} ${item.icon.name}`,
     }));
@@ -2031,20 +2031,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 
             return {
                 props: {
-                    project: data?.data?.gsg_project,
-                    quality: quality?.qualities,
+                    project: data?.data?.gsg_project ?? null,
+                    quality: quality?.qualities ?? null,
                 },
             };
         } else {
             return {
                 props: {
-                    quality: quality?.qualities,
+                    quality: quality?.qualities ?? null,
                 },
             };
         }
     } catch (error) {
         return {
-            props: {},
+            props: {
+                quality: quality?.qualities ?? null,
+            },
         };
     }
 };
