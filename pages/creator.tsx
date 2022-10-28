@@ -2,8 +2,10 @@
 // @ts-nocheck
 import {
     Avatar,
+    Box,
     Button,
     Checkbox,
+    Collapse,
     Container,
     Divider,
     FormControl,
@@ -11,11 +13,13 @@ import {
     FormHelperText,
     FormLabel,
     HStack,
+    Icon,
     Image,
     Img,
     Input,
     InputGroup,
     InputLeftAddon,
+    InputLeftElement,
     Link,
     Stack,
     Text,
@@ -44,16 +48,26 @@ import Time from 'components/projectDetail/formatText/time';
 import { IProjectForm, projectSchema } from 'forms/project';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FaCheck, FaTrash } from 'react-icons/fa';
+import { FaCheck, FaCheckCircle, FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
-import { IoMdEye } from 'react-icons/io';
+import {
+    IoIosArrowDown,
+    IoLogoFacebook,
+    IoLogoInstagram,
+    IoLogoLinkedin,
+    IoLogoYoutube,
+    IoMdEye,
+    IoMdGlobe,
+} from 'react-icons/io';
 import { useMembers } from 'services/api/lib/member';
 import { getQualities } from 'services/api/lib/qualities';
 import { Descendant } from 'slate';
 import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 import { getGsgProject } from '../services/api/lib/gsg';
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { BsCheckCircleFill } from 'react-icons/bs';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -70,6 +84,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
     const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
+    const [isOpenToggle, onToggle] = useState(false);
 
     const [createProyect, setCreateProyect] = useState(false);
     const [saveDraft, setSaveDraft] = useState(false);
@@ -88,6 +103,12 @@ const Creator: NextPage = ({ project, quality }) => {
     const [postulationEmployee, setPostulationEmployee] = useState(false);
     const [postulationProject, setPostulationProject] = useState(false);
 
+    const [isActiveItem, setIsActiveItem] = useState({
+        description: true,
+        finance: false,
+        other: false,
+    });
+
     const getNameFile = (url) => {
         return url(url.indexOf('/') + 2).split('/');
     };
@@ -99,6 +120,10 @@ const Creator: NextPage = ({ project, quality }) => {
         value: item.id,
         label: `${item.id}) ${'  '} ${item.icon.name}`,
     }));
+
+    const general_description = useRef<HTMLBodyElement>(null);
+    const finance_description = useRef<HTMLBodyElement>(null);
+    const other = useRef<HTMLBodyElement>(null);
 
     const {
         register,
@@ -420,11 +445,12 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
-    const proyectWeb = watch('business_web');
     const proyectMainImage = watch('main_image');
     const proyectOds = watch('qualities');
     const proyectParties = watch('third_parties');
     const proyectMore = watch('more_info');
+
+    const proyectWeb = watch('business_web');
     const proyectSocial = watch('social_impact');
     const proyectCapital = watch('capital_stage');
     const proyectDept = watch('debt');
@@ -435,6 +461,133 @@ const Creator: NextPage = ({ project, quality }) => {
     const proyectBusiness = watch('business_model', project?.business_model ?? '');
 
     const proyectObject = watch('investment_objective');
+
+    const percentDescription = () => {
+        const percent = [];
+
+        if (proyectTitle !== '') {
+            percent.push(proyectTitle);
+        }
+
+        if (proyectDescription !== '') {
+            percent.push(proyectDescription);
+        }
+
+        if (baseImgMain) {
+            percent.push(baseImgMain);
+        }
+
+        if (baseImgMain) {
+            percent.push(baseImgMain);
+        }
+
+        if (proyectParties !== '') {
+            percent.push(proyectParties);
+        }
+
+        if (proyectMore !== '') {
+            percent.push(proyectMore);
+        }
+
+        return percent.length;
+    };
+
+    const percentFinance = () => {
+        const percent = [];
+
+        if (isCheckCapital) {
+            if (watch('capital_stage')?.value !== undefined) {
+                percent.push(watch('capital_stage')?.value);
+            }
+
+            if (watch('expected_rentability')?.value !== undefined) {
+                percent.push(watch('expected_rentability')?.value);
+            }
+
+            if (proyectInvestType?.value !== undefined) {
+                percent.push(proyectInvestType?.value);
+            }
+        }
+
+        if (isCheckDeuda) {
+            if (proyectDept?.value !== undefined) {
+                percent.push(proyectDept?.value);
+            }
+        }
+
+        if (watch('guarantee')?.value !== undefined) {
+            percent.push(watch('guarantee')?.value);
+        }
+
+        if (watch('stage')?.value !== undefined) {
+            percent.push(watch('stage')?.value);
+        }
+
+        if (watch('finance_goal')?.value !== undefined) {
+            percent.push(watch('finance_goal')?.value);
+        }
+
+        if (watch('time_lapse')?.value !== undefined) {
+            percent.push(watch('time_lapse')?.value);
+        }
+
+        if (watch('investment_objective')?.value !== undefined) {
+            percent.push(watch('investment_objective')?.value);
+        }
+
+        if (proyectBusiness !== undefined) {
+            percent.push(proyectBusiness);
+        }
+
+        return percent.length;
+    };
+
+    const percentOther = () => {
+        const percent = [];
+
+        if (watch('better_project').value !== '') {
+            percent.push(watch('better_project'));
+        }
+
+        if (watch('additional_info') !== '') {
+            percent.push(watch('additional_info'));
+        }
+
+        return percent.length;
+    };
+
+    const handleScroll = () => {
+        let general_descriptionY = general_description.current?.getBoundingClientRect().y ?? 0;
+        let finance_descriptionY = finance_description.current?.getBoundingClientRect().y ?? 0;
+        let otherY = other.current?.getBoundingClientRect().y ?? 0;
+
+        if (general_descriptionY < 100) {
+            setIsActiveItem({
+                ...isActiveItem,
+                description: true,
+                finance: false,
+                other: false,
+            });
+        }
+
+        if (Math.round(finance_descriptionY) < 100) {
+            setIsActiveItem({
+                ...isActiveItem,
+                description: false,
+                finance: true,
+                other: false,
+            });
+        }
+
+        if (Math.round(otherY) < 100) {
+            setIsActiveItem({
+                ...isActiveItem,
+                description: false,
+                finance: false,
+                other: true,
+            });
+        }
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -450,26 +603,35 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     }, [project?.debt, project?.capital_stage]);
 
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
-            <Stack align="center">
-                <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
-                    <Container
-                        display="flex"
-                        flexDirection={{ base: 'column', md: 'row' }}
-                        justifyContent={{ base: 'center', md: 'space-between' }}
-                        maxWidth={'container.lg'}
-                    >
-                        <HStack spacing="10px">
-                            <Img src="/images/logo_empty.png" w="40px" h="40px" />
-                            <Text fontSize="24px" fontWeight="bold">
-                                MATCH
-                            </Text>
-                        </HStack>
+            <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
+                <Container
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    maxWidth="1250px"
+                    px={{ base: '16px', xl: '50px' }}
+                >
+                    <HStack spacing="10px">
+                        <Img src="/images/logo_empty.png" w="40px" h="40px" />
+                        <Text fontSize="24px" fontWeight="bold">
+                            MATCH
+                        </Text>
+                    </HStack>
 
+                    <Link href={`projectDetail/${project?.id}`} target="_blank">
                         <Button
                             variant="solid"
                             background="blue.700"
@@ -479,10 +641,18 @@ const Creator: NextPage = ({ project, quality }) => {
                         >
                             Vista previa
                         </Button>
-                    </Container>
-                </HStack>
+                    </Link>
+                </Container>
+            </HStack>
 
-                <Container maxWidth={'container.lg'} paddingTop={{ base: '17rem', sm: '100px' }} paddingBottom="153px">
+            <HStack align="flex-start" w="full">
+                <Container
+                    display="flex"
+                    maxWidth="900px"
+                    paddingTop={{ base: '100px', sm: '100px' }}
+                    paddingBottom="153px"
+                    position="relative"
+                >
                     <VStack as="form" align="start" spacing="40px">
                         <Link href="/explorer">
                             <Stack align="center" direction={{ base: 'column', sm: 'row' }} spacing="10px">
@@ -504,7 +674,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             </Stack>
                         </Link>
 
-                        <VStack align="start">
+                        <VStack align="start" ref={general_description} scrollMarginTop="100px">
                             <Text fontSize={'4xl'} fontWeight="bold">
                                 Descripción General
                             </Text>
@@ -512,50 +682,10 @@ const Creator: NextPage = ({ project, quality }) => {
                                 Los campos con el signo <span style={{ color: '#4FD1C5' }}>*</span> son obligatorios
                             </Text>
                         </VStack>
-                        <VStack spacing="15px">
-                            <Text fontSize="16px" fontFamily="inter">
-                                1. En relación a la búsqueda de capital que estás realizando, ¿Esta es para un proyecto
-                                específico dentro de tu empresa o es para tu empresa? Selecciona solo una opción *
-                            </Text>
-                            <HStack justify="start" w="full">
-                                <Button
-                                    fontSize="16px"
-                                    fontWeight="normal"
-                                    height="42px"
-                                    px="30px"
-                                    variant="solid"
-                                    background="gray.700"
-                                    _hover={{ background: 'gray.600' }}
-                                    leftIcon={postulationProject && <FaCheck color="#319795" />}
-                                    onClick={() => {
-                                        setPostulationProject(true);
-                                        setPostulationEmployee(false);
-                                    }}
-                                >
-                                    Proyecto específico
-                                </Button>
-                                <Button
-                                    fontSize="16px"
-                                    fontWeight="normal"
-                                    variant="solid"
-                                    height="42px"
-                                    px="30px"
-                                    background="gray.700"
-                                    _hover={{ background: 'gray.600' }}
-                                    leftIcon={postulationEmployee && <FaCheck color="#319795" />}
-                                    onClick={() => {
-                                        setPostulationEmployee(true);
-                                        setPostulationProject(false);
-                                    }}
-                                >
-                                    Empresa
-                                </Button>
-                            </HStack>
-                        </VStack>
 
                         <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
                             <FormLabel>
-                                Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
+                                1. Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Input maxLength={40} {...register('title')} />
                             <Text
@@ -563,6 +693,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                 fontSize={{ base: 'xs', md: 'sm' }}
                                 fontWeight="medium"
                                 color="gray.400"
+                                mt="15px"
+                                fontFamily="inter"
                             >
                                 {proyectTitle?.length ?? 0}/40 caractéres
                             </Text>
@@ -578,8 +710,14 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <FormControl id="description" isInvalid={!!errors.description}>
                             <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
+                                2. Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
+
+                            <FormHelperText mb="10px" fontFamily="inter" color="gray.300" lineHeight="19.6px">
+                                Porfavor detalla al inversionista en qué consiste el proyecto, cuál es su enfoque, los
+                                objetivos generales y específicos que tienen, y cualquier otra información que
+                                consideres relevante.
+                            </FormHelperText>
 
                             <Controller
                                 name="description"
@@ -600,6 +738,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                 fontSize={{ base: 'xs', md: 'sm' }}
                                 fontWeight="medium"
                                 color="gray.400"
+                                mt="15px"
+                                fontFamily="inter"
                             >
                                 {proyectDescription?.length ?? 0}/1000 caracteres (Mínimo 700 caracteres)
                             </Text>
@@ -618,7 +758,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <FormControl id="main_image" isInvalid={!!errors.main_image}>
                             <FormLabel lineHeight="140%">
-                                Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
+                                3. Sube una foto representativa del proyecto de tu empresa. Esta aparecerá dentro de las
                                 tarjetas que inversionistas y público en general podrán ver. (Tamaño máximo 2MB){' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
@@ -698,8 +838,8 @@ const Creator: NextPage = ({ project, quality }) => {
                             )}
                         </FormControl>
 
-                        <FormControl id="qualities" w={{ base: '100%', md: '50%' }}>
-                            <FormLabel>Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
+                        <FormControl id="qualities" w={{ base: '100%', md: '60%' }}>
+                            <FormLabel>4. Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
                             <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
                                 Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para conseguir un
                                 futuro sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos
@@ -744,10 +884,10 @@ const Creator: NextPage = ({ project, quality }) => {
                         <FormControl
                             id="third_parties"
                             isInvalid={!!errors.third_parties}
-                            w={{ base: '100%', md: '50%' }}
+                            w={{ base: '100%', md: '60%' }}
                         >
                             <FormLabel lineHeight="140%">
-                                Selecciona el respaldo con el que cuentas de una tercera organización{' '}
+                                5. ¿Cuál es el rubro/sector al cuál pertenece tu proyecto?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Controller
@@ -770,9 +910,38 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormErrorMessage>
                         </FormControl>
 
-                        <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '50%' }}>
+                        <FormControl
+                            id="third_parties"
+                            isInvalid={!!errors.third_parties}
+                            w={{ base: '100%', md: '60%' }}
+                        >
                             <FormLabel lineHeight="140%">
-                                ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
+                                6. ¿Cuentas con respaldo o reconocimiento de una organización externa? Selecciona una
+                                opción <span style={{ color: '#4FD1C5' }}>*</span>
+                            </FormLabel>
+                            <Controller
+                                name="third_parties"
+                                control={control}
+                                render={({ field }) => (
+                                    <CharkaSelect {...field} useBasicStyles options={optionsThirty} />
+                                )}
+                            />
+
+                            {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
+
+                            <FormErrorMessage
+                                textColor="red.400"
+                                fontFamily="inter"
+                                fontSize="16px"
+                                fontWeight={'medium'}
+                            >
+                                {errors.third_parties?.value?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '60%' }}>
+                            <FormLabel lineHeight="140%">
+                                7. ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Controller
@@ -793,8 +962,8 @@ const Creator: NextPage = ({ project, quality }) => {
                         <VStack w="100%" align="flex-start" spacing="10px">
                             <FormControl id="social_impact">
                                 <FormLabel>
-                                    Validación del impacto social/medioambiental: Por favor adjunta material (PDF) que
-                                    valide la medición de resultados. (Tamaño máximo 2MB) (opcional)
+                                    8. Validación del impacto social/medioambiental: Por favor adjunta material (PDF)
+                                    que valide la medición de resultados. (Tamaño máximo 2MB) (opcional)
                                 </FormLabel>
 
                                 {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
@@ -877,7 +1046,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <Divider paddingTop={'60px'} />
 
-                        <VStack align="flex-start">
+                        <VStack align="flex-start" ref={finance_description}>
                             <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
                                 Descripción financiera
                             </Text>
@@ -892,16 +1061,57 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <VStack w={'full'} align="flex-start" spacing="40px">
+                            <VStack spacing="15px">
+                                <Text fontSize="16px" fontFamily="inter" color="gray.50">
+                                    9. ¿Buscas capital para un proyecto específico dentro de tu empresa o para tu
+                                    empresa? *
+                                </Text>
+                                <HStack justify="start" w="full">
+                                    <Button
+                                        fontSize="16px"
+                                        fontWeight="normal"
+                                        height="42px"
+                                        px="30px"
+                                        variant="solid"
+                                        background="gray.700"
+                                        _hover={{ background: 'gray.600' }}
+                                        leftIcon={postulationProject && <FaCheck color="#319795" />}
+                                        onClick={() => {
+                                            setPostulationProject(true);
+                                            setPostulationEmployee(false);
+                                        }}
+                                    >
+                                        Proyecto específico
+                                    </Button>
+                                    <Button
+                                        fontSize="16px"
+                                        fontWeight="normal"
+                                        variant="solid"
+                                        height="42px"
+                                        px="30px"
+                                        background="gray.700"
+                                        _hover={{ background: 'gray.600' }}
+                                        leftIcon={postulationEmployee && <FaCheck color="#319795" />}
+                                        onClick={() => {
+                                            setPostulationEmployee(true);
+                                            setPostulationProject(false);
+                                        }}
+                                    >
+                                        Empresa
+                                    </Button>
+                                </HStack>
+                            </VStack>
+
                             <VStack align="flex-start" w="full" spacing="20px">
                                 <VStack spacing="5px" align="flex-start" w="full">
-                                    <Text fontSize={'2xl'} fontWeight="medium">
-                                        ¿Qué tipo de financiamiento buscas?
+                                    <Text fontSize="16px" fontWeight="medium">
+                                        10. ¿Qué tipo de financiamiento buscas?
                                     </Text>
                                     <Text textColor="gray.300">Puedes elegir seleccionar capital, deuda o ambos</Text>
                                 </VStack>
 
                                 <VStack>
-                                    <HStack spacing="60px" pt="20px">
+                                    <HStack spacing="60px">
                                         <Checkbox
                                             isChecked={isCheckCapital}
                                             onChange={(e) => {
@@ -931,11 +1141,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                     </Text>
                                 </VStack>
                             </VStack>
+
                             {isCheckCapital && (
                                 <VStack w={'full'} align="flex-start" spacing="40px">
-                                    <FormControl w={{ base: '100%', md: '50%' }}>
+                                    <FormControl w={{ base: '100%', md: '60%' }}>
                                         <FormLabel>
-                                            Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
+                                            11. Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <Controller
                                             name="capital_stage"
@@ -961,9 +1172,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         </FormErrorMessage>
                                     </FormControl>
 
-                                    <FormControl id="investment_types" w={{ base: '100%', md: '50%' }}>
+                                    <FormControl id="investment_types" w={{ base: '100%', md: '60%' }}>
                                         <FormLabel>
-                                            ¿Qué tipo de inversionista buscas?{' '}
+                                            12. ¿Qué tipo de inversionista buscas?{' '}
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
 
@@ -977,9 +1188,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         {errors.investment_types?.message}
                                     </FormControl>
 
-                                    <FormControl id="expected_rentability" w={{ base: '100%', md: '50%' }}>
+                                    <FormControl id="expected_rentability" w={{ base: '100%', md: '60%' }}>
                                         <FormLabel lineHeight="140%">
-                                            ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
+                                            13. ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <Controller
@@ -997,9 +1208,9 @@ const Creator: NextPage = ({ project, quality }) => {
                             )}
 
                             {isCheckDeuda && (
-                                <FormControl w={{ base: '100%', md: '50%' }}>
+                                <FormControl w={{ base: '100%', md: '60%' }}>
                                     <FormLabel>
-                                        Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
+                                        14. Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
                                     </FormLabel>
                                     <Controller
                                         name="debt"
@@ -1023,9 +1234,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormControl>
                             )}
 
-                            <FormControl id="guarantee" isInvalid={!!errors.guarantee} w={{ base: '100%', md: '50%' }}>
+                            <FormControl id="guarantee" isInvalid={!!errors.guarantee} w={{ base: '100%', md: '60%' }}>
                                 <FormLabel lineHeight="140%">
-                                    ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
+                                    15. ¿El producto o servicio que quiere financiar cuenta con garantías?{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
@@ -1045,9 +1256,10 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormErrorMessage>
                             </FormControl>
 
-                            <FormControl id="stage" isInvalid={!!errors.stage} w={{ base: '100%', md: '50%' }}>
+                            <FormControl id="stage" isInvalid={!!errors.stage} w={{ base: '100%', md: '60%' }}>
                                 <FormLabel>
-                                    ¿En qué etapa se encuentra tu proyecto? <span style={{ color: '#4FD1C5' }}>*</span>
+                                    16. ¿En qué etapa se encuentra tu proyecto?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
                                     name="stage"
@@ -1069,10 +1281,10 @@ const Creator: NextPage = ({ project, quality }) => {
                             <FormControl
                                 id="finance_goal"
                                 isInvalid={!!errors.finance_goal}
-                                w={{ base: '100%', md: '50%' }}
+                                w={{ base: '100%', md: '60%' }}
                             >
                                 <FormLabel lineHeight="140%">
-                                    Por favor selecciona el rango del monto de aporte aproximado que estás buscando
+                                    17. Por favor selecciona el rango del monto de aporte aproximado que estás buscando
                                     (CLP) <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
@@ -1095,10 +1307,10 @@ const Creator: NextPage = ({ project, quality }) => {
                             <FormControl
                                 id="time_lapse"
                                 isInvalid={!!errors.time_lapse}
-                                w={{ base: '100%', md: '50%' }}
+                                w={{ base: '100%', md: '60%' }}
                             >
                                 <FormLabel>
-                                    Selecciona los plazos de inversión que buscas{' '}
+                                    18. Selecciona los plazos de inversión que buscas{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
@@ -1118,47 +1330,6 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormErrorMessage>
                             </FormControl>
 
-                            <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
-                                <FormLabel>
-                                    Trayectoria del producto <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-                                <FormHelperText pb="15px" justifyContent="flex-start">
-                                    <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
-                                        Coméntanos de tus ventas de los últimos 12 meses, EBITDA último año fiscal,
-                                        Deuda/Patrimonio último año fiscal, Activo circulante vs Patrimonio último año
-                                        fiscal, Impuesto declarado en el último año fiscal.
-                                    </Text>
-                                </FormHelperText>
-                                <Controller
-                                    name="business_model"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Textarea
-                                            maxLength={700}
-                                            {...field}
-                                            fontSize={{ base: 'sm', md: 'md' }}
-                                            focusBorderColor={'primary.400'}
-                                            errorBorderColor={'red.400'}
-                                        />
-                                    )}
-                                />
-                                <Text
-                                    textColor="gray.300"
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="gray.400"
-                                >
-                                    {proyectBusiness?.length ?? 0}/700 caractéres
-                                </Text>
-                                <FormErrorMessage
-                                    textColor="red.400"
-                                    fontFamily="inter"
-                                    fontSize="16px"
-                                    fontWeight={'medium'}
-                                >
-                                    {errors.business_model?.message}
-                                </FormErrorMessage>
-                            </FormControl>
                             <Stack
                                 spacing="60px"
                                 direction={{ base: 'column', md: 'row' }}
@@ -1168,10 +1339,10 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <FormControl
                                     id="investment_objective"
                                     isInvalid={!!errors.investment_objective}
-                                    w={{ base: '100%', md: '50%' }}
+                                    w={{ base: '100%', md: '60%' }}
                                 >
                                     <FormLabel>
-                                        ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
+                                        19. ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
                                         <span style={{ color: '#4FD1C5' }}>*</span>
                                     </FormLabel>
                                     <Controller
@@ -1192,21 +1363,90 @@ const Creator: NextPage = ({ project, quality }) => {
                                     </FormErrorMessage>
                                 </FormControl>
                             </Stack>
+
+                            <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
+                                <FormLabel>
+                                    20. ¿Cúal es la trayectoria de tu proyecto?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+
+                                <Controller
+                                    name="business_model"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Textarea
+                                            maxLength={700}
+                                            {...field}
+                                            fontSize={{ base: 'sm', md: 'md' }}
+                                            focusBorderColor={'primary.400'}
+                                            errorBorderColor={'red.400'}
+                                        />
+                                    )}
+                                />
+
+                                <Text
+                                    textColor="gray.300"
+                                    fontSize={{ base: 'xs', md: 'sm' }}
+                                    fontWeight="medium"
+                                    color="gray.400"
+                                >
+                                    {proyectBusiness?.length ?? 0}/700 caractéres
+                                </Text>
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors.business_model?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <VStack w="full" align="flex-start" gap="15px">
+                                <Text fontSize="16px" fontFamily="inter">
+                                    21. Por favor completa los siguientes campos en relación a tu último año fiscal.
+                                    (opcional)
+                                </Text>
+
+                                <VStack w="full" gap="15px">
+                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                        <FormLabel>Ventas en los últimos 12 meses</FormLabel>
+                                        <Input maxW="420px" />
+                                    </FormControl>
+
+                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                        <FormLabel>EBITDA</FormLabel>
+                                        <Input maxW="420px" />
+                                    </FormControl>
+
+                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                        <FormLabel>Deuda/Patrimonio</FormLabel>
+                                        <Input maxW="420px" />
+                                    </FormControl>
+
+                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                        <FormLabel>Impuesto declarado</FormLabel>
+                                        <Input maxW="420px" />
+                                    </FormControl>
+                                </VStack>
+                            </VStack>
                         </VStack>
 
                         <Divider pt="60px" />
 
-                        <Text fontSize="4xl" fontWeight="bold" pt="60px">
+                        <Text fontSize="4xl" fontWeight="bold" pt="60px" ref={other}>
                             Otra información relevante
                         </Text>
 
                         <VStack w="100%" align="flex-start" spacing="10px">
-                            <Text fontSize="2xl" fontWeight="medium">
-                                Miembros del equipo
-                            </Text>
-                            <Text fontSize="lg" fontWeight="normal">
-                                Máximo 10 miembros
-                            </Text>
+                            <VStack w="100%" align="flex-start" spacing="5px">
+                                <Text fontSize="2xl" fontWeight="24px">
+                                    22. Miembros del equipo
+                                </Text>
+                                <Text fontSize="14px" fontWeight="normal" color="gray.300" fontFamily="inter">
+                                    Máximo 10 miembros
+                                </Text>
+                            </VStack>
 
                             {members?.length <= 10 && (
                                 <Button onClick={onOpen} variant="solid">
@@ -1217,9 +1457,10 @@ const Creator: NextPage = ({ project, quality }) => {
                             <Stack w="full" pt="40px">
                                 {members
                                     ? members?.map((member, i) => (
-                                          <HStack
+                                          <Stack
                                               key={i}
                                               w="full"
+                                              direction={{ base: 'column', md: 'row' }}
                                               spacing="15px"
                                               justifyContent="space-between"
                                               borderBottom="2px"
@@ -1257,31 +1498,71 @@ const Creator: NextPage = ({ project, quality }) => {
                                                       Editar
                                                   </Button>
                                               </HStack>
-                                          </HStack>
+                                          </Stack>
                                       ))
                                     : 'No hay equipo creado'}
                             </Stack>
                         </VStack>
 
-                        <FormControl id="business_web" isInvalid={!!errors.business_web} w="100%">
-                            <FormLabel>
-                                Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes para
-                                que inversionistas conozcan mejor tu proyecto.
-                            </FormLabel>
-                            <InputGroup>
-                                <InputLeftAddon>www.</InputLeftAddon>
-                                <Input {...register('business_web')} />
-                            </InputGroup>
-                        </FormControl>
+                        <VStack>
+                            <Text>
+                                23. Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes
+                                para que inversionistas conozcan mejor tu proyecto. (Opcional)
+                            </Text>
+
+                            <VStack spacing="15px" w="full">
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={IoLogoLinkedin} w="30px" h="30px" />
+                                        <Text>Linkedin</Text>
+                                    </HStack>
+
+                                    <Input maxW="720px" />
+                                </HStack>
+
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={IoLogoInstagram} w="30px" h="30px" />
+                                        <Text>Instagram</Text>
+                                    </HStack>
+
+                                    <Input maxW="720px" />
+                                </HStack>
+
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={IoLogoFacebook} w="30px" h="30px" />
+                                        <Text>Facebook</Text>
+                                    </HStack>
+
+                                    <Input maxW="720px" />
+                                </HStack>
+
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={IoLogoYoutube} w="30px" h="30px" />
+                                        <Text>Youtube</Text>
+                                    </HStack>
+
+                                    <Input maxW="720px" />
+                                </HStack>
+
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={AiOutlineGlobal} w="30px" h="30px" />
+                                        <Text>Sitio Web</Text>
+                                    </HStack>
+
+                                    <Input maxW="720px" />
+                                </HStack>
+                            </VStack>
+                        </VStack>
 
                         <VStack w="100%" align="flex-start" spacing="10px">
-                            <Text fontSize="2xl" fontWeight="medium">
-                                Información Complementaria
-                            </Text>
                             <FormControl name="additional_info" isInvalid={!!errors.additional_info}>
                                 <FormLabel lineHeight="140%">
-                                    Agrega cualquier descripción o comentario que consideres necesario para que el
-                                    inversionista comprenda mejor tu proyecto{' '}
+                                    24. Información Complementaria: Agrega cualquier descripción o comentario que
+                                    consideres necesario para que el inversionista comprenda mejor tu proyecto{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <FormHelperText textColor="gray.300">
@@ -1325,7 +1606,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <FormControl id="additional_document">
                             <FormLabel>
-                                ¿Tienes algún archivo (PDF) que consideres necesario subir como información
+                                25. ¿Tienes algún archivo (PDF) que consideres necesario subir como información
                                 complementaria para que sea vista por el inversionista? (Tamaño máximo 2MB) (Opcional)
                             </FormLabel>
 
@@ -1406,7 +1687,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <FormControl id="better_project" isInvalid={!!errors.better_project}>
                             <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
+                                26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
 
@@ -1482,43 +1763,115 @@ const Creator: NextPage = ({ project, quality }) => {
                 </Container>
 
                 <Stack
+                    display={{ base: 'none', md: 'flex' }}
+                    position="sticky"
                     justify="space-between"
                     maxWidth="271px"
                     h="389px"
                     alignItems="center"
-                    position="fixed"
-                    top="200px"
                     background="gray.800"
                     py="20px"
                     px="15px"
                     rounded="16px"
-                    right="30px"
+                    right="0px"
+                    top="300px"
+                    marginLeft="40px"
                 >
                     <VStack w="100%">
                         <HStack w="full" justify="space-between" color="gray.500" fontFamily="inter">
                             <Text fontSize="15px">Tu progreso actual</Text>
                             <Text fontSize="15px" fontWeight="semibold">
-                                5%
+                                {Math.round(((percentDescription() + percentFinance() + percentOther()) * 100) / 20)}%
                             </Text>
                         </HStack>
 
                         <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
-                            <Stack w="5%" h="full" background="teal.400" rounded="20px"></Stack>
+                            <Stack
+                                w={`${Math.round(
+                                    ((percentDescription() + percentFinance() + percentOther()) * 100) / 20,
+                                )}%`}
+                                h="full"
+                                background="teal.400"
+                                rounded="20px"
+                            ></Stack>
                         </Stack>
                     </VStack>
 
-                    <VStack align="flex-start" fontSize="16px" fontFamily="inter">
-                        <HStack py="10px" pr="10px" background="gray.700">
-                            <Stack h="22px" w="2px" background="#319795" rounded="16px"></Stack>
-                            <Text>Descripción general</Text>
+                    <VStack align="flex-start" fontSize="16px" fontFamily="inter" w="full">
+                        <HStack
+                            onClick={() =>
+                                general_description?.current.scrollIntoView({
+                                    behavior: 'smooth',
+                                })
+                            }
+                            py="10px"
+                            pl={`${isActiveItem.description ? 0 : '10px'}`}
+                            pr="10px"
+                            background={`${isActiveItem.description && 'gray.700'}`}
+                            w="full"
+                            justify="space-between"
+                            cursor="pointer"
+                            _hover={{ background: 'gray.700' }}
+                        >
+                            <HStack>
+                                {isActiveItem.description && (
+                                    <Stack h="22px" w="2px" background="#319795" rounded="16px"></Stack>
+                                )}
+                                <Text>Descripción general</Text>
+                            </HStack>
+                            {percentDescription() === 6 && (
+                                <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
+                            )}
                         </HStack>
 
-                        <HStack>
-                            <Text>Descripción financiera</Text>
+                        <HStack
+                            onClick={() =>
+                                finance_description?.current.scrollIntoView({
+                                    behavior: 'smooth',
+                                })
+                            }
+                            w="full"
+                            cursor="pointer"
+                            py="10px"
+                            pl={`${isActiveItem.finance ? 0 : '10px'}`}
+                            pr="10px"
+                            justify="space-between"
+                            background={`${isActiveItem.finance && 'gray.700'}`}
+                            _hover={{ background: 'gray.700' }}
+                        >
+                            <HStack>
+                                {isActiveItem.finance && (
+                                    <Stack h="22px" w="2px" background="#319795" rounded="16px"></Stack>
+                                )}
+                                <Text>Descripción financiera</Text>
+                            </HStack>
+                            {(percentFinance() === 9 || percentFinance() === 7 || percentFinance() === 10) && (
+                                <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
+                            )}
                         </HStack>
 
-                        <HStack>
-                            <Text>Otra información relevante</Text>
+                        <HStack
+                            onClick={() =>
+                                other?.current.scrollIntoView({
+                                    behavior: 'smooth',
+                                })
+                            }
+                            w="full"
+                            cursor="pointer"
+                            py="10px"
+                            pl={`${isActiveItem.other ? 0 : '10px'}`}
+                            pr="10px"
+                            justify="space-between"
+                            background={`${isActiveItem.other && 'gray.700'}`}
+                            _hover={{ background: 'gray.700' }}
+                        >
+                            <HStack>
+                                {isActiveItem.other && (
+                                    <Stack h="22px" w="2px" background="#319795" rounded="16px"></Stack>
+                                )}
+                                <Text>Otra información relevante</Text>
+                            </HStack>
+                            {percentOther() === 2 && <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />}
                         </HStack>
                     </VStack>
 
@@ -1561,10 +1914,93 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <Text fontFamily="inter" fontSize="14px">
-                            ¿Necesitas ayuda?, Contáctanos
+                            ¿Necesitas ayuda? Contáctanos
                         </Text>
                     </VStack>
                 </Stack>
+            </HStack>
+
+            <Stack
+                display={{ base: 'block', md: 'none' }}
+                bottom={0}
+                position="fixed"
+                bg="gray.800"
+                w="full"
+                h="fit-content"
+                py="20px"
+                px="16px"
+                zIndex={20}
+                spacing="15px"
+            >
+                <Button
+                    onClick={() => onToggle(!isOpenToggle)}
+                    position="absolute"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    w="40px"
+                    h="40px"
+                    background="gray.600"
+                    rounded="full"
+                    top="-20px"
+                    right="45%"
+                    zIndex={20}
+                >
+                    <Icon as={IoIosArrowDown} w="30px" h="30px" rotate="90px" />
+                </Button>
+
+                <VStack w="100%">
+                    <HStack w="full" justify="space-between" color="gray.50" fontFamily="inter">
+                        <Text fontSize="15px">Tu progreso actual</Text>
+                        <Text fontSize="15px" fontFamily="inter" fontWeight="medium">
+                            {`${Math.round(((percentDescription() + percentFinance() + percentOther()) * 100) / 20)}%`}
+                        </Text>
+                    </HStack>
+
+                    <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
+                        <Stack
+                            w={`${Math.round(
+                                ((percentDescription() + percentFinance() + percentOther()) * 100) / 20,
+                            )}%`}
+                            h="full"
+                            background="teal.400"
+                            rounded="20px"
+                        ></Stack>
+                    </Stack>
+                </VStack>
+
+                <Collapse in={isOpenToggle} animateOpacity>
+                    <VStack spacing="8px" w="full">
+                        <Button
+                            onClick={handleDraft}
+                            type="button"
+                            variant="solid"
+                            background="gray.200"
+                            _hover={{ background: 'gray.100' }}
+                            color="gray.800"
+                            w="full"
+                            h="38px"
+                            isLoading={saveDraft}
+                            loadingText="Guardando proyecto"
+                        >
+                            Guardar borrador
+                        </Button>
+
+                        <Button
+                            isLoading={createProyect}
+                            loadingText="Publicando proyecto"
+                            type="button"
+                            onClick={handleSubmit(handlePublished)}
+                            variant="solid"
+                            w="full"
+                            py="8px"
+                            h="38px"
+                            disabled={isSubmitted ? !isValid : false}
+                        >
+                            Postular proyecto
+                        </Button>
+                    </VStack>
+                </Collapse>
             </Stack>
 
             {isCropperOpenMain && (
