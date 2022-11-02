@@ -29,6 +29,7 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
+import TooltipPrettie from 'common/tooltip';
 import { PrivatePage } from '@clyc/next-route-manager';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select as CharkaSelect } from 'chakra-react-select';
@@ -60,6 +61,7 @@ import {
     IoLogoYoutube,
     IoMdEye,
     IoMdGlobe,
+    IoMdInformationCircle,
 } from 'react-icons/io';
 import { useMembers } from 'services/api/lib/member';
 import { getQualities } from 'services/api/lib/qualities';
@@ -184,6 +186,7 @@ const Creator: NextPage = ({ project, quality }) => {
             value: 'certified',
             label: 'Mido resultados sociales y/o medioambientales y están certificados y/o validados por terceros independientes a mi organización',
         },
+        { value: 'in-process-external', label: 'Estoy en proceso de medición de resultados validados por un externo' },
     ];
 
     const optionsStage = [
@@ -592,18 +595,6 @@ const Creator: NextPage = ({ project, quality }) => {
         return percent.length;
     };
 
-    console.log(
-        Math.round(
-            ((percentDescription() + percentFinance() + percentOther()) * 100) / isCheckCapital
-                ? 18
-                : isCheckDeuda
-                ? 16
-                : 20,
-        ),
-    );
-
-    console.log(percentDescription() + percentFinance() + percentOther());
-
     const handleScroll = () => {
         let general_descriptionY = general_description.current?.getBoundingClientRect().y ?? 0;
         let finance_descriptionY = finance_description.current?.getBoundingClientRect().y ?? 0;
@@ -887,21 +878,43 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="qualities" w={{ base: '100%', md: '60%' }}>
-                            <FormLabel>4. Selecciona los ODS que contribuyes en resolver (Opcional)</FormLabel>
-                            <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
-                                Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para conseguir un
-                                futuro sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos
-                                globales a los que nos enfrentamos día a día, como la pobreza, la desigualdad, el clima,
-                                la degradación ambiental, la prosperidad, la paz y la justicia.{' '}
-                                <Link
-                                    href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/"
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                    color="#fff"
-                                >
-                                    Ver más
-                                </Link>
-                            </FormHelperText>
+                            <HStack align="flex-start" spacing="0px">
+                                <FormLabel>4. Selecciona los ODS que contribuyes en resolver (Opcional)</FormLabel>
+                                <TooltipPrettie>
+                                    <>
+                                        <Text
+                                            textAlign="left"
+                                            background="blue.700"
+                                            fontSize="24px"
+                                            px="10px"
+                                            fontWeight="bold"
+                                            textTransform="uppercase"
+                                        >
+                                            Objetivos de <br /> desarrollo sostenible
+                                        </Text>
+
+                                        <Text fontSize="14px" color="gray.300">
+                                            Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para
+                                            conseguir un futuro sostenible para todos. Se interrelacionan entre sí e
+                                            incorporan los desafíos globales a los que nos enfrentamos día a día, como
+                                            la pobreza, la desigualdad, el clima, la degradación ambiental, la
+                                            prosperidad, la paz y la justicia.
+                                        </Text>
+
+                                        <Link
+                                            href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/"
+                                            target="_blank"
+                                            rel="noreferrer noopener"
+                                            w="full"
+                                        >
+                                            <Button w="full" variant="solid">
+                                                Saber más
+                                            </Button>
+                                        </Link>
+                                    </>
+                                </TooltipPrettie>
+                            </HStack>
+
                             <Controller
                                 name="qualities"
                                 control={control}
