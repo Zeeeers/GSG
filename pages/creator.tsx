@@ -655,7 +655,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 >
                     <VStack as="form" align="start" spacing="40px">
                         <Link href="/explorer">
-                            <Stack align="center" direction={{ base: 'column', sm: 'row' }} spacing="10px">
+                            <HStack align="center"  spacing="10px">
                                 <Button
                                     variant="unstyled"
                                     textColor="black"
@@ -671,11 +671,11 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
                                     Volver al inicio
                                 </Text>
-                            </Stack>
+                            </HStack>
                         </Link>
 
                         <VStack align="start" ref={general_description} scrollMarginTop="100px">
-                            <Text fontSize={'4xl'} fontWeight="bold">
+                            <Text fontSize={'30px'} fontWeight="bold" textTransform='uppercase'>
                                 Descripción General
                             </Text>
                             <Text>
@@ -713,7 +713,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 2. Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
 
-                            <FormHelperText mb="10px" fontFamily="inter" color="gray.300" lineHeight="19.6px">
+                            <FormHelperText mb="10px" fontFamily="inter" color="gray.300" lineHeight="140%">
                                 Porfavor detalla al inversionista en qué consiste el proyecto, cuál es su enfoque, los
                                 objetivos generales y específicos que tienen, y cualquier otra información que
                                 consideres relevante.
@@ -839,7 +839,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="qualities" w={{ base: '100%', md: '60%' }}>
-                            <FormLabel>4. Selecciona los ODS que contribuyes en resolver (opcional)</FormLabel>
+                            <FormLabel>4. Selecciona los ODS que contribuyes en resolver (Opcional)</FormLabel>
                             <FormHelperText textColor="gray.300" lineHeight="140%" mb="20px">
                                 Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para conseguir un
                                 futuro sostenible para todos. Se interrelacionan entre sí e incorporan los desafíos
@@ -961,9 +961,9 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <VStack w="100%" align="flex-start" spacing="10px">
                             <FormControl id="social_impact">
-                                <FormLabel>
+                                <FormLabel lineHeight="140%">
                                     8. Validación del impacto social/medioambiental: Por favor adjunta material (PDF)
-                                    que valide la medición de resultados. (Tamaño máximo 2MB) (opcional)
+                                    que valide la medición de resultados. (Tamaño máximo 2MB) (Opcional)
                                 </FormLabel>
 
                                 {baseSocialPdf !== 'https://api.gsg-match.com/cuadrado.png' &&
@@ -1051,7 +1051,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 Descripción financiera
                             </Text>
 
-                            <Text textColor="gray.300" fontSize="14px" lineHeight="19.6px" fontFamily="inter">
+                            <Text fontSize="13px" color='gray.50' lineHeight="140%" fontFamily="inter">
                                 Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo
                                 capital a través de inversores. En este proceso, entran nuevos socios que adquieren una
                                 parte del capital social de la empresa y, por tanto, el control de una parte de ésta.
@@ -1062,7 +1062,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <VStack w={'full'} align="flex-start" spacing="40px">
                             <VStack spacing="15px">
-                                <Text fontSize="16px" fontFamily="inter" color="gray.50">
+                                <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                     9. ¿Buscas capital para un proyecto específico dentro de tu empresa o para tu
                                     empresa? *
                                 </Text>
@@ -1073,7 +1073,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         height="42px"
                                         px="30px"
                                         variant="solid"
-                                        background="gray.700"
+                                        background={postulationProject ? "gray.600" : "gray.700"}
                                         _hover={{ background: 'gray.600' }}
                                         leftIcon={postulationProject && <FaCheck color="#319795" />}
                                         onClick={() => {
@@ -1089,7 +1089,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         variant="solid"
                                         height="42px"
                                         px="30px"
-                                        background="gray.700"
+                                        background={postulationEmployee ? "gray.600" : "gray.700"}
                                         _hover={{ background: 'gray.600' }}
                                         leftIcon={postulationEmployee && <FaCheck color="#319795" />}
                                         onClick={() => {
@@ -1403,9 +1403,9 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormControl>
 
                             <VStack w="full" align="flex-start" gap="15px">
-                                <Text fontSize="16px" fontFamily="inter">
+                                <Text fontSize="16px" fontFamily="inter" lineHeight="140%">
                                     21. Por favor completa los siguientes campos en relación a tu último año fiscal.
-                                    (opcional)
+                                    (Opcional)
                                 </Text>
 
                                 <VStack w="full" gap="15px">
@@ -1505,7 +1505,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <VStack>
-                            <Text>
+                            <Text lineHeight="140%"> 
                                 23. Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes
                                 para que inversionistas conozcan mejor tu proyecto. (Opcional)
                             </Text>
@@ -1565,7 +1565,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     consideres necesario para que el inversionista comprenda mejor tu proyecto{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
-                                <FormHelperText textColor="gray.300">
+                                <FormHelperText textColor="gray.300" mt='0px' mb='15px'>
                                     Ejemplo: Aparición en prensa, prospección de mercado etc.
                                 </FormHelperText>
 
@@ -1605,7 +1605,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <FormControl id="additional_document">
-                            <FormLabel>
+                            <FormLabel lineHeight="140%">
                                 25. ¿Tienes algún archivo (PDF) que consideres necesario subir como información
                                 complementaria para que sea vista por el inversionista? (Tamaño máximo 2MB) (Opcional)
                             </FormLabel>
@@ -1686,8 +1686,8 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="better_project" isInvalid={!!errors.better_project}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
-                                26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse?{' '}
+                            <FormLabel fontSize={{ base: 'sm', md: 'md' }} lineHeight='140%'>
+                                26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse de una potencial inserción de un inversionista?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
 
