@@ -513,8 +513,8 @@ const Creator: NextPage = ({ project, quality }) => {
             percent.push(baseImgMain);
         }
 
-        if (baseImgMain) {
-            percent.push(baseImgMain);
+        if (watch('sector')?.value !== undefined) {
+            percent.push(watch('sector')?.value);
         }
 
         if (proyectParties !== '') {
@@ -581,7 +581,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const percentOther = () => {
         const percent = [];
 
-        if (watch('better_project').value !== '') {
+        if (watch('better_project') !== '') {
             percent.push(watch('better_project'));
         }
 
@@ -591,6 +591,18 @@ const Creator: NextPage = ({ project, quality }) => {
 
         return percent.length;
     };
+
+    console.log(
+        Math.round(
+            ((percentDescription() + percentFinance() + percentOther()) * 100) / isCheckCapital
+                ? 18
+                : isCheckDeuda
+                ? 16
+                : 20,
+        ),
+    );
+
+    console.log(percentDescription() + percentFinance() + percentOther());
 
     const handleScroll = () => {
         let general_descriptionY = general_description.current?.getBoundingClientRect().y ?? 0;
@@ -1813,14 +1825,19 @@ const Creator: NextPage = ({ project, quality }) => {
                         <HStack w="full" justify="space-between" color="gray.500" fontFamily="inter">
                             <Text fontSize="15px">Tu progreso actual</Text>
                             <Text fontSize="15px" fontWeight="semibold">
-                                {Math.round(((percentDescription() + percentFinance() + percentOther()) * 100) / 20)}%
+                                {Math.round(
+                                    ((percentDescription() + percentFinance() + percentOther()) * 100) /
+                                        (isCheckCapital ? 17 : isCheckDeuda ? 15 : 19),
+                                )}
+                                %
                             </Text>
                         </HStack>
 
                         <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
                             <Stack
                                 w={`${Math.round(
-                                    ((percentDescription() + percentFinance() + percentOther()) * 100) / 20,
+                                    ((percentDescription() + percentFinance() + percentOther()) * 100) /
+                                        (isCheckCapital ? 17 : isCheckDeuda ? 15 : 20),
                                 )}%`}
                                 h="full"
                                 background="teal.400"
@@ -1985,14 +2002,18 @@ const Creator: NextPage = ({ project, quality }) => {
                     <HStack w="full" justify="space-between" color="gray.50" fontFamily="inter">
                         <Text fontSize="15px">Tu progreso actual</Text>
                         <Text fontSize="15px" fontFamily="inter" fontWeight="medium">
-                            {`${Math.round(((percentDescription() + percentFinance() + percentOther()) * 100) / 20)}%`}
+                            {`${Math.round(
+                                ((percentDescription() + percentFinance() + percentOther()) * 100) /
+                                    (isCheckCapital ? 17 : isCheckDeuda ? 15 : 20),
+                            )}%`}
                         </Text>
                     </HStack>
 
                     <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
                         <Stack
                             w={`${Math.round(
-                                ((percentDescription() + percentFinance() + percentOther()) * 100) / 20,
+                                ((percentDescription() + percentFinance() + percentOther()) * 100) /
+                                    (isCheckCapital ? 17 : isCheckDeuda ? 15 : 20),
                             )}%`}
                             h="full"
                             background="teal.400"
