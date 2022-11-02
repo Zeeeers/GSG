@@ -15,6 +15,7 @@ export interface IProjectForm {
 
     more_info: select;
     third_parties: select;
+    sector: select;
     stage?: select;
     investment_objective?: select;
     capital_stage?: select;
@@ -52,6 +53,7 @@ const projectShape: ZodShape<IProjectForm> = {
     main_image: z.string().optional(),
     social_impact: z.string().optional(),
 
+    sector: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     more_info: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     third_parties: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     stage: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),

@@ -68,6 +68,7 @@ import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 import { getGsgProject } from '../services/api/lib/gsg';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import { BsCheckCircleFill } from 'react-icons/bs';
+import Sector from 'components/projectDetail/formatText/sector';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -143,6 +144,7 @@ const Creator: NextPage = ({ project, quality }) => {
             description: project?.description ?? '',
             business_web: project?.business_web,
             third_parties: { value: project?.third_parties ?? '', label: ThirdParties(project?.third_parties) },
+            sector: { value: project?.sector ?? '', label: Sector(project?.sector) },
             more_info: { value: project?.more_info ?? '', label: Messure(project?.more_info) },
             stage: { value: project?.stage ?? '', label: StageCapital(project?.stage) },
             capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
@@ -253,6 +255,39 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'Cualquiera', label: 'Cualquiera' },
     ];
 
+    const optionsSector = [
+        { value: 'Fishing', label: 'Pesca' },
+        { value: 'Agricultural products', label: 'Productos Agrícola' },
+        { value: 'Forestry and silviculture', label: 'Forestal y Silvícola' },
+        { value: 'Livestock', label: 'Pecuario' },
+        { value: 'Winery', label: 'Vitivinícola' },
+        { value: 'Processed foods', label: 'Alimentos procesados' },
+        { value: 'Metallic mining', label: 'Minería Metálica' },
+        { value: 'Non-metallic mining', label: 'Minería no metálica' },
+        { value: 'Environment', label: 'Medioambiente' },
+        { value: 'Construction and infrastructure', label: 'Construcción e infraestructura' },
+        { value: 'Non-conventional renewable energy', label: 'Energía renovables no convencionales' },
+        { value: 'Energy efficiency', label: 'Eficiencia energética - Smart grid' },
+        { value: 'Transport', label: 'Transporte, logística, almacnto.y serv. conexos' },
+        { value: 'Biotechnology', label: 'Biotecnología' },
+        { value: 'Telecommunications and digital media', label: 'Telecomunicaciones y medios digitales' },
+        { value: 'Manufacturing', label: 'Manufactura' },
+        { value: 'Metalmechanics', label: 'Metalmecánica' },
+        { value: 'Chemical and petrochemical', label: 'Química y petroquímica' },
+        { value: 'Biomedicine', label: 'Biomedicina' },
+        { value: 'Public health', label: 'Salud pública' },
+        { value: 'Creative industries', label: 'Industrias creativas' },
+        { value: 'Education and training', label: 'Educación y capacitación' },
+        { value: 'Financial services', label: 'Servicios financieros' },
+        { value: 'Business and professional services', label: 'Servicios empresariales y profesionales' },
+        { value: 'Computing and information technology', label: 'Informática y tecnologías de la información' },
+        { value: 'Trade', label: 'Comercio' },
+        { value: 'Tourism', label: 'Turismo' },
+        { value: 'Establishments', label: 'Establecimientos de alojamiento turísitico - rest.' },
+        { value: 'Others', label: 'Otros' },
+        { value: 'Multisectorial', label: 'Multisectorial' },
+    ];
+
     const handlePublished = async (data: IProjectForm) => {
         setCreateProyect(true);
         const dataProject = {
@@ -263,6 +298,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 social_impact: baseSocialPdf?.base64,
                 more_info: data.more_info?.value,
                 third_parties: data.third_parties?.value,
+                sector: data.sector?.value,
                 stage: data.stage?.value,
                 investment_objective: data.investment_objective?.value,
                 capital_stage: isCheckCapital ? data.capital_stage?.value : null,
@@ -326,7 +362,6 @@ const Creator: NextPage = ({ project, quality }) => {
     };
 
     const handleDraft = async (data: IProjectForm) => {
-        console.log(isCheckDeuda);
         setSaveDraft(true);
         const dataProject = {
             gsg_project: {
@@ -337,6 +372,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 social_impact: baseSocialPdf?.base64,
                 more_info: proyectMore?.value,
                 third_parties: proyectParties?.value,
+                sector: watch('sector')?.value,
                 capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
                 debt: isCheckDeuda ? proyectDept?.value : null,
                 investment_types: isCheckCapital ? proyectInvestType?.value : null,
@@ -655,7 +691,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 >
                     <VStack as="form" align="start" spacing="40px">
                         <Link href="/explorer">
-                            <HStack align="center"  spacing="10px">
+                            <HStack align="center" spacing="10px">
                                 <Button
                                     variant="unstyled"
                                     textColor="black"
@@ -675,7 +711,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </Link>
 
                         <VStack align="start" ref={general_description} scrollMarginTop="100px">
-                            <Text fontSize={'30px'} fontWeight="bold" textTransform='uppercase'>
+                            <Text fontSize={'30px'} fontWeight="bold" textTransform="uppercase">
                                 Descripción General
                             </Text>
                             <Text>
@@ -881,20 +917,16 @@ const Creator: NextPage = ({ project, quality }) => {
                             <FormErrorMessage fontWeight={'semibold'}>{errors.qualities?.message}</FormErrorMessage>
                         </FormControl>
 
-                        <FormControl
-                            id="third_parties"
-                            isInvalid={!!errors.third_parties}
-                            w={{ base: '100%', md: '60%' }}
-                        >
+                        <FormControl id="sector" isInvalid={!!errors.sector} w={{ base: '100%', md: '60%' }}>
                             <FormLabel lineHeight="140%">
                                 5. ¿Cuál es el rubro/sector al cuál pertenece tu proyecto?{' '}
                                 <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Controller
-                                name="third_parties"
+                                name="sector"
                                 control={control}
                                 render={({ field }) => (
-                                    <CharkaSelect {...field} useBasicStyles options={optionsThirty} />
+                                    <CharkaSelect {...field} useBasicStyles options={optionsSector} />
                                 )}
                             />
 
@@ -906,7 +938,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 fontSize="16px"
                                 fontWeight={'medium'}
                             >
-                                {errors.third_parties?.value?.message}
+                                {errors.sector?.value?.message}
                             </FormErrorMessage>
                         </FormControl>
 
@@ -1051,7 +1083,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 Descripción financiera
                             </Text>
 
-                            <Text fontSize="13px" color='gray.50' lineHeight="140%" fontFamily="inter">
+                            <Text fontSize="13px" color="gray.50" lineHeight="140%" fontFamily="inter">
                                 Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo
                                 capital a través de inversores. En este proceso, entran nuevos socios que adquieren una
                                 parte del capital social de la empresa y, por tanto, el control de una parte de ésta.
@@ -1073,7 +1105,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         height="42px"
                                         px="30px"
                                         variant="solid"
-                                        background={postulationProject ? "gray.600" : "gray.700"}
+                                        background={postulationProject ? 'gray.600' : 'gray.700'}
                                         _hover={{ background: 'gray.600' }}
                                         leftIcon={postulationProject && <FaCheck color="#319795" />}
                                         onClick={() => {
@@ -1089,7 +1121,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         variant="solid"
                                         height="42px"
                                         px="30px"
-                                        background={postulationEmployee ? "gray.600" : "gray.700"}
+                                        background={postulationEmployee ? 'gray.600' : 'gray.700'}
                                         _hover={{ background: 'gray.600' }}
                                         leftIcon={postulationEmployee && <FaCheck color="#319795" />}
                                         onClick={() => {
@@ -1505,7 +1537,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <VStack>
-                            <Text lineHeight="140%"> 
+                            <Text lineHeight="140%">
                                 23. Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes
                                 para que inversionistas conozcan mejor tu proyecto. (Opcional)
                             </Text>
@@ -1565,7 +1597,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     consideres necesario para que el inversionista comprenda mejor tu proyecto{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
-                                <FormHelperText textColor="gray.300" mt='0px' mb='15px'>
+                                <FormHelperText textColor="gray.300" mt="0px" mb="15px">
                                     Ejemplo: Aparición en prensa, prospección de mercado etc.
                                 </FormHelperText>
 
@@ -1686,9 +1718,9 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="better_project" isInvalid={!!errors.better_project}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }} lineHeight='140%'>
-                                26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse de una potencial inserción de un inversionista?{' '}
-                                <span style={{ color: '#4FD1C5' }}>*</span>
+                            <FormLabel fontSize={{ base: 'sm', md: 'md' }} lineHeight="140%">
+                                26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse de una
+                                potencial inserción de un inversionista? <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
 
                             <Controller
