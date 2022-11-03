@@ -71,6 +71,7 @@ import { getGsgProject } from '../services/api/lib/gsg';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import Sector from 'components/projectDetail/formatText/sector';
+import { motion } from 'framer-motion';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -117,7 +118,7 @@ const Creator: NextPage = ({ project, quality }) => {
     };
 
     const { data: members, mutate } = useMembers();
-    const toast = useToast();
+    const toast = useToast({});
 
     const optionsQuality = quality?.map((item) => ({
         value: item.id,
@@ -655,13 +656,22 @@ const Creator: NextPage = ({ project, quality }) => {
             <NextSeo title={'Creador de proyecto - GSG'} />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
-            <HStack position="fixed" bg="gray.800" w="full" py={{ base: '15px', md: '14px' }} zIndex={20}>
+            <HStack
+                align="flex-start"
+                justify="flex-start"
+                position="fixed"
+                bg="gray.800"
+                w="full"
+                py={{ base: '15px', md: '14px' }}
+                zIndex={20}
+            >
                 <Container
                     display="flex"
                     flexDirection="row"
                     justifyContent="space-between"
                     maxWidth="1250px"
                     px={{ base: '16px', xl: '50px' }}
+                    marginLeft={{ base: '0px', lg: 'auto' }}
                 >
                     <HStack spacing="10px">
                         <Img src="/images/logo_empty.png" w="40px" h="40px" />
@@ -723,7 +733,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <FormControl id="title" isInvalid={!!errors.title} w={{ base: '100%', md: '50%' }}>
-                            <FormLabel>
+                            <FormLabel fontFamily="inter">
                                 1. Título del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Input maxLength={40} {...register('title')} />
@@ -748,7 +758,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }}>
+                            <FormLabel>
                                 2. Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
 
@@ -893,7 +903,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Objetivos de <br /> desarrollo sostenible
                                         </Text>
 
-                                        <Text fontSize="14px" color="gray.300">
+                                        <Text fontSize="14px" color="gray.300" fontFamily="inter">
                                             Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para
                                             conseguir un futuro sostenible para todos. Se interrelacionan entre sí e
                                             incorporan los desafíos globales a los que nos enfrentamos día a día, como
@@ -1104,11 +1114,11 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Divider paddingTop={'60px'} />
 
                         <VStack align="flex-start" ref={finance_description}>
-                            <Text fontSize={'4xl'} fontWeight="bold" pt="60px">
+                            <Text fontSize="30px" fontWeight="bold" pt="60px">
                                 Descripción financiera
                             </Text>
 
-                            <Text fontSize="13px" color="gray.50" lineHeight="140%" fontFamily="inter">
+                            <Text fontSize="16px" color="gray.50" lineHeight="140%" fontFamily="inter">
                                 Una ronda de financiación es un proceso que permite que una empresa obtenga nuevo
                                 capital a través de inversores. En este proceso, entran nuevos socios que adquieren una
                                 parte del capital social de la empresa y, por tanto, el control de una parte de ésta.
@@ -1161,10 +1171,12 @@ const Creator: NextPage = ({ project, quality }) => {
 
                             <VStack align="flex-start" w="full" spacing="20px">
                                 <VStack spacing="5px" align="flex-start" w="full">
-                                    <Text fontSize="16px" fontWeight="medium">
+                                    <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                         10. ¿Qué tipo de financiamiento buscas?
                                     </Text>
-                                    <Text textColor="gray.300">Puedes elegir seleccionar capital, deuda o ambos</Text>
+                                    <Text textColor="gray.300" fontFamily="inter">
+                                        Puedes elegir seleccionar capital, deuda o ambos
+                                    </Text>
                                 </VStack>
 
                                 <VStack>
@@ -1202,7 +1214,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             {isCheckCapital && (
                                 <VStack w={'full'} align="flex-start" spacing="40px">
                                     <FormControl w={{ base: '100%', md: '60%' }}>
-                                        <FormLabel>
+                                        <FormLabel fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                             11. Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <Controller
@@ -1460,7 +1472,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormControl>
 
                             <VStack w="full" align="flex-start" gap="15px">
-                                <Text fontSize="16px" fontFamily="inter" lineHeight="140%">
+                                <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                     21. Por favor completa los siguientes campos en relación a tu último año fiscal.
                                     (Opcional)
                                 </Text>
@@ -1491,7 +1503,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <Divider pt="60px" />
 
-                        <Text fontSize="4xl" fontWeight="bold" pt="60px" ref={other}>
+                        <Text fontSize="30px" fontWeight="bold" pt="60px" ref={other}>
                             Otra información relevante
                         </Text>
 
@@ -1562,7 +1574,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <VStack>
-                            <Text lineHeight="140%">
+                            <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                 23. Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes
                                 para que inversionistas conozcan mejor tu proyecto. (Opcional)
                             </Text>
@@ -1743,7 +1755,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="better_project" isInvalid={!!errors.better_project}>
-                            <FormLabel fontSize={{ base: 'sm', md: 'md' }} lineHeight="140%">
+                            <FormLabel lineHeight="140%">
                                 26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse de una
                                 potencial inserción de un inversionista? <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
@@ -2008,7 +2020,9 @@ const Creator: NextPage = ({ project, quality }) => {
                     right="45%"
                     zIndex={20}
                 >
-                    <Icon as={IoIosArrowDown} w="30px" h="30px" rotate="90px" />
+                    <Stack as={motion.div} initial={{ rotate: 180 }} animate={{ rotate: isOpenToggle ? 0 : 180 }}>
+                        <Icon as={IoIosArrowDown} w="30px" h="30px" rotate="90px" />
+                    </Stack>
                 </Button>
 
                 <VStack w="100%">
