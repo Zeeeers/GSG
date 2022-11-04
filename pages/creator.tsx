@@ -131,6 +131,8 @@ const Creator: NextPage = ({ project, quality }) => {
     const finance_description = useRef<HTMLBodyElement>(null);
     const other = useRef<HTMLBodyElement>(null);
 
+    console.log(project?.business_model);
+
     const {
         register,
         formState: { errors, isValid, isSubmitted },
@@ -165,7 +167,7 @@ const Creator: NextPage = ({ project, quality }) => {
             },
             finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
-            business_model: JSON.parse(project?.business_model).paragraph ?? '',
+            business_model: JSON?.parse(project?.business_model)?.paragraph ?? '',
             last_sales: JSON.parse(project?.business_model).items.split(';;')[0],
             ebitda: JSON.parse(project?.business_model).items.split(';;')[1],
             patrimony: JSON.parse(project?.business_model).items.split(';;')[2],

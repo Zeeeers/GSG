@@ -2,7 +2,9 @@
 //@ts-nocheck
 import {
     Button,
+    Collapse,
     Container,
+    Divider,
     Flex,
     Heading,
     HStack,
@@ -18,6 +20,8 @@ import {
     Stack,
     Text,
     VStack,
+    Wrap,
+    WrapItem,
 } from '@chakra-ui/react';
 import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
 import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
@@ -57,6 +61,7 @@ const Explorer: NextPage = () => {
         .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
     const [isVisible, setIsVisible] = useState(true);
+    const [isOpenFilter, setIsOpenFilter] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -145,129 +150,54 @@ const Explorer: NextPage = () => {
                                     justifyContent="space-between"
                                     w="full"
                                 >
-                                    <Menu closeOnSelect={false}>
-                                        <MenuButton
-                                            as={Button}
-                                            border="1px"
-                                            borderColor="gray.500"
-                                            whiteSpace="break-spaces"
-                                            textAlign="left"
-                                            w={{ base: 'full', md: '332px' }}
-                                            h="40px"
-                                        >
-                                            <Flex alignItems="center" justify="center">
-                                                <Text as="p" fontFamily="inter" fontSize="16px">
-                                                    Objetivos de desarrollo sostenible{' '}
-                                                    {filters?.qualities && `(${filters?.qualities?.length})`}
-                                                </Text>
-
-                                                <Icon ml={2} as={FaChevronDown} />
-                                            </Flex>
-                                        </MenuButton>
-
-                                        <MenuList
-                                            minWidth="240px"
-                                            overflowY="auto"
-                                            maxHeight="55vh"
-                                            className="custom-scroll"
-                                            bg="gray.800"
-                                        >
-                                            <MenuOptionGroup
-                                                title="Filtro"
-                                                type="checkbox"
-                                                defaultValue={filters?.qualities?.map((qt) => qt)}
-                                                onChange={(value: Array<string>) =>
-                                                    setFilters({
-                                                        qualities: value.length === 0 ? undefined : value,
-                                                    })
-                                                }
-                                            >
-                                                {qualities?.qualities?.map((quality) => (
-                                                    <MenuItemOption
-                                                        key={`${quality.id}-Filter`}
-                                                        value={quality.icon.name.toString()}
-                                                        _checked={{
-                                                            bgColor: 'gray.700',
-                                                        }}
-                                                        rounded="none"
-                                                        fontWeight="medium"
-                                                        icon={<></>}
-                                                        iconSpacing={'unset'}
+                                    <HStack spacing="20px" justifyContent="flex-end" w={{ base: 'full', lg: '194px' }}>
+                                        <Menu>
+                                            {({ isOpen }) => (
+                                                <>
+                                                    <MenuButton
+                                                        border="1px"
+                                                        borderColor="gray.500"
+                                                        h="40px"
+                                                        w="full"
+                                                        as={Button}
                                                     >
-                                                        <Flex align="center" justify="flex-start">
-                                                            <Image
-                                                                rounded="full"
-                                                                Width={32}
-                                                                Height={32}
-                                                                mr={4}
-                                                                src={quality.icon.image}
-                                                                alt={quality.icon.name}
-                                                            />
-
-                                                            {quality.icon.name}
+                                                        <Flex
+                                                            py="8px"
+                                                            px="16px"
+                                                            justifyContent="space-between"
+                                                            w="full"
+                                                            alignItems="center"
+                                                            fontWeight="normal"
+                                                            fontSize="md"
+                                                        >
+                                                            <Text>
+                                                                {orderBy === 'desc' ? 'Más recientes' : 'Más antiguos'}
+                                                            </Text>
+                                                            <Icon as={isOpen ? FaChevronUp : FaChevronDown} ml={2} />
                                                         </Flex>
-                                                    </MenuItemOption>
-                                                ))}
-                                            </MenuOptionGroup>
-                                        </MenuList>
-                                    </Menu>
+                                                    </MenuButton>
+                                                    <MenuList w={{ base: 'full', md: '194px' }}>
+                                                        <MenuOptionGroup
+                                                            value={orderBy}
+                                                            onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
+                                                        >
+                                                            <MenuItemOption value="desc" fontWeight="normal">
+                                                                Más recientes
+                                                            </MenuItemOption>
+                                                            <MenuItemOption value="asc" fontWeight="normal">
+                                                                Más antiguos
+                                                            </MenuItemOption>
+                                                        </MenuOptionGroup>
+                                                    </MenuList>
+                                                </>
+                                            )}
+                                        </Menu>
+                                    </HStack>
 
                                     <Stack
                                         direction={{ base: 'column', md: 'row' }}
                                         w={{ base: 'full', md: 'fit-content' }}
                                     >
-                                        <HStack
-                                            spacing="20px"
-                                            justifyContent="flex-end"
-                                            w={{ base: 'full', lg: '194px' }}
-                                        >
-                                            <Menu>
-                                                {({ isOpen }) => (
-                                                    <>
-                                                        <MenuButton
-                                                            border="1px"
-                                                            borderColor="gray.500"
-                                                            h="40px"
-                                                            w="full"
-                                                            as={Button}
-                                                        >
-                                                            <Flex
-                                                                py="8px"
-                                                                px="16px"
-                                                                justifyContent="space-between"
-                                                                w="full"
-                                                                alignItems="center"
-                                                                fontWeight="normal"
-                                                                fontSize="md"
-                                                            >
-                                                                <Text>
-                                                                    {orderBy === 'desc'
-                                                                        ? 'Más recientes'
-                                                                        : 'Más antiguos'}
-                                                                </Text>
-                                                                <Icon
-                                                                    as={isOpen ? FaChevronUp : FaChevronDown}
-                                                                    ml={2}
-                                                                />
-                                                            </Flex>
-                                                        </MenuButton>
-                                                        <MenuList w={{ base: 'full', md: '194px' }}>
-                                                            <MenuOptionGroup
-                                                                value={orderBy}
-                                                                onChange={(e: 'asc' | 'desc') => setOrderBy(e)}
-                                                            >
-                                                                <MenuItemOption value="desc" fontWeight="normal">
-                                                                    Más recientes
-                                                                </MenuItemOption>
-                                                                <MenuItemOption value="asc" fontWeight="normal">
-                                                                    Más antiguos
-                                                                </MenuItemOption>
-                                                            </MenuOptionGroup>
-                                                        </MenuList>
-                                                    </>
-                                                )}
-                                            </Menu>
-                                        </HStack>
                                         <Stack
                                             flexDirection="row"
                                             alignItems={{ base: 'center', sm: 'flex-end' }}
@@ -284,8 +214,473 @@ const Explorer: NextPage = () => {
                                                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                             />
                                         </Stack>
+                                        <Button
+                                            onClick={() => setIsOpenFilter(!isOpenFilter)}
+                                            variant="solid"
+                                            h="38px"
+                                            background="gray.800"
+                                            w="full"
+                                            fontFamily="inter"
+                                            fontSize="16px"
+                                            fontWeight="normal"
+                                            _hover={{ background: 'gray.700' }}
+                                            _focus={{ background: 'gray.700' }}
+                                            _selected={{ background: 'gray.700' }}
+                                        >
+                                            Filtro avanzados
+                                        </Button>
                                     </Stack>
                                 </Stack>
+
+                                <Collapse in={isOpenFilter}>
+                                    <Wrap mt="30px" direction="row" spacingX="50px" spacingY="15px" w="full">
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '350px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex alignItems="center" justify="space-between" px="16px">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Objetivos de desarrollo sostenible{' '}
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', md: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        w="full"
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                w="full"
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                <Flex align="center" justify="flex-start" w="full">
+                                                                    <Image
+                                                                        rounded="full"
+                                                                        Width={32}
+                                                                        Height={32}
+                                                                        mr={4}
+                                                                        src={quality.icon.image}
+                                                                        alt={quality.icon.name}
+                                                                    />
+
+                                                                    {quality.icon.name}
+                                                                </Flex>
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Certificación
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', md: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                {quality.icon.name}
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Etapa del proyecto
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                {quality.icon.name}
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Etapa de levantamiento
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', md: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                {quality.icon.name}
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Rentabilidad esperada
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', md: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                {quality.icon.name}
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Monto de aporte
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', md: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                {quality.icon.name}
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <WrapItem w={{ base: 'full', md: 'fit-content' }}>
+                                            <Menu closeOnSelect={false}>
+                                                <MenuButton
+                                                    as={Button}
+                                                    border="1px"
+                                                    borderColor="gray.500"
+                                                    whiteSpace="break-spaces"
+                                                    textAlign="left"
+                                                    w={{ base: 'full', sm: '332px' }}
+                                                    h="40px"
+                                                >
+                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                        <Text as="p" fontFamily="inter" fontSize="16px">
+                                                            Plazos de inversión
+                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                        </Text>
+
+                                                        <Icon ml={2} as={FaChevronDown} />
+                                                    </Flex>
+                                                </MenuButton>
+
+                                                <MenuList
+                                                    w={{ base: 'full', md: '332px' }}
+                                                    overflowY="auto"
+                                                    maxHeight="55vh"
+                                                    className="custom-scroll"
+                                                    bg="gray.800"
+                                                >
+                                                    <MenuOptionGroup
+                                                        title="Filtro"
+                                                        type="checkbox"
+                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        onChange={(value: Array<string>) =>
+                                                            setFilters({
+                                                                qualities: value.length === 0 ? undefined : value,
+                                                            })
+                                                        }
+                                                    >
+                                                        {qualities?.qualities?.map((quality) => (
+                                                            <MenuItemOption
+                                                                key={`${quality.id}-Filter`}
+                                                                value={quality.icon.name.toString()}
+                                                                _checked={{
+                                                                    bgColor: 'gray.700',
+                                                                }}
+                                                                rounded="none"
+                                                                fontWeight="medium"
+                                                                icon={<></>}
+                                                                iconSpacing={'unset'}
+                                                            >
+                                                                {quality.icon.name}
+                                                            </MenuItemOption>
+                                                        ))}
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </WrapItem>
+
+                                        <Divider pt="30px" />
+
+                                        <Stack direction="row" w="full" justify="space-between">
+                                            <HStack align="start">
+                                                <Text
+                                                    color="gray.50"
+                                                    fontFamily="inter"
+                                                    fontWeight="medium"
+                                                    fontSize="16px"
+                                                >
+                                                    Filtrado por
+                                                </Text>
+                                                <Wrap spacingX="10px">
+                                                    {filters?.qualities?.map((qualitie) => (
+                                                        <WrapItem background="gray.700" rounded="6px" px="8px" py="6px">
+                                                            <Text fontSize="13px" fontFamily="inter">
+                                                                {qualitie}
+                                                            </Text>
+                                                        </WrapItem>
+                                                    ))}
+                                                </Wrap>
+                                            </HStack>
+                                            <Text color="gray.50" fontFamily="inter" fontSize="14px">
+                                                Limpiar filtros
+                                            </Text>
+                                        </Stack>
+                                    </Wrap>
+                                </Collapse>
                             </Stack>
 
                             <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">

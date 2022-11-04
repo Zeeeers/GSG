@@ -62,6 +62,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         display={{ base: 'block', sm: 'none' }}
                         color="teal.500"
                         size="60px"
+                        thickness="4px"
                     >
                         <CircularProgressLabel fontFamily="inter" fontSize="14px">
                             {
@@ -113,6 +114,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         display={{ base: 'none', sm: 'block' }}
                         color="teal.500"
                         size="60px"
+                        thickness="10px"
                     >
                         <CircularProgressLabel fontFamily="inter" fontSize="14px">
                             {
