@@ -72,6 +72,7 @@ import { AiOutlineGlobal } from 'react-icons/ai';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import Sector from 'components/projectDetail/formatText/sector';
 import { motion } from 'framer-motion';
+import Router, { useRouter } from 'next/router';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -106,6 +107,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const [postulationEmployee, setPostulationEmployee] = useState(false);
     const [postulationProject, setPostulationProject] = useState(false);
+    const router = useRouter();
 
     const [isActiveItem, setIsActiveItem] = useState({
         description: true,
@@ -163,7 +165,11 @@ const Creator: NextPage = ({ project, quality }) => {
             },
             finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
-            business_model: project?.business_model ?? '',
+            business_model: JSON.parse(project?.business_model).paragraph ?? '',
+            last_sales: JSON.parse(project?.business_model).items.split(';;')[0],
+            ebitda: JSON.parse(project?.business_model).items.split(';;')[1],
+            patrimony: JSON.parse(project?.business_model).items.split(';;')[2],
+            tax: JSON.parse(project?.business_model).items.split(';;')[3],
             investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
             better_project: project?.better_project ?? '',
             additional_info: project?.better_project ?? '',
@@ -292,216 +298,6 @@ const Creator: NextPage = ({ project, quality }) => {
         { value: 'Multisectorial', label: 'Multisectorial' },
     ];
 
-    const handlePublished = async (data: IProjectForm) => {
-        setCreateProyect(true);
-        const dataProject = {
-            gsg_project: {
-                title: data.title,
-                description: data.description,
-                main_image: baseImgMain,
-                social_impact: baseSocialPdf?.base64,
-                more_info: data.more_info?.value,
-                third_parties: data.third_parties?.value,
-                sector: data.sector?.value,
-                stage: data.stage?.value,
-                investment_objective: data.investment_objective?.value,
-                capital_stage: isCheckCapital ? data.capital_stage?.value : null,
-                debt: isCheckDeuda ? data.debt?.value : null,
-                business_model: data.business_model,
-                guarantee: data.guarantee?.value,
-                expected_rentability: isCheckCapital ? data.expected_rentability?.value : null,
-                finance_goal: data.finance_goal?.value,
-                time_lapse: data.time_lapse?.value,
-                investment_types: isCheckCapital ? data.investment_types?.value : null,
-                better_project: data.better_project,
-                additional_info: data.additional_info,
-                business_web: data.business_web,
-                additional_document: baseAdditional?.base64,
-
-                status: 'in-review',
-            },
-            qualities: selectedOptions?.map((item) => item.value).join(';;'),
-            members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
-        };
-
-        const { create, updateGsgProject } = await import('../services/api/lib/gsg');
-
-        if (project?.status === 'sketch') {
-            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
-
-            if (ok) {
-                setCreateProyect(false);
-                onOpenSuccess();
-                reset();
-            } else {
-                setCreateProyect(false);
-                toast({
-                    title: 'Error al publicar el proyecto',
-                    description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            }
-        } else {
-            const { ok } = await create({ project: dataProject });
-
-            if (ok) {
-                setCreateProyect(false);
-                onOpenSuccess();
-                reset();
-            } else {
-                setCreateProyect(false);
-                toast({
-                    title: 'Error al crear el proyecto',
-                    description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            }
-        }
-    };
-
-    const handleDraft = async (data: IProjectForm) => {
-        setSaveDraft(true);
-        const dataProject = {
-            gsg_project: {
-                title: proyectTitle,
-                description: proyectDescription,
-                business_web: proyectWeb,
-                main_image: baseImgMain,
-                social_impact: baseSocialPdf?.base64,
-                more_info: proyectMore?.value,
-                third_parties: proyectParties?.value,
-                sector: watch('sector')?.value,
-                capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
-                debt: isCheckDeuda ? proyectDept?.value : null,
-                investment_types: isCheckCapital ? proyectInvestType?.value : null,
-                expected_rentability: isCheckCapital ? watch('expected_rentability')?.value : null,
-                stage: watch('stage')?.value,
-                guarantee: watch('guarantee')?.value,
-                finance_goal: watch('finance_goal')?.value,
-                time_lapse: watch('time_lapse')?.value,
-                business_model: watch('business_model'),
-                investment_objective: watch('investment_objective')?.value,
-                additional_info: watch('additional_info')?.value,
-                additional_document: baseAdditional?.base64,
-                better_project: watch('better_project'),
-                status: 'sketch',
-            },
-            qualities:
-                selectedOptions?.map((item) => item.value).join(';;') ??
-                Object.values(project?.qualities ?? [])
-                    .map((item) => item.id)
-                    .join(';;'),
-
-            members:
-                members?.length !== 0
-                    ? JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {})
-                    : undefined,
-        };
-
-        const { create, updateGsgProject } = await import('../services/api/lib/gsg');
-
-        if (project?.status === 'sketch') {
-            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
-
-            if (ok) {
-                setSaveDraft(false);
-                toast({
-                    title: 'Borrador modificado',
-                    description: 'El borrador se ha creado con éxito.',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            } else {
-                setSaveDraft(false);
-                toast({
-                    title: 'Error al modificar el borrador',
-                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            }
-        } else {
-            const { ok } = await create({ project: dataProject });
-
-            if (ok) {
-                setSaveDraft(false);
-                toast({
-                    title: 'Borrador creado',
-                    description: 'El borrador se ha creado con éxito.',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            } else {
-                setSaveDraft(false);
-                toast({
-                    title: 'Error al crear el borrador',
-                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            }
-        }
-    };
-
-    const handleDelete = async (idMember: number) => {
-        const { deleteMember } = await import('../services/api/lib/member');
-        const { ok } = await deleteMember(idMember);
-
-        if (ok) {
-            toast({
-                title: 'Miembro eliminado.',
-                description: 'El miembro seleccionado se ha eliminado correctamente.',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-            mutate();
-        } else {
-            toast({
-                title: 'Error al eliminar el miembro',
-                description: 'Ha ocurrido un error la intentar eliminar el miembro, porfavor, intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-        }
-    };
-
-    const proyectTitle = watch('title', project?.title ?? '');
-    const proyectDescription = watch('description', project?.description ?? '');
-    const proyectMainImage = watch('main_image');
-    const proyectOds = watch('qualities');
-    const proyectParties = watch('third_parties');
-    const proyectMore = watch('more_info');
-
-    const proyectWeb = watch('business_web');
-    const proyectSocial = watch('social_impact');
-    const proyectCapital = watch('capital_stage');
-    const proyectDept = watch('debt');
-    const proyectInvestType = watch('investment_types');
-    const proyectRentability = watch('expected_rentability');
-
-    const proyectBetter = watch('better_project', project?.better_project ?? '');
-    const proyectBusiness = watch('business_model', project?.business_model ?? '');
-
-    const proyectObject = watch('investment_objective');
-
     const percentDescription = () => {
         const percent = [];
 
@@ -629,6 +425,238 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     };
 
+    const handlePublished = async (data: IProjectForm) => {
+        setCreateProyect(true);
+        const dataProject = {
+            gsg_project: {
+                title: data.title,
+                description: data.description,
+                main_image: baseImgMain,
+                social_impact: baseSocialPdf?.base64,
+                more_info: data.more_info?.value,
+                third_parties: data.third_parties?.value,
+                sector: data.sector?.value,
+                stage: data.stage?.value,
+                investment_objective: data.investment_objective?.value,
+                capital_stage: isCheckCapital ? data.capital_stage?.value : null,
+                debt: isCheckDeuda ? data.debt?.value : null,
+                business_model: JSON.stringify({
+                    paragraph: data.business_model,
+                    items: `${data.last_sales};;${data.ebitda};;${data.patrimony};;${data.tax}`,
+                }),
+                guarantee: data.guarantee?.value,
+                expected_rentability: isCheckCapital ? data.expected_rentability?.value : null,
+                finance_goal: data.finance_goal?.value,
+                time_lapse: data.time_lapse?.value,
+                investment_types: isCheckCapital ? data.investment_types?.value : null,
+                better_project: data.better_project,
+                additional_info: data.additional_info,
+                business_web: data.business_web,
+                additional_document: baseAdditional?.base64,
+
+                status: 'in-review',
+            },
+            qualities: selectedOptions?.map((item) => item.value).join(';;'),
+            members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
+        };
+
+        const { create, updateGsgProject } = await import('../services/api/lib/gsg');
+
+        if (project?.status === 'sketch') {
+            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
+
+            if (ok) {
+                setCreateProyect(false);
+                onOpenSuccess();
+                reset();
+            } else {
+                setCreateProyect(false);
+                toast({
+                    title: 'Error al publicar el proyecto',
+                    description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+        } else {
+            const { ok } = await create({ project: dataProject });
+
+            if (ok) {
+                setCreateProyect(false);
+                onOpenSuccess();
+                reset();
+            } else {
+                setCreateProyect(false);
+                toast({
+                    title: 'Error al crear el proyecto',
+                    description: 'Ha ocurrido un error la intentar crear el proyecto, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+        }
+    };
+
+    const handleDraft = async (data: IProjectForm, isPreview: boolean = false) => {
+        setSaveDraft(true);
+
+        const dataProject = {
+            gsg_project: {
+                title: proyectTitle,
+                description: proyectDescription,
+                business_web: proyectWeb,
+                main_image: baseImgMain,
+                social_impact: baseSocialPdf?.base64,
+                more_info: proyectMore?.value,
+                third_parties: proyectParties?.value,
+                sector: watch('sector')?.value,
+                capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
+                debt: isCheckDeuda ? proyectDept?.value : null,
+                investment_types: isCheckCapital ? proyectInvestType?.value : null,
+                expected_rentability: isCheckCapital ? watch('expected_rentability')?.value : null,
+                stage: watch('stage')?.value,
+                guarantee: watch('guarantee')?.value,
+                finance_goal: watch('finance_goal')?.value,
+                time_lapse: watch('time_lapse')?.value,
+                business_model: JSON.stringify({
+                    paragraph: watch('business_model'),
+                    items: `${watch('last_sales')};;${watch('ebitda')};;${watch('patrimony')};;${watch('tax')}`,
+                }),
+                investment_objective: watch('investment_objective')?.value,
+                additional_info: watch('additional_info')?.value,
+                additional_document: baseAdditional?.base64,
+                better_project: watch('better_project'),
+                status: 'sketch',
+                progress: Math.round(
+                    ((percentDescription() + percentFinance() + percentOther()) * 100) /
+                        (isCheckCapital && isCheckDeuda
+                            ? 18
+                            : isCheckCapital && !isCheckDeuda
+                            ? 17
+                            : !isCheckCapital && isCheckDeuda
+                            ? 15
+                            : 18),
+                ).toString(),
+            },
+            qualities:
+                selectedOptions?.map((item) => item.value).join(';;') ??
+                Object.values(project?.qualities ?? [])
+                    .map((item) => item.id)
+                    .join(';;'),
+
+            members:
+                members?.length !== 0
+                    ? JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {})
+                    : undefined,
+        };
+
+        const { create, updateGsgProject } = await import('../services/api/lib/gsg');
+
+        if (project?.status === 'sketch') {
+            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
+
+            if (ok) {
+                if (isPreview) {
+                    window.open(`https://gsgmatch.netlify.app/projectDetail/${project?.id}`, '_blank');
+                    setSaveDraft(false);
+                } else {
+                    setSaveDraft(false);
+                    toast({
+                        title: 'Borrador modificado',
+                        description: 'El borrador se ha creado con éxito.',
+                        status: 'success',
+                        duration: 9000,
+                        isClosable: true,
+                        position: 'top-right',
+                    });
+                }
+            } else {
+                setSaveDraft(false);
+                toast({
+                    title: 'Error al modificar el borrador',
+                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+        } else {
+            const { ok } = await create({ project: dataProject });
+
+            if (ok) {
+                setSaveDraft(false);
+                toast({
+                    title: 'Borrador creado',
+                    description: 'El borrador se ha creado con éxito.',
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            } else {
+                setSaveDraft(false);
+                toast({
+                    title: 'Error al crear el borrador',
+                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+        }
+    };
+
+    const handleDelete = async (idMember: number) => {
+        const { deleteMember } = await import('../services/api/lib/member');
+        const { ok } = await deleteMember(idMember);
+
+        if (ok) {
+            toast({
+                title: 'Miembro eliminado.',
+                description: 'El miembro seleccionado se ha eliminado correctamente.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            mutate();
+        } else {
+            toast({
+                title: 'Error al eliminar el miembro',
+                description: 'Ha ocurrido un error la intentar eliminar el miembro, porfavor, intentelo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+    };
+
+    const proyectTitle = watch('title', project?.title ?? '');
+    const proyectDescription = watch('description', project?.description ?? '');
+    const proyectMainImage = watch('main_image');
+    const proyectOds = watch('qualities');
+    const proyectParties = watch('third_parties');
+    const proyectMore = watch('more_info');
+
+    const proyectWeb = watch('business_web');
+    const proyectSocial = watch('social_impact');
+    const proyectCapital = watch('capital_stage');
+    const proyectDept = watch('debt');
+    const proyectInvestType = watch('investment_types');
+    const proyectRentability = watch('expected_rentability');
+
+    const proyectBetter = watch('better_project', project?.better_project ?? '');
+    const proyectBusiness = watch('business_model', project?.business_model ?? '');
+
+    const proyectObject = watch('investment_objective');
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -680,17 +708,18 @@ const Creator: NextPage = ({ project, quality }) => {
                         </Text>
                     </HStack>
 
-                    <Link href={`projectDetail/${project?.id}`} target="_blank">
-                        <Button
-                            variant="solid"
-                            background="blue.700"
-                            leftIcon={<IoMdEye />}
-                            fontSize="14px"
-                            _hover={{ background: 'blue.600' }}
-                        >
-                            Vista previa
-                        </Button>
-                    </Link>
+                    <Button
+                        onClick={() => handleDraft({}, true)}
+                        variant="solid"
+                        background="blue.700"
+                        leftIcon={<IoMdEye />}
+                        fontSize="14px"
+                        _hover={{ background: 'blue.600' }}
+                        isLoading={saveDraft}
+                        loadingText="Cargando vista previa"
+                    >
+                        Vista previa
+                    </Button>
                 </Container>
             </HStack>
 
@@ -1478,24 +1507,48 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </Text>
 
                                 <VStack w="full" gap="15px">
-                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                    <FormControl
+                                        id="last_sales"
+                                        sInvalid={!!errors.last_sales}
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
                                         <FormLabel>Ventas en los últimos 12 meses</FormLabel>
-                                        <Input maxW="420px" />
+                                        <Input maxW="420px" {...register('last_sales')} />
                                     </FormControl>
 
-                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                    <FormControl
+                                        id="ebitda"
+                                        sInvalid={!!errors.ebitda}
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
                                         <FormLabel>EBITDA</FormLabel>
-                                        <Input maxW="420px" />
+                                        <Input maxW="420px" {...register('ebitda')} />
                                     </FormControl>
 
-                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                    <FormControl
+                                        id="patrimony"
+                                        sInvalid={!!errors.patrimony}
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
                                         <FormLabel>Deuda/Patrimonio</FormLabel>
-                                        <Input maxW="420px" />
+                                        <Input maxW="420px" {...register('patrimony')} />
                                     </FormControl>
 
-                                    <FormControl display="flex" justifyContent="space-between" alignItems="center">
+                                    <FormControl
+                                        id="tax"
+                                        sInvalid={!!errors.tax}
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
                                         <FormLabel>Impuesto declarado</FormLabel>
-                                        <Input maxW="420px" />
+                                        <Input maxW="420px" {...register('tax')} />
                                     </FormControl>
                                 </VStack>
                             </VStack>
@@ -1582,8 +1635,30 @@ const Creator: NextPage = ({ project, quality }) => {
                             <VStack spacing="15px" w="full">
                                 <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
                                     <HStack>
-                                        <Icon as={IoLogoLinkedin} w="30px" h="30px" />
-                                        <Text>Linkedin</Text>
+                                        <Icon as={IoLogoLinkedin} w="40px" h="40px" />
+                                        <Text display={{ base: 'none', md: 'block' }}>Linkedin</Text>
+                                    </HStack>
+
+                                    <FormControl maxW="720px">
+                                        <Input />
+                                    </FormControl>
+                                </HStack>
+
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={IoLogoInstagram} w="40px" h="40px" />
+                                        <Text display={{ base: 'none', md: 'block' }}>Instagram</Text>
+                                    </HStack>
+
+                                    <FormControl maxW="720px">
+                                        <Input />
+                                    </FormControl>
+                                </HStack>
+
+                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
+                                    <HStack>
+                                        <Icon as={IoLogoFacebook} w="40px" h="40px" />
+                                        <Text display={{ base: 'none', md: 'block' }}>Facebook</Text>
                                     </HStack>
 
                                     <Input maxW="720px" />
@@ -1591,8 +1666,8 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                 <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
                                     <HStack>
-                                        <Icon as={IoLogoInstagram} w="30px" h="30px" />
-                                        <Text>Instagram</Text>
+                                        <Icon as={IoLogoYoutube} w="40px" h="40px" />
+                                        <Text display={{ base: 'none', md: 'block' }}>Youtube</Text>
                                     </HStack>
 
                                     <Input maxW="720px" />
@@ -1600,26 +1675,8 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                 <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
                                     <HStack>
-                                        <Icon as={IoLogoFacebook} w="30px" h="30px" />
-                                        <Text>Facebook</Text>
-                                    </HStack>
-
-                                    <Input maxW="720px" />
-                                </HStack>
-
-                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
-                                    <HStack>
-                                        <Icon as={IoLogoYoutube} w="30px" h="30px" />
-                                        <Text>Youtube</Text>
-                                    </HStack>
-
-                                    <Input maxW="720px" />
-                                </HStack>
-
-                                <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
-                                    <HStack>
-                                        <Icon as={AiOutlineGlobal} w="30px" h="30px" />
-                                        <Text>Sitio Web</Text>
+                                        <Icon as={AiOutlineGlobal} w="40px" h="40px" />
+                                        <Text display={{ base: 'none', md: 'block' }}>Sitio Web</Text>
                                     </HStack>
 
                                     <Input maxW="720px" />
@@ -1850,11 +1907,16 @@ const Creator: NextPage = ({ project, quality }) => {
                         <HStack w="full" justify="space-between" color="gray.500" fontFamily="inter">
                             <Text fontSize="15px">Tu progreso actual</Text>
                             <Text fontSize="15px" fontWeight="semibold">
-                                {Math.round(
+                                {`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
-                                        (isCheckCapital ? 17 : isCheckDeuda ? 15 : 19),
-                                )}
-                                %
+                                        (isCheckCapital && isCheckDeuda
+                                            ? 18
+                                            : isCheckCapital && !isCheckDeuda
+                                            ? 17
+                                            : !isCheckCapital && isCheckDeuda
+                                            ? 15
+                                            : 18),
+                                )}%`}
                             </Text>
                         </HStack>
 
@@ -1862,7 +1924,13 @@ const Creator: NextPage = ({ project, quality }) => {
                             <Stack
                                 w={`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
-                                        (isCheckCapital ? 17 : isCheckDeuda ? 15 : 20),
+                                        (isCheckCapital && isCheckDeuda
+                                            ? 18
+                                            : isCheckCapital && !isCheckDeuda
+                                            ? 17
+                                            : !isCheckCapital && isCheckDeuda
+                                            ? 15
+                                            : 18),
                                 )}%`}
                                 h="full"
                                 background="teal.400"
@@ -2031,7 +2099,13 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Text fontSize="15px" fontFamily="inter" fontWeight="medium">
                             {`${Math.round(
                                 ((percentDescription() + percentFinance() + percentOther()) * 100) /
-                                    (isCheckCapital ? 17 : isCheckDeuda ? 15 : 20),
+                                    (isCheckCapital && isCheckDeuda
+                                        ? 18
+                                        : isCheckCapital && !isCheckDeuda
+                                        ? 17
+                                        : !isCheckCapital && isCheckDeuda
+                                        ? 15
+                                        : 18),
                             )}%`}
                         </Text>
                     </HStack>
@@ -2040,7 +2114,13 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Stack
                             w={`${Math.round(
                                 ((percentDescription() + percentFinance() + percentOther()) * 100) /
-                                    (isCheckCapital ? 17 : isCheckDeuda ? 15 : 20),
+                                    (isCheckCapital && isCheckDeuda
+                                        ? 18
+                                        : isCheckCapital && !isCheckDeuda
+                                        ? 17
+                                        : !isCheckCapital && isCheckDeuda
+                                        ? 15
+                                        : 18),
                             )}%`}
                             h="full"
                             background="teal.400"
