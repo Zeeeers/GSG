@@ -39,10 +39,14 @@ import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
 import { useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
+import { CgClose } from 'react-icons/cg';
 
 const Explorer: NextPage = () => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
+    const [isVisible, setIsVisible] = useState(true);
+    const [isOpenFilter, setIsOpenFilter] = useState(false);
+
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
@@ -58,10 +62,63 @@ const Explorer: NextPage = () => {
 
     const projectFilter = projectSort
         ?.filter((p) => Object.values(p.qualities).find((p) => filters?.qualities?.includes(p?.name) ?? []))
+        .filter((p) => filters?.certification?.includes(p.third_parties) ?? [])
+        .filter((p) => filters?.projectStage?.includes(p.stage) ?? [])
+        .filter((p) => filters?.surveyStage?.includes(p.capital_stage) ?? [])
+        .filter((p) => filters?.expectedReturn?.includes(p.expected_rentability) ?? [])
+        .filter((p) => filters?.contributionAmount?.includes(p.finance_goal) ?? [])
+        .filter((p) => filters?.investmentTerms?.includes(p.time_lapse) ?? [])
         .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
-    const [isVisible, setIsVisible] = useState(true);
-    const [isOpenFilter, setIsOpenFilter] = useState(false);
+    const optionsCertification = [
+        { value: 'certified-b', label: 'Certificación empresa B' },
+        { value: 'prize-org', label: 'Premio o reconocimiento de empresa u organización' },
+        { value: 'incubators', label: 'Participación en Incubadoras o Aceleradoras' },
+        { value: 'corfo', label: 'Adjudicación fondo CORFO u otro fondo público' },
+    ];
+
+    const optionsProjectStage = [
+        { value: 'development', label: 'Producto o servicio en desarrollo' },
+        { value: 'mvp', label: 'Producto o servicio en prototipo en pilotaje' },
+        { value: 'ready_to_launch', label: 'Producto o servicio listo para lanzar al mercado' },
+        { value: 'already_launched', label: 'Producto o servicio ya en el mercado' },
+    ];
+
+    const optionsSurveyStage = [
+        { value: 'pre-seed', label: 'Pre-seed' },
+        { value: 'seed', label: 'Seed' },
+        { value: 'series-a', label: 'Serie A' },
+        { value: 'series-b', label: 'Serie B' },
+        { value: 'series-c', label: 'Serie C' },
+        { value: 'series-d', label: 'Serie D' },
+        { value: 'senior-debt', label: 'Deuda senior' },
+        { value: 'mezzanine-debt', label: 'Deuda mezzanine' },
+    ];
+
+    const optionsExpectedReturn = [
+        { value: '1-5', label: 'Entre 1 y 5%' },
+        { value: '6-10', label: 'Entre 6 y 10%' },
+        { value: '11-20', label: 'Entre 11 y 20%' },
+        { value: 'more-than-21', label: 'Más de 21%' },
+    ];
+
+    const optionContributionAmount = [
+        { value: 'less-than-20', label: 'Menos de 20 millones' },
+        { value: '20-49', label: '20 millones y hasta 49 millones' },
+        { value: '50-99', label: '50 millones y hasta 99 millones' },
+        { value: '100-249', label: '100 millones y hasta 249 millones' },
+        { value: '250', label: '250 millones' },
+        { value: 'more-than-250', label: 'Sobre 250 millones' },
+        { value: 'more-than-1000', label: 'Sobre 1000 millones' },
+    ];
+
+    const optionsInvestmentTerms = [
+        { value: 'unti-a-year', label: 'Hasta 12 meses' },
+        { value: 'until-2-years', label: 'Hasta 24 meses' },
+        { value: 'until-3-years', label: 'Hasta 36 meses' },
+        { value: 'until-4-years', label: 'Hasta 48 meses' },
+        { value: 'more-than-4-years', label: 'Más de 48 meses' },
+    ];
 
     useEffect(() => {
         if (user) {
@@ -242,7 +299,7 @@ const Explorer: NextPage = () => {
                                                     borderColor="gray.500"
                                                     whiteSpace="break-spaces"
                                                     textAlign="left"
-                                                    w={{ base: 'full', sm: '350px' }}
+                                                    w={{ base: 'full', sm: '330px' }}
                                                     h="40px"
                                                 >
                                                     <Flex alignItems="center" justify="space-between" px="16px">
@@ -269,6 +326,7 @@ const Explorer: NextPage = () => {
                                                         defaultValue={filters?.qualities?.map((qt) => qt)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
+                                                                ...filters,
                                                                 qualities: value.length === 0 ? undefined : value,
                                                             })
                                                         }
@@ -319,7 +377,8 @@ const Explorer: NextPage = () => {
                                                     <Flex px="16px" alignItems="center" justify="space-between">
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Certificación
-                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                            {filters?.certification &&
+                                                                `(${filters?.certification?.length})`}
                                                         </Text>
 
                                                         <Icon ml={2} as={FaChevronDown} />
@@ -336,17 +395,18 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        defaultValue={filters?.certification?.map((c) => c)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                ...filters,
+                                                                certification: value.length === 0 ? undefined : value,
                                                             })
                                                         }
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {optionsCertification?.map((c, index) => (
                                                             <MenuItemOption
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                key={`${index}-Filter`}
+                                                                value={c.value}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
@@ -355,7 +415,7 @@ const Explorer: NextPage = () => {
                                                                 icon={<></>}
                                                                 iconSpacing={'unset'}
                                                             >
-                                                                {quality.icon.name}
+                                                                {c.label}
                                                             </MenuItemOption>
                                                         ))}
                                                     </MenuOptionGroup>
@@ -377,7 +437,8 @@ const Explorer: NextPage = () => {
                                                     <Flex px="16px" alignItems="center" justify="space-between">
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Etapa del proyecto
-                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                            {filters?.projectStage &&
+                                                                `(${filters?.projectStage?.length})`}
                                                         </Text>
 
                                                         <Icon ml={2} as={FaChevronDown} />
@@ -394,17 +455,18 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        defaultValue={filters?.projectStage?.map((ps) => ps)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                ...filters,
+                                                                projectStage: value.length === 0 ? undefined : value,
                                                             })
                                                         }
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {optionsProjectStage?.map((ps, index) => (
                                                             <MenuItemOption
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                key={`${index}-Filter`}
+                                                                value={ps.value}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
@@ -413,7 +475,7 @@ const Explorer: NextPage = () => {
                                                                 icon={<></>}
                                                                 iconSpacing={'unset'}
                                                             >
-                                                                {quality.icon.name}
+                                                                {ps.label}
                                                             </MenuItemOption>
                                                         ))}
                                                     </MenuOptionGroup>
@@ -435,7 +497,8 @@ const Explorer: NextPage = () => {
                                                     <Flex px="16px" alignItems="center" justify="space-between">
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Etapa de levantamiento
-                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                            {filters?.surveyStage &&
+                                                                `(${filters?.surveyStage?.length})`}
                                                         </Text>
 
                                                         <Icon ml={2} as={FaChevronDown} />
@@ -452,17 +515,18 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        defaultValue={filters?.surveyStage?.map((ss) => ss)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                ...filters,
+                                                                surveyStage: value.length === 0 ? undefined : value,
                                                             })
                                                         }
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {optionsSurveyStage.map((ss, index) => (
                                                             <MenuItemOption
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                key={`${index}-Filter`}
+                                                                value={ss.value}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
@@ -471,7 +535,7 @@ const Explorer: NextPage = () => {
                                                                 icon={<></>}
                                                                 iconSpacing={'unset'}
                                                             >
-                                                                {quality.icon.name}
+                                                                {ss.label}
                                                             </MenuItemOption>
                                                         ))}
                                                     </MenuOptionGroup>
@@ -493,7 +557,8 @@ const Explorer: NextPage = () => {
                                                     <Flex px="16px" alignItems="center" justify="space-between">
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Rentabilidad esperada
-                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                            {filters?.expectedReturn &&
+                                                                `(${filters?.expectedReturn?.length})`}
                                                         </Text>
 
                                                         <Icon ml={2} as={FaChevronDown} />
@@ -510,17 +575,18 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        defaultValue={filters?.expectedReturn?.map((er) => er)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                ...filters,
+                                                                expectedReturn: value.length === 0 ? undefined : value,
                                                             })
                                                         }
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {optionsExpectedReturn.map((er, index) => (
                                                             <MenuItemOption
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                key={`${index}-Filter`}
+                                                                value={er.value}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
@@ -529,7 +595,7 @@ const Explorer: NextPage = () => {
                                                                 icon={<></>}
                                                                 iconSpacing={'unset'}
                                                             >
-                                                                {quality.icon.name}
+                                                                {er.label}
                                                             </MenuItemOption>
                                                         ))}
                                                     </MenuOptionGroup>
@@ -551,7 +617,8 @@ const Explorer: NextPage = () => {
                                                     <Flex px="16px" alignItems="center" justify="space-between">
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Monto de aporte
-                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                            {filters?.contributionAmount &&
+                                                                `(${filters?.contributionAmount?.length})`}
                                                         </Text>
 
                                                         <Icon ml={2} as={FaChevronDown} />
@@ -568,17 +635,19 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        defaultValue={filters?.contributionAmount?.map((ca) => ca)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                ...filters,
+                                                                contributionAmount:
+                                                                    value.length === 0 ? undefined : value,
                                                             })
                                                         }
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {optionContributionAmount?.map((ca, index) => (
                                                             <MenuItemOption
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                key={`${index}-Filter`}
+                                                                value={ca.value}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
@@ -587,7 +656,7 @@ const Explorer: NextPage = () => {
                                                                 icon={<></>}
                                                                 iconSpacing={'unset'}
                                                             >
-                                                                {quality.icon.name}
+                                                                {ca.label}
                                                             </MenuItemOption>
                                                         ))}
                                                     </MenuOptionGroup>
@@ -609,7 +678,8 @@ const Explorer: NextPage = () => {
                                                     <Flex px="16px" alignItems="center" justify="space-between">
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Plazos de inversión
-                                                            {filters?.qualities && `(${filters?.qualities?.length})`}
+                                                            {filters?.investmentTerms &&
+                                                                `(${filters?.investmentTerms?.length})`}
                                                         </Text>
 
                                                         <Icon ml={2} as={FaChevronDown} />
@@ -626,17 +696,18 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
+                                                        defaultValue={filters?.investmentTerms?.map((i) => i)}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                ...filters,
+                                                                investmentTerms: value.length === 0 ? undefined : value,
                                                             })
                                                         }
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {optionsInvestmentTerms?.map((i, index) => (
                                                             <MenuItemOption
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                key={`${index}-Filter`}
+                                                                value={i.value}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
@@ -645,41 +716,255 @@ const Explorer: NextPage = () => {
                                                                 icon={<></>}
                                                                 iconSpacing={'unset'}
                                                             >
-                                                                {quality.icon.name}
+                                                                {i.label}
                                                             </MenuItemOption>
                                                         ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
                                         </WrapItem>
-
-                                        <Divider pt="30px" />
-
-                                        <Stack direction="row" w="full" justify="space-between">
-                                            <HStack align="start">
-                                                <Text
-                                                    color="gray.50"
-                                                    fontFamily="inter"
-                                                    fontWeight="medium"
-                                                    fontSize="16px"
-                                                >
-                                                    Filtrado por
-                                                </Text>
-                                                <Wrap spacingX="10px">
-                                                    {filters?.qualities?.map((qualitie) => (
-                                                        <WrapItem background="gray.700" rounded="6px" px="8px" py="6px">
-                                                            <Text fontSize="13px" fontFamily="inter">
-                                                                {qualitie}
-                                                            </Text>
-                                                        </WrapItem>
-                                                    ))}
-                                                </Wrap>
-                                            </HStack>
-                                            <Text color="gray.50" fontFamily="inter" fontSize="14px">
-                                                Limpiar filtros
-                                            </Text>
-                                        </Stack>
                                     </Wrap>
+
+                                    <Divider pt="30px" />
+
+                                    <Stack direction="row" w="full" justify="space-between" pt="30px">
+                                        <HStack align="start">
+                                            <Text
+                                                color="gray.50"
+                                                fontFamily="inter"
+                                                fontWeight="medium"
+                                                fontSize="16px"
+                                            >
+                                                Filtrado por
+                                            </Text>
+                                            <Wrap spacingX="10px">
+                                                {filters?.qualities?.map((qualitie) => (
+                                                    <WrapItem
+                                                        key={`${qualitie}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                        alignItems="center"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {qualitie}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    qualities: filters.qualities?.filter(
+                                                                        (q) => q !== qualitie,
+                                                                    ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+
+                                                {filters?.certification?.map((c) => (
+                                                    <WrapItem
+                                                        key={`${c}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {c}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    certification: filters.certification?.filter(
+                                                                        (cer) => cer !== c,
+                                                                    ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+
+                                                {filters?.projectStage?.map((p) => (
+                                                    <WrapItem
+                                                        key={`${p}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {p}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    projectStage: filters.projectStage?.filter(
+                                                                        (ps) => ps !== p,
+                                                                    ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+
+                                                {filters?.surveyStage?.map((ss) => (
+                                                    <WrapItem
+                                                        key={`${ss}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {ss}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    surveyStage: filters.surveyStage?.filter(
+                                                                        (sstag) => sstag !== ss,
+                                                                    ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+
+                                                {filters?.expectedReturn?.map((er) => (
+                                                    <WrapItem
+                                                        key={`${er}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {er}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    expectedReturn: filters.expectedReturn?.filter(
+                                                                        (exr) => exr !== er,
+                                                                    ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+
+                                                {filters?.contributionAmount?.map((ca) => (
+                                                    <WrapItem
+                                                        key={`${ca}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {ca}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    contributionAmount:
+                                                                        filters.contributionAmount?.filter(
+                                                                            (cta) => cta !== ca,
+                                                                        ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+
+                                                {filters?.investmentTerms?.map((it) => (
+                                                    <WrapItem
+                                                        key={`${it}-key`}
+                                                        background="gray.700"
+                                                        rounded="6px"
+                                                        px="8px"
+                                                        py="6px"
+                                                    >
+                                                        <Text fontSize="13px" fontFamily="inter">
+                                                            {it}
+                                                        </Text>
+                                                        <Icon
+                                                            cursor="pointer"
+                                                            as={CgClose}
+                                                            color="gray.600"
+                                                            w="20px"
+                                                            h="20px"
+                                                            marginLeft="5px"
+                                                            onClick={() =>
+                                                                setFilters({
+                                                                    ...filters,
+                                                                    investmentTerms: filters.investmentTerms?.filter(
+                                                                        (int) => int !== it,
+                                                                    ),
+                                                                })
+                                                            }
+                                                        />
+                                                    </WrapItem>
+                                                ))}
+                                            </Wrap>
+                                        </HStack>
+
+                                        <Button
+                                            onClick={() => setFilters({})}
+                                            variant="ghost"
+                                            color="gray.50"
+                                            fontFamily="inter"
+                                            fontSize="14px"
+                                            rightIcon={
+                                                <Icon cursor="pointer" as={CgClose} color="red.500" w="20px" h="20px" />
+                                            }
+                                        >
+                                            Limpiar filtros
+                                        </Button>
+                                    </Stack>
                                 </Collapse>
                             </Stack>
 
