@@ -167,15 +167,15 @@ const Creator: NextPage = ({ project, quality }) => {
             },
             finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
-            business_model: JSON?.parse(project?.business_model)?.paragraph ?? '',
-            last_sales12: JSON.parse(project?.business_model).items.split(';;')[0],
-            last_sales6: JSON.parse(project?.business_model).items.split(';;')[1],
+            rentability_time: project?.rentability_time,
+            last_sales12: project?.business_model?.split(';;')[0],
+            last_sales6: project?.business_model?.split(';;')[1],
 
-            last_client12: JSON.parse(project?.business_model).items.split(';;')[2],
-            last_client6: JSON.parse(project?.business_model).items.split(';;')[3],
+            last_client12: project?.business_model?.split(';;')[2],
+            last_client6: project?.business_model?.split(';;')[3],
 
-            ebitda: JSON.parse(project?.business_model).items.split(';;')[4],
-            patrimony: JSON.parse(project?.business_model).items.split(';;')[5],
+            ebitda: project?.business_model?.split(';;')[4],
+            patrimony: project?.business_model?.split(';;')[5],
             investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
             better_project: project?.better_project ?? '',
             additional_info: project?.better_project ?? '',
@@ -446,10 +446,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 investment_objective: data.investment_objective?.value,
                 capital_stage: isCheckCapital ? data.capital_stage?.value : null,
                 debt: isCheckDeuda ? data.debt?.value : null,
-                business_model: JSON.stringify({
-                    paragraph: data.business_model,
-                    items: `${data.last_sales};;${data.ebitda};;${data.patrimony};;${data.tax}`,
-                }),
+                rentability_time: `${data.last_sales12};;${data.last_sales6};;${data.last_client12};;${data.last_client6};;${data.ebitda};;${data.patrimony}`,
+
                 guarantee: data.guarantee?.value,
                 expected_rentability: isCheckCapital ? data.expected_rentability?.value : null,
                 finance_goal: data.finance_goal?.value,
@@ -528,12 +526,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 guarantee: watch('guarantee')?.value,
                 finance_goal: watch('finance_goal')?.value,
                 time_lapse: watch('time_lapse')?.value,
-                business_model: JSON.stringify({
-                    paragraph: watch('business_model'),
-                    items: `${watch('last_sales12')};;${watch('last_sales6')};;${watch('last_client12')};;${watch(
-                        'last_client6',
-                    )};;${watch('ebitda')};;${watch('patrimony')}`,
-                }),
+                rentability_time: watch('rentability_time').value,
+                business_model: `${watch('last_sales12')};;${watch('last_sales6')};;${watch('last_client12')};;${watch(
+                    'last_client6',
+                )};;${watch('ebitda')};;${watch('patrimony')}`,
                 investment_objective: watch('investment_objective')?.value,
                 additional_info: watch('additional_info')?.value,
                 additional_document: baseAdditional?.base64,
@@ -1488,13 +1484,25 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormErrorMessage>
                             </FormControl>
 
+                            <FormControl id="rentability_time" w="full" isInvalid={!!errors.rentability_time}>
+                                <FormLabel>
+                                    18. Indica el tiempo que requerirás para que tu empresa, producto o servicio sea
+                                    rentable. <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+
+                                <HStack>
+                                    <Input {...register('rentability_time')} maxW="95px" type="number" />
+                                    <Text>Meses</Text>
+                                </HStack>
+                            </FormControl>
+
                             <FormControl
                                 id="time_lapse"
                                 isInvalid={!!errors.time_lapse}
                                 w={{ base: '100%', md: '60%' }}
                             >
                                 <FormLabel>
-                                    18. Selecciona los plazos de inversión que buscas{' '}
+                                    19. Selecciona los plazos de inversión que buscas{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
                                 <Controller
@@ -1526,7 +1534,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     w={{ base: '100%', md: '60%' }}
                                 >
                                     <FormLabel>
-                                        19. ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
+                                        20. ¿Cuál es el objetivo que tienes para buscar inversión?{' '}
                                         <span style={{ color: '#4FD1C5' }}>*</span>
                                     </FormLabel>
                                     <Controller
@@ -1547,44 +1555,6 @@ const Creator: NextPage = ({ project, quality }) => {
                                     </FormErrorMessage>
                                 </FormControl>
                             </Stack>
-
-                            <FormControl id="business_model" w="full" isInvalid={!!errors.business_model}>
-                                <FormLabel>
-                                    20. ¿Cúal es la trayectoria de tu proyecto?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
-
-                                <Controller
-                                    name="business_model"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Textarea
-                                            maxLength={700}
-                                            {...field}
-                                            fontSize={{ base: 'sm', md: 'md' }}
-                                            focusBorderColor={'primary.400'}
-                                            errorBorderColor={'red.400'}
-                                        />
-                                    )}
-                                />
-
-                                <Text
-                                    textColor="gray.300"
-                                    fontSize={{ base: 'xs', md: 'sm' }}
-                                    fontWeight="medium"
-                                    color="gray.400"
-                                >
-                                    {proyectBusiness?.length ?? 0}/700 caractéres
-                                </Text>
-                                <FormErrorMessage
-                                    textColor="red.400"
-                                    fontFamily="inter"
-                                    fontSize="16px"
-                                    fontWeight={'medium'}
-                                >
-                                    {errors.business_model?.message}
-                                </FormErrorMessage>
-                            </FormControl>
 
                             <VStack w="full" align="flex-start" gap="15px">
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">

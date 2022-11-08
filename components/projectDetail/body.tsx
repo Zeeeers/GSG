@@ -257,6 +257,17 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
 
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                            Umbral de rentabilidad o Break Even Point proyectado:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {project?.rentability_time} Meses
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
                             En relación a los plazos de inversión, {project?.organization.name} buscaría un plazo de:
                         </Text>
@@ -268,11 +279,15 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
 
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            La trayectoria del negocio es:
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            Ventas en los últimos 12 meses:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {JSON.parse(project?.business_model)?.paragraph}
+                            {new Intl.NumberFormat('es-CL', {
+                                style: 'currency',
+                                currency: 'CLP',
+                                minimumFractionDigits: 0,
+                            }).format(project?.business_model.split(';;')[0])}
                         </Text>
                     </VStack>
                 </VStack>
@@ -280,10 +295,44 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Ventas en los últimos 12 meses:
+                            Ventas en los últimos 6 meses:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {JSON.parse(project?.business_model)?.items?.split(';;')[0]}
+                            {new Intl.NumberFormat('es-CL', {
+                                style: 'currency',
+                                currency: 'CLP',
+                                minimumFractionDigits: 0,
+                            }).format(project?.business_model.split(';;')[1])}
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            Clientes en los últimos 12 meses:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {new Intl.NumberFormat('es-CL', {
+                                style: 'currency',
+                                currency: 'CLP',
+                                minimumFractionDigits: 0,
+                            }).format(project?.business_model.split(';;')[2])}
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            Clientes en los últimos 6 meses:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {new Intl.NumberFormat('es-CL', {
+                                style: 'currency',
+                                currency: 'CLP',
+                                minimumFractionDigits: 0,
+                            }).format(project?.business_model.split(';;')[3])}
                         </Text>
                     </VStack>
                 </VStack>
@@ -294,7 +343,11 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                             EBITDA
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {JSON.parse(project?.business_model)?.items?.split(';;')[4]}
+                            {new Intl.NumberFormat('es-CL', {
+                                style: 'currency',
+                                currency: 'CLP',
+                                minimumFractionDigits: 0,
+                            }).format(project?.business_model.split(';;')[4])}
                         </Text>
                     </VStack>
                 </VStack>
@@ -305,18 +358,11 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                             Deuda/ Patrimonio
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {JSON.parse(project?.business_model)?.items?.split(';;')[5]}
-                        </Text>
-                    </VStack>
-                </VStack>
-
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Impuesto declarado
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {Time(project?.time_lapse)}
+                            {new Intl.NumberFormat('es-CL', {
+                                style: 'currency',
+                                currency: 'CLP',
+                                minimumFractionDigits: 0,
+                            }).format(project?.business_model.split(';;')[5])}
                         </Text>
                     </VStack>
                 </VStack>
