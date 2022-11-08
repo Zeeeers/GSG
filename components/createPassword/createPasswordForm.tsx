@@ -59,7 +59,7 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/profile');
+            router.push('/experience');
         } else {
             toast({
                 title: 'No se pudo crear la contraseña',

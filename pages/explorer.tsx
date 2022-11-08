@@ -40,6 +40,7 @@ import { useQualityList } from 'services/api/lib/qualities';
 import { useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
 import { CgClose } from 'react-icons/cg';
+import { MdFilterList } from 'react-icons/md';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -272,6 +273,7 @@ const Explorer: NextPage = () => {
                                             />
                                         </Stack>
                                         <Button
+                                            leftIcon={<Icon as={MdFilterList} w="20px" h="20px" />}
                                             onClick={() => setIsOpenFilter(!isOpenFilter)}
                                             variant="solid"
                                             h="38px"

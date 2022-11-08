@@ -1,5 +1,13 @@
-// Dependencies
 //@ts-nocheck
+import CapitalStageModal from 'components/profile/ods/capitalStageModal';
+import ExpectedRentabilityModal from 'components/profile/ods/expectedRentabilityModal';
+import FinanceGoalModal from 'components/profile/ods/FinanceGoalModal';
+import OdsModal from 'components/profile/ods/odsModal';
+import OnboardingModal from 'components/profile/ods/onboardingModal';
+import StageModal from 'components/profile/ods/stageModal';
+import ThirdModal from 'components/profile/ods/thirdModal';
+import TimeLapseModal from 'components/profile/ods/timeLapseModal';
+import { useState, useEffect } from 'react';
 import {
     Button,
     Checkbox,
@@ -14,20 +22,14 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
 import { useUser } from 'services/api/lib/user';
-import CapitalStageModal from './capitalStageModal';
-import ExpectedRentabilityModal from './expectedRentabilityModal';
-import FinanceGoalModal from './FinanceGoalModal';
-import OdsModal from './odsModal';
-import OnboardingModal from './onboardingModal';
-import StageModal from './stageModal';
-import ThirdModal from './thirdModal';
-import TimeLapseModal from './timeLapseModal';
 
-// Components
-const OdsTab: React.FC = () => {
+interface Props {
+    setPage: (index: number) => void;
+}
+
+const InterestExperience = ({ setPage }: Props) => {
     const [isActive, setIsActive] = useState(false);
     const [isOnboarding, setIsOnboarding] = useState(null);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
@@ -52,7 +54,7 @@ const OdsTab: React.FC = () => {
 
     const handleUpdateNews = async () => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
-        const userApi = import('../../../services/api/lib/user');
+        const userApi = import('../../services/api/lib/user');
 
         const AuthManager = (await auth).default;
         const { update } = await userApi;
@@ -92,7 +94,7 @@ const OdsTab: React.FC = () => {
 
     const handleUpdateOnboarding = async (value) => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
-        const userApi = import('../../../services/api/lib/user');
+        const userApi = import('../../services/api/lib/user');
 
         const AuthManager = (await auth).default;
         const { update } = await userApi;
@@ -138,12 +140,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openOds}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/ods.svg" />
@@ -155,12 +157,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openThird}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/certification.svg" />
@@ -172,12 +174,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openStage}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/proyect-stages.svg" />
@@ -189,12 +191,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openCapitalStage}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/survey-stages.svg" />
@@ -206,12 +208,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openExpectedRentabilityModal}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/expected-return.svg" />
@@ -223,12 +225,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openFinanceGoal}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/amount-contribution.svg" />
@@ -240,12 +242,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openTimeLapse}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/investment-terms.svg" />
@@ -253,15 +255,12 @@ const OdsTab: React.FC = () => {
                             </VStack>
                         </WrapItem>
                     </Wrap>
-                    <Stack w="full" align="flex-end">
-                        <Button
-                            variant="outline"
-                            h="40px"
-                            onClick={() => {
-                                isOnboarding ?? true ? openOnboarding() : router.push('/explorer');
-                            }}
-                        >
-                            Ir al explorador
+                    <Stack direction="row" w="full" align="flex-end" justify="space-between">
+                        <Button variant="ghost" h="40px" color="gray.50" fontSize="16px" onClick={() => setPage(0)}>
+                            Volver
+                        </Button>
+                        <Button variant="solid" h="40px" onClick={() => openOnboarding()}>
+                            Continuar
                         </Button>
                     </Stack>
                 </VStack>
@@ -326,5 +325,4 @@ const OdsTab: React.FC = () => {
     );
 };
 
-// Export
-export default OdsTab;
+export default InterestExperience;

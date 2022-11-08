@@ -28,6 +28,8 @@ import {
     useDisclosure,
     useToast,
     VStack,
+    UnorderedList,
+    ListItem,
 } from '@chakra-ui/react';
 import TooltipPrettie from 'common/tooltip';
 import { PrivatePage } from '@clyc/next-route-manager';
@@ -934,7 +936,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Objetivos de <br /> desarrollo sostenible
                                         </Text>
 
-                                        <Text fontSize="14px" color="gray.300" fontFamily="inter">
+                                        <Text fontSize="14px" color="gray.300" fontFamily="inter" pb="15px">
                                             Los Objetivos de desarrollo sostenible (ODS) son el plan maestro para
                                             conseguir un futuro sostenible para todos. Se interrelacionan entre sí e
                                             incorporan los desafíos globales a los que nos enfrentamos día a día, como
@@ -1038,10 +1040,37 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '60%' }}>
-                            <FormLabel lineHeight="140%">
-                                7. ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
-                                <span style={{ color: '#4FD1C5' }}>*</span>
-                            </FormLabel>
+                            <HStack align="flex-start" spacing="0px">
+                                <FormLabel lineHeight="140%">
+                                    7. ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
+                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                </FormLabel>
+
+                                <TooltipPrettie>
+                                    <>
+                                        <Text
+                                            textAlign="left"
+                                            background="blue.700"
+                                            fontSize="24px"
+                                            px="10px"
+                                            fontWeight="bold"
+                                            textTransform="uppercase"
+                                        >
+                                            Medición de impacto
+                                        </Text>
+
+                                        <Text fontSize="14px" color="gray.300" fontFamily="inter" pb="15px">
+                                            La medición del impacto permite validar la calidad de los resultados
+                                            sociales y/o medioambientales que se logran gracias al trabajo de tu
+                                            organización. Medir resultados del impacto ayuda a crear un cambio sistémico
+                                            y sostenible y también impulsa la creación de valor, permite a las
+                                            organizaciones dar cuenta de su desempeño social, valorar su contribución a
+                                            la sociedad y generar una mayor credibilidad con las partes interesadas,
+                                            como clientes y proveedores.
+                                        </Text>
+                                    </>
+                                </TooltipPrettie>
+                            </HStack>
                             <Controller
                                 name="more_info"
                                 control={control}
@@ -1273,10 +1302,58 @@ const Creator: NextPage = ({ project, quality }) => {
                                     </FormControl>
 
                                     <FormControl id="investment_types" w={{ base: '100%', md: '60%' }}>
-                                        <FormLabel>
-                                            12. ¿Qué tipo de inversionista buscas?{' '}
-                                            <span style={{ color: '#4FD1C5' }}>*</span>
-                                        </FormLabel>
+                                        <HStack align="flex-start" spacing="0px">
+                                            <FormLabel>
+                                                12. ¿Qué tipo de inversionista buscas?{' '}
+                                                <span style={{ color: '#4FD1C5' }}>*</span>
+                                            </FormLabel>
+
+                                            <TooltipPrettie>
+                                                <>
+                                                    <Text
+                                                        textAlign="left"
+                                                        background="blue.700"
+                                                        fontSize="24px"
+                                                        px="10px"
+                                                        fontWeight="bold"
+                                                        textTransform="uppercase"
+                                                    >
+                                                        Tipos de inversionista
+                                                    </Text>
+
+                                                    <UnorderedList
+                                                        fontSize="14px"
+                                                        color="gray.300"
+                                                        fontFamily="inter"
+                                                        px="15px"
+                                                        spacing="15px"
+                                                    >
+                                                        <ListItem>
+                                                            Inversor Ancla: Generalmente es el primer inversor que
+                                                            realiza un compromiso de capital sustancial en un fondo,
+                                                            invirtiendo un monto considerable o mayoritario en relación
+                                                            a otros inversores
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            Inversor Atomizado: Refiere a la presencia de múltiples
+                                                            inversores, todos con una inversión de tamaño reducido o
+                                                            relativamente similar.
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            Sponsor: A menudo se conoce como el socio general (GP),
+                                                            mientras que el resto de los inversores son socios limitados
+                                                            (LP).
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            Minoritarios: Se refiere a uno o varios inversores que son
+                                                            dueño/s de menos del 50% de una compañía. Esta categoría
+                                                            agrupa a todos los socios que individualmente poseen menos
+                                                            de la mitad del patrimonio de una sociedad mercantil.
+                                                        </ListItem>
+                                                    </UnorderedList>
+                                                </>
+                                            </TooltipPrettie>
+                                        </HStack>
 
                                         <Controller
                                             name="investment_types"
