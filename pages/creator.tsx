@@ -446,7 +446,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 investment_objective: data.investment_objective?.value,
                 capital_stage: isCheckCapital ? data.capital_stage?.value : null,
                 debt: isCheckDeuda ? data.debt?.value : null,
-                rentability_time: `${data.last_sales12};;${data.last_sales6};;${data.last_client12};;${data.last_client6};;${data.ebitda};;${data.patrimony}`,
+                rentability_time: data?.rentability_time,
+                business_model: `${data.last_sales12};;${data.last_sales6};;${data.last_client12};;${data.last_client6};;${data.ebitda};;${data.patrimony}`,
 
                 guarantee: data.guarantee?.value,
                 expected_rentability: isCheckCapital ? data.expected_rentability?.value : null,
