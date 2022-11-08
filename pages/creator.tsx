@@ -179,6 +179,12 @@ const Creator: NextPage = ({ project, quality }) => {
             investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
             better_project: project?.better_project ?? '',
             additional_info: project?.better_project ?? '',
+
+            linkedinForm: project?.contacts[0],
+            instagramForm: project?.contacts[1],
+            facebookForm: project?.contacts[2],
+            youtubeForm: project?.contacts[3],
+            webForm: project?.contacts[4],
         },
     });
 
@@ -377,7 +383,7 @@ const Creator: NextPage = ({ project, quality }) => {
             percent.push(watch('investment_objective')?.value);
         }
 
-        if (proyectBusiness !== undefined) {
+        if (proyectBusiness !== '') {
             percent.push(proyectBusiness);
         }
 
@@ -460,6 +466,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 additional_document: baseAdditional?.base64,
 
                 status: 'in-review',
+
+                contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
             members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
@@ -549,6 +557,9 @@ const Creator: NextPage = ({ project, quality }) => {
                             ? 15
                             : 18),
                 ).toString(),
+                contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
+                    'youtubeForm',
+                )};;${watch('webForm')}`,
             },
             qualities:
                 selectedOptions?.map((item) => item.value).join(';;') ??
@@ -1575,7 +1586,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Ventas en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_sales12')} />
+                                            <Input maxW="420px" {...register('last_sales12')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1598,7 +1609,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Ventas en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_sales6')} />
+                                            <Input maxW="420px" {...register('last_sales6')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1621,7 +1632,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Clientes en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_client12')} />
+                                            <Input maxW="420px" {...register('last_client12')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1644,7 +1655,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Clientes en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_client6')} />
+                                            <Input maxW="420px" {...register('last_client6')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1667,7 +1678,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             EBITDA último año fiscal <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('ebitda')} />
+                                            <Input maxW="420px" {...register('ebitda')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1691,7 +1702,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('patrimony')} />
+                                            <Input maxW="420px" {...register('patrimony')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1791,8 +1802,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Linkedin</Text>
                                     </HStack>
 
-                                    <FormControl maxW="720px">
-                                        <Input />
+                                    <FormControl id="linkedinForm" maxW="720px">
+                                        <Input {...register('linkedinForm')} />
                                     </FormControl>
                                 </HStack>
 
@@ -1802,8 +1813,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Instagram</Text>
                                     </HStack>
 
-                                    <FormControl maxW="720px">
-                                        <Input />
+                                    <FormControl id="instagramForm" maxW="720px">
+                                        <Input {...register('instagramForm')} />
                                     </FormControl>
                                 </HStack>
 
@@ -1813,7 +1824,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Facebook</Text>
                                     </HStack>
 
-                                    <Input maxW="720px" />
+                                    <FormControl id="facebookForm" maxW="720px">
+                                        <Input {...register('facebookForm')} />
+                                    </FormControl>
                                 </HStack>
 
                                 <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
@@ -1822,7 +1835,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Youtube</Text>
                                     </HStack>
 
-                                    <Input maxW="720px" />
+                                    <FormControl id="youtubeForm" maxW="720px">
+                                        <Input {...register('youtubeForm')} />
+                                    </FormControl>
                                 </HStack>
 
                                 <HStack justify="space-between" p="8px" background="gray.800" w="full" rounded="8px">
@@ -1831,7 +1846,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Sitio Web</Text>
                                     </HStack>
 
-                                    <Input maxW="720px" />
+                                    <FormControl id="webForm" maxW="720px">
+                                        <Input {...register('webForm')} />
+                                    </FormControl>
                                 </HStack>
                             </VStack>
                         </VStack>

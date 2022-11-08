@@ -11,11 +11,12 @@ import FinanceGoal from './formatText/financeGoal';
 interface Props {
     project: Gsg | undefined;
     user: User | undefined;
+    orga: Organization | undefined;
     textEnriched: Array<any>;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project, user }) => {
+const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
@@ -278,7 +279,7 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                                                 mt={{ base: '20px', md: 0 }}
                                                 justifyContent="end"
                                             >
-                                                {user && (
+                                                {(user || orga) && (
                                                     <Button
                                                         onClick={onOpen}
                                                         w={{ base: 'full', md: '212px' }}
@@ -310,12 +311,7 @@ const HeaderHero: React.FC<Props> = ({ project, user }) => {
                 </Container>
             </Flex>
 
-            <ContactModal
-                isOpen={isOpen}
-                onClose={onClose}
-                project={project?.organization}
-                web={project?.business_web}
-            />
+            <ContactModal isOpen={isOpen} onClose={onClose} project={project?.organization} web={project?.contacts} />
         </>
     );
 };

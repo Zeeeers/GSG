@@ -40,6 +40,12 @@ export interface IProjectForm {
     last_client6: string;
     ebitda: string;
     patrimony: string;
+
+    linkedinForm?: string;
+    instagramForm?: string;
+    facebookForm?: string;
+    youtubeForm?: string;
+    webForm?: string;
 }
 
 export interface IMember {
@@ -89,6 +95,12 @@ const projectShape: ZodShape<IProjectForm> = {
     qualities: z.object({ value: z.string(), label: z.string() }).optional(),
 
     debt: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
+
+    linkedinForm: z.string().optional(),
+    facebookForm: z.string().optional(),
+    instagramForm: z.string().optional(),
+    youtubeForm: z.string().optional(),
+    webForm: z.string().optional(),
 };
 
 const memberShape: ZodShape<IMember> = {

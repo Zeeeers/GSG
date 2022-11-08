@@ -13,10 +13,15 @@ import {
     Tooltip,
     useToast,
     VStack,
+    Icon,
+    Wrap,
+    WrapItem,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { OrganizationFormat } from 'services/api/types/Organization';
 import { BsFiles, BsFilesAlt, BsFileSlides } from 'react-icons/bs';
+import { IoLogoFacebook, IoLogoInstagram, IoLogoLinkedin, IoLogoYoutube } from 'react-icons/io';
+import { AiOutlineGlobal } from 'react-icons/ai';
 
 // Types
 interface Props {
@@ -33,6 +38,8 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
         copied: false,
     });
 
+    console.log(web);
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
@@ -45,10 +52,10 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                         </Heading>
                         <HStack w="full" align="center" justify="space-between">
                             <VStack alignItems="flex-start" spacing={0}>
-                                <Text fontSize="20px" fontWeight="semibold">
+                                <Text fontSize="16px" color="gray.400">
                                     Correo
                                 </Text>
-                                <Text fontSize="16px" fontFamily="inter">
+                                <Text fontSize="24px" fontFamily="inter">
                                     {project?.legal_representative_email ?? 'No hay correo'}
                                 </Text>
                             </VStack>
@@ -80,10 +87,10 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                         </HStack>
                         <HStack w="full" align="center" justify="space-between">
                             <VStack alignItems="flex-start" spacing={0}>
-                                <Text fontSize="20px" fontWeight="semibold">
+                                <Text fontSize="16px" color="gray.400">
                                     Teléfono
                                 </Text>
-                                <Text fontSize="16px" fontFamily="inter">
+                                <Text fontSize="24px" fontFamily="inter">
                                     +569 {project?.legal_representative_phone}
                                 </Text>
                             </VStack>
@@ -116,15 +123,109 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                             </Tooltip>
                         </HStack>
 
-                        <Link
-                            href={`https://www.${web}`}
-                            target="_blank"
-                            textDecoration="underline"
-                            fontSize="20px"
-                            fontWeight="semibold"
-                        >
-                            Sitio web
-                        </Link>
+                        <VStack alignItems="flex-start" spacing={0}>
+                            <Text fontSize="16px" color="gray.400">
+                                Plataformas y/o redes sociales{' '}
+                            </Text>
+                            <Wrap spacingX="20px" spacingY="10px">
+                                {web?.map((e, index) => {
+                                    if (index === 0) {
+                                        return (
+                                            <WrapItem>
+                                                <Link href={e} target="_blank">
+                                                    <Button
+                                                        mt="16px"
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        fontSize="16px"
+                                                        fontFamily="inter"
+                                                        leftIcon={<Icon as={IoLogoLinkedin} w="30px" h="30px" />}
+                                                    >
+                                                        Linkendin
+                                                    </Button>
+                                                </Link>
+                                            </WrapItem>
+                                        );
+                                    }
+
+                                    if (index === 1) {
+                                        return (
+                                            <WrapItem>
+                                                <Link href={e} target="_blank">
+                                                    <Button
+                                                        mt="16px"
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        fontSize="16px"
+                                                        fontFamily="inter"
+                                                        leftIcon={<Icon as={IoLogoInstagram} w="30px" h="30px" />}
+                                                    >
+                                                        Instagram
+                                                    </Button>
+                                                </Link>
+                                            </WrapItem>
+                                        );
+                                    }
+
+                                    if (index === 2) {
+                                        return (
+                                            <WrapItem>
+                                                <Link href={e} target="_blank">
+                                                    <Button
+                                                        mt="16px"
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        fontSize="16px"
+                                                        fontFamily="inter"
+                                                        leftIcon={<Icon as={IoLogoFacebook} w="30px" h="30px" />}
+                                                    >
+                                                        Facebook
+                                                    </Button>
+                                                </Link>
+                                            </WrapItem>
+                                        );
+                                    }
+
+                                    if (index === 3) {
+                                        return (
+                                            <WrapItem>
+                                                <Link href={e} target="_blank">
+                                                    <Button
+                                                        mt="16px"
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        fontSize="16px"
+                                                        fontFamily="inter"
+                                                        leftIcon={<Icon as={IoLogoYoutube} w="30px" h="30px" />}
+                                                    >
+                                                        Youtube
+                                                    </Button>
+                                                </Link>
+                                            </WrapItem>
+                                        );
+                                    }
+
+                                    if (index === 4) {
+                                        return (
+                                            <WrapItem>
+                                                <Link href={e} target="_blank">
+                                                    <Button
+                                                        mt="16px"
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        fontSize="16px"
+                                                        fontFamily="inter"
+                                                        leftIcon={<Icon as={AiOutlineGlobal} w="30px" h="30px" />}
+                                                    >
+                                                        Sitio Web
+                                                    </Button>
+                                                </Link>
+                                            </WrapItem>
+                                        );
+                                    }
+                                })}
+                            </Wrap>
+                        </VStack>
                     </VStack>
                 </ModalBody>
             </ModalContent>

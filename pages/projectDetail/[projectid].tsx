@@ -5,12 +5,14 @@ import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { getGsgProject } from 'services/api/lib/gsg/gsg.calls';
+import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
 import HeaderHero from '../../components/projectDetail/hero';
 
 const PublicChallenge: NextPage = ({ project }) => {
     const router = useRouter();
     const { data: userProfile } = useUser();
+    const { data: orga } = useOrganization(true);
 
     return (
         <>
@@ -32,7 +34,7 @@ const PublicChallenge: NextPage = ({ project }) => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project} user={userProfile} />
+                <HeaderHero project={project} user={userProfile} orga={orga} />
             </Flex>
         </>
     );
