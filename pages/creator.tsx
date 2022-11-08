@@ -133,8 +133,6 @@ const Creator: NextPage = ({ project, quality }) => {
     const finance_description = useRef<HTMLBodyElement>(null);
     const other = useRef<HTMLBodyElement>(null);
 
-    console.log(project?.business_model);
-
     const {
         register,
         formState: { errors, isValid, isSubmitted },
@@ -170,10 +168,14 @@ const Creator: NextPage = ({ project, quality }) => {
             finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
             business_model: JSON?.parse(project?.business_model)?.paragraph ?? '',
-            last_sales: JSON.parse(project?.business_model).items.split(';;')[0],
-            ebitda: JSON.parse(project?.business_model).items.split(';;')[1],
-            patrimony: JSON.parse(project?.business_model).items.split(';;')[2],
-            tax: JSON.parse(project?.business_model).items.split(';;')[3],
+            last_sales12: JSON.parse(project?.business_model).items.split(';;')[0],
+            last_sales6: JSON.parse(project?.business_model).items.split(';;')[1],
+
+            last_client12: JSON.parse(project?.business_model).items.split(';;')[2],
+            last_client6: JSON.parse(project?.business_model).items.split(';;')[3],
+
+            ebitda: JSON.parse(project?.business_model).items.split(';;')[4],
+            patrimony: JSON.parse(project?.business_model).items.split(';;')[5],
             investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
             better_project: project?.better_project ?? '',
             additional_info: project?.better_project ?? '',
@@ -528,13 +530,18 @@ const Creator: NextPage = ({ project, quality }) => {
                 time_lapse: watch('time_lapse')?.value,
                 business_model: JSON.stringify({
                     paragraph: watch('business_model'),
-                    items: `${watch('last_sales')};;${watch('ebitda')};;${watch('patrimony')};;${watch('tax')}`,
+                    items: `${watch('last_sales12')};;${watch('last_sales6')};;${watch('last_client12')};;${watch(
+                        'last_client6',
+                    )};;${watch('ebitda')};;${watch('patrimony')}`,
                 }),
                 investment_objective: watch('investment_objective')?.value,
                 additional_info: watch('additional_info')?.value,
                 additional_document: baseAdditional?.base64,
                 better_project: watch('better_project'),
                 status: 'sketch',
+                investment_type: postulationProject
+                    ? 'Un proyecto específico dentro de la empresa'
+                    : 'Un proyecto para la empresa',
                 progress: Math.round(
                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                         (isCheckCapital && isCheckDeuda
@@ -791,7 +798,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         <FormControl id="description" isInvalid={!!errors.description}>
-                            <FormLabel>
+                            <FormLabel m={0}>
                                 2. Descripción del proyecto <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
 
@@ -876,7 +883,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <Input type="hidden" {...register('main_image')} />
                                     <UploadButton
                                         variant="solid"
-                                        bg="gray.700"
+                                        bg="gray.600"
                                         color="gray.50"
                                         borderColor="gray.50"
                                         border="1px dashed"
@@ -1123,7 +1130,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Input type="hidden" {...register('social_impact')} />
                                         <UploadButton
                                             variant="solid"
-                                            bg="gray.700"
+                                            bg="gray.600"
                                             color="gray.50"
                                             borderColor="gray.50"
                                             border="1px dashed"
@@ -1174,7 +1181,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         <Divider paddingTop={'60px'} />
 
                         <VStack align="flex-start" ref={finance_description}>
-                            <Text fontSize="30px" fontWeight="bold" pt="60px">
+                            <Text fontSize="30px" fontWeight="bold" pt="60px" textTransform="uppercase">
                                 Descripción financiera
                             </Text>
 
@@ -1581,20 +1588,101 @@ const Creator: NextPage = ({ project, quality }) => {
 
                             <VStack w="full" align="flex-start" gap="15px">
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                    21. Por favor completa los siguientes campos en relación a tu último año fiscal.
-                                    (Opcional)
+                                    21. En relación a tu trayectoria, por favor completa los siguientes campos. Si no
+                                    registras datos, coloca 0
                                 </Text>
 
                                 <VStack w="full" gap="15px">
                                     <FormControl
-                                        id="last_sales"
-                                        sInvalid={!!errors.last_sales}
+                                        id="last_sales12"
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                        isInvalid={!!errors.last_sales12}
+                                    >
+                                        <FormLabel w="full">
+                                            Ventas en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <VStack w="full" align="flex-end">
+                                            <Input maxW="420px" {...register('last_sales12')} />
+                                            <FormErrorMessage
+                                                textColor="red.400"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight={'medium'}
+                                            >
+                                                {errors.last_sales12?.message}
+                                            </FormErrorMessage>
+                                        </VStack>
+                                    </FormControl>
+
+                                    <FormControl
+                                        id="last_sales6"
+                                        sInvalid={!!errors.last_sales6}
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <FormLabel>Ventas en los últimos 12 meses</FormLabel>
-                                        <Input maxW="420px" {...register('last_sales')} />
+                                        <FormLabel w="full">
+                                            Ventas en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <VStack w="full" align="flex-end">
+                                            <Input maxW="420px" {...register('last_sales6')} />
+                                            <FormErrorMessage
+                                                textColor="red.400"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight={'medium'}
+                                            >
+                                                {errors.last_sales6?.message}
+                                            </FormErrorMessage>
+                                        </VStack>
+                                    </FormControl>
+
+                                    <FormControl
+                                        id="last_client12"
+                                        sInvalid={!!errors.last_client12}
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <FormLabel w="full">
+                                            Clientes en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <VStack w="full" align="flex-end">
+                                            <Input maxW="420px" {...register('last_client12')} />
+                                            <FormErrorMessage
+                                                textColor="red.400"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight={'medium'}
+                                            >
+                                                {errors.last_client12?.message}
+                                            </FormErrorMessage>
+                                        </VStack>
+                                    </FormControl>
+
+                                    <FormControl
+                                        id="last_client6"
+                                        sInvalid={!!errors.last_client6}
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <FormLabel w="full">
+                                            Clientes en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <VStack w="full" align="flex-end">
+                                            <Input maxW="420px" {...register('last_client6')} />
+                                            <FormErrorMessage
+                                                textColor="red.400"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight={'medium'}
+                                            >
+                                                {errors.last_client6?.message}
+                                            </FormErrorMessage>
+                                        </VStack>
                                     </FormControl>
 
                                     <FormControl
@@ -1604,8 +1692,20 @@ const Creator: NextPage = ({ project, quality }) => {
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <FormLabel>EBITDA</FormLabel>
-                                        <Input maxW="420px" {...register('ebitda')} />
+                                        <FormLabel w="full">
+                                            EBITDA último año fiscal <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <VStack w="full" align="flex-end">
+                                            <Input maxW="420px" {...register('ebitda')} />
+                                            <FormErrorMessage
+                                                textColor="red.400"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight={'medium'}
+                                            >
+                                                {errors.ebitda?.message}
+                                            </FormErrorMessage>
+                                        </VStack>
                                     </FormControl>
 
                                     <FormControl
@@ -1615,19 +1715,21 @@ const Creator: NextPage = ({ project, quality }) => {
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <FormLabel>Deuda/Patrimonio</FormLabel>
-                                        <Input maxW="420px" {...register('patrimony')} />
-                                    </FormControl>
-
-                                    <FormControl
-                                        id="tax"
-                                        sInvalid={!!errors.tax}
-                                        display="flex"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                    >
-                                        <FormLabel>Impuesto declarado</FormLabel>
-                                        <Input maxW="420px" {...register('tax')} />
+                                        <FormLabel w="full">
+                                            Deuda / Patrimionio último año fiscal{' '}
+                                            <span style={{ color: '#4FD1C5' }}>*</span>
+                                        </FormLabel>
+                                        <VStack w="full" align="flex-end">
+                                            <Input maxW="420px" {...register('patrimony')} />
+                                            <FormErrorMessage
+                                                textColor="red.400"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight={'medium'}
+                                            >
+                                                {errors.patrimony?.message}
+                                            </FormErrorMessage>
+                                        </VStack>
                                     </FormControl>
                                 </VStack>
                             </VStack>
@@ -1635,7 +1737,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <Divider pt="60px" />
 
-                        <Text fontSize="30px" fontWeight="bold" pt="60px" ref={other}>
+                        <Text fontSize="30px" fontWeight="bold" pt="60px" ref={other} textTransform="uppercase">
                             Otra información relevante
                         </Text>
 
@@ -1844,7 +1946,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <Input type="hidden" {...register('additional_document')} />
                                     <UploadButton
                                         variant="solid"
-                                        bg="gray.700"
+                                        bg="gray.600"
                                         color="gray.50"
                                         borderColor="gray.50"
                                         border="1px dashed"

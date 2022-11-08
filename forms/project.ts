@@ -34,10 +34,12 @@ export interface IProjectForm {
 
     debt?: select;
 
-    last_sales?: string;
-    ebitda?: string;
-    patrimony?: string;
-    tax?: string;
+    last_sales12: string;
+    last_sales6: string;
+    last_client12: string;
+    last_client6: string;
+    ebitda: string;
+    patrimony: string;
 }
 
 export interface IMember {
@@ -70,10 +72,12 @@ const projectShape: ZodShape<IProjectForm> = {
     finance_goal: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     time_lapse: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
 
-    last_sales: z.string().optional(),
-    ebitda: z.string().optional(),
-    patrimony: z.string().optional(),
-    tax: z.string().optional(),
+    last_sales12: z.string().nonempty('Campo obligatorio'),
+    last_sales6: z.string().nonempty('Campo obligatorio'),
+    ebitda: z.string().nonempty('Campo obligatorio'),
+    last_client12: z.string().nonempty('Campo obligatorio'),
+    last_client6: z.string().nonempty('Campo obligatorio'),
+    patrimony: z.string().nonempty('Campo obligatorio'),
 
     investment_types: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
     business_model: z.string().nonempty('Campo obligatorio'),

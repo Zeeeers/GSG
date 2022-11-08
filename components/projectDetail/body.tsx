@@ -20,6 +20,7 @@ import Garantee from './formatText/garantee';
 import Messure from './formatText/messure';
 import Objetive from './formatText/objective';
 import Rentability from './formatText/rentability';
+import Sector from './formatText/sector';
 import Stage from './formatText/stage';
 import StageCapital from './formatText/stageCapital';
 import ThirdParties from './formatText/thirdParties';
@@ -27,6 +28,8 @@ import Time from './formatText/time';
 
 const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
     const { impact, description_finance, other } = ref?.current;
+
+    console.log(project);
 
     return (
         <Stack
@@ -77,6 +80,28 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
             )}
 
             <VStack pl="27px" pr="27px" align="flex-start" spacing="40px" w="full" pb="20px">
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                            Sector al cual pertenece
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {Sector(project?.sector)}
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                            Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {ThirdParties(project?.third_parties)}
+                        </Text>
+                    </VStack>
+                </VStack>
+
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize={'md'} color="gray.400">
                         Medición de resultados asociados al impacto social y/o mediambiental
@@ -107,17 +132,6 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         </Link>
                     </VStack>
                 )}
-
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
-                            Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {ThirdParties(project?.third_parties)}
-                        </Text>
-                    </VStack>
-                </VStack>
             </VStack>
 
             <Stack
@@ -133,6 +147,18 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
                     Descripción financiera de {project?.organization.name}
                 </Text>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                            La búsqueda de capital es para:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {project?.investment_type}
+                        </Text>
+                    </VStack>
+                </VStack>
+
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
@@ -152,6 +178,19 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                             </Text>
                             <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                                 {Stage(project?.debt)}
+                            </Text>
+                        </VStack>
+                    </VStack>
+                )}
+
+                {project?.investment_types && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                El tipo de inversionista que busca es:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {project?.investment_types}
                             </Text>
                         </VStack>
                     </VStack>
@@ -233,23 +272,54 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                             La trayectoria del negocio es:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {project?.business_model}
+                            {JSON.parse(project?.business_model)?.paragraph}
                         </Text>
                     </VStack>
                 </VStack>
 
-                {project?.investment_types && (
-                    <VStack align="flex-start">
-                        <VStack align="flex-start" spacing="5px">
-                            <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                El tipo de inversionista que busca es:
-                            </Text>
-                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                {project?.investment_types}
-                            </Text>
-                        </VStack>
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            Ventas en los últimos 12 meses:
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {JSON.parse(project?.business_model)?.items?.split(';;')[0]}
+                        </Text>
                     </VStack>
-                )}
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            EBITDA
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {JSON.parse(project?.business_model)?.items?.split(';;')[4]}
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            Deuda/ Patrimonio
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {JSON.parse(project?.business_model)?.items?.split(';;')[5]}
+                        </Text>
+                    </VStack>
+                </VStack>
+
+                <VStack align="flex-start">
+                    <VStack align="flex-start" spacing="5px">
+                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                            Impuesto declarado
+                        </Text>
+                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                            {Time(project?.time_lapse)}
+                        </Text>
+                    </VStack>
+                </VStack>
             </Stack>
 
             <Stack pl="27px" spacing="27px" w="full" ref={other} scrollMarginTop="100px">
@@ -292,18 +362,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 </VStack>
             </Stack>
 
-            <Stack pl="27px" pr="27px" spacing="27px">
-                <VStack align="flex-start" spacing="5px">
-                    <Text as="p" fontSize="3xl">
-                        Espacios de mejora continua
-                    </Text>
-                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
-                        {project?.better_project ?? 'Sin información'}
-                    </Text>
-                </VStack>
-            </Stack>
-
-            <Stack pl="27px" pr="27px" spacing="60px">
+            <Stack pl="27px" pr="27px" spacing="40px">
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontSize="3xl">
                         Información complementaria
@@ -339,6 +398,17 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         </Link>
                     </VStack>
                 )}
+            </Stack>
+
+            <Stack pl="27px" pr="27px" spacing="27px">
+                <VStack align="flex-start" spacing="5px">
+                    <Text as="p" fontSize="3xl">
+                        Espacios de mejora continua
+                    </Text>
+                    <Text as="p" fontSize="16px" fontFamily="inter" lineHeight="140%">
+                        {project?.better_project ?? 'Sin información'}
+                    </Text>
+                </VStack>
             </Stack>
         </Stack>
     );
