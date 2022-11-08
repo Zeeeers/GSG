@@ -1,10 +1,21 @@
 // Dependencies
-import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
-import Avatar from '@clyc/optimized-image/components/chakraAvatar';
+import {
+    Button,
+    HStack,
+    Icon,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    Text,
+    Avatar,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { HiChevronDown } from 'react-icons/hi';
 import { RiLogoutBoxRLine, RiUser3Fill } from 'react-icons/ri';
+import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
 
 // Types
@@ -18,6 +29,9 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const { data: user } = useUser();
+    const { data: orga } = useOrganization(true);
+
+    console.log(orga);
 
     return (
         <Menu isLazy>
@@ -45,15 +59,14 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                     <Avatar
                         size="sm"
                         //@ts-ignore
-                        src={user?.organization?.image}
-                        alt={user?.name ?? ''}
-                        tHeight={32}
-                        tWidth={32}
+                        src={user?.organization.image ?? orga?.image}
+                        height="32px"
+                        width="32px"
                         mr="10px"
                         icon={<></>}
                         //@ts-ignore
-                        bgColor={user?.organization?.image ? 'transparent' : 'teal.400'}
-                        color={'white.base'}
+                        bgColor={user?.organization.image ? 'transparent' : 'teal.400'}
+                        color={'white'}
                     />
 
                     <Text as="span" fontWeight="normal" fontSize="md" fontFamily="inter" color="white.base">

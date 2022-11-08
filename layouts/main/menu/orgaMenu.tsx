@@ -1,6 +1,17 @@
 // Dependencies
-import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, Text } from '@chakra-ui/react';
-import Avatar from '@clyc/optimized-image/components/chakraAvatar';
+import {
+    Button,
+    HStack,
+    Icon,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    Stack,
+    Text,
+    Avatar,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { HiChevronDown } from 'react-icons/hi';
 import { useOrganization } from 'services/api/lib/organization';
@@ -43,13 +54,12 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                         size="sm"
                         name={organization?.name}
                         src={organization?.image}
-                        alt={organization?.name ?? ''}
-                        tHeight={32}
-                        tWidth={32}
+                        h="32px"
+                        w="32px"
                         mr="10px"
                         icon={<></>}
                         bgColor={organization?.image ? 'transparent' : 'primary.500'}
-                        color={'white.base'}
+                        color={'white'}
                     />
 
                     <Text as="span" fontWeight="normal" fontSize="md" fontFamily="inter" color="white.base">
@@ -65,9 +75,8 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                         size="lg"
                         name={organization?.name ?? 'GSG'}
                         src={organization?.image}
-                        alt={organization?.name ?? ''}
-                        tHeight={32}
-                        tWidth={32}
+                        h="32px"
+                        w="32px"
                         mr="10px"
                         icon={<></>}
                         bgColor={organization?.image ? 'transparent' : 'primary.500'}

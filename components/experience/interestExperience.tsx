@@ -118,12 +118,12 @@ const InterestExperience = ({ setPage }: Props) => {
 
     return (
         <>
-            <Stack spacing="30px" mt="20px">
+            <Stack spacing="30px" mt="30px">
                 <VStack alignItems="flex-start" spacing="10px">
-                    <Text fontSize="24px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
-                        Selecciona tus intereses por categoría
+                    <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
+                        Selecciona tus intereses
                     </Text>
-                    <Text fontSize={'md'} fontWeight={'normal'} lineHeight={6}>
+                    <Text fontSize="16px" fontWeight={'normal'} fontFamily="inter" lineHeight={6}>
                         Te haremos recomendaciones a tu correo de acuerdo a los intereses que selecciones en las
                         siguientes categorías
                     </Text>
@@ -132,9 +132,11 @@ const InterestExperience = ({ setPage }: Props) => {
                 <VStack align="flex-start" spacing="30px">
                     <HStack>
                         <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
-                        <Text>Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses</Text>
+                        <Text fontFamily="inter">
+                            Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses
+                        </Text>
                     </HStack>
-                    <Wrap spacingX="30px" spacingY="20px">
+                    <Wrap spacingX="30px" spacingY="20px" fontFamily="inter">
                         <WrapItem>
                             <VStack
                                 onClick={openOds}

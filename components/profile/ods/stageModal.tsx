@@ -104,8 +104,8 @@ const StageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
                             ETAPA DE PROYECTO
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
-                            Selecciona las etapas del proyecto que consideres necesarias para recibir correos con
-                            recomendaciones de proyectos asociados a esta categoría.
+                            Selecciona una o más alternativas según la etapa de desarrollo de los proyectos en los que
+                            te interese invertir con impacto.
                         </Text>
                     </VStack>
                 </ModalHeader>

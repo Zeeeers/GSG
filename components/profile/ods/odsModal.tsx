@@ -105,8 +105,8 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, relo
                             OBJETIVOS DE DESARROLLO SOSTENIBLE (ODS)
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
-                            Selecciona los ODS que consideres necesarios para recibir correos con recomendaciones de
-                            proyectos asociados a esta categoría
+                            Selecciona los Objetivos de desarrollo sostenible (ODS) que más se ajusten a tus intereses
+                            para hacer Match con proyectos que aborden tu selección.
                         </Text>
                     </VStack>
                 </ModalHeader>

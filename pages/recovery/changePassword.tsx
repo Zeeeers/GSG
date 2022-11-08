@@ -39,20 +39,10 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
                         <Link href="/explorer">
                             <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
                                 <Img
-                                    src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
-                                    w="40px"
-                                    h="40px"
+                                    src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
+                                    w="133px"
+                                    h="35px"
                                 />
-                                <Text
-                                    fontSize="3xl"
-                                    textAlign="start"
-                                    fontWeight="bold"
-                                    color="primary.500"
-                                    pt={1}
-                                    cursor="pointer"
-                                >
-                                    MATCH
-                                </Text>
                             </HStack>
                         </Link>
                         <VStack maxW="504px" alignItems="flex-start">

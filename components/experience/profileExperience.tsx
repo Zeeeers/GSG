@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Avatar, Button, HStack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import UploadButton from 'common/uploadButton';
 import EditableTitle from 'common/editableTitle';
@@ -13,6 +13,7 @@ interface Props {
 const ProfileExperience = ({ setPage }: Props) => {
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
     const [baseImg, setBaseImg] = useState<string>();
+    const [nameProfile, setNameProfile] = useState<string>();
 
     const { data: user, mutate } = useUser();
     const { data: organization } = useOrganization();
@@ -95,6 +96,10 @@ const ProfileExperience = ({ setPage }: Props) => {
         }
     };
 
+    useEffect(() => {
+        setNameProfile(user?.name);
+    }, [user?.name]);
+
     return (
         <>
             <Text fontSize="30px" textTransform="uppercase" fontWeight="bold" w="full">
@@ -156,7 +161,9 @@ const ProfileExperience = ({ setPage }: Props) => {
                             alignContent="center"
                             justifyItems={'center'}
                             defaultValue={user?.name}
+                            value={nameProfile}
                             onSubmit={handleUpdateName}
+                            onChange={(e) => setNameProfile(e)}
                         />
                     </HStack>
 

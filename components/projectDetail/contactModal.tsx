@@ -38,8 +38,6 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
         copied: false,
     });
 
-    console.log(web);
-
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />

@@ -106,8 +106,8 @@ const ThirdModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, re
                             RESPALDO DE UNA TERCERA ORGANIZACIÓN
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
-                            Selecciona las certificaciones que consideres necesarias para recibir correos con
-                            recomendaciones de proyectos asociados a esta categoría.
+                            Selecciona una o más organizaciones cuyo respaldo a proyectos que requieren capital sea
+                            importante para tu decisión de inversión con impacto.
                         </Text>
                     </VStack>
                 </ModalHeader>

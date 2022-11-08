@@ -79,13 +79,10 @@ const Navbar: React.FC = () => {
                     <Link href="/explorer" passHref>
                         <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
                             <Img
-                                src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
-                                w="40px"
-                                h="40px"
+                                src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
+                                w="full"
+                                h="35px"
                             />
-                            <Text fontSize="sm" fontWeight="bold" pt={1} cursor="pointer" userSelect="none">
-                                MATCH
-                            </Text>
                         </HStack>
                     </Link>
                     {user === undefined && orga === undefined ? (

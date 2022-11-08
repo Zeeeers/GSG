@@ -28,7 +28,7 @@ const Experience = () => {
                     rounded="16px"
                 >
                     <VStack w="full" align="flex-end">
-                        <HStack w="full" spacing="5px">
+                        <HStack w="full" spacing="5px" pb="20px">
                             <Stack
                                 background={indexPage === 0 ? 'teal.500' : 'white'}
                                 w="10px"

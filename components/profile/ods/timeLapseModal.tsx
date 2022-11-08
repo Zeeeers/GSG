@@ -101,8 +101,7 @@ const TimeLapseModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest
                             PLAZOS DE INVERSIÓN
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
-                            Selecciona los plazos de inversión para recibir correos con recomendaciones de proyectos
-                            asociados a esta categoría.
+                            Selecciona los plazos de inversión que más se ajusten a tus necesidades de inversión.
                         </Text>
                     </VStack>
                 </ModalHeader>

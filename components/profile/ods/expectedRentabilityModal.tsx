@@ -101,8 +101,7 @@ const ExpectedRentabilityModal: React.FC<Props> = ({ isOpen, onClose, interest, 
                             RENTABILIDAD ESPERADA
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
-                            Selecciona las opciones de rentabilidad esperada que consideres necesarias para recibir
-                            correos con recomendaciones de proyectos asociados a esta categoría.
+                            Selecciona la rentabilidad que esperas para tus inversiones de impacto.
                         </Text>
                     </VStack>
                 </ModalHeader>

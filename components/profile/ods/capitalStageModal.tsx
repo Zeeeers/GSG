@@ -100,8 +100,7 @@ const CapitalStageModal: React.FC<Props> = ({ isOpen, onClose, interest, myInter
                             ETAPA DE LEVANTAMIENTO
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">
-                            Selecciona las etapas de levantamiento que consideres necesarias para recibir correos con
-                            recomendaciones de proyectos asociados a esta categoría.
+                            Selecciona una o más alternativas según tus intereses de inversión de impacto.
                         </Text>
                     </VStack>
                 </ModalHeader>
