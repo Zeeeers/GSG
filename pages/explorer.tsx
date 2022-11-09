@@ -204,7 +204,7 @@ const Explorer: NextPage = () => {
                             <Stack justify="flex-start" direction="column" justifyContent="end" w="full">
                                 <VStack w="full" align="flex-start" spacing="10px">
                                     <Heading
-                                        fontSize={{ base: '2xl', md: '4xl' }}
+                                        fontSize={{ base: '36px', md: '4xl' }}
                                         lineHeight="130%"
                                         fontWeight="bold"
                                         w="full"
@@ -280,13 +280,13 @@ const Explorer: NextPage = () => {
                                             alignItems={{ base: 'center', sm: 'flex-end' }}
                                             justify={{ base: 'space-between', md: 'center' }}
                                             w="full"
+                                            mb="5px"
                                         >
                                             <Input
                                                 w={{ base: 'full', sm: 'full', md: '184px' }}
                                                 variant="outline"
                                                 borderColor="gray.400"
                                                 placeholder="Buscar"
-                                                mr="5px"
                                                 textColor="white"
                                                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                             />

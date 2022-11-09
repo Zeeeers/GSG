@@ -42,7 +42,7 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 Te damos la bienvenida a match
             </Text>
             <Text fontSize="16px" fontFamily="inter" textAlign="center">
-                Descubre y encuentra oportunidades de conectar con proyectos de alto impacto
+                Descubre y encuentra oportunidades para conectar con proyectos de alto impacto
             </Text>
         </VStack>
     );

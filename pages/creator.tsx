@@ -704,6 +704,8 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     };
 
+    console.log(errors);
+
     useEffect(() => {
         if (project?.investment_type === 'Un proyecto específico dentro de la empresa') {
             setPostulationProject(true);
@@ -1443,7 +1445,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             )}
 
                             {isCheckDeuda && (
-                                <FormControl w={{ base: '100%', md: '60%' }}>
+                                <FormControl id="debt" w={{ base: '100%', md: '60%' }}>
                                     <FormLabel>
                                         14. Financiamiento de deuda <span style={{ color: '#4FD1C5' }}>*</span>
                                     </FormLabel>

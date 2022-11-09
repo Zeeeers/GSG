@@ -31,8 +31,6 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
     const { data: user } = useUser();
     const { data: orga } = useOrganization(true);
 
-    console.log(orga);
-
     return (
         <Menu isLazy>
             <MenuButton

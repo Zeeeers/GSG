@@ -12,7 +12,7 @@ const Experience = () => {
 
     return (
         <>
-            <Stack w="full" align="center">
+            <Stack w="full" h="100vh" align="center" justify="center">
                 <Stack
                     w={{ base: 'fit-content', md: '800px' }}
                     direction={{ base: 'column', md: 'row' }}
@@ -21,7 +21,6 @@ const Experience = () => {
                     background="gray.800"
                     px={{ base: '25px', md: '70px' }}
                     py="40px"
-                    mt="150px"
                     rounded="16px"
                 >
                     <VStack w="full" align={{ base: 'center', md: 'flex-end' }}>

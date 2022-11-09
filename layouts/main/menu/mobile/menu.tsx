@@ -16,7 +16,7 @@ const MobileUserMenu: React.FC<Props> = () => {
     //const { data: user } = useUser();
 
     return (
-        <Slide in={isOpen} direction="left" style={{ zIndex: 30 }}>
+        <Slide in={isOpen} direction="left" style={{ zIndex: 40 }}>
             <VStack spacing="20px" align="flex-start" h="full" w="full" bgColor="gray.700" px="24px">
                 <Box py="60px" zIndex={0} />
 
