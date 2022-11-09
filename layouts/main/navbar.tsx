@@ -85,6 +85,7 @@ const Navbar: React.FC = () => {
                             />
                         </HStack>
                     </Link>
+
                     {user === undefined && orga === undefined ? (
                         isTablet ? (
                             <HStack spacing="15px">

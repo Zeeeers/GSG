@@ -187,6 +187,25 @@ const Creator: NextPage = ({ project, quality }) => {
         },
     });
 
+    const proyectTitle = watch('title', project?.title ?? '');
+    const proyectDescription = watch('description', project?.description ?? '');
+    const proyectMainImage = watch('main_image');
+    const proyectOds = watch('qualities');
+    const proyectParties = watch('third_parties');
+    const proyectMore = watch('more_info');
+
+    const proyectWeb = watch('business_web');
+    const proyectSocial = watch('social_impact');
+    const proyectCapital = watch('capital_stage');
+    const proyectDept = watch('debt');
+    const proyectInvestType = watch('investment_types');
+    const proyectRentability = watch('expected_rentability');
+
+    const proyectBetter = watch('better_project', project?.better_project ?? '');
+    const proyectBusiness = watch('business_model', project?.business_model ?? '');
+
+    const proyectObject = watch('investment_objective');
+
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
         { value: 'prize-org', label: 'Premio o reconocimiento de empresa u organización' },
@@ -324,15 +343,15 @@ const Creator: NextPage = ({ project, quality }) => {
             percent.push(baseImgMain);
         }
 
-        if (watch('sector')?.value !== undefined) {
+        if (watch('sector')?.value !== '') {
             percent.push(watch('sector')?.value);
         }
 
-        if (proyectParties !== '') {
+        if (proyectParties.value !== '') {
             percent.push(proyectParties);
         }
 
-        if (proyectMore !== '') {
+        if (proyectMore.value !== '') {
             percent.push(proyectMore);
         }
 
@@ -343,47 +362,74 @@ const Creator: NextPage = ({ project, quality }) => {
         const percent = [];
 
         if (isCheckCapital) {
-            if (watch('capital_stage')?.value !== undefined) {
+            if (watch('capital_stage')?.value ?? '' !== '') {
                 percent.push(watch('capital_stage')?.value);
             }
 
-            if (watch('expected_rentability')?.value !== undefined) {
+            if (watch('expected_rentability')?.value ?? '' !== '') {
                 percent.push(watch('expected_rentability')?.value);
             }
 
-            if (proyectInvestType?.value !== undefined) {
+            if (proyectInvestType?.value ?? '' !== '') {
                 percent.push(proyectInvestType?.value);
             }
         }
 
         if (isCheckDeuda) {
-            if (proyectDept?.value !== undefined) {
+            if (proyectDept?.value ?? '' !== '') {
                 percent.push(proyectDept?.value);
             }
         }
 
-        if (watch('guarantee')?.value !== undefined) {
+        if (watch('guarantee')?.value !== '') {
             percent.push(watch('guarantee')?.value);
         }
 
-        if (watch('stage')?.value !== undefined) {
+        if (watch('stage')?.value !== '') {
             percent.push(watch('stage')?.value);
         }
 
-        if (watch('finance_goal')?.value !== undefined) {
+        if (watch('finance_goal')?.value !== '') {
             percent.push(watch('finance_goal')?.value);
         }
 
-        if (watch('time_lapse')?.value !== undefined) {
+        if (watch('time_lapse')?.value !== '') {
             percent.push(watch('time_lapse')?.value);
         }
 
-        if (watch('investment_objective')?.value !== undefined) {
+        if (watch('investment_objective')?.value !== '') {
             percent.push(watch('investment_objective')?.value);
         }
 
-        if (proyectBusiness !== '') {
+        if (proyectBusiness !== undefined) {
             percent.push(proyectBusiness);
+        }
+
+        if (watch('rentability_time') !== null) {
+            percent.push(watch('rentability_time'));
+        }
+
+        if (watch('last_client12') !== '') {
+            percent.push(watch('last_client12'));
+        }
+
+        if (watch('last_client6') !== '') {
+            percent.push(watch('last_client6'));
+        }
+
+        if (watch('last_sales12') !== '') {
+            percent.push(watch('last_sales12'));
+        }
+
+        if (watch('last_sales6') !== '') {
+            percent.push(watch('last_sales6'));
+        }
+
+        if (watch('ebitda') !== '') {
+            percent.push(watch('ebitda'));
+        }
+        if (watch('patrimony') !== '') {
+            percent.push(watch('patrimony'));
         }
 
         return percent.length;
@@ -654,26 +700,7 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     };
 
-    const proyectTitle = watch('title', project?.title ?? '');
-    const proyectDescription = watch('description', project?.description ?? '');
-    const proyectMainImage = watch('main_image');
-    const proyectOds = watch('qualities');
-    const proyectParties = watch('third_parties');
-    const proyectMore = watch('more_info');
-
-    const proyectWeb = watch('business_web');
-    const proyectSocial = watch('social_impact');
-    const proyectCapital = watch('capital_stage');
-    const proyectDept = watch('debt');
-    const proyectInvestType = watch('investment_types');
-    const proyectRentability = watch('expected_rentability');
-
-    const proyectBetter = watch('better_project', project?.better_project ?? '');
-    const proyectBusiness = watch('business_model', project?.business_model ?? '');
-
-    const proyectObject = watch('investment_objective');
-
-    console.log(errors);
+    console.log(percentDescription() + percentFinance() + percentOther());
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -1202,7 +1229,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </VStack>
 
                         <VStack w={'full'} align="flex-start" spacing="40px">
-                            <VStack spacing="15px">
+                            <VStack align="flex-start" spacing="15px">
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                     9. ¿Buscas capital para un proyecto específico dentro de tu empresa o para tu
                                     empresa? <span style={{ color: '#4FD1C5' }}>*</span>
@@ -1241,6 +1268,10 @@ const Creator: NextPage = ({ project, quality }) => {
                                         Empresa
                                     </Button>
                                 </HStack>
+
+                                <Text textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                                    {!postulationEmployee && !postulationProject && 'Seleccione almenos 1 opción'}
+                                </Text>
                             </VStack>
 
                             <VStack align="flex-start" w="full" spacing="20px">
@@ -1761,7 +1792,13 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </Button>
                             )}
 
-                            <Stack w="full" pt="40px">
+                            {members?.length === 0 && (
+                                <Text textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                                    Agrege almenos 1 miembro
+                                </Text>
+                            )}
+
+                            <Stack w="full" pt="10px">
                                 {members
                                     ? members?.map((member, i) => (
                                           <Stack
@@ -2101,12 +2138,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 {`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                         (isCheckCapital && isCheckDeuda
-                                            ? 18
+                                            ? 24
                                             : isCheckCapital && !isCheckDeuda
-                                            ? 17
+                                            ? 23
                                             : !isCheckCapital && isCheckDeuda
-                                            ? 15
-                                            : 18),
+                                            ? 21
+                                            : 24),
                                 )}%`}
                             </Text>
                         </HStack>
@@ -2116,12 +2153,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 w={`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                         (isCheckCapital && isCheckDeuda
-                                            ? 18
+                                            ? 24
                                             : isCheckCapital && !isCheckDeuda
-                                            ? 17
+                                            ? 23
                                             : !isCheckCapital && isCheckDeuda
-                                            ? 15
-                                            : 18),
+                                            ? 21
+                                            : 24),
                                 )}%`}
                                 h="full"
                                 background="teal.400"
@@ -2178,7 +2215,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 )}
                                 <Text>Descripción financiera</Text>
                             </HStack>
-                            {(percentFinance() === 9 || percentFinance() === 7 || percentFinance() === 10) && (
+                            {(percentFinance() === 13 || percentFinance() === 15) && (
                                 <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
                             )}
                         </HStack>
@@ -2296,12 +2333,12 @@ const Creator: NextPage = ({ project, quality }) => {
                             {`${Math.round(
                                 ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                     (isCheckCapital && isCheckDeuda
-                                        ? 18
+                                        ? 24
                                         : isCheckCapital && !isCheckDeuda
-                                        ? 17
+                                        ? 23
                                         : !isCheckCapital && isCheckDeuda
-                                        ? 15
-                                        : 18),
+                                        ? 21
+                                        : 24),
                             )}%`}
                         </Text>
                     </HStack>
