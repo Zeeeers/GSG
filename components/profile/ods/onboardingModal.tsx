@@ -81,7 +81,12 @@ const OnboardingModal: React.FC<Props> = ({
                                 variant="solid"
                                 onClick={() => {
                                     handleOnboarding();
-                                    router.push('/explorer');
+                                    onboarding
+                                        ? router.push({
+                                              pathname: '/explorer',
+                                              query: { onboarding: 'filter-experience' },
+                                          })
+                                        : router.push('/explorer');
                                 }}
                             >
                                 Ir al explorador de proyectos

@@ -1,4 +1,3 @@
-import Navbar from 'layouts/main/navbar';
 import { useState } from 'react';
 import ProfileExperience from 'components/experience/profileExperience';
 import { Stack, VStack, HStack } from '@chakra-ui/react';
@@ -13,8 +12,6 @@ const Experience = () => {
 
     return (
         <>
-            <Navbar />
-
             <Stack w="full" align="center">
                 <Stack
                     w="800px"

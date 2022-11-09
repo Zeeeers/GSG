@@ -512,6 +512,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 status: 'in-review',
 
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
+
+                investment_type: postulationProject
+                    ? 'Un proyecto específico dentro de la empresa'
+                    : 'Un proyecto para la empresa',
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
             members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
@@ -593,12 +597,12 @@ const Creator: NextPage = ({ project, quality }) => {
                 progress: Math.round(
                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                         (isCheckCapital && isCheckDeuda
-                            ? 18
+                            ? 24
                             : isCheckCapital && !isCheckDeuda
-                            ? 17
+                            ? 23
                             : !isCheckCapital && isCheckDeuda
-                            ? 15
-                            : 18),
+                            ? 21
+                            : 24),
                 ).toString(),
                 contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
                     'youtubeForm',
@@ -700,7 +704,15 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     };
 
-    console.log(percentDescription() + percentFinance() + percentOther());
+    useEffect(() => {
+        if (project?.investment_type === 'Un proyecto específico dentro de la empresa') {
+            setPostulationProject(true);
+        }
+
+        if (project?.investment_type === 'Un proyecto para la empresa') {
+            setPostulationEmployee(true);
+        }
+    }, [project?.investment_type]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -2348,12 +2360,12 @@ const Creator: NextPage = ({ project, quality }) => {
                             w={`${Math.round(
                                 ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                     (isCheckCapital && isCheckDeuda
-                                        ? 18
+                                        ? 24
                                         : isCheckCapital && !isCheckDeuda
-                                        ? 17
+                                        ? 23
                                         : !isCheckCapital && isCheckDeuda
-                                        ? 15
-                                        : 18),
+                                        ? 21
+                                        : 24),
                             )}%`}
                             h="full"
                             background="teal.400"

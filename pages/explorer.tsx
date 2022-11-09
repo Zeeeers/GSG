@@ -22,6 +22,7 @@ import {
     VStack,
     Wrap,
     WrapItem,
+    useDisclosure,
 } from '@chakra-ui/react';
 import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
 import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
@@ -48,12 +49,15 @@ import Sector from 'components/projectDetail/formatText/sector';
 import Rentability from 'components/projectDetail/formatText/rentability';
 import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
 import Time from 'components/projectDetail/formatText/time';
+import FilterExperienceModal from 'components/experience/filterExperienceModal';
+import Router from 'next/router';
 
 const Explorer: NextPage = () => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
     const [isOpenFilter, setIsOpenFilter] = useState(false);
+    const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
 
     // data proyects
     const { data: gsg } = useGsg();
@@ -133,6 +137,14 @@ const Explorer: NextPage = () => {
             setIsVisible(true);
         }
     }, [user]);
+
+    useEffect(() => {
+        const { onboarding } = Router.query;
+
+        if (onboarding && onboarding === 'filter-experience') {
+            openExperience(true);
+        }
+    }, [isOpenExperience]);
 
     return (
         <>
@@ -1002,6 +1014,8 @@ const Explorer: NextPage = () => {
                     )}
                 </AnimatePresence>
             </Container>
+
+            <FilterExperienceModal isOpen={isOpenExperience} onClose={closeExperience} />
         </>
     );
 };

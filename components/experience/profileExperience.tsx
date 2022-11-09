@@ -5,6 +5,7 @@ import EditableTitle from 'common/editableTitle';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import { useUser } from 'services/api/lib/user';
 import { useOrganization } from 'services/api/lib/organization';
+import Router from 'next/router';
 
 interface Props {
     setPage: (index: number) => void;
@@ -173,9 +174,21 @@ const ProfileExperience = ({ setPage }: Props) => {
                 </VStack>
             </HStack>
 
-            <Button onClick={() => setPage(1)} variant="solid" maxW="200px" h="40px">
-                Continuar
-            </Button>
+            <HStack w="full" justify="space-between" pt="20px">
+                <Button
+                    onClick={() => Router.push('/explorer')}
+                    variant="ghost"
+                    maxW="200px"
+                    h="40px"
+                    fontSize="16px"
+                    color="gray.50"
+                >
+                    Saltar
+                </Button>
+                <Button onClick={() => setPage(1)} variant="solid" maxW="200px" h="40px">
+                    Continuar
+                </Button>
+            </HStack>
 
             {isCropperOpen && (
                 <CropperModalAvatar
