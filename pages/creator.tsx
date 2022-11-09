@@ -1384,6 +1384,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             13. ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
+
                                         <Controller
                                             name="expected_rentability"
                                             control={control}
@@ -1496,11 +1497,33 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormControl>
 
                             <FormControl id="rentability_time" w="full" isInvalid={!!errors.rentability_time}>
-                                <FormLabel>
-                                    18. Indica el tiempo que requerirás para que tu empresa, producto o servicio sea
-                                    rentable. <span style={{ color: '#4FD1C5' }}>*</span>
-                                </FormLabel>
+                                <HStack align="flex-start" spacing="0px">
+                                    <FormLabel>
+                                        18. Indica el tiempo que requerirás para que tu empresa, producto o servicio sea
+                                        rentable. <span style={{ color: '#4FD1C5' }}>*</span>
+                                    </FormLabel>
 
+                                    <TooltipPrettie>
+                                        <>
+                                            <Text
+                                                textAlign="left"
+                                                background="blue.700"
+                                                fontSize="24px"
+                                                px="10px"
+                                                fontWeight="bold"
+                                                textTransform="uppercase"
+                                            >
+                                                Umbral de rentabilidad
+                                            </Text>
+
+                                            <Text fontSize="14px" color="gray.300" fontFamily="inter" pb="15px">
+                                                El Break Even Point, punto de equilibrio o umbral de rentabilidad no es
+                                                otra cosa que el momento exacto en el que los costes totales igualan a
+                                                los ingresos totales, considerando la inversión requerida.
+                                            </Text>
+                                        </>
+                                    </TooltipPrettie>
+                                </HStack>
                                 <HStack>
                                     <Input {...register('rentability_time')} maxW="95px" type="number" />
                                     <Text>Meses</Text>
@@ -2223,9 +2246,14 @@ const Creator: NextPage = ({ project, quality }) => {
                             </Tooltip>
                         </VStack>
 
-                        <Text fontFamily="inter" fontSize="14px">
-                            ¿Necesitas ayuda? Contáctanos
-                        </Text>
+                        <Link
+                            href="mailto:contacto@gsg-match.com
+"
+                        >
+                            <Text fontFamily="inter" fontSize="14px">
+                                ¿Necesitas ayuda? Contáctanos
+                            </Text>
+                        </Link>
                     </VStack>
                 </Stack>
             </HStack>
