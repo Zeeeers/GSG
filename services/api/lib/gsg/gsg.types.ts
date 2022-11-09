@@ -6,28 +6,30 @@ import { Gsg } from '../../types/Gsg';
 import { ProjectImage } from '../../types/ProjectImage';
 
 export interface ProjectForm {
-    title: string;
-    description: string;
-    main_image: string;
-    social_impact: string;
+    title?: string;
+    description?: string;
+    main_image?: string;
+    social_impact?: string;
 
-    more_info: string;
-    third_parties: string;
-    stage: string;
-    investment_objective: string;
-    capital_stage: string;
-    guarantee: string;
-    expected_rentability: string;
-    finance_goal: string;
-    time_lapse: string;
-    qualities: string;
+    more_info?: string;
+    third_parties?: string;
+    stage?: string;
+    investment_objective?: string;
+    capital_stage?: string;
+    guarantee?: string;
+    expected_rentability?: string;
+    finance_goal?: string;
+    time_lapse?: string;
+    qualities?: string;
 
-    investment_types: string;
-    business_model: string;
-    better_project: string;
-    additional_info: string;
-    business_web: string;
-    additional_document: string;
+    investment_types?: string;
+    business_model?: string;
+    better_project?: string;
+    additional_info?: string;
+    business_web?: string;
+    additional_document?: string;
+
+    status: string;
 }
 
 export interface CreateProjectRequest {
@@ -36,6 +38,9 @@ export interface CreateProjectRequest {
 
 export interface CreateProjectResponse {
     message: string;
+    data: {
+        gsg_project: Gsg;
+    };
 }
 
 export type CreateProjectCall = (payload: CreateProjectRequest) => Promise<ApiResponse<CreateProjectResponse>>;

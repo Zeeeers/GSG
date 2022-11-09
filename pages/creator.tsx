@@ -179,11 +179,11 @@ const Creator: NextPage = ({ project, quality }) => {
             better_project: project?.better_project ?? '',
             additional_info: project?.better_project ?? '',
 
-            linkedinForm: project?.contacts[0],
-            instagramForm: project?.contacts[1],
-            facebookForm: project?.contacts[2],
-            youtubeForm: project?.contacts[3],
-            webForm: project?.contacts[4],
+            linkedinForm: project?.contacts && project?.contacts[0],
+            instagramForm: project?.contacts && project?.contacts[1],
+            facebookForm: project?.contacts && project?.contacts[2],
+            youtubeForm: project?.contacts && project?.contacts[3],
+            webForm: project?.contacts && project?.contacts[4],
         },
     });
 
@@ -381,54 +381,54 @@ const Creator: NextPage = ({ project, quality }) => {
             }
         }
 
-        if (watch('guarantee')?.value !== '') {
+        if (watch('guarantee')?.value ?? '' !== '') {
             percent.push(watch('guarantee')?.value);
         }
 
-        if (watch('stage')?.value !== '') {
+        if (watch('stage')?.value ?? '' !== '') {
             percent.push(watch('stage')?.value);
         }
 
-        if (watch('finance_goal')?.value !== '') {
+        if (watch('finance_goal')?.value ?? '' !== '') {
             percent.push(watch('finance_goal')?.value);
         }
 
-        if (watch('time_lapse')?.value !== '') {
+        if (watch('time_lapse')?.value ?? '' !== '') {
             percent.push(watch('time_lapse')?.value);
         }
 
-        if (watch('investment_objective')?.value !== '') {
+        if (watch('investment_objective')?.value ?? '' !== '') {
             percent.push(watch('investment_objective')?.value);
         }
 
-        if (proyectBusiness !== undefined) {
+        if (proyectBusiness ?? '' !== '') {
             percent.push(proyectBusiness);
         }
 
-        if (watch('rentability_time') !== null) {
+        if (watch('rentability_time') ?? '' !== '') {
             percent.push(watch('rentability_time'));
         }
 
-        if (watch('last_client12') !== '') {
+        if (watch('last_client12') ?? '' !== '') {
             percent.push(watch('last_client12'));
         }
 
-        if (watch('last_client6') !== '') {
+        if (watch('last_client6') ?? '' !== '') {
             percent.push(watch('last_client6'));
         }
 
-        if (watch('last_sales12') !== '') {
+        if (watch('last_sales12') ?? '' !== '') {
             percent.push(watch('last_sales12'));
         }
 
-        if (watch('last_sales6') !== '') {
+        if (watch('last_sales6') ?? '' !== '') {
             percent.push(watch('last_sales6'));
         }
 
-        if (watch('ebitda') !== '') {
+        if (watch('ebitda') ?? '' !== '') {
             percent.push(watch('ebitda'));
         }
-        if (watch('patrimony') !== '') {
+        if (watch('patrimony') ?? '' !== '') {
             percent.push(watch('patrimony'));
         }
 
@@ -622,59 +622,33 @@ const Creator: NextPage = ({ project, quality }) => {
 
         const { create, updateGsgProject } = await import('../services/api/lib/gsg');
 
-        if (project?.status === 'sketch') {
-            const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
+        const { ok } = await updateGsgProject({ idProject: project?.id, project: dataProject });
 
-            if (ok) {
-                if (isPreview) {
-                    window.open(`https://www.gsg-match.com/projectDetail/${project?.id}`, '_blank');
-                    setSaveDraft(false);
-                } else {
-                    setSaveDraft(false);
-                    toast({
-                        title: 'Borrador modificado',
-                        description: 'El borrador se ha creado con éxito.',
-                        status: 'success',
-                        duration: 9000,
-                        isClosable: true,
-                        position: 'top-right',
-                    });
-                }
+        if (ok) {
+            if (isPreview) {
+                window.open(`https://www.gsg-match.com/projectDetail/${project?.id}`, '_blank');
+                setSaveDraft(false);
             } else {
                 setSaveDraft(false);
                 toast({
-                    title: 'Error al modificar el borrador',
-                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
-            }
-        } else {
-            const { ok } = await create({ project: dataProject });
-
-            if (ok) {
-                setSaveDraft(false);
-                toast({
-                    title: 'Borrador creado',
+                    title: 'Borrador modificado',
                     description: 'El borrador se ha creado con éxito.',
                     status: 'success',
                     duration: 9000,
                     isClosable: true,
                     position: 'top-right',
                 });
-            } else {
-                setSaveDraft(false);
-                toast({
-                    title: 'Error al crear el borrador',
-                    description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                });
             }
+        } else {
+            setSaveDraft(false);
+            toast({
+                title: 'Error al modificar el borrador',
+                description: 'Ha ocurrido un error la intentar crear el borrador, porfavor, intentelo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
         }
     };
 
