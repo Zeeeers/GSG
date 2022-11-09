@@ -627,7 +627,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
             if (ok) {
                 if (isPreview) {
-                    window.open(`https://gsgmatch.netlify.app/projectDetail/${project?.id}`, '_blank');
+                    window.open(`https://www.gsg-match.com/projectDetail/${project?.id}`, '_blank');
                     setSaveDraft(false);
                 } else {
                     setSaveDraft(false);
@@ -703,8 +703,6 @@ const Creator: NextPage = ({ project, quality }) => {
             });
         }
     };
-
-    console.log(errors);
 
     useEffect(() => {
         if (project?.investment_type === 'Un proyecto específico dentro de la empresa') {
