@@ -58,11 +58,11 @@ function variantTopAccent({ colorScheme: c }: Dict) {
     };
 }
 
-function variantSolid({ colorScheme: c }: Dict) {
+function variantSolid() {
     return {
         container: {
-            bg: `${c}.500`,
-            color: `white.base`,
+            bg: `teal.500`,
+            color: `white`,
         },
     };
 }
