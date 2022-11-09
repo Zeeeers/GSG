@@ -314,8 +314,6 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {new Intl.NumberFormat('es-CL', {
-                                style: 'currency',
-                                currency: 'CLP',
                                 minimumFractionDigits: 0,
                             }).format(project?.business_model.split(';;')[2])}
                         </Text>
@@ -329,8 +327,6 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {new Intl.NumberFormat('es-CL', {
-                                style: 'currency',
-                                currency: 'CLP',
                                 minimumFractionDigits: 0,
                             }).format(project?.business_model.split(';;')[3])}
                         </Text>

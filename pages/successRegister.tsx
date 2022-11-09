@@ -46,20 +46,10 @@ const RecoveryPassword: NextPage = () => {
                     <Link href="/explorer" passHref>
                         <HStack mb="20px" spacing={3} alignItems="center" justify="center" cursor="pointer">
                             <Img
-                                src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
-                                w="40px"
-                                h="40px"
+                                src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
+                                w="133px"
+                                h="35px"
                             />
-                            <Text
-                                fontSize="3xl"
-                                textAlign="start"
-                                fontWeight="bold"
-                                color="primary.500"
-                                pt={1}
-                                cursor="pointer"
-                            >
-                                MATCH
-                            </Text>
                         </HStack>
                     </Link>
                     <VStack maxW="504px" alignItems="center">
@@ -68,12 +58,12 @@ const RecoveryPassword: NextPage = () => {
                                 Cuenta creada con éxito
                             </Text>
                             <Text fontSize="16px" fontFamily="inter" textAlign="center">
-                                Te acabamos de enviar un correo para que confirmes tu cuenta. Recuerda revisar spam si
-                                es que no está en tu bandeja principal.
+                                Enviamos un link de confirmación al correo electrónico registrado. Recuerda revisar la
+                                carpeta de spam en caso de no ver el correo en tu bandeja de entrada.
                             </Text>
                         </VStack>
                         <Link href="/login" pt="40px">
-                            <Button>Volver atrás</Button>
+                            <Button variant="solid">Volver atrás</Button>
                         </Link>
                     </VStack>
                 </Flex>

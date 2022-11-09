@@ -127,7 +127,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                             </Text>
                             <Wrap spacingX="20px" spacingY="10px">
                                 {web?.map((e, index) => {
-                                    if (index === 0) {
+                                    if (index === 0 && e !== '') {
                                         return (
                                             <WrapItem>
                                                 <Link href={e} target="_blank">
@@ -146,7 +146,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                         );
                                     }
 
-                                    if (index === 1) {
+                                    if (index === 1 && e !== '') {
                                         return (
                                             <WrapItem>
                                                 <Link href={e} target="_blank">
@@ -165,7 +165,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                         );
                                     }
 
-                                    if (index === 2) {
+                                    if (index === 2 && e !== '') {
                                         return (
                                             <WrapItem>
                                                 <Link href={e} target="_blank">
@@ -184,7 +184,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                         );
                                     }
 
-                                    if (index === 3) {
+                                    if (index === 3 && e !== '') {
                                         return (
                                             <WrapItem>
                                                 <Link href={e} target="_blank">
@@ -203,7 +203,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                         );
                                     }
 
-                                    if (index === 4) {
+                                    if (index === 4 && e !== '') {
                                         return (
                                             <WrapItem>
                                                 <Link href={e} target="_blank">

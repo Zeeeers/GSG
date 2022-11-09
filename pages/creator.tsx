@@ -149,7 +149,6 @@ const Creator: NextPage = ({ project, quality }) => {
             title: project?.title ?? '',
             main_image: baseImgMain ?? '',
             description: project?.description ?? '',
-            business_web: project?.business_web,
             third_parties: { value: project?.third_parties ?? '', label: ThirdParties(project?.third_parties) },
             sector: { value: project?.sector ?? '', label: Sector(project?.sector) },
             more_info: { value: project?.more_info ?? '', label: Messure(project?.more_info) },
@@ -462,7 +461,6 @@ const Creator: NextPage = ({ project, quality }) => {
                 investment_types: isCheckCapital ? data.investment_types?.value : null,
                 better_project: data.better_project,
                 additional_info: data.additional_info,
-                business_web: data.business_web,
                 additional_document: baseAdditional?.base64,
 
                 status: 'in-review',
@@ -521,7 +519,6 @@ const Creator: NextPage = ({ project, quality }) => {
             gsg_project: {
                 title: proyectTitle,
                 description: proyectDescription,
-                business_web: proyectWeb,
                 main_image: baseImgMain,
                 social_impact: baseSocialPdf?.base64,
                 more_info: proyectMore?.value,
@@ -535,12 +532,12 @@ const Creator: NextPage = ({ project, quality }) => {
                 guarantee: watch('guarantee')?.value,
                 finance_goal: watch('finance_goal')?.value,
                 time_lapse: watch('time_lapse')?.value,
-                rentability_time: watch('rentability_time').value,
+                rentability_time: watch('rentability_time'),
                 business_model: `${watch('last_sales12')};;${watch('last_sales6')};;${watch('last_client12')};;${watch(
                     'last_client6',
                 )};;${watch('ebitda')};;${watch('patrimony')}`,
                 investment_objective: watch('investment_objective')?.value,
-                additional_info: watch('additional_info')?.value,
+                additional_info: watch('additional_info'),
                 additional_document: baseAdditional?.base64,
                 better_project: watch('better_project'),
                 status: 'sketch',
@@ -675,6 +672,8 @@ const Creator: NextPage = ({ project, quality }) => {
     const proyectBusiness = watch('business_model', project?.business_model ?? '');
 
     const proyectObject = watch('investment_objective');
+
+    console.log(errors);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -1206,7 +1205,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             <VStack spacing="15px">
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                     9. ¿Buscas capital para un proyecto específico dentro de tu empresa o para tu
-                                    empresa? *
+                                    empresa? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </Text>
                                 <HStack justify="start" w="full">
                                     <Button
@@ -1288,7 +1287,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                             {isCheckCapital && (
                                 <VStack w={'full'} align="flex-start" spacing="40px">
-                                    <FormControl w={{ base: '100%', md: '60%' }}>
+                                    <FormControl id="capital_stage" w={{ base: '100%', md: '60%' }}>
                                         <FormLabel fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                             11. Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
