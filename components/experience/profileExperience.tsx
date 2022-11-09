@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Avatar, Button, HStack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
+import { Avatar, Button, HStack, Text, useDisclosure, useToast, VStack, Stack } from '@chakra-ui/react';
 import UploadButton from 'common/uploadButton';
 import EditableTitle from 'common/editableTitle';
 import CropperModalAvatar from 'common/cropperModalAvatar';
@@ -106,7 +106,13 @@ const ProfileExperience = ({ setPage }: Props) => {
             <Text fontSize="30px" textTransform="uppercase" fontWeight="bold" w="full">
                 Elige tu foto de perfil
             </Text>
-            <HStack align="flex-start" pt="50px" w="full">
+            <Stack
+                align={{ base: ' center', md: 'flex-start' }}
+                justify="center"
+                pt="50px"
+                w="full"
+                direction={{ base: 'column', md: 'row' }}
+            >
                 <VStack justify="flex-start">
                     <Avatar
                         size={'lg'}
@@ -123,7 +129,7 @@ const ProfileExperience = ({ setPage }: Props) => {
                     <UploadButton
                         variant="outline"
                         colorScheme="white"
-                        w="fit-content"
+                        w="full"
                         cursor="pointer"
                         ml={-2}
                         onChange={async (e) => {
@@ -172,7 +178,7 @@ const ProfileExperience = ({ setPage }: Props) => {
                         {user?.email}
                     </Text>
                 </VStack>
-            </HStack>
+            </Stack>
 
             <HStack w="full" justify="space-between" pt="20px">
                 <Button

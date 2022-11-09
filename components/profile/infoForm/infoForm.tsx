@@ -114,7 +114,7 @@ const InfoForm: React.FC = () => {
                         <UploadButton
                             variant="outline"
                             colorScheme="white"
-                            w="fit-content"
+                            w="full"
                             cursor="pointer"
                             ml={-2}
                             onChange={async (e) => {

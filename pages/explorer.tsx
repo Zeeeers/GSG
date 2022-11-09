@@ -311,6 +311,247 @@ const Explorer: NextPage = () => {
                                 </Stack>
 
                                 <Collapse in={isOpenFilter}>
+                                    <Stack
+                                        display={{ base: 'flex', md: 'none' }}
+                                        direction="column"
+                                        w="full"
+                                        justify="space-between"
+                                        pt="30px"
+                                    >
+                                        <HStack w="full" justify="space-between">
+                                            <Text
+                                                color="gray.50"
+                                                fontFamily="inter"
+                                                fontWeight="medium"
+                                                fontSize="20px"
+                                            >
+                                                Filtrado por
+                                            </Text>
+
+                                            <Icon
+                                                onClick={() => setFilters({})}
+                                                cursor="pointer"
+                                                as={CgClose}
+                                                color="red.500"
+                                                w="25px"
+                                                h="25px"
+                                            />
+                                        </HStack>
+
+                                        <Wrap spacingX="10px" pt="10px">
+                                            {filters?.qualities?.map((qualitie) => (
+                                                <WrapItem
+                                                    key={`${qualitie}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                    alignItems="center"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {qualitie}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                qualities: filters.qualities?.filter(
+                                                                    (q) => q !== qualitie,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+
+                                            {filters?.certification?.map((c) => (
+                                                <WrapItem
+                                                    key={`${c}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {ThirdParties(c)}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                certification: filters.certification?.filter(
+                                                                    (cer) => cer !== c,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+
+                                            {filters?.projectStage?.map((p) => (
+                                                <WrapItem
+                                                    key={`${p}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {StageCapital(p)}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                projectStage: filters.projectStage?.filter(
+                                                                    (ps) => ps !== p,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+
+                                            {filters?.surveyStage?.map((ss) => (
+                                                <WrapItem
+                                                    key={`${ss}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {Stage(ss)}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                surveyStage: filters.surveyStage?.filter(
+                                                                    (sstag) => sstag !== ss,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+
+                                            {filters?.expectedReturn?.map((er) => (
+                                                <WrapItem
+                                                    key={`${er}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {Rentability(er)}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                expectedReturn: filters.expectedReturn?.filter(
+                                                                    (exr) => exr !== er,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+
+                                            {filters?.contributionAmount?.map((ca) => (
+                                                <WrapItem
+                                                    key={`${ca}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {FinanceGoal(ca)}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                contributionAmount: filters.contributionAmount?.filter(
+                                                                    (cta) => cta !== ca,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+
+                                            {filters?.investmentTerms?.map((it) => (
+                                                <WrapItem
+                                                    key={`${it}-key`}
+                                                    background="gray.700"
+                                                    rounded="6px"
+                                                    px="8px"
+                                                    py="6px"
+                                                >
+                                                    <Text fontSize="13px" fontFamily="inter">
+                                                        {Time(it)}
+                                                    </Text>
+                                                    <Icon
+                                                        cursor="pointer"
+                                                        as={CgClose}
+                                                        color="gray.600"
+                                                        w="20px"
+                                                        h="20px"
+                                                        marginLeft="5px"
+                                                        onClick={() =>
+                                                            setFilters({
+                                                                ...filters,
+                                                                investmentTerms: filters.investmentTerms?.filter(
+                                                                    (int) => int !== it,
+                                                                ),
+                                                            })
+                                                        }
+                                                    />
+                                                </WrapItem>
+                                            ))}
+                                        </Wrap>
+                                    </Stack>
+
                                     <Wrap mt="30px" direction="row" spacingX="50px" spacingY="15px" w="full">
                                         <WrapItem w={{ base: 'full', md: 'fit-content' }}>
                                             <Menu closeOnSelect={false}>
@@ -320,10 +561,15 @@ const Explorer: NextPage = () => {
                                                     borderColor="gray.500"
                                                     whiteSpace="break-spaces"
                                                     textAlign="left"
-                                                    w={{ base: 'full', sm: '330px' }}
-                                                    h="40px"
+                                                    w={{ base: 'full', sm: 'fit-content' }}
+                                                    h="fit-content"
                                                 >
-                                                    <Flex alignItems="center" justify="space-between" px="16px">
+                                                    <Flex
+                                                        alignItems="center"
+                                                        justify="space-between"
+                                                        px="20px"
+                                                        py="8px"
+                                                    >
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Objetivos de desarrollo sostenible{' '}
                                                             {filters?.qualities && `(${filters?.qualities?.length})`}
@@ -748,7 +994,13 @@ const Explorer: NextPage = () => {
 
                                     <Divider pt="30px" />
 
-                                    <Stack direction="row" w="full" justify="space-between" pt="30px">
+                                    <Stack
+                                        display={{ base: 'none', md: 'flex' }}
+                                        direction="row"
+                                        w="full"
+                                        justify="space-between"
+                                        pt="30px"
+                                    >
                                         <HStack align="start">
                                             <Text
                                                 color="gray.50"

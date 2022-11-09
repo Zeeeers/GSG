@@ -136,8 +136,8 @@ const InterestExperience = ({ setPage }: Props) => {
 
     return (
         <>
-            <Stack spacing="30px" mt="30px">
-                <VStack alignItems="flex-start" spacing="10px">
+            <Stack spacing="30px" mt="30px" w="full">
+                <VStack alignItems="flex-start" spacing="10px" w="full">
                     <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
                         Selecciona tus intereses
                     </Text>
@@ -147,7 +147,7 @@ const InterestExperience = ({ setPage }: Props) => {
                     </Text>
                 </VStack>
 
-                <VStack align="flex-start" spacing="30px">
+                <VStack align="flex-start" spacing="30px" w="full">
                     <HStack>
                         <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
                         <Text fontFamily="inter">

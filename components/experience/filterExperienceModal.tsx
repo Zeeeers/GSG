@@ -53,7 +53,14 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 <Img src="/images/icons/explorer.svg" />
             </Stack>
             <VStack align="flex-start">
-                <Text textAlign="start" fontSize="30px" fontWeight="bold" textTransform="uppercase" pt="40px">
+                <Text
+                    textAlign="start"
+                    fontSize="30px"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                    pt="40px"
+                    lineHeight="32px"
+                >
                     Explora proyectos
                 </Text>
                 <Text fontSize="16px" fontFamily="inter">
@@ -70,7 +77,7 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 <Img src="/images/icons/pharap.svg" />
             </Stack>
             <VStack align="flex-start">
-                <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" pt="40px">
+                <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" pt="40px" lineHeight="32px">
                     Revisa los proyectos en detalle
                 </Text>
                 <Text fontSize="16px" fontFamily="inter">
@@ -100,7 +107,12 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
     const page = [welcome, explorer, review, contact];
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
+        <Modal
+            isOpen={isOpen}
+            onClose={() => Router.replace({ pathname: '/explorer' }).then(() => onClose())}
+            isCentered
+            size="lg"
+        >
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="40px">
                 <ModalCloseButton />

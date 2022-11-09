@@ -36,6 +36,7 @@ const LoginPage: NextPage = ({ token }) => {
             toast({
                 title: 'Su cuenta ha sido activada con éxito.',
                 status: 'success',
+
                 duration: 9000,
                 isClosable: true,
                 position: 'top-right',

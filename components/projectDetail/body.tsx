@@ -287,7 +287,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                 style: 'currency',
                                 currency: 'CLP',
                                 minimumFractionDigits: 0,
-                            }).format(project?.business_model.split(';;')[0])}
+                            }).format(project?.business_model?.split(';;')[0] ?? 0)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -302,7 +302,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                 style: 'currency',
                                 currency: 'CLP',
                                 minimumFractionDigits: 0,
-                            }).format(project?.business_model.split(';;')[1])}
+                            }).format(project?.business_model?.split(';;')[1] ?? 0)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -315,7 +315,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {new Intl.NumberFormat('es-CL', {
                                 minimumFractionDigits: 0,
-                            }).format(project?.business_model.split(';;')[2])}
+                            }).format(project?.business_model?.split(';;')[2] ?? 0)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -328,7 +328,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {new Intl.NumberFormat('es-CL', {
                                 minimumFractionDigits: 0,
-                            }).format(project?.business_model.split(';;')[3])}
+                            }).format(project?.business_model?.split(';;')[3] ?? 0)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -343,7 +343,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                 style: 'currency',
                                 currency: 'CLP',
                                 minimumFractionDigits: 0,
-                            }).format(project?.business_model.split(';;')[4])}
+                            }).format(project?.business_model?.split(';;')[4] ?? 0)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -358,7 +358,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                 style: 'currency',
                                 currency: 'CLP',
                                 minimumFractionDigits: 0,
-                            }).format(project?.business_model.split(';;')[5])}
+                            }).format(project?.business_model?.split(';;')[5] ?? 0)}
                         </Text>
                     </VStack>
                 </VStack>

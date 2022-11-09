@@ -14,17 +14,17 @@ const Experience = () => {
         <>
             <Stack w="full" align="center">
                 <Stack
-                    w="800px"
+                    w={{ base: 'fit-content', md: '800px' }}
                     direction={{ base: 'column', md: 'row' }}
                     alignItems="center"
                     spacing={0}
                     background="gray.800"
-                    px="70px"
+                    px={{ base: '25px', md: '70px' }}
                     py="40px"
                     mt="150px"
                     rounded="16px"
                 >
-                    <VStack w="full" align="flex-end">
+                    <VStack w="full" align={{ base: 'center', md: 'flex-end' }}>
                         <HStack w="full" spacing="5px" pb="20px">
                             <Stack
                                 background={indexPage === 0 ? 'teal.500' : 'white'}
