@@ -138,12 +138,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openOds}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/ods.svg" />
@@ -155,12 +155,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openThird}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/certification.svg" />
@@ -172,12 +172,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openStage}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/proyect-stages.svg" />
@@ -189,12 +189,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openCapitalStage}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/survey-stages.svg" />
@@ -206,12 +206,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openExpectedRentabilityModal}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/expected-return.svg" />
@@ -223,12 +223,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openFinanceGoal}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/amount-contribution.svg" />
@@ -240,12 +240,12 @@ const OdsTab: React.FC = () => {
                                 onClick={openTimeLapse}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.500' }}
+                                _hover={{ bg: 'gray.600' }}
                                 justify="center"
                                 w="200px"
                                 h="100px"
                                 spacing="13px"
-                                bg="gray.600"
+                                bg="gray.700"
                                 rounded="8px"
                             >
                                 <Img src="/images/icons/investment-terms.svg" />

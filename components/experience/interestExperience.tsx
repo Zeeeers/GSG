@@ -24,6 +24,7 @@ import {
 import { useRouter } from 'next/router';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
 import { useUser } from 'services/api/lib/user';
+import { sendInterest } from 'services/api/lib/user/user.calls';
 
 interface Props {
     setPage: (index: number) => void;
@@ -105,6 +106,23 @@ const InterestExperience = ({ setPage }: Props) => {
             data: {
                 onboarding: !value,
             },
+        });
+
+        const { ok: sendOK, data: send } = await sendInterest({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            id: user?.id,
+        });
+    };
+
+    const handleOnboarding = async () => {
+        const auth = import('@clyc/next-route-manager/libs/AuthManager');
+        const userApi = import('../../services/api/lib/user');
+
+        const AuthManager = (await auth).default;
+
+        const { ok: sendOK, data: send } = await sendInterest({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            id: user?.id,
         });
     };
 
@@ -272,6 +290,8 @@ const InterestExperience = ({ setPage }: Props) => {
                 isOpen={isOpenOnboarding}
                 onClose={closeOnboarding}
                 handleUpdateOnboarding={handleUpdateOnboarding}
+                onboarding={true}
+                handleOnboarding={handleOnboarding}
             />
 
             <OdsModal

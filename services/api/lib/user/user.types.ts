@@ -39,6 +39,19 @@ interface SendMatchRequest {
 
 export type SendMatchCall = (payload: SendMatchRequest) => Promise<ApiResponse<SendMatchResponse>>;
 
+// Send Interest
+export interface SendInterestResponse {
+    status: boolean;
+    message: string;
+    user: User;
+}
+interface SendInterestRequest {
+    token: string;
+    id: number;
+}
+
+export type SendInterestCall = (payload: SendInterestRequest) => Promise<ApiResponse<SendInterestResponse>>;
+
 // Get User Types
 export interface UserResponse {
     status: boolean;

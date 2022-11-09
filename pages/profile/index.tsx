@@ -32,7 +32,7 @@ const UserProfile: NextPage = () => {
                     py={{ base: '60px', md: '40px' }}
                     rounded="xl"
                     shadow={'md'}
-                    bg={'gray.700'}
+                    bg={'gray.800'}
                 >
                     <ProfileHeader />
 

@@ -49,11 +49,11 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                             CONTACTO DE {project?.name}
                         </Heading>
                         <HStack w="full" align="center" justify="space-between">
-                            <VStack alignItems="flex-start" spacing={0}>
+                            <VStack alignItems="flex-start" spacing={0} w="full">
                                 <Text fontSize="16px" color="gray.400">
                                     Correo
                                 </Text>
-                                <Text fontSize="24px" fontFamily="inter">
+                                <Text fontSize={{ base: '20px', md: '24px' }} fontFamily="inter">
                                     {project?.legal_representative_email ?? 'No hay correo'}
                                 </Text>
                             </VStack>
@@ -84,11 +84,11 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                             </Tooltip>
                         </HStack>
                         <HStack w="full" align="center" justify="space-between">
-                            <VStack alignItems="flex-start" spacing={0}>
+                            <VStack alignItems="flex-start" spacing={0} w="full">
                                 <Text fontSize="16px" color="gray.400">
                                     Teléfono
                                 </Text>
-                                <Text fontSize="24px" fontFamily="inter">
+                                <Text fontSize={{ base: '20px', md: '24px' }} fontFamily="inter">
                                     +569 {project?.legal_representative_phone}
                                 </Text>
                             </VStack>
@@ -121,7 +121,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                             </Tooltip>
                         </HStack>
 
-                        <VStack alignItems="flex-start" spacing={0}>
+                        <VStack alignItems="flex-start" spacing={0} w="full">
                             <Text fontSize="16px" color="gray.400">
                                 Plataformas y/o redes sociales{' '}
                             </Text>

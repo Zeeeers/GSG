@@ -20,12 +20,20 @@ interface Props {
     isOpen: boolean;
     onClose(): void;
     handleUpdateOnboarding: (value: boolean) => void;
+    handleOnboarding: () => void;
+    onboarding: boolean;
 }
 
-const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboarding }) => {
+const OnboardingModal: React.FC<Props> = ({
+    isOpen,
+    onClose,
+    handleUpdateOnboarding,
+    onboarding = false,
+    handleOnboarding,
+}) => {
     const router = useRouter();
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="2xl">
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="60px">
                 <ModalCloseButton />
@@ -51,12 +59,31 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleUpdateOnboard
                         </VStack>
 
                         <VStack w="full" align="flex-start" spacing="20px">
+                            {onboarding && (
+                                <HStack>
+                                    <Checkbox />
+                                    <Text fontSize="15px" fontFamily="inter">
+                                        Quiero que me envíen un correo con un resumen de los intereses que guardé
+                                    </Text>
+                                </HStack>
+                            )}
+
                             <HStack>
                                 <Checkbox onChange={(e) => handleUpdateOnboarding(e.target.checked)} />
-                                <Text>Lo entiendo, no volver a mostrar</Text>
+                                <Text fontSize="15px" fontFamily="inter">
+                                    Lo entiendo, no volver a mostrar
+                                </Text>
                             </HStack>
 
-                            <Button w="full" h="40px" variant="solid" onClick={() => router.push('/explorer')}>
+                            <Button
+                                w="full"
+                                h="40px"
+                                variant="solid"
+                                onClick={() => {
+                                    handleOnboarding();
+                                    router.push('/explorer');
+                                }}
+                            >
                                 Ir al explorador de proyectos
                             </Button>
                         </VStack>

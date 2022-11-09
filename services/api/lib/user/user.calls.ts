@@ -9,6 +9,7 @@ import {
     InvestorResponse,
     SendMatchCall,
     SendMatchResponse,
+    SendInterestCall,
 } from './user.types';
 import { User } from 'services/api/types/User';
 
@@ -20,6 +21,11 @@ export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
 
 export const sendMatch: SendMatchCall = async ({ token, data }) => {
     const response = await api.post<SendMatchResponse>(ENDPOINT.FORCE, data, adminHeaders(token));
+    return response;
+};
+
+export const sendInterest: SendInterestCall = async ({ token, id }) => {
+    const response = await api.post<SendMatchResponse>(ENDPOINT.SEND_INTEREST(id), {}, headers(token));
     return response;
 };
 

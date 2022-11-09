@@ -41,6 +41,13 @@ import { useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
 import { CgClose } from 'react-icons/cg';
 import { MdFilterList } from 'react-icons/md';
+import ThirdParties from 'components/projectDetail/formatText/thirdParties';
+import Stage from 'components/projectDetail/formatText/stage';
+import StageCapital from 'components/projectDetail/formatText/stageCapital';
+import Sector from 'components/projectDetail/formatText/sector';
+import Rentability from 'components/projectDetail/formatText/rentability';
+import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
+import Time from 'components/projectDetail/formatText/time';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -780,7 +787,7 @@ const Explorer: NextPage = () => {
                                                         py="6px"
                                                     >
                                                         <Text fontSize="13px" fontFamily="inter">
-                                                            {c}
+                                                            {ThirdParties(c)}
                                                         </Text>
                                                         <Icon
                                                             cursor="pointer"
@@ -810,7 +817,7 @@ const Explorer: NextPage = () => {
                                                         py="6px"
                                                     >
                                                         <Text fontSize="13px" fontFamily="inter">
-                                                            {p}
+                                                            {StageCapital(p)}
                                                         </Text>
                                                         <Icon
                                                             cursor="pointer"
@@ -840,7 +847,7 @@ const Explorer: NextPage = () => {
                                                         py="6px"
                                                     >
                                                         <Text fontSize="13px" fontFamily="inter">
-                                                            {ss}
+                                                            {Stage(ss)}
                                                         </Text>
                                                         <Icon
                                                             cursor="pointer"
@@ -870,7 +877,7 @@ const Explorer: NextPage = () => {
                                                         py="6px"
                                                     >
                                                         <Text fontSize="13px" fontFamily="inter">
-                                                            {er}
+                                                            {Rentability(er)}
                                                         </Text>
                                                         <Icon
                                                             cursor="pointer"
@@ -900,7 +907,7 @@ const Explorer: NextPage = () => {
                                                         py="6px"
                                                     >
                                                         <Text fontSize="13px" fontFamily="inter">
-                                                            {ca}
+                                                            {FinanceGoal(ca)}
                                                         </Text>
                                                         <Icon
                                                             cursor="pointer"
@@ -931,7 +938,7 @@ const Explorer: NextPage = () => {
                                                         py="6px"
                                                     >
                                                         <Text fontSize="13px" fontFamily="inter">
-                                                            {it}
+                                                            {Time(it)}
                                                         </Text>
                                                         <Icon
                                                             cursor="pointer"
