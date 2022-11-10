@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
 import { useUser } from 'services/api/lib/user';
 import { sendInterest } from 'services/api/lib/user/user.calls';
+import { motion } from 'framer-motion';
 
 interface Props {
     setPage: (index: number) => void;
@@ -136,7 +137,15 @@ const InterestExperience = ({ setPage }: Props) => {
 
     return (
         <>
-            <Stack spacing="30px" mt="30px" w="full">
+            <Stack
+                as={motion.div}
+                initial={{ x: -200, opacity: 0 }}
+                exit={{ opacity: 0 }}
+                animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+                spacing="30px"
+                mt="30px"
+                w="full"
+            >
                 <VStack alignItems="flex-start" spacing="10px" w="full">
                     <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
                         Selecciona tus intereses

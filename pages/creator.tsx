@@ -1339,7 +1339,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                     <FormControl id="investment_types" w={{ base: '100%', md: '60%' }}>
                                         <HStack align="flex-start" spacing="0px">
-                                            <FormLabel>
+                                            <FormLabel lineHeight="140%">
                                                 12. ¿Qué tipo de inversionista buscas?{' '}
                                                 <span style={{ color: '#4FD1C5' }}>*</span>
                                             </FormLabel>
@@ -1518,9 +1518,13 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </FormErrorMessage>
                             </FormControl>
 
-                            <FormControl id="rentability_time" w="full" isInvalid={!!errors.rentability_time}>
+                            <FormControl
+                                id="rentability_time"
+                                isInvalid={!!errors.rentability_time}
+                                w={{ base: '100%', md: '60%' }}
+                            >
                                 <HStack align="flex-start" spacing="0px">
-                                    <FormLabel>
+                                    <FormLabel lineHeight="140%">
                                         18. Indica el tiempo que requerirás para que tu empresa, producto o servicio sea
                                         rentable. <span style={{ color: '#4FD1C5' }}>*</span>
                                     </FormLabel>

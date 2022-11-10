@@ -16,8 +16,8 @@ const TooltipPrettie: React.FC<Props> = ({ children }) => {
                 as={IoMdInformationCircle}
                 cursor="pointer"
                 onClick={() => setIsActive(!isActive)}
-                w={{ base: '30px', sm: '20px' }}
-                h={{ base: '30px', sm: '20px' }}
+                w={{ base: '27px', sm: '20px' }}
+                h={{ base: '27px', sm: '20px' }}
             />
 
             {isActive && (

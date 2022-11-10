@@ -39,7 +39,7 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 pt="40px"
                 pb="10px"
             >
-                Te damos la bienvenida a match
+                Te damos la <br /> bienvenida a match
             </Text>
             <Text fontSize="16px" fontFamily="inter" textAlign="center">
                 Descubre y encuentra oportunidades para conectar con proyectos de alto impacto
@@ -111,7 +111,7 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
             isOpen={isOpen}
             onClose={() => Router.replace({ pathname: '/explorer' }).then(() => onClose())}
             isCentered
-            size="lg"
+            size="md"
         >
             <ModalOverlay />
             <ModalContent rounded="2xl" px="30px" py="40px">

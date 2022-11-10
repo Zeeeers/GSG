@@ -6,6 +6,7 @@ import CropperModalAvatar from 'common/cropperModalAvatar';
 import { useUser } from 'services/api/lib/user';
 import { useOrganization } from 'services/api/lib/organization';
 import Router from 'next/router';
+import { motion } from 'framer-motion';
 
 interface Props {
     setPage: (index: number) => void;
@@ -102,7 +103,13 @@ const ProfileExperience = ({ setPage }: Props) => {
     }, [user?.name]);
 
     return (
-        <>
+        <VStack
+            as={motion.div}
+            initial={{ x: -200, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+            w="full"
+        >
             <Text fontSize="30px" textTransform="uppercase" fontWeight="bold" w="full">
                 Elige tu foto de perfil
             </Text>
@@ -207,7 +214,7 @@ const ProfileExperience = ({ setPage }: Props) => {
                     }}
                 />
             )}
-        </>
+        </VStack>
     );
 };
 

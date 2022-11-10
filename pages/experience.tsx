@@ -3,6 +3,8 @@ import ProfileExperience from 'components/experience/profileExperience';
 import { Stack, VStack, HStack } from '@chakra-ui/react';
 import InterestExperience from 'components/experience/interestExperience';
 import { PrivatePage } from '@clyc/next-route-manager';
+import { AnimatePresence } from 'framer-motion';
+import { NextSeo } from 'next-seo';
 
 const Experience = () => {
     const [indexPage, setIndexPage] = useState(0);
@@ -14,6 +16,7 @@ const Experience = () => {
     return (
         <>
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
+            <NextSeo title={'Bienvenidos a GSG'} />
             <Stack w="full" h="100vh" align="center" justify="center">
                 <Stack
                     w={{ base: 'fit-content', md: '800px' }}
@@ -40,8 +43,7 @@ const Experience = () => {
                                 rounded="full"
                             ></Stack>
                         </HStack>
-
-                        {pages[indexPage]}
+                        <AnimatePresence exitBeforeEnter>{pages[indexPage]}</AnimatePresence>
                     </VStack>
                 </Stack>
             </Stack>
