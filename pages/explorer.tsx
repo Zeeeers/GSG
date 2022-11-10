@@ -148,6 +148,44 @@ const Explorer: NextPage = () => {
         }
     }, [isOpenExperience]);
 
+    useEffect(() => {
+        if (filters?.qualities?.length === 0) {
+            setFilters({ ...filters, qualities: undefined });
+        }
+
+        if (filters?.certification?.length === 0) {
+            setFilters({ ...filters, certification: undefined });
+        }
+
+        if (filters?.projectStage?.length === 0) {
+            setFilters({ ...filters, projectStage: undefined });
+        }
+
+        if (filters?.surveyStage?.length === 0) {
+            setFilters({ ...filters, surveyStage: undefined });
+        }
+
+        if (filters?.expectedReturn?.length === 0) {
+            setFilters({ ...filters, expectedReturn: undefined });
+        }
+
+        if (filters?.contributionAmount?.length === 0) {
+            setFilters({ ...filters, contributionAmount: undefined });
+        }
+
+        if (filters?.investmentTerms?.length === 0) {
+            setFilters({ ...filters, investmentTerms: undefined });
+        }
+    }, [
+        filters?.qualities,
+        filters?.certification,
+        filters?.projectStage,
+        filters?.surveyStage,
+        filters?.expectedReturn,
+        filters?.contributionAmount,
+        filters?.investmentTerms,
+    ]);
+
     return (
         <>
             <NextSeo title={'Explorador - GSG'} />
@@ -592,13 +630,13 @@ const Explorer: NextPage = () => {
                                                         w="full"
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.qualities?.map((qt) => qt)}
-                                                        onChange={(value: Array<string>) =>
+                                                        value={filters?.qualities}
+                                                        onChange={(value: Array<string>) => {
                                                             setFilters({
                                                                 ...filters,
                                                                 qualities: value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
+                                                            });
+                                                        }}
                                                     >
                                                         {qualities?.qualities?.map((quality) => (
                                                             <MenuItemOption
@@ -664,7 +702,11 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.certification?.map((c) => c)}
+                                                        value={
+                                                            filters?.certification?.length === 0
+                                                                ? undefined
+                                                                : filters?.certification
+                                                        }
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
                                                                 ...filters,
@@ -724,7 +766,7 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.projectStage?.map((ps) => ps)}
+                                                        value={filters?.projectStage}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
                                                                 ...filters,
@@ -784,7 +826,7 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.surveyStage?.map((ss) => ss)}
+                                                        value={filters?.surveyStage}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
                                                                 ...filters,
@@ -844,7 +886,7 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.expectedReturn?.map((er) => er)}
+                                                        value={filters?.expectedReturn}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
                                                                 ...filters,
@@ -904,7 +946,7 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.contributionAmount?.map((ca) => ca)}
+                                                        value={filters?.contributionAmount}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
                                                                 ...filters,
@@ -965,7 +1007,7 @@ const Explorer: NextPage = () => {
                                                     <MenuOptionGroup
                                                         title="Filtro"
                                                         type="checkbox"
-                                                        defaultValue={filters?.investmentTerms?.map((i) => i)}
+                                                        value={filters?.investmentTerms}
                                                         onChange={(value: Array<string>) =>
                                                             setFilters({
                                                                 ...filters,
@@ -1035,12 +1077,9 @@ const Explorer: NextPage = () => {
                                                             onClick={() =>
                                                                 setFilters({
                                                                     ...filters,
-                                                                    qualities:
-                                                                        filters.qualities?.length === 0
-                                                                            ? undefined
-                                                                            : filters?.qualities?.filter(
-                                                                                  (q) => q !== qualitie,
-                                                                              ),
+                                                                    qualities: filters?.qualities?.filter(
+                                                                        (q) => q !== qualitie,
+                                                                    ),
                                                                 })
                                                             }
                                                         />
