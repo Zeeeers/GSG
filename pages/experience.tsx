@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ProfileExperience from 'components/experience/profileExperience';
 import { Stack, VStack, HStack } from '@chakra-ui/react';
 import InterestExperience from 'components/experience/interestExperience';
+import { PrivatePage } from '@clyc/next-route-manager';
 
 const Experience = () => {
     const [indexPage, setIndexPage] = useState(0);
@@ -12,6 +13,7 @@ const Experience = () => {
 
     return (
         <>
+            <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
             <Stack w="full" h="100vh" align="center" justify="center">
                 <Stack
                     w={{ base: 'fit-content', md: '800px' }}
