@@ -132,6 +132,8 @@ const Explorer: NextPage = () => {
         { value: 'more-than-4-years', label: 'Más de 48 meses' },
     ];
 
+    console.log(filters?.qualities);
+
     useEffect(() => {
         if (user) {
             setIsVisible(true);
@@ -1033,9 +1035,12 @@ const Explorer: NextPage = () => {
                                                             onClick={() =>
                                                                 setFilters({
                                                                     ...filters,
-                                                                    qualities: filters.qualities?.filter(
-                                                                        (q) => q !== qualitie,
-                                                                    ),
+                                                                    qualities:
+                                                                        filters.qualities?.length === 0
+                                                                            ? undefined
+                                                                            : filters?.qualities?.filter(
+                                                                                  (q) => q !== qualitie,
+                                                                              ),
                                                                 })
                                                             }
                                                         />

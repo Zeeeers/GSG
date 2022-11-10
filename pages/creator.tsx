@@ -432,6 +432,10 @@ const Creator: NextPage = ({ project, quality }) => {
             percent.push(watch('patrimony'));
         }
 
+        if (postulationEmployee || postulationProject) {
+            percent.push(watch(''));
+        }
+
         return percent.length;
     };
 
@@ -733,10 +737,11 @@ const Creator: NextPage = ({ project, quality }) => {
                     marginLeft={{ base: '0px', lg: 'auto' }}
                 >
                     <HStack spacing="10px">
-                        <Img src="/images/logo_empty.png" w="40px" h="40px" />
-                        <Text fontSize="24px" fontWeight="bold">
-                            MATCH
-                        </Text>
+                        <Img
+                            src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
+                            w="133px"
+                            h="35px"
+                        />
                     </HStack>
 
                     <Button
