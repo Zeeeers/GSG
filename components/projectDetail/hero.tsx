@@ -244,25 +244,34 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                                     {project?.organization.name}
                                                 </Text>
                                             </HStack>
+                                            {user && (
+                                                <Button
+                                                    leftIcon={<Img src="/images/icons/interest.svg" />}
+                                                    variant="outline"
+                                                    border="2px"
+                                                    rounded="500px"
+                                                    borderColor="gray.50"
+                                                    h="40px"
+                                                    _hover={{ borderColor: 'none' }}
+                                                >
+                                                    <Text>Me interesa</Text>
+                                                </Button>
+                                            )}
+                                        </HStack>
+                                        {user && (
+                                            <HStack px="10px" py="5px" rounded="6px" background="#698FB8">
+                                                <Img src="/images/icons/interest.svg" />
+                                                <Text
+                                                    color="gray.50"
+                                                    fontFamily="inter"
+                                                    fontWeight="400"
+                                                    fontSize="15px"
+                                                >
+                                                    {`${project?.relations.interests} inversionistas interesados`}
+                                                </Text>
+                                            </HStack>
+                                        )}
 
-                                            <Button
-                                                leftIcon={<Img src="/images/icons/interest.svg" />}
-                                                variant="outline"
-                                                border="2px"
-                                                rounded="500px"
-                                                borderColor="gray.50"
-                                                h="40px"
-                                                _hover={{ borderColor: 'none' }}
-                                            >
-                                                <Text>Me interesa</Text>
-                                            </Button>
-                                        </HStack>
-                                        <HStack px="10px" py="5px" rounded="6px" background="#698FB8">
-                                            <Img src="/images/icons/interest.svg" />
-                                            <Text color="gray.50" fontFamily="inter" fontWeight="400" fontSize="15px">
-                                                {`${project?.relations.interests} inversionistas interesados`}
-                                            </Text>
-                                        </HStack>
                                         <VStack align="flex-start" w="full" spacing="10px">
                                             <Text
                                                 fontSize={{ base: '3xl', md: '4xl' }}

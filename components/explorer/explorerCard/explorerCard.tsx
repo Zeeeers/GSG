@@ -2,14 +2,16 @@
 import { Box, Button, HStack, Image, Img, Link, Stack, Text, Tooltip, VStack } from '@chakra-ui/react';
 import Stage from 'components/projectDetail/formatText/stage';
 import { Gsg } from 'services/api/types/Gsg';
+import { User } from 'services/api/types/User';
 
 // Types
 interface Props {
     project: Gsg;
+    user: User;
 }
 
 // Component
-const ExplorerCard: React.FC<Props> = ({ project }) => {
+const ExplorerCard: React.FC<Props> = ({ project, user }) => {
     return (
         <Box
             w={{ base: 'full', lg: '332px' }}
@@ -71,14 +73,16 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                                 ))}
                         </HStack>
 
-                        <Tooltip label="Inversionista interesados" background="gray.600" hasArrow>
-                            <HStack align="center" spacing="5px" userSelect="none">
-                                <Img src="/images/icons/interest.svg" />
-                                <Text fontSize="16px" color="gray.200" fontWeight="500" fontFamily="inter">
-                                    {project?.relations?.interests}
-                                </Text>
-                            </HStack>
-                        </Tooltip>
+                        {user && (
+                            <Tooltip label="Inversionistas interesados" background="gray.600" hasArrow>
+                                <HStack align="center" spacing="5px" userSelect="none">
+                                    <Img src="/images/icons/interest.svg" />
+                                    <Text fontSize="16px" color="gray.200" fontWeight="500" fontFamily="inter">
+                                        {project?.relations?.interests}
+                                    </Text>
+                                </HStack>
+                            </Tooltip>
+                        )}
                     </HStack>
 
                     <Stack spacing="5px" mt="10px">

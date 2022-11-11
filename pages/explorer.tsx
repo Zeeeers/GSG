@@ -132,8 +132,6 @@ const Explorer: NextPage = () => {
         { value: 'more-than-4-years', label: 'Más de 48 meses' },
     ];
 
-    console.log(filters?.qualities);
-
     useEffect(() => {
         if (user) {
             setIsVisible(true);
@@ -1290,7 +1288,7 @@ const Explorer: NextPage = () => {
                                     <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                                         {projectFilter?.length !== 0 ? (
                                             projectFilter?.map((project) => (
-                                                <ExplorerCard key={project.id} project={project} />
+                                                <ExplorerCard key={project.id} project={project} user={user} />
                                             ))
                                         ) : (
                                             <Text fontSize="lg" fontWeight="medium">
