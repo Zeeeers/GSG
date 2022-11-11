@@ -29,8 +29,6 @@ import Time from './formatText/time';
 const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
     const { impact, description_finance, other } = ref?.current;
 
-    console.log(project);
-
     return (
         <Stack
             alignItems="start"
@@ -42,7 +40,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
         >
             <Stack pl="27px" pr="30px" spacing="30px">
                 <Text scrollMarginTop="100px" ref={impact} fontSize={{ base: '3xl', md: '4xl' }}>
-                    El impacto de {project?.organization.name}
+                    El impacto de {project?.organization?.name}
                 </Text>
             </Stack>
             {Object.values(project?.qualities || {}).length > 0 && (
@@ -94,7 +92,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
-                            Como respaldo de una tercera organización, {project?.organization.name} cuenta con:
+                            Como respaldo de una tercera organización, {project?.organization?.name} cuenta con:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {ThirdParties(project?.third_parties)}
@@ -114,7 +112,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 {project?.social_impact !== 'https://api.gsg-match.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            {project?.organization.name} ha presentado un documento en relación a cómo mide su impacto
+                            {project?.organization?.name} ha presentado un documento en relación a cómo mide su impacto
                         </Text>
                         <Link href={project?.social_impact} target="_blank" w={'full'}>
                             <HStack
@@ -127,7 +125,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                 _hover={{ bg: 'gray.500' }}
                             >
                                 <GrDocumentPdf size={30} />
-                                <Text>Medición de impacto {project?.organization.name}</Text>
+                                <Text>Medición de impacto {project?.organization?.name}</Text>
                             </HStack>
                         </Link>
                     </VStack>
@@ -145,7 +143,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 scrollMarginTop="100px"
             >
                 <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
-                    Descripción financiera de {project?.organization.name}
+                    Descripción financiera de {project?.organization?.name}
                 </Text>
 
                 <VStack align="flex-start">
@@ -269,7 +267,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 <VStack align="flex-start">
                     <VStack align="flex-start" spacing="5px">
                         <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            En relación a los plazos de inversión, {project?.organization.name} buscaría un plazo de:
+                            En relación a los plazos de inversión, {project?.organization?.name} buscaría un plazo de:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                             {Time(project?.time_lapse)}
@@ -422,7 +420,8 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                 {project?.additional_document !== 'https://api.gsg-match.com/cuadrado.png' && (
                     <VStack align="flex-start" spacing="5px" w="full">
                         <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                            {project?.organization.name} ha presentado un documento complementario para que puedas verlo
+                            {project?.organization?.name} ha presentado un documento complementario para que puedas
+                            verlo
                         </Text>
                         <Link href={project?.additional_document} target="_blank" w="full">
                             <HStack
@@ -435,7 +434,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                                 _hover={{ bg: 'gray.500' }}
                             >
                                 <GrDocumentPdf size={30} />
-                                <Text>Documento complementario {project?.organization.name}</Text>
+                                <Text>Documento complementario {project?.organization?.name}</Text>
                             </HStack>
                         </Link>
                     </VStack>

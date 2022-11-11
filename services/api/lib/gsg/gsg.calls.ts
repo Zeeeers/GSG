@@ -1,5 +1,5 @@
 // Dependencies
-import { api, pymeHeaders, adminHeaders } from '../../config';
+import { api, pymeHeaders, adminHeaders, headers } from '../../config';
 import {
     CreateProjectCall,
     CreateProjectResponse,
@@ -34,6 +34,18 @@ export const create: CreateProjectCall = async ({ project }) => {
     return response;
 };
 
+// CREATE INTEREST
+export const createInterest: CreateProjectCall = async ({ project }) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+    });
+
+    const response = await api.post<CreateProjectResponse>(ENDPOINT.CREATE_INTEREST, project, headers(token));
+
+    return response;
+};
+
 // READ
 const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
     const { data } = await api.get<GetAllGsgResponse>(endpoint, '', isAdmin ? adminHeaders() : undefined);
@@ -64,7 +76,9 @@ export const getGsgProject = async (_: string, id: number) => {
 };
 
 export const useGsgProject = (id?: number) => {
-    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, { revalidateOnFocus: false });
+    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, {
+        revalidateOnFocus: false,
+    });
 };
 
 export const getMyGsgProject = async (_: string, token?: string) => {
@@ -130,6 +144,7 @@ const gsgCalls = {
     updateStatusGsgProject,
     deleteGsgProject,
     create,
+    createInterest,
 };
 
 // Export

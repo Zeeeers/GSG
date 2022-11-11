@@ -4,12 +4,15 @@ import Navbar from 'layouts/main/navbar';
 import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
-import { getGsgProject } from 'services/api/lib/gsg/gsg.calls';
+import { useEffect, useState } from 'react';
+import { getGsgProject, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
 import HeaderHero from '../../components/projectDetail/hero';
 
 const PublicChallenge: NextPage = ({ project }) => {
+    const [routerQuery, setRouterQuery] = useState();
+
     const router = useRouter();
     const { data: userProfile } = useUser();
     const { data: orga } = useOrganization(true);

@@ -1,6 +1,7 @@
 // Dependencies
 //@ts-nocheck
 import { Avatar, Button, Container, Flex, HStack, Img, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import Router from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { Gsg } from 'services/api/types/Gsg';
 import Body from './body';
@@ -123,6 +124,20 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
         }
     };
 
+    const handleInterest = async () => {
+        const { createInterest } = await import('../../services/api/lib/gsg');
+
+        try {
+            const { data, ok } = await createInterest({ project: { gsg_projects_id: project?.id } });
+
+            if (ok) {
+                Router.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
 
@@ -235,27 +250,52 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                         <HStack spacing="17px" mb="15px" justify="space-between" w="full">
                                             <HStack>
                                                 <Avatar
-                                                    name={project?.organization.name}
-                                                    src={project?.organization.image}
+                                                    name={project?.organization?.name}
+                                                    src={project?.organization?.image}
                                                     w="48px"
                                                     h="48px"
                                                 />
                                                 <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
-                                                    {project?.organization.name}
+                                                    {project?.organization?.name}
                                                 </Text>
                                             </HStack>
-                                            {user && (
-                                                <Button
-                                                    leftIcon={<Img src="/images/icons/interest.svg" />}
-                                                    variant="outline"
+                                            {user &&
+                                                Object.values(project?.relations ?? {}).find(
+                                                    (r) => r.organization_id === user?.organization_id,
+                                                )?.kinds !== 'interested' && (
+                                                    <Button
+                                                        onClick={handleInterest}
+                                                        leftIcon={<Img src="/images/icons/interest.svg" />}
+                                                        variant="outline"
+                                                        border="2px"
+                                                        rounded="500px"
+                                                        borderColor="gray.50"
+                                                        h="40px"
+                                                        _hover={{ borderColor: 'none' }}
+                                                    >
+                                                        <Text>Me interesa</Text>
+                                                    </Button>
+                                                )}
+
+                                            {Object.values(project?.relations ?? {}).find(
+                                                (r) => r.organization_id === user?.organization_id,
+                                            )?.kinds === 'interested' && (
+                                                <HStack
+                                                    variant="solid"
+                                                    background="gray.50"
+                                                    color="gray.800"
                                                     border="2px"
                                                     rounded="500px"
                                                     borderColor="gray.50"
+                                                    fontSize="18px"
+                                                    fontFamily="inter"
                                                     h="40px"
+                                                    px="10px"
                                                     _hover={{ borderColor: 'none' }}
                                                 >
-                                                    <Text>Me interesa</Text>
-                                                </Button>
+                                                    <Img src="/images/icons/interest_green.svg" />
+                                                    <Text>Te interesa</Text>
+                                                </HStack>
                                             )}
                                         </HStack>
                                         {user && (
@@ -267,7 +307,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                                     fontWeight="400"
                                                     fontSize="15px"
                                                 >
-                                                    {`${project?.relations.interests} inversionistas interesados`}
+                                                    {`${project?.relations?.interests} inversionistas interesados`}
                                                 </Text>
                                             </HStack>
                                         )}
