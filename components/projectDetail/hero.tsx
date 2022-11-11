@@ -231,30 +231,52 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                     py={{ base: '24px', md: '30px' }}
                                     spacing={0}
                                 >
-                                    <VStack align="flex-start" spacing="10px" mb="20px">
-                                        <HStack spacing="17px" mb="20px">
-                                            <Avatar
-                                                name={project?.organization.name}
-                                                src={project?.organization.image}
-                                                w="48px"
-                                                h="48px"
-                                            />
-                                            <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
-                                                {project?.organization.name}
+                                    <VStack align="flex-start" spacing="15px" mb="20px">
+                                        <HStack spacing="17px" mb="15px" justify="space-between" w="full">
+                                            <HStack>
+                                                <Avatar
+                                                    name={project?.organization.name}
+                                                    src={project?.organization.image}
+                                                    w="48px"
+                                                    h="48px"
+                                                />
+                                                <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
+                                                    {project?.organization.name}
+                                                </Text>
+                                            </HStack>
+
+                                            <Button
+                                                leftIcon={<Img src="/images/icons/interest.svg" />}
+                                                variant="outline"
+                                                border="2px"
+                                                rounded="500px"
+                                                borderColor="gray.50"
+                                                h="40px"
+                                                _hover={{ borderColor: 'none' }}
+                                            >
+                                                <Text>Me interesa</Text>
+                                            </Button>
+                                        </HStack>
+                                        <HStack px="10px" py="5px" rounded="6px" background="#698FB8">
+                                            <Img src="/images/icons/interest.svg" />
+                                            <Text color="gray.50" fontFamily="inter" fontWeight="400" fontSize="15px">
+                                                {`${project?.relations.interests} inversionistas interesados`}
                                             </Text>
                                         </HStack>
-                                        <Text
-                                            fontSize={{ base: '3xl', md: '4xl' }}
-                                            lineHeight="32px"
-                                            textTransform="uppercase"
-                                            fontWeight="bold"
-                                        >
-                                            {project?.title}
-                                        </Text>
+                                        <VStack align="flex-start" w="full" spacing="10px">
+                                            <Text
+                                                fontSize={{ base: '3xl', md: '4xl' }}
+                                                lineHeight="32px"
+                                                textTransform="uppercase"
+                                                fontWeight="bold"
+                                            >
+                                                {project?.title}
+                                            </Text>
 
-                                        <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
-                                            {project?.description}
-                                        </Text>
+                                            <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
+                                                {project?.description}
+                                            </Text>
+                                        </VStack>
                                     </VStack>
                                     <HStack>
                                         {project?.capital_stage && <BadgeStage capitalStage={project?.capital_stage} />}
@@ -263,7 +285,9 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                             (project?.debt !== 'other' && <BadgeStage capitalStage={project?.debt} />)}
                                     </HStack>
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
-                                        <Text fontFamily="inter">Rango de levantamiento buscado</Text>
+                                        <Text fontFamily="inter" color="gray.400" fontSize="16px">
+                                            Rango de levantamiento buscado
+                                        </Text>
                                         <Flex
                                             justifyContent="space-between"
                                             direction={{ base: 'column', md: 'row' }}

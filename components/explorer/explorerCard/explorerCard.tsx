@@ -1,7 +1,5 @@
 // Dependencies
-
-//@ts-nocheck
-import { Box, Button, HStack, Image, Link, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Img, Link, Stack, Text, Tooltip, VStack } from '@chakra-ui/react';
 import Stage from 'components/projectDetail/formatText/stage';
 import { Gsg } from 'services/api/types/Gsg';
 
@@ -12,10 +10,6 @@ interface Props {
 
 // Component
 const ExplorerCard: React.FC<Props> = ({ project }) => {
-    const currencyFormat = (num: number) => {
-        return '$' + num?.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    };
-
     return (
         <Box
             w={{ base: 'full', lg: '332px' }}
@@ -39,26 +33,9 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
             />
             <Box display={'flex'} flexDirection="column" justifyContent={'space-between'} h="283px" px="20px" py="18px">
                 <VStack align="flex-start">
-                    <HStack>
-                        {project.capital_stage && (
-                            <HStack
-                                display="flex"
-                                justifyContent="center"
-                                rounded="6px"
-                                px="8px"
-                                py="2px"
-                                fontSize="sm"
-                                fontWeight="medium"
-                                bg="green.100"
-                                color="green.800"
-                                fontFamily="inter"
-                            >
-                                <Text>{Stage(project.capital_stage)}</Text>
-                            </HStack>
-                        )}
-
-                        {!project?.debt ||
-                            (project?.debt !== 'other' && (
+                    <HStack w="full" justify="space-between">
+                        <HStack>
+                            {project.capital_stage && (
                                 <HStack
                                     display="flex"
                                     justifyContent="center"
@@ -71,9 +48,37 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                                     color="green.800"
                                     fontFamily="inter"
                                 >
-                                    <Text>{Stage(project?.debt)}</Text>
+                                    <Text>{Stage(project.capital_stage)}</Text>
                                 </HStack>
-                            ))}
+                            )}
+
+                            {!project?.debt ||
+                                (project?.debt !== 'other' && (
+                                    <HStack
+                                        display="flex"
+                                        justifyContent="center"
+                                        rounded="6px"
+                                        px="8px"
+                                        py="2px"
+                                        fontSize="sm"
+                                        fontWeight="medium"
+                                        bg="green.100"
+                                        color="green.800"
+                                        fontFamily="inter"
+                                    >
+                                        <Text>{Stage(project?.debt)}</Text>
+                                    </HStack>
+                                ))}
+                        </HStack>
+
+                        <Tooltip label="Inversionista interesados" background="gray.600" hasArrow>
+                            <HStack align="center" spacing="5px" userSelect="none">
+                                <Img src="/images/icons/interest.svg" />
+                                <Text fontSize="16px" color="gray.200" fontWeight="500" fontFamily="inter">
+                                    {project?.relations?.interests}
+                                </Text>
+                            </HStack>
+                        </Tooltip>
                     </HStack>
 
                     <Stack spacing="5px" mt="10px">
@@ -94,7 +99,7 @@ const ExplorerCard: React.FC<Props> = ({ project }) => {
                 </VStack>
 
                 <Box display={'flex'} flexDirection="column" textAlign="center" w="full" mt="13px">
-                    <Link href={`/projectDetail/${project.id} `} target="_blank" passHref>
+                    <Link href={`/projectDetail/${project.id} `} target="_blank">
                         <Button variant="solid" h="32px" w="full">
                             Ver proyecto
                         </Button>
