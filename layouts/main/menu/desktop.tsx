@@ -58,6 +58,7 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                         size="sm"
                         //@ts-ignore
                         src={user?.organization.image ?? orga?.image}
+                        name={user?.name ?? 'GSG'}
                         height="32px"
                         width="32px"
                         mr="10px"
