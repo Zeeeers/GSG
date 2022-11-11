@@ -20,14 +20,18 @@ import {
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
+import { useInvestorAll } from 'services/api/lib/user';
 
-const ListProyectsForm = (props: Props) => {
+const ListInvestorForm = (props: Props) => {
     const [status, setStatus] = useState('');
     const { data, mutate } = useAdminGsg();
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
 
-    console.log(props.filters);
+    const { data: investor } = useInvestorAll();
+
+    console.log(investor);
+
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
         const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e?.target?.value } });
@@ -87,17 +91,17 @@ const ListProyectsForm = (props: Props) => {
 
     return (
         <>
-            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0}>
+            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0} w="full">
                 <Thead>
                     <Tr>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
                             Fecha
                         </Th>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                            Nombre del proyecto
+                            Nombre del inversionista
                         </Th>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                            Empresa
+                            Correo
                         </Th>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
                             Status
@@ -141,21 +145,16 @@ const ListProyectsForm = (props: Props) => {
                                     </Select>
                                 </Td>
                                 <Td fontFamily="inter" pl={0}>
-                                    <HStack spacing="20px">
-                                        <Link href={`/projectDetail/${proyect.id}`} target="_blank">
-                                            <Button variant="solid">Ver proyecto</Button>
-                                        </Link>
-                                        <Button
-                                            type="button"
-                                            isLoading={deleteProduct}
-                                            loadingText="Eliminando producto"
-                                            onClick={() => handleDelete(proyect.id)}
-                                            variant="solid"
-                                            colorScheme="red"
-                                        >
-                                            Eliminar
-                                        </Button>
-                                    </HStack>
+                                    <Button
+                                        type="button"
+                                        isLoading={deleteProduct}
+                                        loadingText="Eliminando producto"
+                                        onClick={() => handleDelete(proyect.id)}
+                                        variant="solid"
+                                        colorScheme="red"
+                                    >
+                                        Eliminar
+                                    </Button>
                                 </Td>
                             </Tr>
                         ))}
@@ -262,4 +261,4 @@ const ListProyectsForm = (props: Props) => {
     );
 };
 
-export default ListProyectsForm;
+export default ListInvestorForm;

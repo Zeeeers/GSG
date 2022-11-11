@@ -43,6 +43,20 @@ export const useUser = (): SWRResponse<User | undefined, unknown> => {
     return useSWR([ENDPOINT.BASE], userFetcher, { revalidateOnFocus: false });
 };
 
+// FETCH
+const investorAllFetcher = async (endpoint: string) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME! });
+
+    const { data } = await api.get<UserResponse>(endpoint, '', adminHeaders(token));
+
+    return data?.user;
+};
+
+export const useInvestorAll = (): SWRResponse<User | undefined, unknown> => {
+    return useSWR([ENDPOINT.INDEX], investorAllFetcher);
+};
+
 // UPDATE
 export const update: UpdateUserCall = async ({ token, data }) => {
     const response = await api.patch<UserResponse>(ENDPOINT.BASE, { user: data }, headers(token));
@@ -55,6 +69,7 @@ const userCalls = {
     createInvestor,
     update,
     sendMatch,
+    investorAllFetcher,
 };
 
 // Export

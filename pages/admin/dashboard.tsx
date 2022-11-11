@@ -1,4 +1,10 @@
 import {
+    Accordion,
+    AccordionButton,
+    AccordionIcon,
+    AccordionItem,
+    AccordionPanel,
+    Box,
     Button,
     Divider,
     Drawer,
@@ -26,6 +32,7 @@ import {
 } from '@chakra-ui/react';
 import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
 import AddInvestorForm from 'components/admin/createInvestorForm';
+import ListInvestorForm from 'components/admin/listInvestorForm';
 import ListProyectsForm from 'components/admin/listProyectsForm';
 import SendMatchForm from 'components/admin/sendMatchForm';
 import { NextPage } from 'next';
@@ -69,13 +76,17 @@ const Panel: NextPage = () => {
                                 <Button fontWeight={`${page === 0 ? 'bold' : 'normal'}`} onClick={() => setPage(0)}>
                                     Nuevo inversionista
                                 </Button>
-                                <Button fontWeight={`${page === 1 ? 'bold' : 'normal'}`} onClick={() => setPage(1)}>
+
+                                <Button fontWeight={`${page === 0 ? 'bold' : 'normal'}`} onClick={() => setPage(1)}>
+                                    inversionista
+                                </Button>
+                                <Button fontWeight={`${page === 1 ? 'bold' : 'normal'}`} onClick={() => setPage(2)}>
                                     Proyectos postulados
                                 </Button>
 
                                 <Divider />
 
-                                <Button fontWeight={`${page === 2 ? 'bold' : 'normal'}`} onClick={() => setPage(2)}>
+                                <Button fontWeight={`${page === 2 ? 'bold' : 'normal'}`} onClick={() => setPage(3)}>
                                     Enviar match
                                 </Button>
                             </VStack>
@@ -98,50 +109,91 @@ const Panel: NextPage = () => {
                         border="none"
                         w={{ base: 'full', xl: '339px' }}
                     >
-                        <VStack align="start" pt="87px" pb="30px" px="30px" w="full">
-                            <Text fontSize="xl" fontWeight="bold">
+                        <VStack align="flex-start" pt="87px" pb="30px" w="full" px="30px">
+                            <Text fontSize="30px" fontWeight="bold">
                                 PANEL
                             </Text>
                         </VStack>
 
+                        <Accordion defaultIndex={[0]} allowMultiple>
+                            <AccordionItem border="none" fontSize="16px" fontFamily="inter">
+                                <h2>
+                                    <AccordionButton border="none" px="30px">
+                                        <Box flex="1" textAlign="left" border="none">
+                                            Inversionistas
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                </h2>
+
+                                <AccordionPanel pb="5px">
+                                    <Tab
+                                        fontFamily="inter"
+                                        justifyContent="flex-start"
+                                        _selected={{
+                                            border: 'none',
+                                            color: 'primary.600',
+                                            fontWeight: 'normal',
+                                            borderRadius: 'none',
+                                            background: 'gray.800',
+                                        }}
+                                        _focus={{
+                                            border: 'none',
+                                        }}
+                                        _checked={{ border: 'none' }}
+                                        fontWeight="normal"
+                                        border="none"
+                                        fontSize="md"
+                                        pl={6}
+                                        pb="15px"
+                                        onClick={() => setPage(0)}
+                                    >
+                                        Nuevo inversionista
+                                    </Tab>
+
+                                    <Tab
+                                        onClick={() => setPage(1)}
+                                        fontFamily="inter"
+                                        justifyContent="flex-start"
+                                        _selected={{
+                                            border: 'none',
+                                            color: 'primary.600',
+                                            fontWeight: 'normal',
+                                            borderRadius: 'none',
+                                            background: 'gray.800',
+                                        }}
+                                        _focus={{
+                                            border: 'none',
+                                        }}
+                                        _checked={{ border: 'none' }}
+                                        fontWeight="normal"
+                                        border="none"
+                                        fontSize="md"
+                                        pl={6}
+                                    >
+                                        Inversionistas
+                                    </Tab>
+                                </AccordionPanel>
+                            </AccordionItem>
+                        </Accordion>
+
                         <Tab
+                            onClick={() => setPage(2)}
+                            px="30px"
+                            fontSize="16px"
                             fontFamily="inter"
                             justifyContent="flex-start"
+                            border="none"
                             _selected={{
                                 border: 'none',
                                 color: 'primary.600',
-                                fontWeight: 'bold',
+
                                 borderRadius: 'none',
-                                background: 'gray.800',
                             }}
                             _focus={{
                                 border: 'none',
                             }}
-                            _checked={{ border: 'none' }}
                             fontWeight="normal"
-                            border="none"
-                            fontSize="md"
-                            pl={6}
-                            py="15px"
-                        >
-                            Nuevo inversionista
-                        </Tab>
-                        <Tab
-                            fontFamily="inter"
-                            justifyContent="flex-start"
-                            border="none"
-                            _selected={{
-                                border: 'none',
-                                color: 'primary.600',
-                                fontWeight: 'bold',
-                                borderRadius: 'none',
-                            }}
-                            _focus={{
-                                border: 'none',
-                            }}
-                            fontWeight="normal"
-                            fontSize="md"
-                            pl={6}
                             py="15px"
                         >
                             Proyectos postulados
@@ -150,13 +202,14 @@ const Panel: NextPage = () => {
                         <Divider />
 
                         <Tab
+                            onClick={() => setPage(3)}
                             fontFamily="inter"
                             justifyContent="flex-start"
                             border="none"
                             _selected={{
                                 border: 'none',
                                 color: 'primary.600',
-                                fontWeight: 'bold',
+
                                 borderRadius: 'none',
                             }}
                             _focus={{
@@ -224,7 +277,77 @@ const Panel: NextPage = () => {
                             </VStack>
                         </TabPanel>
 
-                        <TabPanel pr={{ base: '25px', '2xl': '200px' }}>
+                        <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
+                            <VStack w="full">
+                                <HStack
+                                    w="full"
+                                    justify={{ base: 'space-between', xl: 'flex-end' }}
+                                    align="center"
+                                    h="fit-content"
+                                >
+                                    <Stack display={{ base: 'block', xl: 'none' }}>
+                                        <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
+                                    </Stack>
+                                    <Menu direction="rtl">
+                                        {({ isOpen }) => (
+                                            <>
+                                                <MenuButton isActive={isOpen} as={Button}>
+                                                    Admin
+                                                </MenuButton>
+                                                <MenuList>
+                                                    <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                </MenuList>
+                                            </>
+                                        )}
+                                    </Menu>
+                                </HStack>
+
+                                <Stack
+                                    pt="40px"
+                                    w="full"
+                                    direction={{ base: 'column', lg: 'row' }}
+                                    align={{ base: 'flex-start', lg: 'center' }}
+                                    justifyContent="space-between"
+                                >
+                                    <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
+                                        INVERSIONISTAS
+                                    </Text>
+
+                                    <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
+                                        <Select
+                                            onChange={(e) =>
+                                                setFilters({
+                                                    ...filters,
+                                                    status: e.target.value !== 'select' ? e.target.value : '',
+                                                })
+                                            }
+                                            w="fit-content"
+                                            variant="outline"
+                                            h="40px"
+                                        >
+                                            <option value="select">Filtrar por estado</option>
+                                            <option value="in-review">En revisión</option>
+                                            <option value="sketch">Borrador</option>
+                                            <option value="published">Publicado</option>
+                                            <option value="canceled">Finalizado</option>
+                                        </Select>
+
+                                        <HStack w="fit-content">
+                                            <Input
+                                                w={{ base: 'full', md: '184px' }}
+                                                h="40px"
+                                                variant="outline"
+                                                placeholder="Buscar"
+                                                onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                            />
+                                        </HStack>
+                                    </Stack>
+                                </Stack>
+                                <ListInvestorForm filters={filters} />
+                            </VStack>
+                        </TabPanel>
+
+                        <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
                             <VStack w="full">
                                 <HStack
                                     w="full"
