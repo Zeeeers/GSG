@@ -326,10 +326,8 @@ const Panel: NextPage = () => {
                                             h="40px"
                                         >
                                             <option value="select">Filtrar por estado</option>
-                                            <option value="in-review">En revisión</option>
-                                            <option value="sketch">Borrador</option>
-                                            <option value="published">Publicado</option>
-                                            <option value="canceled">Finalizado</option>
+                                            <option value="in-review">Activo</option>
+                                            <option value="in-review">Inactivo</option>
                                         </Select>
 
                                         <HStack w="fit-content">
@@ -343,7 +341,7 @@ const Panel: NextPage = () => {
                                         </HStack>
                                     </Stack>
                                 </Stack>
-                                <ListInvestorForm filters={filters} />
+                                <ListInvestorForm />
                             </VStack>
                         </TabPanel>
 

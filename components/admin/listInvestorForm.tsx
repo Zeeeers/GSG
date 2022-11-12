@@ -1,11 +1,7 @@
-//@ts-nocheck
 import {
-    Badge,
     Button,
     Divider,
     HStack,
-    Link,
-    Select,
     Stack,
     Table,
     Tbody,
@@ -16,30 +12,29 @@ import {
     Tr,
     useToast,
     VStack,
+    FormControl,
+    Switch,
 } from '@chakra-ui/react';
-import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
-import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
 import { useInvestorAll } from 'services/api/lib/user';
+import { User } from 'services/api/types/User';
 
-const ListInvestorForm = (props: Props) => {
-    const [status, setStatus] = useState('');
-    const { data, mutate } = useAdminGsg();
+const ListInvestorForm = () => {
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
 
-    const { data: investor } = useInvestorAll();
+    const { data: investors, mutate } = useInvestorAll();
 
-    console.log(investor);
-
-    const handleStatus = async (id: number, e: any) => {
-        const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
-        const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e?.target?.value } });
+    const handleStatus = async (id: number) => {
+        const { updateStatus } = await import('../../services/api/lib/user');
+        const { ok, data } = await updateStatus(id);
 
         if (ok) {
             toast({
-                title: 'Producto actualizado',
-                description: `Se ha actualizado el estado del producto exitosamente.`,
+                title: `Inversionista ${data?.data.user.active ? 'activado' : 'desactivado'}`,
+                description: `El inversionista ${data?.data.user.name} se ha ${
+                    data?.data.user.active ? 'activado' : 'desactivado'
+                } exitosamente.`,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -50,7 +45,8 @@ const ListInvestorForm = (props: Props) => {
         } else {
             toast({
                 title: 'Error al actualizar',
-                description: 'Ha ocurrido un error al intentar actualizar el producto, porfavor intentelo de nuevo.',
+                description:
+                    'Ha ocurrido un error al intentar actualizar el status del inversionista, porfavor intentelo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -61,14 +57,14 @@ const ListInvestorForm = (props: Props) => {
 
     const handleDelete = async (id: number) => {
         setDeleteProduct(true);
-        const { deleteGsgProject } = await import('../../services/api/lib/gsg');
-        const { ok } = await deleteGsgProject(id);
+        const { deleteInvestor } = await import('../../services/api/lib/user');
+        const { ok } = await deleteInvestor(id);
 
         if (ok) {
             setDeleteProduct(false);
             toast({
-                title: 'Producto eliminado',
-                description: `Se ha eliminado el producto exitosamente.`,
+                title: 'Inversionista eliminado',
+                description: `El inversionista ha sido eliminado exitosamente.`,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -80,7 +76,8 @@ const ListInvestorForm = (props: Props) => {
             setDeleteProduct(false);
             toast({
                 title: 'Error al eliminar',
-                description: 'Ha ocurrido un error al intentar eliminar el producto, porfavor intentelo de nuevo.',
+                description:
+                    'Ha ocurrido un error al intentar eliminar al inversionistas, porfavor intentelo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -95,9 +92,6 @@ const ListInvestorForm = (props: Props) => {
                 <Thead>
                     <Tr>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
-                            Fecha
-                        </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
                             Nombre del inversionista
                         </Th>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
@@ -110,146 +104,80 @@ const ListInvestorForm = (props: Props) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {data?.data?.projects
-                        ?.filter((project) =>
-                            project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''),
-                        )
-                        .filter((project) => project.status.includes(props.filters?.status ?? ''))
-                        .map((proyect, i) => (
-                            <Tr key={i}>
-                                <Td fontFamily="inter" pl={0} py="30px" w="13%">
-                                    {new Date(proyect.last_status_updated).toLocaleString('es-CL', {
-                                        day: 'numeric',
-                                        month: 'numeric',
-                                        year: 'numeric',
-                                    })}
-                                </Td>
-                                <Td fontFamily="inter" pl={0} py="30px">
-                                    {proyect.title}
-                                </Td>
-                                <Td fontFamily="inter" pl={0}>
-                                    {proyect?.organization.name}
-                                </Td>
+                    {investors?.map((investor: User, i: number) => (
+                        <Tr key={i}>
+                            <Td fontFamily="inter" pl={0} py="30px">
+                                {investor.name}
+                            </Td>
+                            <Td fontFamily="inter" pl={0}>
+                                {investor.email}
+                            </Td>
 
-                                <Td fontFamily="inter" pl={0}>
-                                    <Select
-                                        defaultValue={proyect.status}
-                                        onChange={(e) => handleStatus(proyect.id, e)}
-                                        variant="outline"
-                                        _focus={{ color: 'white' }}
-                                    >
-                                        <option value="in-review">En revisión</option>
-                                        <option value="sketch">Borrador</option>
-                                        <option value="published">Publicado</option>
-                                        <option value="canceled">Finalizado</option>
-                                    </Select>
-                                </Td>
-                                <Td fontFamily="inter" pl={0}>
-                                    <Button
-                                        type="button"
-                                        isLoading={deleteProduct}
-                                        loadingText="Eliminando producto"
-                                        onClick={() => handleDelete(proyect.id)}
-                                        variant="solid"
-                                        colorScheme="red"
-                                    >
-                                        Eliminar
-                                    </Button>
-                                </Td>
-                            </Tr>
-                        ))}
+                            <Td fontFamily="inter" pl={0}>
+                                <FormControl display="flex" alignItems="center">
+                                    <Switch onChange={() => handleStatus(investor.id)} isChecked={investor.active} />
+                                </FormControl>
+                            </Td>
+                            <Td fontFamily="inter" pl={0}>
+                                <Button
+                                    type="button"
+                                    isLoading={deleteProduct}
+                                    loadingText="Eliminando producto"
+                                    onClick={() => handleDelete(investor.id)}
+                                    variant="solid"
+                                    colorScheme="red"
+                                    w="129px"
+                                    px="12px"
+                                >
+                                    Eliminar cuenta
+                                </Button>
+                            </Td>
+                        </Tr>
+                    ))}
                 </Tbody>
             </Table>
 
             <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
-                {data?.data?.projects?.map((project) => (
+                {investors?.map((investor: User) => (
                     <>
                         <VStack w="full" align="flex-start" pt="30px" spacing="20px">
                             <HStack w="full" align="center" justify="space-between">
                                 <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Fecha
+                                    Nombre del inversionista
                                 </Text>
 
-                                <Text>
-                                    {new Date(project.last_status_updated).toLocaleString('es-CL', {
-                                        day: 'numeric',
-                                        month: 'numeric',
-                                        year: 'numeric',
-                                    })}
-                                </Text>
+                                <Text>{investor.name}</Text>
                             </HStack>
 
                             <HStack w="full" align="center" justify="space-between">
                                 <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Nombre del proyecto
+                                    Correo
                                 </Text>
 
-                                <Text>{project.title}</Text>
-                            </HStack>
-
-                            <HStack w="full" align="center" justify="space-between">
-                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Empresa
-                                </Text>
-
-                                <Text>{project?.organization.name}</Text>
-                            </HStack>
-
-                            <HStack w="full" align="center" justify="space-between">
-                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Etapa
-                                </Text>
-
-                                <Badge
-                                    variant="solid"
-                                    fontFamily="inter"
-                                    colorScheme="green"
-                                    textAlign="center"
-                                    alignItems="center"
-                                    py="2px"
-                                    px="8px"
-                                    rounded="6px"
-                                    mt={0}
-                                >
-                                    {Stage(project.capital_stage)}
-                                </Badge>
+                                <Text>{investor.email}</Text>
                             </HStack>
 
                             <HStack w="full" align="center" justify="space-between">
                                 <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
                                     Status
                                 </Text>
-                                <Select
-                                    w="163px"
-                                    defaultValue={project.status}
-                                    onChange={(e) => handleStatus(project.id, e)}
-                                    variant="filled"
-                                    _focus={{ color: 'white' }}
-                                >
-                                    <option value="in-review">En revisión</option>
-                                    <option value="sketch">Borrador</option>
-                                    <option value="published">Publicado</option>
-                                    <option value="canceled">Finalizado</option>
-                                </Select>
+                                <FormControl display="flex" alignItems="center">
+                                    <Switch onChange={() => handleStatus(investor.id)} isChecked={investor.active} />
+                                </FormControl>
                             </HStack>
 
                             <HStack w="full" align="center" justify="space-between">
                                 <Stack display={{ base: 'none', sm: 'block' }} w="full"></Stack>
-                                <HStack align="flex-start" pb="30px">
-                                    <Link href={`/projectDetail/${project.id}`} target="_blank">
-                                        <Button variant="solid">Ver proyecto</Button>
-                                    </Link>
-                                    <Button
-                                        type="button"
-                                        isLoading={deleteProduct}
-                                        loadingText="Eliminando producto"
-                                        onClick={() => handleDelete(project.id)}
-                                        variant="solid"
-                                        colorScheme="red"
-                                    >
-                                        Eliminar
-                                    </Button>
-                                </HStack>
+                                <Button
+                                    type="button"
+                                    isLoading={deleteProduct}
+                                    loadingText="Eliminando producto"
+                                    onClick={() => handleDelete(investor.id)}
+                                    variant="solid"
+                                    colorScheme="red"
+                                >
+                                    Eliminar cuenta
+                                </Button>
                             </HStack>
                         </VStack>
 

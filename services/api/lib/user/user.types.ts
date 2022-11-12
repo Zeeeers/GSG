@@ -61,6 +61,14 @@ export interface UserResponse {
 
 export type GetUserCall = (token: string) => Promise<ApiResponse<UserResponse>>;
 
+export interface UsersAllResponse {
+    status: boolean;
+    message: string;
+    data: { users: Array<User> };
+}
+
+export type GetAllUsersCall = (token: string) => Promise<ApiResponse<UserResponse>>;
+
 // Update User Types
 export interface UserForm {
     name?: string;
@@ -80,3 +88,19 @@ export interface UpdateUserRequest {
 }
 
 export type UpdateUserCall = (payload: UpdateUserRequest) => Promise<ApiResponse<UserResponse>>;
+
+export interface UpdateUserStatusResponse {
+    success: boolean;
+    message: string;
+    data: { user: User };
+}
+
+export type UpdateUserStatusCall = (idInvestor: number) => Promise<ApiResponse<UpdateUserStatusResponse>>;
+
+// DELETE
+export interface DeleteInvestorResponse {
+    success: boolean;
+    message: string;
+}
+
+export type DeleteInvestorCall = (idInvestor: number) => Promise<ApiResponse<DeleteInvestorResponse>>;

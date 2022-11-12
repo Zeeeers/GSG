@@ -10,6 +10,11 @@ import {
     SendMatchCall,
     SendMatchResponse,
     SendInterestCall,
+    UsersAllResponse,
+    DeleteInvestorCall,
+    DeleteInvestorResponse,
+    UpdateUserStatusCall,
+    UpdateUserStatusResponse,
 } from './user.types';
 import { User } from 'services/api/types/User';
 
@@ -48,18 +53,44 @@ const investorAllFetcher = async (endpoint: string) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
     const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME! });
 
-    const { data } = await api.get<UserResponse>(endpoint, '', adminHeaders(token));
+    const { data } = await api.get<UsersAllResponse>(endpoint, '', adminHeaders(token));
 
-    return data?.user;
+    return data?.data.users;
 };
 
-export const useInvestorAll = (): SWRResponse<User | undefined, unknown> => {
+export const useInvestorAll = (): SWRResponse<Array<User> | undefined, unknown> => {
     return useSWR([ENDPOINT.INDEX], investorAllFetcher);
 };
 
 // UPDATE
 export const update: UpdateUserCall = async ({ token, data }) => {
     const response = await api.patch<UserResponse>(ENDPOINT.BASE, { user: data }, headers(token));
+    return response;
+};
+
+export const updateStatus: UpdateUserStatusCall = async (idInvestor: number) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!,
+    });
+
+    const response = await api.patch<UpdateUserStatusResponse>(
+        ENDPOINT.UPDATE_STATUS(idInvestor),
+        '',
+        adminHeaders(token),
+    );
+    return response;
+};
+
+// DELETE
+export const deleteInvestor: DeleteInvestorCall = async (idInvestor: number) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!,
+    });
+
+    const response = await api.delete<DeleteInvestorResponse>(ENDPOINT.DELETE(idInvestor), '', adminHeaders(token));
+
     return response;
 };
 
@@ -70,6 +101,8 @@ const userCalls = {
     update,
     sendMatch,
     investorAllFetcher,
+    deleteInvestor,
+    updateStatus,
 };
 
 // Export
