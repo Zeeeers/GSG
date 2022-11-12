@@ -137,10 +137,6 @@ const RegisterStepTwoForm: React.FC = () => {
                                 />
 
                                 <UploadButton
-                                    variant="outline"
-                                    colorScheme="white"
-                                    w="fit-content"
-                                    cursor="pointer"
                                     ml={-2}
                                     onChange={async (e) => {
                                         const { validateTypes, getBase64 } = await import('services/images');

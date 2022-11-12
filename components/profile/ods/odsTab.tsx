@@ -108,7 +108,6 @@ const OdsTab: React.FC = () => {
 
     useEffect(() => {
         if (user) {
-            //@ts-ignore
             setIsActive(user?.newsletter);
             setIsOnboarding(user?.onboarding);
         }
@@ -119,11 +118,11 @@ const OdsTab: React.FC = () => {
             <Stack spacing="30px" mt="20px">
                 <VStack alignItems="flex-start" spacing="10px">
                     <Text fontSize="24px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
-                        Selecciona tus intereses por categoría
+                        Mis intereses
                     </Text>
                     <Text fontSize={'md'} fontWeight={'normal'} lineHeight={6}>
-                        Te haremos recomendaciones a tu correo de acuerdo a los intereses que selecciones en las
-                        siguientes categorías
+                        Selecciona tus intereses en cada una de las siguientes categorías, te haremos recomendaciones a
+                        tu correo con proyectos que hagan match de acuerdo ellos.
                     </Text>
                 </VStack>
 

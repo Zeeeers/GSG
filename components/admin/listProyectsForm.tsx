@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {
     Badge,
     Button,
@@ -21,21 +20,19 @@ import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
 
-const ListProyectsForm = (props: Props) => {
-    const [status, setStatus] = useState('');
+const ListProyectsForm = (props: any) => {
     const { data, mutate } = useAdminGsg();
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
 
-    console.log(props.filters);
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
         const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e?.target?.value } });
 
         if (ok) {
             toast({
-                title: 'Producto actualizado',
-                description: `Se ha actualizado el estado del producto exitosamente.`,
+                title: 'Proyecto actualizado',
+                description: `Se ha actualizado el estado del proyecto exitosamente.`,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -46,7 +43,7 @@ const ListProyectsForm = (props: Props) => {
         } else {
             toast({
                 title: 'Error al actualizar',
-                description: 'Ha ocurrido un error al intentar actualizar el producto, porfavor intentelo de nuevo.',
+                description: 'Ha ocurrido un error al intentar actualizar el proyecto, porfavor intentelo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -63,8 +60,8 @@ const ListProyectsForm = (props: Props) => {
         if (ok) {
             setDeleteProduct(false);
             toast({
-                title: 'Producto eliminado',
-                description: `Se ha eliminado el producto exitosamente.`,
+                title: 'Proyecto eliminado',
+                description: `Se ha eliminado el proyecto exitosamente.`,
                 status: 'success',
                 duration: 9000,
                 isClosable: true,
@@ -76,7 +73,7 @@ const ListProyectsForm = (props: Props) => {
             setDeleteProduct(false);
             toast({
                 title: 'Error al eliminar',
-                description: 'Ha ocurrido un error al intentar eliminar el producto, porfavor intentelo de nuevo.',
+                description: 'Ha ocurrido un error al intentar eliminar el proyecto, porfavor intentelo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -110,18 +107,18 @@ const ListProyectsForm = (props: Props) => {
                         ?.filter((project) =>
                             project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''),
                         )
-                        .filter((project) => project.status.includes(props.filters?.status ?? ''))
+                        .filter((project) => project?.status.includes(props.filters?.status ?? ''))
                         .map((proyect, i) => (
                             <Tr key={i}>
                                 <Td fontFamily="inter" pl={0} py="30px" w="13%">
-                                    {new Date(proyect.last_status_updated).toLocaleString('es-CL', {
+                                    {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
                                         day: 'numeric',
                                         month: 'numeric',
                                         year: 'numeric',
                                     })}
                                 </Td>
                                 <Td fontFamily="inter" pl={0} py="30px">
-                                    {proyect.title}
+                                    {proyect?.title}
                                 </Td>
                                 <Td fontFamily="inter" pl={0}>
                                     {proyect?.organization.name}
@@ -129,8 +126,8 @@ const ListProyectsForm = (props: Props) => {
 
                                 <Td fontFamily="inter" pl={0}>
                                     <Select
-                                        defaultValue={proyect.status}
-                                        onChange={(e) => handleStatus(proyect.id, e)}
+                                        defaultValue={proyect?.status}
+                                        onChange={(e) => handleStatus(proyect?.id, e)}
                                         variant="outline"
                                         _focus={{ color: 'white' }}
                                     >
@@ -142,14 +139,14 @@ const ListProyectsForm = (props: Props) => {
                                 </Td>
                                 <Td fontFamily="inter" pl={0}>
                                     <HStack spacing="20px">
-                                        <Link href={`/projectDetail/${proyect.id}`} target="_blank">
+                                        <Link href={`/projectDetail/${proyect?.id}`} target="_blank">
                                             <Button variant="solid">Ver proyecto</Button>
                                         </Link>
                                         <Button
                                             type="button"
                                             isLoading={deleteProduct}
                                             loadingText="Eliminando producto"
-                                            onClick={() => handleDelete(proyect.id)}
+                                            onClick={() => handleDelete(proyect?.id)}
                                             variant="solid"
                                             colorScheme="red"
                                         >

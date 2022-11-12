@@ -120,24 +120,20 @@ const ProfileExperience = ({ setPage }: Props) => {
                 w="full"
                 direction={{ base: 'column', md: 'row' }}
             >
-                <VStack justify="flex-start">
+                <VStack mr="20px" w="200px">
                     <Avatar
                         size={'lg'}
                         name={user?.name ?? 'GSG'}
-                        //@ts-ignore
                         src={user?.organization?.image ?? ''}
-                        height={100}
-                        width={100}
+                        height="96px"
+                        width="96px"
                         mr={2}
                         bgColor={organization?.image ? 'transparent' : 'teal.400'}
                         color={'white'}
                     />
 
                     <UploadButton
-                        variant="outline"
-                        colorScheme="white"
-                        w="full"
-                        cursor="pointer"
+                        w="fit-content"
                         ml={-2}
                         onChange={async (e) => {
                             const { validateTypes, getBase64 } = await import('services/images');
@@ -159,10 +155,10 @@ const ProfileExperience = ({ setPage }: Props) => {
                             }
                         }}
                     >
-                        Subir imagen de perfil
+                        Subir imagen
                     </UploadButton>
 
-                    <Text textColor="gray.400" fontSize="16px">
+                    <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
                         Tamaño máximo 2MB
                     </Text>
                 </VStack>
@@ -170,10 +166,9 @@ const ProfileExperience = ({ setPage }: Props) => {
                 <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0} w="full">
                     <HStack>
                         <EditableTitle
-                            fontSize={{ base: 'xl', lg: '3xl' }}
-                            alignItems={'center'}
-                            alignContent="center"
-                            justifyItems={'center'}
+                            fontSize={{ base: 'xl', lg: '24px' }}
+                            fontWeight="semibold"
+                            fontFamily="barlow"
                             defaultValue={user?.name}
                             value={nameProfile}
                             onSubmit={handleUpdateName}
@@ -181,7 +176,12 @@ const ProfileExperience = ({ setPage }: Props) => {
                         />
                     </HStack>
 
-                    <Text fontSize={{ base: 'sm', md: 'md' }} fontWeight={'normal'}>
+                    <Text
+                        fontSize={{ base: 'sm', md: '16px' }}
+                        fontWeight={'normal'}
+                        color="gray.400"
+                        fontFamily="inter"
+                    >
                         {user?.email}
                     </Text>
                 </VStack>

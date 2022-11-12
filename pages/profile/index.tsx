@@ -2,10 +2,9 @@
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { NextSeo } from 'next-seo';
-import { Container, HStack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Container, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
 import Navbar from 'layouts/main/navbar';
-import ProfileHeader from 'components/profile/header';
 import InfoSkeleton from 'components/profile/infoForm/infoForm.skeleton';
 import PassSkeleton from 'components/profile/changePassword/changePassword.skeleton';
 import OdsTab from 'components/profile/ods/odsTab';
@@ -25,45 +24,42 @@ const UserProfile: NextPage = () => {
 
             <Navbar />
 
-            <HStack mt={{ lg: 10 }} px={{ base: '25px' }} py={{ base: '140px', md: '50px' }}>
-                <Container
-                    maxW="4xl"
-                    px={{ base: '15px', md: '37px' }}
-                    py={{ base: '60px', md: '40px' }}
-                    rounded="xl"
-                    shadow={'md'}
-                    bg={'gray.800'}
-                >
-                    <ProfileHeader />
+            <Container
+                maxW="4xl"
+                px={{ base: '15px', md: '70px' }}
+                py={{ base: '60px', md: '40px' }}
+                rounded="xl"
+                shadow={'md'}
+                bg={'gray.800'}
+                mt="120px"
+            >
+                <Tabs p={0} fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
+                    <TabList pl="20px" borderBottom="0" overflowX="auto" overflowY="hidden" pb="15px">
+                        <Tab px="30px" whiteSpace="nowrap">
+                            Intereses
+                        </Tab>
+                        <Tab px="30px" whiteSpace="nowrap">
+                            Perfil
+                        </Tab>
+                        <Tab px="30px" whiteSpace="nowrap">
+                            Contraseña
+                        </Tab>
+                    </TabList>
 
-                    <Tabs mt="33px" fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
-                        <TabList borderBottom="0" overflowX="auto" overflowY="hidden" pb="15px">
-                            <Tab px="30px" whiteSpace="nowrap">
-                                Intereses
-                            </Tab>
-                            <Tab px="30px" whiteSpace="nowrap">
-                                Perfil
-                            </Tab>
-                            <Tab px="30px" whiteSpace="nowrap">
-                                Contraseña
-                            </Tab>
-                        </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            <OdsTab />
+                        </TabPanel>
+                        <TabPanel>
+                            <InfoForm />
+                        </TabPanel>
 
-                        <TabPanels>
-                            <TabPanel>
-                                <OdsTab />
-                            </TabPanel>
-                            <TabPanel>
-                                <InfoForm />
-                            </TabPanel>
-
-                            <TabPanel>
-                                <PassForm />
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>
-                </Container>
-            </HStack>
+                        <TabPanel>
+                            <PassForm />
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </Container>
         </>
     );
 };

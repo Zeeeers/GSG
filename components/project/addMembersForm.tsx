@@ -142,8 +142,6 @@ const AddMembersForm = ({ reload, closeModal }) => {
                             <Input type="hidden" {...register('main_image')} />
 
                             <UploadButton
-                                variant="outline"
-                                colorScheme="white"
                                 ml={-2}
                                 onChange={async (e) => {
                                     const { validateTypes, getBase64 } = await import('services/images');

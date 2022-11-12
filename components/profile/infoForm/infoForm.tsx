@@ -97,71 +97,77 @@ const InfoForm: React.FC = () => {
     return user ? (
         <>
             <Flex justifyContent={{ base: 'center', md: 'space-between' }} alignItems="center" mt="40px">
-                <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'flex-start'}>
-                    <VStack>
-                        <Avatar
-                            size={'lg'}
-                            name={user.name ?? 'GSG'}
-                            //@ts-ignore
-                            src={user?.organization?.image ?? ''}
-                            height={100}
-                            width={100}
-                            mr={2}
-                            bgColor={organization?.image ? 'transparent' : 'teal.400'}
-                            color={'white'}
-                        />
-
-                        <UploadButton
-                            variant="outline"
-                            colorScheme="white"
-                            w="full"
-                            cursor="pointer"
-                            ml={-2}
-                            onChange={async (e) => {
-                                const { validateTypes, getBase64 } = await import('services/images');
-
-                                if (e.target?.files && validateTypes(e.target.files[0])) {
-                                    if (e.target.files[0].size >= 2000000) {
-                                        toast({
-                                            title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
-                                            status: 'error',
-                                            duration: 9000,
-                                            isClosable: true,
-                                            position: 'top-right',
-                                        });
-                                    } else {
-                                        const base = await getBase64(e.target.files![0]);
-                                        setBaseImg(base);
-                                        onCropperOpen();
-                                    }
-                                }
-                            }}
-                        >
-                            Subir imagen de perfil
-                        </UploadButton>
-
-                        <Text textColor="gray.400" fontSize="16px">
-                            Tamaño máximo 2MB
-                        </Text>
-                    </VStack>
-
-                    <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0}>
-                        <HStack>
-                            <EditableTitle
-                                fontSize={{ base: 'xl', lg: '3xl' }}
-                                alignItems={'center'}
-                                alignContent="center"
-                                justifyItems={'center'}
-                                defaultValue={user.name}
-                                onSubmit={handleUpdateName}
+                <VStack spacing="40px" align="flex-start">
+                    <Text fontFamily="barlow" fontSize="30px" textTransform="uppercase" fontWeight="700">
+                        Mi Perfil
+                    </Text>
+                    <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'flex-start'}>
+                        <VStack>
+                            <Avatar
+                                size={'lg'}
+                                name={user.name ?? 'GSG'}
+                                src={user?.organization?.image ?? ''}
+                                height="96px"
+                                width="96px"
+                                mr={2}
+                                bgColor={organization?.image ? 'transparent' : 'teal.400'}
+                                color={'white'}
                             />
-                        </HStack>
 
-                        <Text fontSize={{ base: 'sm', md: 'md' }} fontWeight={'normal'}>
-                            {user?.email}
-                        </Text>
-                    </VStack>
-                </Stack>
+                            <UploadButton
+                                onChange={async (e) => {
+                                    const { validateTypes, getBase64 } = await import('services/images');
+
+                                    if (e.target?.files && validateTypes(e.target.files[0])) {
+                                        if (e.target.files[0].size >= 2000000) {
+                                            toast({
+                                                title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
+                                                status: 'error',
+                                                duration: 9000,
+                                                isClosable: true,
+                                                position: 'top-right',
+                                            });
+                                        } else {
+                                            const base = await getBase64(e.target.files![0]);
+                                            setBaseImg(base);
+                                            onCropperOpen();
+                                        }
+                                    }
+                                }}
+                            >
+                                Subir imagen
+                            </UploadButton>
+
+                            <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
+                                Tamaño máximo 2MB
+                            </Text>
+                        </VStack>
+
+                        <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0}>
+                            <HStack>
+                                <EditableTitle
+                                    fontSize={{ base: 'xl', lg: '24px' }}
+                                    fontWeight="semibold"
+                                    fontFamily="barlow"
+                                    alignItems={'center'}
+                                    alignContent="center"
+                                    justifyItems={'center'}
+                                    defaultValue={user.name}
+                                    onSubmit={handleUpdateName}
+                                />
+                            </HStack>
+
+                            <Text
+                                fontSize={{ base: 'sm', md: '16px' }}
+                                fontWeight={'normal'}
+                                color="gray.400"
+                                fontFamily="inter"
+                            >
+                                {user?.email}
+                            </Text>
+                        </VStack>
+                    </Stack>
+                </VStack>
             </Flex>
 
             {isCropperOpen && (

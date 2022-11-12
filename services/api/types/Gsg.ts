@@ -37,6 +37,8 @@ export interface Gsg {
     organization: OrganizationFormat;
     debt: debt;
     relations: Relations;
+    status: string;
+    last_status_updated: string;
 }
 
 export interface GsgFormated {
