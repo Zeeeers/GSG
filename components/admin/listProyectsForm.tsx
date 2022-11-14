@@ -84,7 +84,7 @@ const ListProyectsForm = (props: any) => {
 
     return (
         <>
-            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0}>
+            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0} w="full">
                 <Thead>
                     <Tr>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">

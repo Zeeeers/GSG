@@ -309,7 +309,7 @@ const Panel: NextPage = () => {
                                     )}
                                 </Menu>
                             </HStack>
-                            <Container maxW="1200px">
+                            <Container maxW="900px">
                                 <VStack w="full">
                                     <Stack
                                         pt="40px"
@@ -379,7 +379,7 @@ const Panel: NextPage = () => {
                                     )}
                                 </Menu>
                             </HStack>
-                            <Container maxW="1200px">
+                            <Container marginRight="10px" maxW="1200px" justifyContent="center">
                                 <VStack w="full">
                                     <Stack
                                         pt="40px"
