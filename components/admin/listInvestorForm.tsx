@@ -19,7 +19,7 @@ import React, { useState } from 'react';
 import { useInvestorAll } from 'services/api/lib/user';
 import { User } from 'services/api/types/User';
 
-const ListInvestorForm = () => {
+const ListInvestorForm = (props: any) => {
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
 
@@ -104,36 +104,43 @@ const ListInvestorForm = () => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {investors?.map((investor: User, i: number) => (
-                        <Tr key={i}>
-                            <Td fontFamily="inter" pl={0} py="30px">
-                                {investor.name}
-                            </Td>
-                            <Td fontFamily="inter" pl={0}>
-                                {investor.email}
-                            </Td>
+                    {investors
+                        ?.filter((investor) =>
+                            investor.name.toLowerCase().includes(props.filters?.name?.toLowerCase() ?? ''),
+                        )
+                        .map((investor: User, i: number) => (
+                            <Tr key={i}>
+                                <Td fontFamily="inter" pl={0} py="30px">
+                                    {investor.name}
+                                </Td>
+                                <Td fontFamily="inter" pl={0}>
+                                    {investor.email}
+                                </Td>
 
-                            <Td fontFamily="inter" pl={0}>
-                                <FormControl display="flex" alignItems="center">
-                                    <Switch onChange={() => handleStatus(investor.id)} isChecked={investor.active} />
-                                </FormControl>
-                            </Td>
-                            <Td fontFamily="inter" pl={0}>
-                                <Button
-                                    type="button"
-                                    isLoading={deleteProduct}
-                                    loadingText="Eliminando producto"
-                                    onClick={() => handleDelete(investor.id)}
-                                    variant="solid"
-                                    colorScheme="red"
-                                    w="129px"
-                                    px="12px"
-                                >
-                                    Eliminar cuenta
-                                </Button>
-                            </Td>
-                        </Tr>
-                    ))}
+                                <Td fontFamily="inter" pl={0}>
+                                    <FormControl display="flex" alignItems="center">
+                                        <Switch
+                                            onChange={() => handleStatus(investor.id)}
+                                            isChecked={investor.active}
+                                        />
+                                    </FormControl>
+                                </Td>
+                                <Td fontFamily="inter" pl={0}>
+                                    <Button
+                                        type="button"
+                                        isLoading={deleteProduct}
+                                        loadingText="Eliminando producto"
+                                        onClick={() => handleDelete(investor.id)}
+                                        variant="solid"
+                                        colorScheme="red"
+                                        w="129px"
+                                        px="12px"
+                                    >
+                                        Eliminar cuenta
+                                    </Button>
+                                </Td>
+                            </Tr>
+                        ))}
                 </Tbody>
             </Table>
 

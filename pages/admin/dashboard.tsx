@@ -326,8 +326,8 @@ const Panel: NextPage = () => {
                                             h="40px"
                                         >
                                             <option value="select">Filtrar por estado</option>
-                                            <option value="in-review">Activo</option>
-                                            <option value="in-review">Inactivo</option>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
                                         </Select>
 
                                         <HStack w="fit-content">
@@ -336,12 +336,18 @@ const Panel: NextPage = () => {
                                                 h="40px"
                                                 variant="outline"
                                                 placeholder="Buscar"
-                                                onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                                onChange={(e) =>
+                                                    setFilters({
+                                                        ...filters,
+                                                        //@ts-ignore
+                                                        name: e.target.value,
+                                                    })
+                                                }
                                             />
                                         </HStack>
                                     </Stack>
                                 </Stack>
-                                <ListInvestorForm />
+                                <ListInvestorForm filters={filters} />
                             </VStack>
                         </TabPanel>
 

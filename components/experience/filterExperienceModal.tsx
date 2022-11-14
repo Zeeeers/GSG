@@ -11,7 +11,7 @@ import {
     Stack,
     Img,
 } from '@chakra-ui/react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 // Types
@@ -22,6 +22,8 @@ interface Props {
 
 const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     const [indexPage, setIndexPage] = useState(0);
+
+    const router = useRouter();
 
     const welcome = (
         <VStack align="center">
@@ -106,10 +108,11 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     );
 
     const page = [welcome, explorer, review, contact];
+
     return (
         <Modal
             isOpen={isOpen}
-            onClose={() => Router.replace({ pathname: '/explorer' }).then(() => onClose())}
+            onClose={() => router.replace({ pathname: '/explorer' }).then(() => onClose())}
             isCentered
             size="md"
         >
@@ -123,7 +126,7 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         <HStack w="full" justify="space-between">
                             {indexPage === 0 && (
                                 <Button
-                                    onClick={() => Router.replace({ pathname: '/explorer' }).then(() => onClose())}
+                                    onClick={() => router.replace({ pathname: '/explorer' }).then(() => onClose())}
                                     variant="ghost"
                                     h="40px"
                                     color="gray.50"
@@ -137,7 +140,7 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                             <Button
                                 onClick={() =>
                                     indexPage === 3
-                                        ? Router.replace({ pathname: '/explorer' }).then(() => onClose())
+                                        ? router.replace({ pathname: '/explorer' }).then(() => onClose())
                                         : setIndexPage(indexPage + 1)
                                 }
                                 fontFamily="inter"

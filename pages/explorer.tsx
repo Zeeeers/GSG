@@ -23,6 +23,7 @@ import {
     Wrap,
     WrapItem,
     useDisclosure,
+    Img,
 } from '@chakra-ui/react';
 import ExplorerCard from 'components/explorer/explorerCard/explorerCard';
 import CardSkeleton from 'components/explorer/explorerCard/explorerCard.skeleton';
@@ -50,7 +51,7 @@ import Rentability from 'components/projectDetail/formatText/rentability';
 import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
 import Time from 'components/projectDetail/formatText/time';
 import FilterExperienceModal from 'components/experience/filterExperienceModal';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -58,6 +59,8 @@ const Explorer: NextPage = () => {
     const [isVisible, setIsVisible] = useState(true);
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
+
+    const router = useRouter();
 
     // data proyects
     const { data: gsg } = useGsg();
@@ -144,7 +147,7 @@ const Explorer: NextPage = () => {
         if (onboarding && onboarding === 'filter-experience') {
             openExperience(true);
         }
-    }, [isOpenExperience]);
+    }, [isOpenExperience, router.query]);
 
     useEffect(() => {
         if (filters?.qualities?.length === 0) {
@@ -223,6 +226,28 @@ const Explorer: NextPage = () => {
                             {isVisible ? 'Ocultar' : 'Explorar'}
                         </Button>
                     </HStack>
+                )}
+
+                {user && (
+                    <Button
+                        onClick={() =>
+                            router.push({
+                                pathname: '/explorer',
+                                query: { onboarding: 'filter-experience' },
+                            })
+                        }
+                        position="fixed"
+                        right="60px"
+                        bottom="50px"
+                        background="gray.800"
+                        w="50px"
+                        h="50px"
+                        p="10px"
+                        rounded="8px"
+                        _hover={{ background: 'gray.700' }}
+                    >
+                        <Img src="/images/icons/question.svg" />
+                    </Button>
                 )}
 
                 <AnimatePresence>
@@ -329,22 +354,24 @@ const Explorer: NextPage = () => {
                                                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                             />
                                         </Stack>
-                                        <Button
-                                            leftIcon={<Icon as={MdFilterList} w="20px" h="20px" />}
-                                            onClick={() => setIsOpenFilter(!isOpenFilter)}
-                                            variant="solid"
-                                            h="38px"
-                                            background="gray.800"
-                                            w="full"
-                                            fontFamily="inter"
-                                            fontSize="16px"
-                                            fontWeight="normal"
-                                            _hover={{ background: 'gray.700' }}
-                                            _focus={{ background: 'gray.700' }}
-                                            _selected={{ background: 'gray.700' }}
-                                        >
-                                            Filtro avanzados
-                                        </Button>
+                                        {user && (
+                                            <Button
+                                                leftIcon={<Icon as={MdFilterList} w="20px" h="20px" />}
+                                                onClick={() => setIsOpenFilter(!isOpenFilter)}
+                                                variant="solid"
+                                                h="38px"
+                                                background="gray.800"
+                                                w="full"
+                                                fontFamily="inter"
+                                                fontSize="16px"
+                                                fontWeight="normal"
+                                                _hover={{ background: 'gray.700' }}
+                                                _focus={{ background: 'gray.700' }}
+                                                _selected={{ background: 'gray.700' }}
+                                            >
+                                                Filtro avanzados
+                                            </Button>
+                                        )}
                                     </Stack>
                                 </Stack>
 

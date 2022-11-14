@@ -209,6 +209,43 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                         </Button>
                     </Stack>
 
+                    {Object.values(project?.relations ?? {}).find((r) => r.organization_id === user?.organization_id)
+                        ?.kinds !== 'interested' ? (
+                        <Button
+                            position="fixed"
+                            onClick={handleInterest}
+                            leftIcon={<Img src="/images/icons/interest.svg" />}
+                            variant="solid"
+                            rounded="500px"
+                            h="40px"
+                            right="50px"
+                            bottom="30px"
+                            background="gray.700"
+                            _hover={{ background: 'gray.600' }}
+                        >
+                            <Text>Me interesa</Text>
+                        </Button>
+                    ) : (
+                        <Button
+                            position="fixed"
+                            onClick={handleInterest}
+                            variant="solid"
+                            background="blue.700"
+                            color="gray.50"
+                            rounded="500px"
+                            fontSize="18px"
+                            fontFamily="inter"
+                            h="40px"
+                            px="15px"
+                            _hover={{ borderColor: 'none' }}
+                            leftIcon={<Img src="/images/icons/interest.svg" />}
+                            right="50px"
+                            bottom="30px"
+                        >
+                            <Text>Te interesa</Text>
+                        </Button>
+                    )}
+
                     <VStack w="full">
                         <Flex w="full" direction="column" position="relative">
                             <Flex
@@ -280,7 +317,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                             {Object.values(project?.relations ?? {}).find(
                                                 (r) => r.organization_id === user?.organization_id,
                                             )?.kinds === 'interested' && (
-                                                <HStack
+                                                <Button
+                                                    onClick={handleInterest}
                                                     variant="solid"
                                                     background="gray.50"
                                                     color="gray.800"
@@ -292,10 +330,10 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                                     h="40px"
                                                     px="10px"
                                                     _hover={{ borderColor: 'none' }}
+                                                    leftIcon={<Img src="/images/icons/interest_green.svg" />}
                                                 >
-                                                    <Img src="/images/icons/interest_green.svg" />
                                                     <Text>Te interesa</Text>
-                                                </HStack>
+                                                </Button>
                                             )}
                                         </HStack>
                                         {user && (
