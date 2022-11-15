@@ -170,7 +170,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
             finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
-            rentability_time: project?.rentability_time ?? '',
+            rentability_time: parseInt(project?.rentability_time) ?? 0,
             last_sales12: project?.business_model?.split(';;')[0],
             last_sales6: project?.business_model?.split(';;')[1],
 
@@ -191,7 +191,7 @@ const Creator: NextPage = ({ project, quality }) => {
         },
     });
 
-    console.log(errors);
+    console.log(parseInt(project?.rentability_time));
 
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
