@@ -109,7 +109,6 @@ const OdsTab: React.FC = () => {
     useEffect(() => {
         if (user) {
             setIsActive(user?.newsletter);
-            setIsOnboarding(user?.onboarding);
         }
     }, [user]);
 
@@ -257,7 +256,7 @@ const OdsTab: React.FC = () => {
                             variant="outline"
                             h="40px"
                             onClick={() => {
-                                isOnboarding ?? true ? openOnboarding() : router.push('/explorer');
+                                router.push('/explorer');
                             }}
                         >
                             Ir al explorador
@@ -265,12 +264,6 @@ const OdsTab: React.FC = () => {
                     </Stack>
                 </VStack>
             </Stack>
-
-            <OnboardingModal
-                isOpen={isOpenOnboarding}
-                onClose={closeOnboarding}
-                handleUpdateOnboarding={handleUpdateOnboarding}
-            />
 
             <OdsModal
                 isOpen={isOpenOds}

@@ -19,18 +19,9 @@ import React from 'react';
 interface Props {
     isOpen: boolean;
     onClose(): void;
-    handleUpdateOnboarding: (value: boolean) => void;
-    handleOnboarding: () => void;
-    onboarding: boolean;
 }
 
-const OnboardingModal: React.FC<Props> = ({
-    isOpen,
-    onClose,
-    handleUpdateOnboarding,
-    onboarding = false,
-    handleOnboarding,
-}) => {
+const OnboardingModal: React.FC<Props> = ({ isOpen, onClose }) => {
     const router = useRouter();
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="2xl">
@@ -59,19 +50,10 @@ const OnboardingModal: React.FC<Props> = ({
                         </VStack>
 
                         <VStack w="full" align="flex-start" spacing="20px">
-                            {onboarding && (
-                                <HStack>
-                                    <Checkbox />
-                                    <Text fontSize="15px" fontFamily="inter">
-                                        Quiero que me envíen un correo con un resumen de los intereses que guardé
-                                    </Text>
-                                </HStack>
-                            )}
-
                             <HStack>
-                                <Checkbox onChange={(e) => handleUpdateOnboarding(e.target.checked)} />
+                                <Checkbox />
                                 <Text fontSize="15px" fontFamily="inter">
-                                    Lo entiendo, no volver a mostrar
+                                    Quiero que me envíen un correo con un resumen de los intereses que guardé
                                 </Text>
                             </HStack>
 
@@ -80,13 +62,10 @@ const OnboardingModal: React.FC<Props> = ({
                                 h="40px"
                                 variant="solid"
                                 onClick={() => {
-                                    handleOnboarding();
-                                    onboarding
-                                        ? router.push({
-                                              pathname: '/explorer',
-                                              query: { onboarding: 'filter-experience' },
-                                          })
-                                        : router.push('/explorer');
+                                    router.push({
+                                        pathname: '/explorer',
+                                        query: { onboarding: 'filter-experience' },
+                                    });
                                 }}
                             >
                                 Ir al explorador de proyectos

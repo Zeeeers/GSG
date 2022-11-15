@@ -295,13 +295,7 @@ const InterestExperience = ({ setPage }: Props) => {
                 </VStack>
             </Stack>
 
-            <OnboardingModal
-                isOpen={isOpenOnboarding}
-                onClose={closeOnboarding}
-                handleUpdateOnboarding={handleUpdateOnboarding}
-                onboarding={true}
-                handleOnboarding={handleOnboarding}
-            />
+            <OnboardingModal isOpen={isOpenOnboarding} onClose={closeOnboarding} />
 
             <OdsModal
                 isOpen={isOpenOds}

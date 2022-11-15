@@ -5,7 +5,7 @@ import EditableTitle from 'common/editableTitle';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import { useUser } from 'services/api/lib/user';
 import { useOrganization } from 'services/api/lib/organization';
-import Router from 'next/router';
+
 import { motion } from 'framer-motion';
 
 interface Props {
@@ -189,17 +189,7 @@ const ProfileExperience = ({ setPage }: Props) => {
                 </VStack>
             </Stack>
 
-            <HStack w="full" justify="space-between" pt="20px">
-                <Button
-                    onClick={() => Router.push('/explorer')}
-                    variant="ghost"
-                    maxW="200px"
-                    h="40px"
-                    fontSize="16px"
-                    color="gray.50"
-                >
-                    Saltar
-                </Button>
+            <HStack w="full" justify="flex-end" pt="20px">
                 <Button onClick={() => setPage(1)} variant="solid" maxW="200px" h="40px">
                     Continuar
                 </Button>
