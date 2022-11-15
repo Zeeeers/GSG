@@ -85,7 +85,7 @@ const projectShape: ZodShape<IProjectForm> = {
     patrimony: z.string().nonempty('Campo obligatorio'),
 
     investment_types: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
-    rentability_time: z.string().nonempty('Campo obligatorio'),
+    rentability_time: z.string().min(1, 'Campo obligatorio'),
     better_project: z.string().nonempty('Campo obligatorio'),
     additional_info: z.string().nonempty({ message: 'Campo obligatorio' }).max(1000, 'Máximo 1000 caracteres'),
     additional_document: z.string().optional(),

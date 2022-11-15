@@ -50,7 +50,7 @@ const RegisterStepTwoForm: React.FC = () => {
         setIsCreatingAccount(true);
         const { create } = await import('services/api/lib/organization');
 
-        const { ok } = await create({
+        const { ok, status } = await create({
             user: {
                 name: valuesForm?.userName,
                 email: valuesForm?.userEmail,
@@ -78,14 +78,27 @@ const RegisterStepTwoForm: React.FC = () => {
             router.push('/successRegister');
             setIsCreatingAccount(false);
         } else {
-            toast({
-                title: 'No se ha podido crear el usuario',
-                description: 'Ha ocurrido un error al intentar crear el usuario, porfavor, intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
+            if (status === 422) {
+                toast({
+                    title: 'No se ha podido crear el usuario',
+                    description:
+                        'El correo electrónico ingresado ya fue usado. Por favor, intente con un correo distinto.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            } else {
+                toast({
+                    title: 'No se ha podido crear el usuario',
+                    description: 'Ha ocurrido un error al intentar crear el usuario, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+
             setIsCreatingAccount(false);
         }
     };
@@ -126,7 +139,6 @@ const RegisterStepTwoForm: React.FC = () => {
                                     alt={watch().organizationName}
                                     size="2xl"
                                     src={watch().logo}
-                                    icon={<></>}
                                     shadow="lg"
                                     bgColor={'gray.700'}
                                     border="2px"

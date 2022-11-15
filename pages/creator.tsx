@@ -152,21 +152,25 @@ const Creator: NextPage = ({ project, quality }) => {
             third_parties: { value: project?.third_parties ?? '', label: ThirdParties(project?.third_parties) },
             sector: { value: project?.sector ?? '', label: Sector(project?.sector) },
             more_info: { value: project?.more_info ?? '', label: Messure(project?.more_info) },
+
             stage: { value: project?.stage ?? '', label: StageCapital(project?.stage) },
-            capital_stage: { value: project?.capital_stage, label: Stage(project?.capital_stage) },
-            debt: { value: project?.debt, label: Stage(project?.debt) },
+            capital_stage: { value: project?.capital_stage ?? '', label: Stage(project?.capital_stage) },
+            expected_rentability: {
+                value: project?.expected_rentability ?? '',
+                label: Rentability(project?.expected_rentability),
+            },
+            investment_types: { value: project?.investment_types ?? '', label: project?.investment_types ?? '' },
+
+            debt: { value: project?.debt ?? '', label: Stage(project?.debt) },
             investment_objective: {
                 value: project?.investment_objective ?? '',
                 label: Objetive(project?.investment_objective),
             },
             guarantee: { value: project?.guarantee ?? '', label: Garantee(project?.guarantee) },
-            expected_rentability: {
-                value: project?.expected_rentability ?? '',
-                label: Rentability(project?.expected_rentability),
-            },
+
             finance_goal: { value: project?.finance_goal ?? '', label: FinanceGoal(project?.finance_goal) },
             time_lapse: { value: project?.time_lapse ?? '', label: Time(project?.time_lapse) },
-            rentability_time: project?.rentability_time,
+            rentability_time: project?.rentability_time ?? '',
             last_sales12: project?.business_model?.split(';;')[0],
             last_sales6: project?.business_model?.split(';;')[1],
 
@@ -175,7 +179,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
             ebitda: project?.business_model?.split(';;')[4],
             patrimony: project?.business_model?.split(';;')[5],
-            investment_types: { value: project?.investment_types ?? '', label: project?.investment_types },
+
             better_project: project?.better_project ?? '',
             additional_info: project?.better_project ?? '',
 
@@ -186,6 +190,8 @@ const Creator: NextPage = ({ project, quality }) => {
             webForm: project?.contacts && project?.contacts[4],
         },
     });
+
+    console.log(errors);
 
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
@@ -1554,6 +1560,14 @@ const Creator: NextPage = ({ project, quality }) => {
                                     <Input {...register('rentability_time')} maxW="95px" type="number" />
                                     <Text>Meses</Text>
                                 </HStack>
+                                <FormErrorMessage
+                                    textColor="red.400"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                    fontWeight={'medium'}
+                                >
+                                    {errors.rentability_time?.message}
+                                </FormErrorMessage>
                             </FormControl>
 
                             <FormControl
@@ -1648,7 +1662,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                     <FormControl
                                         id="last_sales6"
-                                        sInvalid={!!errors.last_sales6}
+                                        isInvalid={!!errors.last_sales6}
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
@@ -1671,7 +1685,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                     <FormControl
                                         id="last_client12"
-                                        sInvalid={!!errors.last_client12}
+                                        isInvalid={!!errors.last_client12}
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
@@ -1694,7 +1708,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                     <FormControl
                                         id="last_client6"
-                                        sInvalid={!!errors.last_client6}
+                                        isInvalid={!!errors.last_client6}
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
@@ -1717,7 +1731,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                     <FormControl
                                         id="ebitda"
-                                        sInvalid={!!errors.ebitda}
+                                        isInvalid={!!errors.ebitda}
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
@@ -1740,7 +1754,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
                                     <FormControl
                                         id="patrimony"
-                                        sInvalid={!!errors.patrimony}
+                                        isInvalid={!!errors.patrimony}
                                         display="flex"
                                         justifyContent="space-between"
                                         alignItems="center"
@@ -1845,8 +1859,8 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <VStack>
                             <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                23. Selecciona la o las plataformas/redes sociales que consideras pueden ser relevantes
-                                para que inversionistas conozcan mejor tu proyecto. (Opcional)
+                                23. Copia y pega la o las plataformas/redes sociales que consideres relevantes para que
+                                inversionistas conozcan mejor tu proyecto. (Opcional)
                             </Text>
 
                             <VStack spacing="15px" w="full">
