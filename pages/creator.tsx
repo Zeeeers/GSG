@@ -191,8 +191,6 @@ const Creator: NextPage = ({ project, quality }) => {
         },
     });
 
-    console.log(parseInt(project?.rentability_time));
-
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
     const proyectMainImage = watch('main_image');
@@ -454,6 +452,10 @@ const Creator: NextPage = ({ project, quality }) => {
 
         if (watch('additional_info') !== '') {
             percent.push(watch('additional_info'));
+        }
+
+        if (members?.length > 0) {
+            percent.push('');
         }
 
         return percent.length;
@@ -719,6 +721,8 @@ const Creator: NextPage = ({ project, quality }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    console.log(percentFinance());
 
     return (
         <>
@@ -2147,12 +2151,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 {`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                         (isCheckCapital && isCheckDeuda
-                                            ? 25
+                                            ? 26
                                             : isCheckCapital && !isCheckDeuda
-                                            ? 24
+                                            ? 25
                                             : !isCheckCapital && isCheckDeuda
-                                            ? 22
-                                            : 25),
+                                            ? 23
+                                            : 26),
                                 )}%`}
                             </Text>
                         </HStack>
@@ -2162,12 +2166,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 w={`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                         (isCheckCapital && isCheckDeuda
-                                            ? 25
+                                            ? 26
                                             : isCheckCapital && !isCheckDeuda
-                                            ? 24
+                                            ? 25
                                             : !isCheckCapital && isCheckDeuda
-                                            ? 22
-                                            : 25),
+                                            ? 23
+                                            : 26),
                                 )}%`}
                                 h="full"
                                 background="teal.400"
@@ -2224,8 +2228,16 @@ const Creator: NextPage = ({ project, quality }) => {
                                 )}
                                 <Text>Descripción financiera</Text>
                             </HStack>
-                            {(percentFinance() === 14 || percentFinance() === 16) && (
+
+                            {isCheckCapital && isCheckDeuda && percentFinance() === 17 ? (
                                 <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
+                            ) : isCheckCapital && percentFinance() === 16 ? (
+                                <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
+                            ) : (
+                                isCheckDeuda &&
+                                percentFinance() === 14 && (
+                                    <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
+                                )
                             )}
                         </HStack>
 
@@ -2250,7 +2262,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 )}
                                 <Text>Otra información relevante</Text>
                             </HStack>
-                            {percentOther() === 2 && <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />}
+                            {percentOther() === 3 && <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />}
                         </HStack>
                     </VStack>
 

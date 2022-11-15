@@ -11,13 +11,13 @@ import {
     useDisclosure,
     useToast,
     VStack,
+    Avatar,
 } from '@chakra-ui/react';
-import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
 import { IMember, memberSchema } from 'forms/project';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 
@@ -124,47 +124,46 @@ const AddMembersForm = ({ reload, closeModal }) => {
                     <VStack alignItems="start" justifyContent="center" mt="25px">
                         <VStack spacing={3}>
                             <Avatar
-                                tHeight={100}
-                                tWidth={100}
+                                h="100px"
+                                w="100px"
                                 alt={watch().name}
                                 size="2xl"
                                 src={watch().main_image ?? member?.main_imagen}
-                                icon={<></>}
-                                shadow="lg"
-                                bgColor={'gray.700'}
-                                border="2px"
+                                bgColor={'gray.600'}
                                 borderColor="white"
-                                borderStyle="dashed"
                                 textColor={'white'}
                                 name={watch().name}
                             />
 
                             <Input type="hidden" {...register('main_image')} />
 
-                            <UploadButton
-                                ml={-2}
-                                onChange={async (e) => {
-                                    const { validateTypes, getBase64 } = await import('services/images');
+                            <Stack w="fit-content">
+                                <UploadButton
+                                    w="full"
+                                    ml={-2}
+                                    onChange={async (e) => {
+                                        const { validateTypes, getBase64 } = await import('services/images');
 
-                                    if (e.target?.files && validateTypes(e.target.files[0])) {
-                                        if (e.target.files[0].size > 2000000) {
-                                            toast({
-                                                title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2mb',
-                                                status: 'error',
-                                                duration: 9000,
-                                                isClosable: true,
-                                                position: 'top-right',
-                                            });
-                                        } else {
-                                            const base = await getBase64(e.target.files![0]);
-                                            setBaseImg(base);
-                                            onCropperOpen();
+                                        if (e.target?.files && validateTypes(e.target.files[0])) {
+                                            if (e.target.files[0].size > 2000000) {
+                                                toast({
+                                                    title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2mb',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            } else {
+                                                const base = await getBase64(e.target.files![0]);
+                                                setBaseImg(base);
+                                                onCropperOpen();
+                                            }
                                         }
-                                    }
-                                }}
-                            >
-                                Subir imagen de perfil
-                            </UploadButton>
+                                    }}
+                                >
+                                    Subir imagen
+                                </UploadButton>
+                            </Stack>
 
                             <FormHelperText>Tamaño máximo 2MB</FormHelperText>
 
@@ -232,7 +231,8 @@ const AddMembersForm = ({ reload, closeModal }) => {
                     isOpen={isCropperOpen}
                     onClose={onCropperClose}
                     onCropSave={(img) => {
-                        setValue('main_image', img);
+                        console.log(img);
+                        setValue('main_image', img, { shouldValidate: true });
                     }}
                 />
             )}
