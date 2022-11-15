@@ -75,6 +75,7 @@ import { BsCheckCircleFill } from 'react-icons/bs';
 import Sector from 'components/projectDetail/formatText/sector';
 import { motion } from 'framer-motion';
 import Router, { useRouter } from 'next/router';
+import InputDisabled from 'common/inputDisabled';
 
 // Page
 const Creator: NextPage = ({ project, quality }) => {
@@ -102,6 +103,7 @@ const Creator: NextPage = ({ project, quality }) => {
     const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
     const [contenido, setContenido] = useState<Descendant[]>();
     const [selectedOptions, setSelectedOptions] = useState();
+    const [selectInvestor, setSelectInvestor] = useState();
     const [isOtherParties, setIsOtherParties] = useState(false);
 
     const [isCheckCapital, setIsCheckCapital] = useState(false);
@@ -109,6 +111,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const [postulationEmployee, setPostulationEmployee] = useState(false);
     const [postulationProject, setPostulationProject] = useState(false);
+
     const router = useRouter();
 
     const [isActiveItem, setIsActiveItem] = useState({
@@ -159,7 +162,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 value: project?.expected_rentability ?? '',
                 label: Rentability(project?.expected_rentability),
             },
-            investment_types: { value: project?.investment_types ?? '', label: project?.investment_types ?? '' },
+            investment_types: project?.investment_types.map((i) => ({ value: i, label: i })),
 
             debt: { value: project?.debt ?? '', label: Stage(project?.debt) },
             investment_objective: {
@@ -374,8 +377,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 percent.push(watch('expected_rentability')?.value);
             }
 
-            if (proyectInvestType?.value ?? '' !== '') {
-                percent.push(proyectInvestType?.value);
+            if (watch('investment_types')?.length ?? [] > 0) {
+                percent.push(watch('investment_types')?.length);
             }
         }
 
@@ -516,7 +519,8 @@ const Creator: NextPage = ({ project, quality }) => {
                 expected_rentability: isCheckCapital ? data.expected_rentability?.value : null,
                 finance_goal: data.finance_goal?.value,
                 time_lapse: data.time_lapse?.value,
-                investment_types: isCheckCapital ? data.investment_types?.value : null,
+                investment_types: isCheckCapital ? data.investment_types?.map((i) => i.value).join(';;') : null,
+
                 better_project: data.better_project,
                 additional_info: data.additional_info,
                 additional_document: baseAdditional?.base64,
@@ -588,7 +592,11 @@ const Creator: NextPage = ({ project, quality }) => {
                 sector: watch('sector')?.value,
                 capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
                 debt: isCheckDeuda ? proyectDept?.value : null,
-                investment_types: isCheckCapital ? proyectInvestType?.value : null,
+                investment_types: isCheckCapital
+                    ? watch('investment_types')
+                          ?.map((i) => i.value)
+                          .join(';;')
+                    : null,
                 expected_rentability: isCheckCapital ? watch('expected_rentability')?.value : null,
                 stage: watch('stage')?.value,
                 guarantee: watch('guarantee')?.value,
@@ -721,8 +729,6 @@ const Creator: NextPage = ({ project, quality }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    console.log(percentFinance());
 
     return (
         <>
@@ -1405,9 +1411,17 @@ const Creator: NextPage = ({ project, quality }) => {
                                             name="investment_types"
                                             control={control}
                                             render={({ field }) => (
-                                                <CharkaSelect {...field} useBasicStyles options={optionsInvestor} />
+                                                <CharkaSelect
+                                                    {...field}
+                                                    tagVariant="solid"
+                                                    colorScheme="teal"
+                                                    isMulti
+                                                    useBasicStyles
+                                                    options={optionsInvestor}
+                                                />
                                             )}
                                         />
+
                                         {errors.investment_types?.message}
                                     </FormControl>
 
@@ -1637,7 +1651,8 @@ const Creator: NextPage = ({ project, quality }) => {
                             <VStack w="full" align="flex-start" gap="15px">
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                     21. En relación a tu trayectoria, por favor completa los siguientes campos. Si no
-                                    registras datos, coloca 0
+                                    deseas dar a conocer alguno de estos datos, puedes presionar el ícono que está a un
+                                    lado del campo de texto para inhabilitarlo.
                                 </Text>
 
                                 <VStack w="full" gap="15px">
@@ -1652,7 +1667,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Ventas en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_sales12')} type="number" />
+                                            <InputDisabled maxW="420px" {...register('last_sales12')} type="number" />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1675,7 +1690,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Ventas en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_sales6')} type="number" />
+                                            <InputDisabled maxW="420px" {...register('last_sales6')} type="number" />
+
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1698,7 +1714,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Clientes en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_client12')} type="number" />
+                                            <InputDisabled maxW="420px" {...register('last_client12')} type="number" />
+
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1721,7 +1738,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Clientes en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('last_client6')} type="number" />
+                                            <InputDisabled maxW="420px" {...register('last_client6')} type="number" />
+
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1744,7 +1762,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                             EBITDA último año fiscal <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('ebitda')} type="number" />
+                                            <InputDisabled maxW="420px" {...register('ebitda')} type="number" />
+
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1768,7 +1787,8 @@ const Creator: NextPage = ({ project, quality }) => {
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <Input maxW="420px" {...register('patrimony')} type="number" />
+                                            <InputDisabled maxW="420px" {...register('patrimony')} type="number" />
+
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1790,7 +1810,7 @@ const Creator: NextPage = ({ project, quality }) => {
                         </Text>
 
                         <VStack w="100%" align="flex-start" spacing="10px">
-                            <VStack w="100%" align="flex-start" spacing="5px">
+                            <VStack w="100%" align="flex-start" spacing="5px" mb="10px">
                                 <Text fontSize="2xl" fontWeight="24px">
                                     22. Miembros del equipo
                                 </Text>

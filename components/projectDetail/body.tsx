@@ -29,6 +29,9 @@ import Time from './formatText/time';
 const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
     const { impact, description_finance, other } = ref?.current;
 
+    const lastWord = project?.investment_types.at(-1);
+    const newArray = project?.investment_types.filter((i) => i !== lastWord);
+
     return (
         <Stack
             alignItems="start"
@@ -181,14 +184,14 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                     </VStack>
                 )}
 
-                {project?.investment_types && (
+                {project?.investment_types.length > 0 && (
                     <VStack align="flex-start">
                         <VStack align="flex-start" spacing="5px">
                             <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
                                 El tipo de inversionista que busca es:
                             </Text>
                             <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                {project?.investment_types}
+                                {newArray.join(', ') + ' o ' + lastWord}
                             </Text>
                         </VStack>
                     </VStack>
