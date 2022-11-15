@@ -59,7 +59,8 @@ const RecoveryPassword: NextPage = () => {
                             </Text>
                             <Text fontSize="16px" fontFamily="inter" textAlign="center">
                                 Enviamos un link de confirmación al correo electrónico registrado. Recuerda revisar la
-                                carpeta de spam en caso de no ver el correo en tu bandeja de entrada.
+                                carpeta de spam o la sección de promociones en caso de no ver el correo en tu bandeja de
+                                entrada.
                             </Text>
                         </VStack>
                         <Link href="/login" pt="40px">
