@@ -609,12 +609,12 @@ const Creator: NextPage = ({ project, quality }) => {
                 progress: Math.round(
                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                         (isCheckCapital && isCheckDeuda
-                            ? 25
+                            ? 26
                             : isCheckCapital && !isCheckDeuda
-                            ? 24
+                            ? 25
                             : !isCheckCapital && isCheckDeuda
-                            ? 22
-                            : 25),
+                            ? 23
+                            : 26),
                 ).toString(),
                 contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
                     'youtubeForm',
@@ -2354,12 +2354,12 @@ const Creator: NextPage = ({ project, quality }) => {
                             {`${Math.round(
                                 ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                     (isCheckCapital && isCheckDeuda
-                                        ? 25
+                                        ? 26
                                         : isCheckCapital && !isCheckDeuda
-                                        ? 24
+                                        ? 25
                                         : !isCheckCapital && isCheckDeuda
-                                        ? 22
-                                        : 25),
+                                        ? 23
+                                        : 26),
                             )}%`}
                         </Text>
                     </HStack>
@@ -2369,12 +2369,12 @@ const Creator: NextPage = ({ project, quality }) => {
                             w={`${Math.round(
                                 ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                     (isCheckCapital && isCheckDeuda
-                                        ? 25
+                                        ? 26
                                         : isCheckCapital && !isCheckDeuda
-                                        ? 24
+                                        ? 25
                                         : !isCheckCapital && isCheckDeuda
-                                        ? 22
-                                        : 25),
+                                        ? 23
+                                        : 26),
                             )}%`}
                             h="full"
                             background="teal.400"
