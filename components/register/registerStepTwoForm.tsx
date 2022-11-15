@@ -136,30 +136,33 @@ const RegisterStepTwoForm: React.FC = () => {
                                     name={watch().organizationName ? 'GSG' : watch().organizationName}
                                 />
 
-                                <UploadButton
-                                    ml={-2}
-                                    onChange={async (e) => {
-                                        const { validateTypes, getBase64 } = await import('services/images');
+                                <Stack w="fit-content">
+                                    <UploadButton
+                                        w="full"
+                                        ml={-2}
+                                        onChange={async (e) => {
+                                            const { validateTypes, getBase64 } = await import('services/images');
 
-                                        if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            if (e.target?.files[0].size >= 2000000) {
-                                                toast({
-                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
-                                                    status: 'error',
-                                                    duration: 9000,
-                                                    isClosable: true,
-                                                    position: 'top-right',
-                                                });
-                                            } else {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setBaseImg(base);
-                                                onCropperOpen();
+                                            if (e.target?.files && validateTypes(e.target.files[0])) {
+                                                if (e.target?.files[0].size >= 2000000) {
+                                                    toast({
+                                                        title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                        status: 'error',
+                                                        duration: 9000,
+                                                        isClosable: true,
+                                                        position: 'top-right',
+                                                    });
+                                                } else {
+                                                    const base = await getBase64(e.target.files![0]);
+                                                    setBaseImg(base);
+                                                    onCropperOpen();
+                                                }
                                             }
-                                        }
-                                    }}
-                                >
-                                    Subir logo
-                                </UploadButton>
+                                        }}
+                                    >
+                                        Subir logo
+                                    </UploadButton>
+                                </Stack>
 
                                 <FormHelperText color="gray.300">Tamaño máximo 2MB</FormHelperText>
 

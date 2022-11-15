@@ -132,31 +132,33 @@ const ProfileExperience = ({ setPage }: Props) => {
                         color={'white'}
                     />
 
-                    <UploadButton
-                        w="fit-content"
-                        ml={-2}
-                        onChange={async (e) => {
-                            const { validateTypes, getBase64 } = await import('services/images');
+                    <Stack w="fit-content">
+                        <UploadButton
+                            w="full"
+                            p={0}
+                            onChange={async (e) => {
+                                const { validateTypes, getBase64 } = await import('services/images');
 
-                            if (e.target?.files && validateTypes(e.target.files[0])) {
-                                if (e.target.files[0].size >= 2000000) {
-                                    toast({
-                                        title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
-                                        status: 'error',
-                                        duration: 9000,
-                                        isClosable: true,
-                                        position: 'top-right',
-                                    });
-                                } else {
-                                    const base = await getBase64(e.target.files![0]);
-                                    setBaseImg(base);
-                                    onCropperOpen();
+                                if (e.target?.files && validateTypes(e.target.files[0])) {
+                                    if (e.target.files[0].size >= 2000000) {
+                                        toast({
+                                            title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
+                                            status: 'error',
+                                            duration: 9000,
+                                            isClosable: true,
+                                            position: 'top-right',
+                                        });
+                                    } else {
+                                        const base = await getBase64(e.target.files![0]);
+                                        setBaseImg(base);
+                                        onCropperOpen();
+                                    }
                                 }
-                            }
-                        }}
-                    >
-                        Subir imagen
-                    </UploadButton>
+                            }}
+                        >
+                            Subir imagen
+                        </UploadButton>
+                    </Stack>
 
                     <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
                         Tamaño máximo 2MB

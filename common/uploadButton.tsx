@@ -10,7 +10,7 @@ const UploadButton = forwardRef<InputProps, 'input'>(({ onClick, onChange, child
             rounded="none"
             variant="flushed"
             colorScheme="white"
-            w="fit-content"
+            w="fit"
             px={0}
             py={0}
             color="gray.50"
@@ -31,7 +31,8 @@ const UploadButton = forwardRef<InputProps, 'input'>(({ onClick, onChange, child
                     onClick && onClick(e);
                     (e.target as HTMLInputElement).value = '';
                 }}
-                width="100px"
+                width="inherit"
+                height="inherit"
                 zIndex={40}
                 onChange={onChange}
             />
