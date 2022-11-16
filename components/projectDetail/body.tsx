@@ -26,11 +26,13 @@ import StageCapital from './formatText/stageCapital';
 import ThirdParties from './formatText/thirdParties';
 import Time from './formatText/time';
 
-const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
+const Body = forwardRef<any, any>(({ project }, ref) => {
     const { impact, description_finance, other } = ref?.current;
 
     const lastWord = project?.investment_types.at(-1);
     const newArray = project?.investment_types.filter((i) => i !== lastWord);
+
+    console.log(project);
 
     return (
         <Stack
@@ -277,92 +279,102 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
                         </Text>
                     </VStack>
                 </VStack>
-
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Ventas en los últimos 12 meses:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {new Intl.NumberFormat('es-CL', {
-                                style: 'currency',
-                                currency: 'CLP',
-                                minimumFractionDigits: 0,
-                            }).format(project?.business_model?.split(';;')[0] ?? 0)}
-                        </Text>
+                {project?.business_model?.split(';;')[0] !== 'No deseo entregar esta información' && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                Ventas en los últimos 12 meses:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {new Intl.NumberFormat('es-CL', {
+                                    style: 'currency',
+                                    currency: 'CLP',
+                                    minimumFractionDigits: 0,
+                                }).format(project?.business_model?.split(';;')[0] ?? 0)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
-
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Ventas en los últimos 6 meses:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {new Intl.NumberFormat('es-CL', {
-                                style: 'currency',
-                                currency: 'CLP',
-                                minimumFractionDigits: 0,
-                            }).format(project?.business_model?.split(';;')[1] ?? 0)}
-                        </Text>
+                )}
+                {project?.business_model?.split(';;')[1] !== 'No deseo entregar esta información' && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                Ventas en los últimos 6 meses:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {new Intl.NumberFormat('es-CL', {
+                                    style: 'currency',
+                                    currency: 'CLP',
+                                    minimumFractionDigits: 0,
+                                }).format(project?.business_model?.split(';;')[1] ?? 0)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Clientes en los últimos 12 meses:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {new Intl.NumberFormat('es-CL', {
-                                minimumFractionDigits: 0,
-                            }).format(project?.business_model?.split(';;')[2] ?? 0)}
-                        </Text>
+                {project?.business_model?.split(';;')[2] !== 'No deseo entregar esta información' && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                Clientes en los últimos 12 meses:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {new Intl.NumberFormat('es-CL', {
+                                    minimumFractionDigits: 0,
+                                }).format(project?.business_model?.split(';;')[2] ?? 0)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Clientes en los últimos 6 meses:
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {new Intl.NumberFormat('es-CL', {
-                                minimumFractionDigits: 0,
-                            }).format(project?.business_model?.split(';;')[3] ?? 0)}
-                        </Text>
+                {project?.business_model?.split(';;')[3] !== 'No deseo entregar esta información' && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                Clientes en los últimos 6 meses:
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {new Intl.NumberFormat('es-CL', {
+                                    minimumFractionDigits: 0,
+                                }).format(project?.business_model?.split(';;')[3] ?? 0)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            EBITDA
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {new Intl.NumberFormat('es-CL', {
-                                style: 'currency',
-                                currency: 'CLP',
-                                minimumFractionDigits: 0,
-                            }).format(project?.business_model?.split(';;')[4] ?? 0)}
-                        </Text>
+                {project?.business_model?.split(';;')[4] !== 'No deseo entregar esta información' && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                EBITDA
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {new Intl.NumberFormat('es-CL', {
+                                    style: 'currency',
+                                    currency: 'CLP',
+                                    minimumFractionDigits: 0,
+                                }).format(project?.business_model?.split(';;')[4] ?? 0)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
 
-                <VStack align="flex-start">
-                    <VStack align="flex-start" spacing="5px">
-                        <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                            Deuda/ Patrimonio
-                        </Text>
-                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {new Intl.NumberFormat('es-CL', {
-                                style: 'currency',
-                                currency: 'CLP',
-                                minimumFractionDigits: 0,
-                            }).format(project?.business_model?.split(';;')[5] ?? 0)}
-                        </Text>
+                {project?.business_model?.split(';;')[5] !== 'No deseo entregar esta información' && (
+                    <VStack align="flex-start">
+                        <VStack align="flex-start" spacing="5px">
+                            <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                Deuda/ Patrimonio
+                            </Text>
+                            <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                {new Intl.NumberFormat('es-CL', {
+                                    style: 'currency',
+                                    currency: 'CLP',
+                                    minimumFractionDigits: 0,
+                                }).format(project?.business_model?.split(';;')[5] ?? 0)}
+                            </Text>
+                        </VStack>
                     </VStack>
-                </VStack>
+                )}
             </Stack>
 
             <Stack pl="27px" spacing="27px" w="full" ref={other} scrollMarginTop="100px">

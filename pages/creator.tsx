@@ -730,6 +730,8 @@ const Creator: NextPage = ({ project, quality }) => {
         };
     }, []);
 
+    console.log(watch('last_sales12'));
+
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
@@ -1667,7 +1669,18 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Ventas en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <InputDisabled maxW="420px" {...register('last_sales12')} type="number" />
+                                            <InputDisabled
+                                                maxW="420px"
+                                                {...register('last_sales12')}
+                                                type="number"
+                                                getIsDisabled={(disabled, value) => {
+                                                    !disabled &&
+                                                        setValue('last_sales12', 'No deseo entregar esta información', {
+                                                            shouldValidate: true,
+                                                        });
+                                                }}
+                                                setDisabled={watch('last_sales12')}
+                                            />
                                             <FormErrorMessage
                                                 textColor="red.400"
                                                 fontFamily="inter"
@@ -1690,7 +1703,18 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Ventas en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <InputDisabled maxW="420px" {...register('last_sales6')} type="number" />
+                                            <InputDisabled
+                                                maxW="420px"
+                                                {...register('last_sales6')}
+                                                type="number"
+                                                getIsDisabled={(disabled, value) => {
+                                                    !disabled &&
+                                                        setValue('last_sales6', 'No deseo entregar esta información', {
+                                                            shouldValidate: true,
+                                                        });
+                                                }}
+                                                setDisabled={watch('last_sales6')}
+                                            />
 
                                             <FormErrorMessage
                                                 textColor="red.400"
@@ -1714,7 +1738,22 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Clientes en los últimos 12 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <InputDisabled maxW="420px" {...register('last_client12')} type="number" />
+                                            <InputDisabled
+                                                maxW="420px"
+                                                {...register('last_client12')}
+                                                type="number"
+                                                getIsDisabled={(disabled, value) => {
+                                                    !disabled &&
+                                                        setValue(
+                                                            'last_client12',
+                                                            'No deseo entregar esta información',
+                                                            {
+                                                                shouldValidate: true,
+                                                            },
+                                                        );
+                                                }}
+                                                setDisabled={watch('last_client12')}
+                                            />
 
                                             <FormErrorMessage
                                                 textColor="red.400"
@@ -1738,7 +1777,18 @@ const Creator: NextPage = ({ project, quality }) => {
                                             Clientes en los últimos 6 meses <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <InputDisabled maxW="420px" {...register('last_client6')} type="number" />
+                                            <InputDisabled
+                                                maxW="420px"
+                                                {...register('last_client6')}
+                                                type="number"
+                                                getIsDisabled={(disabled, value) => {
+                                                    !disabled &&
+                                                        setValue('last_client6', 'No deseo entregar esta información', {
+                                                            shouldValidate: true,
+                                                        });
+                                                }}
+                                                setDisabled={watch('last_sales6')}
+                                            />
 
                                             <FormErrorMessage
                                                 textColor="red.400"
@@ -1762,7 +1812,18 @@ const Creator: NextPage = ({ project, quality }) => {
                                             EBITDA último año fiscal <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <InputDisabled maxW="420px" {...register('ebitda')} type="number" />
+                                            <InputDisabled
+                                                maxW="420px"
+                                                {...register('ebitda')}
+                                                type="number"
+                                                getIsDisabled={(disabled, value) => {
+                                                    !disabled &&
+                                                        setValue('ebitda', 'No deseo entregar esta información', {
+                                                            shouldValidate: true,
+                                                        });
+                                                }}
+                                                setDisabled={watch('ebitda')}
+                                            />
 
                                             <FormErrorMessage
                                                 textColor="red.400"
@@ -1787,7 +1848,18 @@ const Creator: NextPage = ({ project, quality }) => {
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <VStack w="full" align="flex-end">
-                                            <InputDisabled maxW="420px" {...register('patrimony')} type="number" />
+                                            <InputDisabled
+                                                maxW="420px"
+                                                {...register('patrimony')}
+                                                type="number"
+                                                getIsDisabled={(disabled, value) => {
+                                                    !disabled &&
+                                                        setValue('patrimony', 'No deseo entregar esta información', {
+                                                            shouldValidate: true,
+                                                        });
+                                                }}
+                                                setDisabled={watch('patrimony')}
+                                            />
 
                                             <FormErrorMessage
                                                 textColor="red.400"
