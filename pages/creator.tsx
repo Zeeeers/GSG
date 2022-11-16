@@ -928,6 +928,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         variant="solid"
                                         bg="gray.600"
                                         color="gray.50"
+                                        rounded="8px"
                                         borderColor="gray.50"
                                         border="1px dashed"
                                         w="full"
@@ -1177,6 +1178,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             color="gray.50"
                                             borderColor="gray.50"
                                             border="1px dashed"
+                                            rounded="8px"
                                             w="full"
                                             h="300px"
                                             colorScheme="basic"
@@ -1383,26 +1385,55 @@ const Creator: NextPage = ({ project, quality }) => {
                                                         spacing="15px"
                                                     >
                                                         <ListItem>
-                                                            Inversor Ancla: Generalmente es el primer inversor que
-                                                            realiza un compromiso de capital sustancial en un fondo,
-                                                            invirtiendo un monto considerable o mayoritario en relación
-                                                            a otros inversores
+                                                            <Text
+                                                                as="span"
+                                                                color="gray.50"
+                                                                fontWeight="extrabold"
+                                                                fontFamily="inter"
+                                                            >
+                                                                Inversor Ancla:{' '}
+                                                            </Text>
+                                                            Generalmente es el primer inversor que realiza un compromiso
+                                                            de capital sustancial en un fondo, invirtiendo un monto
+                                                            considerable o mayoritario en relación a otros inversores
                                                         </ListItem>
                                                         <ListItem>
-                                                            Inversor Atomizado: Refiere a la presencia de múltiples
-                                                            inversores, todos con una inversión de tamaño reducido o
-                                                            relativamente similar.
+                                                            <Text
+                                                                as="span"
+                                                                color="gray.50"
+                                                                fontWeight="extrabold"
+                                                                fontFamily="inter"
+                                                            >
+                                                                Inversor Atomizado:{' '}
+                                                            </Text>
+                                                            Refiere a la presencia de múltiples inversores, todos con
+                                                            una inversión de tamaño reducido o relativamente similar.
                                                         </ListItem>
                                                         <ListItem>
-                                                            Sponsor: A menudo se conoce como el socio general (GP),
-                                                            mientras que el resto de los inversores son socios limitados
-                                                            (LP).
+                                                            <Text
+                                                                as="span"
+                                                                color="gray.50"
+                                                                fontWeight="extrabold"
+                                                                fontFamily="inter"
+                                                            >
+                                                                Sponsor:{' '}
+                                                            </Text>
+                                                            A menudo se conoce como el socio general (GP), mientras que
+                                                            el resto de los inversores son socios limitados (LP).
                                                         </ListItem>
                                                         <ListItem>
-                                                            Minoritarios: Se refiere a uno o varios inversores que son
-                                                            dueño/s de menos del 50% de una compañía. Esta categoría
-                                                            agrupa a todos los socios que individualmente poseen menos
-                                                            de la mitad del patrimonio de una sociedad mercantil.
+                                                            <Text
+                                                                as="span"
+                                                                color="gray.50"
+                                                                fontWeight="extrabold"
+                                                                fontFamily="inter"
+                                                            >
+                                                                Minoritarios:{' '}
+                                                            </Text>
+                                                            Se refiere a uno o varios inversores que son dueño/s de
+                                                            menos del 50% de una compañía. Esta categoría agrupa a todos
+                                                            los socios que individualmente poseen menos de la mitad del
+                                                            patrimonio de una sociedad mercantil.
                                                         </ListItem>
                                                     </UnorderedList>
                                                 </>
@@ -1654,7 +1685,12 @@ const Creator: NextPage = ({ project, quality }) => {
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
                                     21. En relación a tu trayectoria, por favor completa los siguientes campos. Si no
                                     deseas dar a conocer alguno de estos datos, puedes presionar el ícono que está a un
-                                    lado del campo de texto para inhabilitarlo.
+                                    lado del campo de texto para inhabilitarlo, a los inversionistas les aparecerá en el
+                                    proyecto publico que{' '}
+                                    <Text as="span" fontWeight="bold">
+                                        no deseas entregar esa información
+                                    </Text>
+                                    .
                                 </Text>
 
                                 <VStack w="full" gap="15px">
@@ -1674,10 +1710,17 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 {...register('last_sales12')}
                                                 type="number"
                                                 getIsDisabled={(disabled, value) => {
-                                                    !disabled &&
-                                                        setValue('last_sales12', 'No deseo entregar esta información', {
-                                                            shouldValidate: true,
-                                                        });
+                                                    !disabled
+                                                        ? setValue(
+                                                              'last_sales12',
+                                                              'No deseo entregar esta información',
+                                                              {
+                                                                  shouldValidate: true,
+                                                              },
+                                                          )
+                                                        : setValue('last_sales12', '', {
+                                                              shouldValidate: true,
+                                                          });
                                                 }}
                                                 setDisabled={watch('last_sales12')}
                                             />
@@ -1708,10 +1751,17 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 {...register('last_sales6')}
                                                 type="number"
                                                 getIsDisabled={(disabled, value) => {
-                                                    !disabled &&
-                                                        setValue('last_sales6', 'No deseo entregar esta información', {
-                                                            shouldValidate: true,
-                                                        });
+                                                    !disabled
+                                                        ? setValue(
+                                                              'last_sales6',
+                                                              'No deseo entregar esta información',
+                                                              {
+                                                                  shouldValidate: true,
+                                                              },
+                                                          )
+                                                        : setValue('last_sales6', '', {
+                                                              shouldValidate: true,
+                                                          });
                                                 }}
                                                 setDisabled={watch('last_sales6')}
                                             />
@@ -1743,14 +1793,17 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 {...register('last_client12')}
                                                 type="number"
                                                 getIsDisabled={(disabled, value) => {
-                                                    !disabled &&
-                                                        setValue(
-                                                            'last_client12',
-                                                            'No deseo entregar esta información',
-                                                            {
-                                                                shouldValidate: true,
-                                                            },
-                                                        );
+                                                    !disabled
+                                                        ? setValue(
+                                                              'last_client12',
+                                                              'No deseo entregar esta información',
+                                                              {
+                                                                  shouldValidate: true,
+                                                              },
+                                                          )
+                                                        : setValue('last_client12', '', {
+                                                              shouldValidate: true,
+                                                          });
                                                 }}
                                                 setDisabled={watch('last_client12')}
                                             />
@@ -1782,12 +1835,19 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 {...register('last_client6')}
                                                 type="number"
                                                 getIsDisabled={(disabled, value) => {
-                                                    !disabled &&
-                                                        setValue('last_client6', 'No deseo entregar esta información', {
-                                                            shouldValidate: true,
-                                                        });
+                                                    !disabled
+                                                        ? setValue(
+                                                              'last_client6',
+                                                              'No deseo entregar esta información',
+                                                              {
+                                                                  shouldValidate: true,
+                                                              },
+                                                          )
+                                                        : setValue('last_client6', '', {
+                                                              shouldValidate: true,
+                                                          });
                                                 }}
-                                                setDisabled={watch('last_sales6')}
+                                                setDisabled={watch('last_client6')}
                                             />
 
                                             <FormErrorMessage
@@ -1817,10 +1877,13 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 {...register('ebitda')}
                                                 type="number"
                                                 getIsDisabled={(disabled, value) => {
-                                                    !disabled &&
-                                                        setValue('ebitda', 'No deseo entregar esta información', {
-                                                            shouldValidate: true,
-                                                        });
+                                                    !disabled
+                                                        ? setValue('ebitda', 'No deseo entregar esta información', {
+                                                              shouldValidate: true,
+                                                          })
+                                                        : setValue('ebitda', '', {
+                                                              shouldValidate: true,
+                                                          });
                                                 }}
                                                 setDisabled={watch('ebitda')}
                                             />
@@ -1853,10 +1916,13 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 {...register('patrimony')}
                                                 type="number"
                                                 getIsDisabled={(disabled, value) => {
-                                                    !disabled &&
-                                                        setValue('patrimony', 'No deseo entregar esta información', {
-                                                            shouldValidate: true,
-                                                        });
+                                                    !disabled
+                                                        ? setValue('patrimony', 'No deseo entregar esta información', {
+                                                              shouldValidate: true,
+                                                          })
+                                                        : setValue('patrimony', '', {
+                                                              shouldValidate: true,
+                                                          });
                                                 }}
                                                 setDisabled={watch('patrimony')}
                                             />
@@ -2102,6 +2168,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         color="gray.50"
                                         borderColor="gray.50"
                                         border="1px dashed"
+                                        rounded="8px"
                                         w="full"
                                         h="300px"
                                         colorScheme="basic"
