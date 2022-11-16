@@ -16,6 +16,7 @@ const PublicChallenge: NextPage = ({ project }) => {
     const router = useRouter();
     const { data: userProfile } = useUser();
     const { data: orga } = useOrganization(true);
+    const { data: gsg, mutate } = useGsgProject(project?.id);
 
     return (
         <>
@@ -37,7 +38,7 @@ const PublicChallenge: NextPage = ({ project }) => {
                     blur="30px"
                 />
 
-                <HeaderHero project={project} user={userProfile} orga={orga} />
+                <HeaderHero project={gsg?.data?.gsg_project} user={userProfile} orga={orga} mutate={mutate} />
             </Flex>
         </>
     );

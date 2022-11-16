@@ -13,7 +13,7 @@ import {
     UpdateProjectCall,
     UpdateProjectResponse,
 } from './gsg.types';
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
 
 // CREATE
@@ -75,10 +75,8 @@ export const getGsgProject = async (_: string, id: number) => {
     return data;
 };
 
-export const useGsgProject = (id?: number) => {
-    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, {
-        revalidateOnFocus: false,
-    });
+export const useGsgProject = (id?: number, option?: SWRConfiguration) => {
+    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, option);
 };
 
 export const getMyGsgProject = async (_: string, token?: string) => {

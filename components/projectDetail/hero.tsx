@@ -1,7 +1,9 @@
 // Dependencies
 //@ts-nocheck
 import { Avatar, Button, Container, Flex, HStack, Img, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import Router from 'next/router';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
+import cookies from 'nookies';
 import { useEffect, useRef, useState } from 'react';
 import { Gsg } from 'services/api/types/Gsg';
 import Body from './body';
@@ -13,11 +15,13 @@ interface Props {
     project: Gsg | undefined;
     user: User | undefined;
     orga: Organization | undefined;
-    textEnriched: Array<any>;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
+const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
+    const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
+    const router = useRouter();
+
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
@@ -131,7 +135,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
             const { data, ok } = await createInterest({ project: { gsg_projects_id: project?.id } });
 
             if (ok) {
-                Router.reload();
+                mutate();
             }
         } catch (error) {
             console.log(error);
@@ -341,7 +345,21 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                                     h="40px"
                                                     px="10px"
                                                     _hover={{ borderColor: 'none' }}
-                                                    leftIcon={<Img src="/images/icons/interest_green.svg" />}
+                                                    leftIcon={
+                                                        <Img
+                                                            src="/images/icons/interest_green.svg"
+                                                            as={motion.img}
+                                                            initial={{ scale: 0 }}
+                                                            animate={{
+                                                                scale: 1,
+                                                                transition: {
+                                                                    type: 'spring',
+                                                                    duration: 1,
+                                                                    bounce: 0.6,
+                                                                },
+                                                            }}
+                                                        />
+                                                    }
                                                 >
                                                     <Text>Te interesa</Text>
                                                 </Button>
@@ -401,7 +419,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                                 mt={{ base: '20px', md: 0 }}
                                                 justifyContent="end"
                                             >
-                                                {(user || orga) && (
+                                                {(user || project?.id === orga?.gsg_project_id || adminCookie) && (
                                                     <Button
                                                         onClick={onOpen}
                                                         w={{ base: 'full', md: '212px' }}
