@@ -162,7 +162,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 value: project?.expected_rentability ?? '',
                 label: Rentability(project?.expected_rentability),
             },
-            investment_types: project?.investment_types.map((i) => ({ value: i, label: i })),
+            investment_types: project?.investment_types?.map((i) => ({ value: i, label: i })),
 
             debt: { value: project?.debt ?? '', label: Stage(project?.debt) },
             investment_objective: {

@@ -277,11 +277,11 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                 bottom={{
                                     base: 0,
                                     md:
-                                        project?.description?.length <= 400
+                                        project?.description?.length <= 700
                                             ? '-20rem'
                                             : project?.description?.length <= 200
                                             ? '-20rem'
-                                            : '-30rem',
+                                            : '-33rem',
                                 }}
                                 justifyContent="center"
                                 w="full"
