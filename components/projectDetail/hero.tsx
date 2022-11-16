@@ -270,13 +270,21 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
 
                             <Flex
                                 position={{ base: 'relative', md: 'absolute' }}
-                                bottom={{ base: 0, md: '-20rem' }}
+                                bottom={{
+                                    base: 0,
+                                    md:
+                                        project?.description?.length <= 400
+                                            ? '-20rem'
+                                            : project?.description?.length <= 200
+                                            ? '-20rem'
+                                            : '-30rem',
+                                }}
                                 justifyContent="center"
                                 w="full"
                             >
                                 <VStack
                                     boxShadow="lg"
-                                    bg="blue.700"
+                                    bg="gray.800"
                                     w={{ base: 'full', md: 898 }}
                                     h={{ base: 'full', md: '-webkit-fit-content' }}
                                     justifyContent="start"
@@ -340,7 +348,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga }) => {
                                             )}
                                         </HStack>
                                         {user && (
-                                            <HStack px="10px" py="5px" rounded="6px" background="#698FB8">
+                                            <HStack px="10px" py="5px" rounded="6px" background="#3B5D89">
                                                 <Img src="/images/icons/interest.svg" />
                                                 <Text
                                                     color="gray.50"

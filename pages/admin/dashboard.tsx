@@ -49,6 +49,7 @@ const Panel: NextPage = () => {
     const [filters, setFilters] = useState({
         title: '',
         status: '',
+        last_status_updated: '',
     });
 
     const handleLogOut = async () => {
@@ -310,7 +311,7 @@ const Panel: NextPage = () => {
                                 </Menu>
                             </HStack>
                             <Container maxW="900px">
-                                <VStack w="full">
+                                <VStack w="fit-content">
                                     <Stack
                                         pt="40px"
                                         w="full"
@@ -356,6 +357,7 @@ const Panel: NextPage = () => {
                                             </HStack>
                                         </Stack>
                                     </Stack>
+
                                     <ListInvestorForm filters={filters} />
                                 </VStack>
                             </Container>
@@ -380,7 +382,7 @@ const Panel: NextPage = () => {
                                 </Menu>
                             </HStack>
                             <Container marginRight="10px" maxW="1200px" justifyContent="center">
-                                <VStack w="full">
+                                <VStack w="fit-content">
                                     <Stack
                                         pt="40px"
                                         w="full"
@@ -393,6 +395,21 @@ const Panel: NextPage = () => {
                                         </Text>
 
                                         <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
+                                            <Select
+                                                onChange={(e) =>
+                                                    setFilters({
+                                                        ...filters,
+                                                        last_status_updated: e.target.value,
+                                                    })
+                                                }
+                                                w="fit-content"
+                                                variant="outline"
+                                                color="gray.700"
+                                                h="40px"
+                                            >
+                                                <option value="asc">Más reciente</option>
+                                                <option value="desc">Menos reciente</option>
+                                            </Select>
                                             <Select
                                                 onChange={(e) =>
                                                     setFilters({

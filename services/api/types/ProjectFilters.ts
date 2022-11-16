@@ -10,7 +10,7 @@ export type ProjectOrderAttr =
     | 'id'
     | 'projects.id'
     | 'created_at'
-    | 'projects.created_at'
+    | 'projects.last_status_updated'
     | 'title'
     | 'projects.title'
     | 'status'

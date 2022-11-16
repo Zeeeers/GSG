@@ -38,7 +38,7 @@ const Body = forwardRef<any, any>(({ project, textEnriched }, ref) => {
             mt={{ md: '5rem' }}
             px={{ xl: '227px' }}
             spacing="40px"
-            py={{ base: '30px', md: '207px' }}
+            py={{ base: '30px', md: '400px' }}
             scrollPaddingTop="100px"
         >
             <Stack pl="27px" pr="30px" spacing="30px">

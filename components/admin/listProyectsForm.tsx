@@ -96,7 +96,7 @@ const ListProyectsForm = (props: any) => {
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
                             Empresa
                         </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl="40px" fontWeight="bold" color="gray.50" border="none">
                             Status
                         </Th>
                         <Th pl={0} border="none"></Th>
@@ -108,6 +108,15 @@ const ListProyectsForm = (props: any) => {
                             project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''),
                         )
                         .filter((project) => project?.status.includes(props.filters?.status ?? ''))
+                        .sort((a, b) => {
+                            if (props.filters.last_status_updated === 'asc') {
+                                //@ts-ignore
+                                return new Date(b.last_status_updated) - new Date(a.last_status_updated);
+                            } else {
+                                //@ts-ignore
+                                return new Date(a.last_status_updated) - new Date(b.last_status_updated);
+                            }
+                        })
                         .map((proyect, i) => (
                             <Tr key={i}>
                                 <Td fontFamily="inter" pl={0} py="30px" w="13%">
@@ -124,8 +133,9 @@ const ListProyectsForm = (props: any) => {
                                     {proyect?.organization.name}
                                 </Td>
 
-                                <Td fontFamily="inter" pl={0}>
+                                <Td fontFamily="inter" pl="40px">
                                     <Select
+                                        w="163px"
                                         defaultValue={proyect?.status}
                                         onChange={(e) => handleStatus(proyect?.id, e)}
                                         variant="outline"
@@ -137,7 +147,7 @@ const ListProyectsForm = (props: any) => {
                                         <option value="canceled">Finalizado</option>
                                     </Select>
                                 </Td>
-                                <Td fontFamily="inter" pl={0}>
+                                <Td fontFamily="inter" pl="50px">
                                     <HStack spacing="20px">
                                         <Link href={`/projectDetail/${proyect?.id}`} target="_blank">
                                             <Button variant="solid">Ver proyecto</Button>
