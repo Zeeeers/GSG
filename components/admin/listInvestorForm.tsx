@@ -92,6 +92,9 @@ const ListInvestorForm = (props: any) => {
                 <Thead>
                     <Tr>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                            Creación
+                        </Th>
+                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
                             Nombre del inversionista
                         </Th>
                         <Th pl={0} fontWeight="bold" color="gray.50" border="none">
@@ -108,8 +111,29 @@ const ListInvestorForm = (props: any) => {
                         ?.filter((investor) =>
                             investor.name.toLowerCase().includes(props.filters?.name?.toLowerCase() ?? ''),
                         )
+                        .filter((investor, {}, user) =>
+                            investor?.active == (props.filters?.status === '')
+                                ? user
+                                : investor?.active === (props?.filters?.status === 'true'),
+                        )
+                        .sort((a, b) => {
+                            if (props.filters.last_status_updated === 'asc') {
+                                //@ts-ignore
+                                return new Date(b.created_at) - new Date(a.created_at);
+                            } else {
+                                //@ts-ignore
+                                return new Date(a.created_at) - new Date(b.created_at);
+                            }
+                        })
                         .map((investor: User, i: number) => (
                             <Tr key={i}>
+                                <Td fontFamily="inter" pl={0} py="30px">
+                                    {new Date(investor?.created_at).toLocaleString('es-CL', {
+                                        day: 'numeric',
+                                        month: 'numeric',
+                                        year: 'numeric',
+                                    })}
+                                </Td>
                                 <Td fontFamily="inter" pl={0} py="30px">
                                     {investor.name}
                                 </Td>

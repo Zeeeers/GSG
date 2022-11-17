@@ -49,7 +49,7 @@ const Panel: NextPage = () => {
     const [filters, setFilters] = useState({
         title: '',
         status: '',
-        last_status_updated: '',
+        last_status_updated: 'asc',
     });
 
     const handleLogOut = async () => {
@@ -293,25 +293,25 @@ const Panel: NextPage = () => {
                         </TabPanel>
 
                         <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
-                            <HStack w="full" justify="space-between" align="center" h="fit-content">
-                                <Stack display="block">
-                                    <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
-                                </Stack>
-                                <Menu direction="rtl">
-                                    {({ isOpen }) => (
-                                        <>
-                                            <MenuButton isActive={isOpen} as={Button}>
-                                                Admin
-                                            </MenuButton>
-                                            <MenuList>
-                                                <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
-                                            </MenuList>
-                                        </>
-                                    )}
-                                </Menu>
-                            </HStack>
-                            <Container maxW="900px">
+                            <Stack display="block">
+                                <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
+                            </Stack>
+                            <Container display="flex" flexDirection="column" maxW="1200px" alignItems="center">
                                 <VStack w="fit-content">
+                                    <Stack w="full" align="flex-end">
+                                        <Menu direction="rtl">
+                                            {({ isOpen }) => (
+                                                <>
+                                                    <MenuButton isActive={isOpen} as={Button}>
+                                                        Admin
+                                                    </MenuButton>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                    </MenuList>
+                                                </>
+                                            )}
+                                        </Menu>
+                                    </Stack>
                                     <Stack
                                         pt="40px"
                                         w="full"
@@ -324,6 +324,21 @@ const Panel: NextPage = () => {
                                         </Text>
 
                                         <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
+                                            <Select
+                                                onChange={(e) =>
+                                                    setFilters({
+                                                        ...filters,
+                                                        last_status_updated: e.target.value,
+                                                    })
+                                                }
+                                                w="fit-content"
+                                                variant="outline"
+                                                color="gray.700"
+                                                h="40px"
+                                            >
+                                                <option value="asc">Más reciente</option>
+                                                <option value="desc">Menos reciente</option>
+                                            </Select>
                                             <Select
                                                 onChange={(e) =>
                                                     setFilters({
@@ -381,7 +396,13 @@ const Panel: NextPage = () => {
                                     )}
                                 </Menu>
                             </HStack>
-                            <Container marginRight="10px" maxW="1200px" justifyContent="center">
+                            <Container
+                                marginRight="10px"
+                                maxW="1200px"
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                            >
                                 <VStack w="fit-content">
                                     <Stack
                                         pt="40px"
