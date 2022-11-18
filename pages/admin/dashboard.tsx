@@ -379,23 +379,9 @@ const Panel: NextPage = () => {
                         </TabPanel>
 
                         <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
-                            <HStack w="full" justify="space-between" align="center" h="fit-content">
-                                <Stack display="block">
-                                    <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
-                                </Stack>
-                                <Menu direction="rtl">
-                                    {({ isOpen }) => (
-                                        <>
-                                            <MenuButton isActive={isOpen} as={Button}>
-                                                Admin
-                                            </MenuButton>
-                                            <MenuList>
-                                                <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
-                                            </MenuList>
-                                        </>
-                                    )}
-                                </Menu>
-                            </HStack>
+                            <Stack display="block">
+                                <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
+                            </Stack>
                             <Container
                                 marginRight="10px"
                                 maxW="1200px"
@@ -403,6 +389,20 @@ const Panel: NextPage = () => {
                                 flexDirection="column"
                                 alignItems="center"
                             >
+                                <HStack w="full" justify="flex-end" align="center" h="fit-content">
+                                    <Menu direction="rtl">
+                                        {({ isOpen }) => (
+                                            <>
+                                                <MenuButton isActive={isOpen} as={Button}>
+                                                    Admin
+                                                </MenuButton>
+                                                <MenuList>
+                                                    <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                </MenuList>
+                                            </>
+                                        )}
+                                    </Menu>
+                                </HStack>
                                 <VStack w="fit-content">
                                     <Stack
                                         pt="40px"
