@@ -1047,8 +1047,6 @@ const Creator: NextPage = ({ project, quality }) => {
                                 )}
                             />
 
-                            {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
-
                             <FormErrorMessage
                                 textColor="red.400"
                                 fontFamily="inter"
