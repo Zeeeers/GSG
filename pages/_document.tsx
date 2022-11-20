@@ -22,7 +22,7 @@ class CustomDocument extends Document {
                     />
                 </Head>
 
-                <body>
+                <body className="custom-scroll">
                     <Main />
                     <NextScript />
                 </body>

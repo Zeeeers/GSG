@@ -10,6 +10,7 @@ const styles: Styles = {
             transitionDuration: 'normal',
             lineHeight: 'base',
         },
+
         '*::placeholder': {
             color: 'gray.400',
         },

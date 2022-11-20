@@ -419,7 +419,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                                 mt={{ base: '20px', md: 0 }}
                                                 justifyContent="end"
                                             >
-                                                {(user || project?.id === orga?.gsg_project_id || adminCookie) && (
+                                                {(user || orga || adminCookie) && (
                                                     <Button
                                                         onClick={onOpen}
                                                         w={{ base: 'full', md: '212px' }}

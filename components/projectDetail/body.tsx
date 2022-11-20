@@ -29,10 +29,23 @@ import Time from './formatText/time';
 const Body = forwardRef<any, any>(({ project }, ref) => {
     const { impact, description_finance, other } = ref?.current;
 
-    const lastWord = project?.investment_types?.at(-1);
-    const newArray = project?.investment_types?.filter((i) => i !== lastWord);
+    const getInvestorType = () => {
+        const lastWord = project?.investment_types?.at(-1);
+        const newArray = project?.investment_types?.filter((i) => i !== lastWord);
+        const investorTypes = ['Inversor ancla', 'Inversores atomizados', 'Sponsor', 'Minoritarios'];
+        const lastInvestor = investorTypes.at(-1);
+        const newInvestorTypes = investorTypes.filter((i) => i !== lastInvestor);
 
-    console.log(project);
+        if (lastWord === 'Cualquiera') {
+            return newInvestorTypes.join(', ') + ' o ' + lastInvestor;
+        }
+
+        if (newArray.length === 0) {
+            return lastWord;
+        } else {
+            return newArray.join(', ') + ' o ' + lastWord;
+        }
+    };
 
     return (
         <Stack
@@ -193,7 +206,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                                 El tipo de inversionista que busca es:
                             </Text>
                             <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                {newArray.join(', ') + ' o ' + lastWord}
+                                {getInvestorType()}
                             </Text>
                         </VStack>
                     </VStack>

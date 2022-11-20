@@ -730,8 +730,6 @@ const Creator: NextPage = ({ project, quality }) => {
         };
     }, []);
 
-    console.log(watch('last_sales12'));
-
     return (
         <>
             <NextSeo title={'Creador de proyecto - GSG'} />
