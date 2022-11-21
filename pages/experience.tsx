@@ -17,7 +17,12 @@ const Experience = () => {
         <>
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
             <NextSeo title={'Bienvenidos a GSG'} />
-            <Stack w="full" h="100vh" align="center" justify="center">
+            <Stack
+                w="full"
+                h={{ base: indexPage === 0 ? '100vh' : 'full', md: '100vh' }}
+                align="center"
+                justify="center"
+            >
                 <Stack
                     w={{ base: 'fit-content', md: '800px' }}
                     direction={{ base: 'column', md: 'row' }}
@@ -28,7 +33,7 @@ const Experience = () => {
                     py="40px"
                     rounded="16px"
                 >
-                    <VStack w="full" align={{ base: 'center', md: 'flex-end' }}>
+                    <VStack h="full" w="full" align={{ base: 'center', md: 'flex-end' }}>
                         <HStack w="full" spacing="5px" pb="20px">
                             <Stack
                                 background={indexPage === 0 ? 'teal.500' : 'white'}

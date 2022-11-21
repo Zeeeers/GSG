@@ -237,7 +237,7 @@ const Explorer: NextPage = () => {
                             })
                         }
                         position="fixed"
-                        right="60px"
+                        right={{ base: '20px', md: '60px' }}
                         bottom="50px"
                         background="gray.800"
                         w="50px"
@@ -245,6 +245,7 @@ const Explorer: NextPage = () => {
                         p="10px"
                         rounded="8px"
                         _hover={{ background: 'gray.700' }}
+                        zIndex={30}
                     >
                         <Img src="/images/icons/question.svg" />
                     </Button>

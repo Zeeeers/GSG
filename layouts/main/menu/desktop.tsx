@@ -39,13 +39,13 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                 loadingText="Cerrando sesión"
                 transition="ease-in"
                 variant="solid"
-                bg="gray.800"
+                bg="gray.900"
                 color="gray.50"
                 colorScheme="basic"
                 transitionProperty="background"
                 transitionDuration="200ms"
                 _hover={{
-                    backgroundColor: 'gray.700',
+                    backgroundColor: 'gray.800',
                 }}
                 size={'md'}
                 px="10px"

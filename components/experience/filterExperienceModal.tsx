@@ -112,7 +112,12 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     return (
         <Modal
             isOpen={isOpen}
-            onClose={() => router.replace({ pathname: '/explorer' }).then(() => onClose())}
+            onClose={() =>
+                router.replace({ pathname: '/explorer' }).then(() => {
+                    setIndexPage(0);
+                    onClose();
+                })
+            }
             isCentered
             size="md"
         >
@@ -126,7 +131,12 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         <HStack w="full" justify="space-between">
                             {indexPage === 0 && (
                                 <Button
-                                    onClick={() => router.replace({ pathname: '/explorer' }).then(() => onClose())}
+                                    onClick={() =>
+                                        router.replace({ pathname: '/explorer' }).then(() => {
+                                            setIndexPage(0);
+                                            onClose();
+                                        })
+                                    }
                                     variant="ghost"
                                     h="40px"
                                     color="gray.50"
@@ -140,7 +150,10 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                             <Button
                                 onClick={() =>
                                     indexPage === 3
-                                        ? router.replace({ pathname: '/explorer' }).then(() => onClose())
+                                        ? router.replace({ pathname: '/explorer' }).then(() => {
+                                              setIndexPage(0);
+                                              onClose();
+                                          })
                                         : setIndexPage(indexPage + 1)
                                 }
                                 fontFamily="inter"

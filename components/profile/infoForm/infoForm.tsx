@@ -147,7 +147,7 @@ const InfoForm: React.FC = () => {
                             </Text>
                         </VStack>
 
-                        <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0}>
+                        <VStack alignItems={{ base: 'start', md: 'start' }} spacing={0}>
                             <HStack>
                                 <EditableTitle
                                     fontSize={{ base: 'xl', lg: '24px' }}

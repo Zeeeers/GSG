@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
         <>
             <HStack
                 w="full"
-                bgColor={{ base: 'gray.700', md: 'gray.900' }}
+                bgColor={{ base: 'gray.800', md: 'gray.900' }}
                 zIndex={50}
                 position="fixed"
                 as="nav"

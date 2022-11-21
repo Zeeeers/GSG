@@ -156,8 +156,9 @@ const InterestExperience = ({ setPage }: Props) => {
                 exit={{ opacity: 0 }}
                 animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
                 spacing="30px"
-                mt="30px"
+                mt={{ base: '200px', md: '30px' }}
                 w="full"
+                h="full"
             >
                 <VStack alignItems="flex-start" spacing="10px" w="full">
                     <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
@@ -169,134 +170,136 @@ const InterestExperience = ({ setPage }: Props) => {
                     </Text>
                 </VStack>
 
-                <VStack align="flex-start" spacing="30px" w="full">
+                <VStack h="full" align="flex-start" justify="space-between" spacing="30px" w="full">
                     <HStack>
                         <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
                         <Text fontFamily="inter">
                             Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses
                         </Text>
                     </HStack>
-                    <Wrap spacingX="30px" spacingY="20px" fontFamily="inter">
-                        <WrapItem>
-                            <VStack
-                                onClick={openOds}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/ods.svg" />
-                                <Text>ODS</Text>
-                            </VStack>
-                        </WrapItem>
-                        <WrapItem>
-                            <VStack
-                                onClick={openThird}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/certification.svg" />
-                                <Text>Certificación</Text>
-                            </VStack>
-                        </WrapItem>
-                        <WrapItem>
-                            <VStack
-                                onClick={openStage}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/proyect-stages.svg" />
-                                <Text>Etapa del proyecto</Text>
-                            </VStack>
-                        </WrapItem>
-                        <WrapItem>
-                            <VStack
-                                onClick={openCapitalStage}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/survey-stages.svg" />
-                                <Text>Tipo de financiamiento</Text>
-                            </VStack>
-                        </WrapItem>
-                        <WrapItem>
-                            <VStack
-                                onClick={openExpectedRentabilityModal}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/expected-return.svg" />
-                                <Text>Rentabilidad esperada</Text>
-                            </VStack>
-                        </WrapItem>
-                        <WrapItem>
-                            <VStack
-                                onClick={openFinanceGoal}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/amount-contribution.svg" />
-                                <Text>Monto de aporte</Text>
-                            </VStack>
-                        </WrapItem>
-                        <WrapItem>
-                            <VStack
-                                onClick={openTimeLapse}
-                                cursor="pointer"
-                                transitionDuration={'250ms'}
-                                _hover={{ bg: 'gray.600' }}
-                                justify="center"
-                                w="200px"
-                                h="100px"
-                                spacing="13px"
-                                bg="gray.700"
-                                rounded="8px"
-                            >
-                                <Img src="/images/icons/investment-terms.svg" />
-                                <Text>Plazos de inversión</Text>
-                            </VStack>
-                        </WrapItem>
-                    </Wrap>
+                    <Stack maxH="400px" overflow={{ base: 'auto', md: 'hidden' }}>
+                        <Wrap h="full" spacingX="30px" spacingY="20px" fontFamily="inter">
+                            <WrapItem>
+                                <VStack
+                                    onClick={openOds}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/ods.svg" />
+                                    <Text>ODS</Text>
+                                </VStack>
+                            </WrapItem>
+                            <WrapItem>
+                                <VStack
+                                    onClick={openThird}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/certification.svg" />
+                                    <Text>Certificación</Text>
+                                </VStack>
+                            </WrapItem>
+                            <WrapItem>
+                                <VStack
+                                    onClick={openStage}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/proyect-stages.svg" />
+                                    <Text>Etapa del proyecto</Text>
+                                </VStack>
+                            </WrapItem>
+                            <WrapItem>
+                                <VStack
+                                    onClick={openCapitalStage}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/survey-stages.svg" />
+                                    <Text>Tipo de financiamiento</Text>
+                                </VStack>
+                            </WrapItem>
+                            <WrapItem>
+                                <VStack
+                                    onClick={openExpectedRentabilityModal}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/expected-return.svg" />
+                                    <Text>Rentabilidad esperada</Text>
+                                </VStack>
+                            </WrapItem>
+                            <WrapItem>
+                                <VStack
+                                    onClick={openFinanceGoal}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/amount-contribution.svg" />
+                                    <Text>Monto de aporte</Text>
+                                </VStack>
+                            </WrapItem>
+                            <WrapItem>
+                                <VStack
+                                    onClick={openTimeLapse}
+                                    cursor="pointer"
+                                    transitionDuration={'250ms'}
+                                    _hover={{ bg: 'gray.600' }}
+                                    justify="center"
+                                    w="200px"
+                                    h="100px"
+                                    spacing="13px"
+                                    bg="gray.700"
+                                    rounded="8px"
+                                >
+                                    <Img src="/images/icons/investment-terms.svg" />
+                                    <Text>Plazos de inversión</Text>
+                                </VStack>
+                            </WrapItem>
+                        </Wrap>
+                    </Stack>
                     <Stack direction="row" w="full" align="flex-end" justify="space-between">
                         <Button variant="ghost" h="40px" color="gray.50" fontSize="16px" onClick={() => setPage(0)}>
                             Volver
