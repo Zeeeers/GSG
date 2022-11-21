@@ -132,7 +132,7 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose, investorReload, or
                                             <Text fontSize={'md'} fontWeight={'normal'} fontFamily="inter">
                                                 ¿Eres inversionista y no tienes cuenta?
                                             </Text>
-                                            <Link href="mailto:contacto@gsg-match.com">
+                                            <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
                                                 <Button variant="outline" h="40px">
                                                     Solicitar una invitación
                                                 </Button>
