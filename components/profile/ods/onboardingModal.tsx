@@ -12,17 +12,18 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+
 import React from 'react';
 
 // Types
 interface Props {
     isOpen: boolean;
     onClose(): void;
+    setIsNews(value: boolean): void;
+    handleOnboarding(): void;
 }
 
-const OnboardingModal: React.FC<Props> = ({ isOpen, onClose }) => {
-    const router = useRouter();
+const OnboardingModal: React.FC<Props> = ({ isOpen, onClose, handleOnboarding, setIsNews }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="2xl">
             <ModalOverlay />
@@ -51,23 +52,13 @@ const OnboardingModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
                         <VStack w="full" align="flex-start" spacing="20px">
                             <HStack>
-                                <Checkbox />
+                                <Checkbox onChange={(e) => setIsNews(e.target.checked)} />
                                 <Text fontSize="15px" fontFamily="inter">
                                     Quiero que me envíen un correo con un resumen de los intereses que guardé
                                 </Text>
                             </HStack>
 
-                            <Button
-                                w="full"
-                                h="40px"
-                                variant="solid"
-                                onClick={() => {
-                                    router.push({
-                                        pathname: '/explorer',
-                                        query: { onboarding: 'filter-experience' },
-                                    });
-                                }}
-                            >
+                            <Button w="full" h="40px" variant="solid" onClick={handleOnboarding}>
                                 Ir al explorador de proyectos
                             </Button>
                         </VStack>

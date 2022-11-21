@@ -122,7 +122,7 @@ const AddMembersForm = ({ reload, closeModal }) => {
             <Stack as="form" spacing="20px" w="full" onSubmit={handleSubmit(handleMember)}>
                 <FormControl id="main_image" isInvalid={!!errors.main_image}>
                     <VStack alignItems="start" justifyContent="center" mt="25px">
-                        <VStack spacing={3}>
+                        <VStack pos="relative" spacing={3}>
                             <Avatar
                                 h="100px"
                                 w="100px"
@@ -135,13 +135,12 @@ const AddMembersForm = ({ reload, closeModal }) => {
                                 name={watch().name}
                             />
 
-                            <Input type="hidden" {...register('main_image')} />
+                            <Input cursor="pointer" type="hidden" {...register('main_image')} />
 
                             <Stack w="fit-content" cursor="pointer">
                                 <UploadButton
                                     cursor="pointer"
                                     w="full"
-                                    ml={-2}
                                     onChange={async (e) => {
                                         const { validateTypes, getBase64 } = await import('services/images');
 

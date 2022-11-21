@@ -33,6 +33,7 @@ interface Props {
 
 const InterestExperience = ({ setPage }: Props) => {
     const [isActive, setIsActive] = useState(false);
+    const [isNews, setIsNews] = useState(false);
     const [isOnboarding, setIsOnboarding] = useState(null);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
     const { isOpen: isOpenThird, onOpen: openThird, onClose: closeThird } = useDisclosure();
@@ -117,14 +118,26 @@ const InterestExperience = ({ setPage }: Props) => {
 
     const handleOnboarding = async () => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
-        const userApi = import('../../services/api/lib/user');
-
         const AuthManager = (await auth).default;
 
-        const { ok: sendOK, data: send } = await sendInterest({
-            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
-            id: user?.id,
-        });
+        if (isActive) {
+            const { ok: sendOK, data: send } = await sendInterest({
+                token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+                id: user?.id,
+            });
+
+            if (sendOK) {
+                router.push({
+                    pathname: '/explorer',
+                    query: { onboarding: 'filter-experience' },
+                });
+            }
+        } else {
+            router.push({
+                pathname: '/explorer',
+                query: { onboarding: 'filter-experience' },
+            });
+        }
     };
 
     useEffect(() => {
@@ -295,7 +308,12 @@ const InterestExperience = ({ setPage }: Props) => {
                 </VStack>
             </Stack>
 
-            <OnboardingModal isOpen={isOpenOnboarding} onClose={closeOnboarding} />
+            <OnboardingModal
+                isOpen={isOpenOnboarding}
+                onClose={closeOnboarding}
+                handleOnboarding={handleOnboarding}
+                setIsNews={setIsNews}
+            />
 
             <OdsModal
                 isOpen={isOpenOds}
