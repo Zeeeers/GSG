@@ -285,8 +285,14 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                     py={{ base: '24px', md: '30px' }}
                                     spacing={0}
                                 >
-                                    <VStack align="flex-start" spacing="15px" mb="20px">
-                                        <HStack spacing="17px" mb="15px" justify="space-between" w="full">
+                                    <VStack w="full" align="flex-start" spacing="15px" mb="20px">
+                                        <Stack
+                                            direction={{ base: 'column', md: 'row' }}
+                                            spacing="17px"
+                                            mb="15px"
+                                            justify="space-between"
+                                            w="full"
+                                        >
                                             <HStack>
                                                 <Avatar
                                                     name={project?.organization?.name}
@@ -303,6 +309,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                                     (r) => r.organization_id === user?.organization_id,
                                                 )?.kinds !== 'interested' && (
                                                     <Button
+                                                        w="fit-content"
                                                         onClick={handleInterest}
                                                         leftIcon={<Img src="/images/icons/interest.svg" />}
                                                         variant="outline"
@@ -351,7 +358,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                                     <Text>Te interesa</Text>
                                                 </Button>
                                             )}
-                                        </HStack>
+                                        </Stack>
                                         {user && (
                                             <HStack px="10px" py="5px" rounded="6px" background="#3B5D89">
                                                 <Img src="/images/icons/interest.svg" />
@@ -372,6 +379,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                                 lineHeight="32px"
                                                 textTransform="uppercase"
                                                 fontWeight="bold"
+                                                textOverflow="ellipsis"
+                                                w="full"
                                             >
                                                 {project?.title}
                                             </Text>

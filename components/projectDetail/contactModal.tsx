@@ -39,22 +39,21 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
     });
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="2xl">
             <ModalOverlay />
-            <ModalContent rounded="2xl" p="50px" bg="gray.800">
+            <ModalContent rounded="2xl" p={0} bg="gray.800">
                 <ModalCloseButton />
-                <ModalBody mb={6} pt={0}>
-                    <VStack w="full" alignItems="flex-start" spacing="20px">
+                <ModalBody w="full" p={0} mb={6} pt={0}>
+                    <VStack w="full" alignItems="flex-start" spacing="20px" px="30px" py="40px">
                         <Heading fontSize="30px" lineHeight="32px" textTransform="uppercase">
                             CONTACTO DE {project?.name}
                         </Heading>
                         <HStack w="full" align="center" justify="space-between">
-                            <VStack alignItems="flex-start" spacing={0} w="full">
+                            <VStack alignItems="flex-start" spacing={0} w="full" overflow="hidden">
                                 <Text fontSize="16px" color="gray.400">
                                     Correo
                                 </Text>
                                 <Text
-                                    w="full"
                                     fontSize={{ base: '20px', md: '24px' }}
                                     textOverflow="ellipsis"
                                     fontFamily="inter"
