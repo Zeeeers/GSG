@@ -50,7 +50,7 @@ const NewPassword: NextPage<Props> = ({ token, jwt, kind }) => {
                                 Recuperación de contraseña
                             </Text>
 
-                            <CreatePasswordForm token={token} jwt={jwt} kind={kind} />
+                            <CreatePasswordForm token={token} jwt={jwt} kind={kind} isRecovery={true} />
                         </VStack>
                     </Flex>
                 </VStack>

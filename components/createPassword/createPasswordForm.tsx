@@ -12,10 +12,11 @@ type Props = {
     token: string;
     jwt: string;
     kind: string;
+    isRecovery?: boolean;
 };
 
 // Component
-const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
+const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind, isRecovery = false }) => {
     // States
     const [isChangingPass, setIsChangingPass] = useState(false);
 
@@ -59,7 +60,12 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind }) => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/experience');
+
+            if (isRecovery) {
+                router.push('/explorer');
+            } else {
+                router.push('/experience');
+            }
         } else {
             toast({
                 title: 'No se pudo crear la contraseña',
