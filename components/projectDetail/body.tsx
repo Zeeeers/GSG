@@ -48,14 +48,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
     };
 
     return (
-        <Stack
-            alignItems="start"
-            mt={{ md: '5rem' }}
-            px={{ xl: '227px' }}
-            spacing="40px"
-            py={{ base: '30px', md: '400px' }}
-            scrollPaddingTop="100px"
-        >
+        <Stack alignItems="start" pt="90px" px={{ xl: '227px' }} spacing="40px" scrollPaddingTop="100px">
             <Stack pl="27px" pr="30px" spacing="30px">
                 <Text scrollMarginTop="100px" ref={impact} fontSize={{ base: '3xl', md: '4xl' }}>
                     El impacto de {project?.organization?.name}

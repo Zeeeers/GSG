@@ -1243,6 +1243,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 </Text>
                                 <HStack justify="start" w="full">
                                     <Button
+                                        type="button"
                                         fontSize="16px"
                                         fontWeight="normal"
                                         height="42px"
@@ -1259,6 +1260,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         Proyecto específico
                                     </Button>
                                     <Button
+                                        type="button"
                                         fontSize="16px"
                                         fontWeight="normal"
                                         variant="solid"

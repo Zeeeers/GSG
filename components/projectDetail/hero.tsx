@@ -272,25 +272,12 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                 />
                             </Flex>
 
-                            <Flex
-                                position={{ base: 'relative', md: 'absolute' }}
-                                bottom={{
-                                    base: 0,
-                                    md:
-                                        project?.description?.length <= 700
-                                            ? '-20rem'
-                                            : project?.description?.length <= 200
-                                            ? '-20rem'
-                                            : '-33rem',
-                                }}
-                                justifyContent="center"
-                                w="full"
-                            >
+                            <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" w="full">
                                 <VStack
                                     boxShadow="lg"
                                     bg="gray.800"
                                     w={{ base: 'full', md: 898 }}
-                                    h={{ base: 'full', md: '-webkit-fit-content' }}
+                                    h={{ base: 'full', md: 'fit-content' }}
                                     justifyContent="start"
                                     alignItems="start"
                                     rounded={{ base: 0, md: '2xl' }}
@@ -433,21 +420,11 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                         </Flex>
                                     </VStack>
                                 </VStack>
-                            </Flex>
+                            </VStack>
                         </Flex>
 
-                        <Flex
-                            w="full"
-                            justifyContent={{ base: 'center', md: 'flex-end' }}
-                            mb={{ base: 4, md: '3rem !important' }}
-                            mt={{ base: '5rem !important', md: '1rem !important' }}
-                            position="relative"
-                            zIndex={100}
-                            minH={8}
-                        ></Flex>
+                        <Body project={project} ref={ref} />
                     </VStack>
-
-                    <Body project={project} ref={ref} />
                 </Container>
             </Flex>
 

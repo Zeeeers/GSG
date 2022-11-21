@@ -193,7 +193,7 @@ const Explorer: NextPage = () => {
             <Navbar />
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 {orga !== undefined &&
-                    (orga?.gsg_project_id ? <StatusProject project={project?.data.gsg_project} /> : <NotProject />)}
+                    (orga?.gsg_project_id ? <StatusProject project={project?.data?.gsg_project} /> : <NotProject />)}
 
                 {orga && (
                     <HStack bg="gray.700" p="20px" rounded="8px" mb="40px" justifyContent="space-between">

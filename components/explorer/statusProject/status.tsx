@@ -58,7 +58,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                     </HStack>
                     <CircularProgress
                         //@ts-ignore
-                        value={project?.progress}
+                        value={project?.progress ?? 0}
                         display={{ base: 'block', sm: 'none' }}
                         color="teal.500"
                         size="60px"
@@ -67,7 +67,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         <CircularProgressLabel fontFamily="inter" fontSize="14px">
                             {
                                 //@ts-ignore
-                                project?.progress
+                                project?.progress ?? 0
                             }
                             %
                         </CircularProgressLabel>
@@ -110,7 +110,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                 <HStack spacing="30px">
                     <CircularProgress
                         //@ts-ignore
-                        value={project?.progress}
+                        value={project?.progress ?? 0}
                         display={{ base: 'none', sm: 'block' }}
                         color="teal.500"
                         size="60px"
@@ -119,7 +119,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         <CircularProgressLabel fontFamily="inter" fontSize="14px">
                             {
                                 //@ts-ignore
-                                project?.progress
+                                project?.progress ?? 0
                             }
                             %
                         </CircularProgressLabel>
