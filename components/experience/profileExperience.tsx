@@ -165,7 +165,7 @@ const ProfileExperience = ({ setPage }: Props) => {
                     </Text>
                 </VStack>
 
-                <VStack alignItems={{ base: 'center', md: 'start' }} spacing={0} w="full">
+                <VStack alignItems="start" spacing={0} w="fit-content">
                     <HStack>
                         <EditableTitle
                             fontSize={{ base: 'xl', lg: '24px' }}

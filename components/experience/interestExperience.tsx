@@ -179,14 +179,14 @@ const InterestExperience = ({ setPage }: Props) => {
                     </HStack>
                     <Stack maxH="400px" overflow={{ base: 'auto', md: 'hidden' }}>
                         <Wrap h="full" spacingX="30px" spacingY="20px" fontFamily="inter">
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openOds}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"
@@ -196,14 +196,14 @@ const InterestExperience = ({ setPage }: Props) => {
                                     <Text>ODS</Text>
                                 </VStack>
                             </WrapItem>
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openThird}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"
@@ -213,14 +213,14 @@ const InterestExperience = ({ setPage }: Props) => {
                                     <Text>Certificación</Text>
                                 </VStack>
                             </WrapItem>
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openStage}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"
@@ -230,14 +230,14 @@ const InterestExperience = ({ setPage }: Props) => {
                                     <Text>Etapa del proyecto</Text>
                                 </VStack>
                             </WrapItem>
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openCapitalStage}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"
@@ -247,14 +247,14 @@ const InterestExperience = ({ setPage }: Props) => {
                                     <Text>Tipo de financiamiento</Text>
                                 </VStack>
                             </WrapItem>
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openExpectedRentabilityModal}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"
@@ -264,14 +264,14 @@ const InterestExperience = ({ setPage }: Props) => {
                                     <Text>Rentabilidad esperada</Text>
                                 </VStack>
                             </WrapItem>
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openFinanceGoal}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"
@@ -281,14 +281,14 @@ const InterestExperience = ({ setPage }: Props) => {
                                     <Text>Monto de aporte</Text>
                                 </VStack>
                             </WrapItem>
-                            <WrapItem>
+                            <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                 <VStack
                                     onClick={openTimeLapse}
                                     cursor="pointer"
                                     transitionDuration={'250ms'}
                                     _hover={{ bg: 'gray.600' }}
                                     justify="center"
-                                    w="200px"
+                                    w={{ base: 'full', sm: '200px' }}
                                     h="100px"
                                     spacing="13px"
                                     bg="gray.700"

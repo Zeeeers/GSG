@@ -131,14 +131,14 @@ const OdsTab: React.FC = () => {
                         <Text>Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses</Text>
                     </HStack>
                     <Wrap spacingX="30px" spacingY="20px">
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openOds}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -148,14 +148,14 @@ const OdsTab: React.FC = () => {
                                 <Text>ODS</Text>
                             </VStack>
                         </WrapItem>
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openThird}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -165,14 +165,14 @@ const OdsTab: React.FC = () => {
                                 <Text>Certificación</Text>
                             </VStack>
                         </WrapItem>
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openStage}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -182,14 +182,14 @@ const OdsTab: React.FC = () => {
                                 <Text>Etapa del proyecto</Text>
                             </VStack>
                         </WrapItem>
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openCapitalStage}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -199,14 +199,14 @@ const OdsTab: React.FC = () => {
                                 <Text>Tipo de financiamiento</Text>
                             </VStack>
                         </WrapItem>
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openExpectedRentabilityModal}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -216,14 +216,14 @@ const OdsTab: React.FC = () => {
                                 <Text>Rentabilidad esperada</Text>
                             </VStack>
                         </WrapItem>
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openFinanceGoal}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -233,14 +233,14 @@ const OdsTab: React.FC = () => {
                                 <Text>Monto de aporte</Text>
                             </VStack>
                         </WrapItem>
-                        <WrapItem>
+                        <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
                                 onClick={openTimeLapse}
                                 cursor="pointer"
                                 transitionDuration={'250ms'}
                                 _hover={{ bg: 'gray.600' }}
                                 justify="center"
-                                w="200px"
+                                w={{ base: 'full', sm: '200px' }}
                                 h="100px"
                                 spacing="13px"
                                 bg="gray.700"
@@ -253,6 +253,7 @@ const OdsTab: React.FC = () => {
                     </Wrap>
                     <Stack w="full" align="flex-end">
                         <Button
+                            w={{ base: 'full', sm: '176px' }}
                             variant="outline"
                             h="40px"
                             onClick={() => {
