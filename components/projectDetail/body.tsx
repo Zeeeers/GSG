@@ -270,8 +270,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Umbral de rentabilidad o Break Even Point proyectado:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {project?.rentability_time ?? '0'}{' '}
-                            {project?.rentability_time ?? '0' === '1' ? 'Mes' : 'Meses'}
+                            {project?.rentability_time ?? 0} {project?.rentability_time !== 1 ? 'Meses' : 'Mes'}
                         </Text>
                     </VStack>
                 </VStack>

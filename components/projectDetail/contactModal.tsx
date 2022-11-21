@@ -44,7 +44,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
             <ModalContent rounded="2xl" p="50px" bg="gray.800">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
-                    <VStack alignItems="flex-start" spacing="20px">
+                    <VStack w="full" alignItems="flex-start" spacing="20px">
                         <Heading fontSize="30px" lineHeight="32px" textTransform="uppercase">
                             CONTACTO DE {project?.name}
                         </Heading>
@@ -53,7 +53,12 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                 <Text fontSize="16px" color="gray.400">
                                     Correo
                                 </Text>
-                                <Text fontSize={{ base: '20px', md: '24px' }} fontFamily="inter">
+                                <Text
+                                    w="full"
+                                    fontSize={{ base: '20px', md: '24px' }}
+                                    textOverflow="ellipsis"
+                                    fontFamily="inter"
+                                >
                                     {project?.legal_representative_email ?? 'No hay correo'}
                                 </Text>
                             </VStack>
