@@ -137,8 +137,9 @@ const AddMembersForm = ({ reload, closeModal }) => {
 
                             <Input type="hidden" {...register('main_image')} />
 
-                            <Stack w="fit-content">
+                            <Stack w="fit-content" cursor="pointer">
                                 <UploadButton
+                                    cursor="pointer"
                                     w="full"
                                     ml={-2}
                                     onChange={async (e) => {

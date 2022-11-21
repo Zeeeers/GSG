@@ -16,6 +16,7 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
+
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
@@ -84,19 +85,26 @@ const ListProyectsForm = (props: any) => {
 
     return (
         <>
-            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0} w="full">
+            <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
                 <Thead>
                     <Tr>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
                             Fecha
                         </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
                             Nombre del proyecto
                         </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
                             Empresa
                         </Th>
-                        <Th pl="40px" fontWeight="bold" color="gray.50" border="none">
+                        <Th
+                            pl="40px"
+                            fontWeight="bold"
+                            fontFamily="inter"
+                            fontSize="18px"
+                            color="gray.50"
+                            border="none"
+                        >
                             Status
                         </Th>
                         <Th pl={0} border="none"></Th>
@@ -107,9 +115,9 @@ const ListProyectsForm = (props: any) => {
                         ?.filter((project) =>
                             project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''),
                         )
-                        .filter((project) => project?.status.includes(props.filters?.status ?? ''))
+                        .filter((project) => project?.status.includes(props?.filters?.status ?? ''))
                         .sort((a, b) => {
-                            if (props.filters.last_status_updated === 'asc') {
+                            if (props?.filters?.last_status_updated === 'asc') {
                                 //@ts-ignore
                                 return new Date(b.last_status_updated) - new Date(a.last_status_updated);
                             } else {
@@ -136,7 +144,7 @@ const ListProyectsForm = (props: any) => {
                                 <Td fontFamily="inter" pl="40px">
                                     <Select
                                         w="163px"
-                                        defaultValue={proyect?.status}
+                                        value={proyect.status}
                                         onChange={(e) => handleStatus(proyect?.id, e)}
                                         variant="outline"
                                         _focus={{ color: 'white' }}

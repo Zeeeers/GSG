@@ -48,7 +48,7 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
     };
 
     return (
-        <Stack alignItems="start" pt="90px" px={{ xl: '227px' }} spacing="40px" scrollPaddingTop="100px">
+        <Stack alignItems="start" pt="90px" pb="150px" px={{ xl: '227px' }} spacing="40px" scrollPaddingTop="100px">
             <Stack pl="27px" pr="30px" spacing="30px">
                 <Text scrollMarginTop="100px" ref={impact} fontSize={{ base: '3xl', md: '4xl' }}>
                     El impacto de {project?.organization?.name}
@@ -270,7 +270,8 @@ const Body = forwardRef<any, any>(({ project }, ref) => {
                             Umbral de rentabilidad o Break Even Point proyectado:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {project?.rentability_time ?? '0'} Meses
+                            {project?.rentability_time ?? '0'}{' '}
+                            {project?.rentability_time ?? '0' === '1' ? 'Mes' : 'Meses'}
                         </Text>
                     </VStack>
                 </VStack>

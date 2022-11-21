@@ -15,6 +15,7 @@ import {
     DrawerHeader,
     DrawerOverlay,
     HStack,
+    Icon,
     Input,
     Menu,
     MenuButton,
@@ -39,17 +40,18 @@ import SendMatchForm from 'components/admin/sendMatchForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import router from 'next/router';
-import React, { useState } from 'react';
-import { FaBars } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
 
 const Panel: NextPage = () => {
     const [page, setPage] = useState(0);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [filters, setFilters] = useState({
-        title: '',
-        status: '',
         last_status_updated: 'asc',
+        created_at: 'asc',
+        status: '',
+        title: '',
     });
 
     const handleLogOut = async () => {
@@ -60,6 +62,10 @@ const Panel: NextPage = () => {
         });
         router.push('/admin/login');
     };
+
+    useEffect(() => {
+        setFilters({ ...filters, last_status_updated: 'asc', created_at: 'asc', status: '', title: '' });
+    }, [page]);
 
     return (
         <>
@@ -245,25 +251,36 @@ const Panel: NextPage = () => {
                     <TabPanels pl={{ base: '25px', '2xl': '100px' }} overflowY="auto" w="full">
                         <TabPanel pr={{ base: '25px', '2xl': '200px' }}>
                             <VStack>
-                                <HStack w="full" justify="space-between" align="center" h="fit-content">
-                                    <Stack display="block">
-                                        <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
+                                <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                    <Button
+                                        display="flex"
+                                        alignItems="center"
+                                        w="30px"
+                                        h="40px"
+                                        mt="30px"
+                                        ml="30px"
+                                        rounded="full"
+                                        bg="white"
+                                        onClick={onOpen}
+                                    >
+                                        <Icon as={FaArrowRight} color="gray.700" />
+                                    </Button>
+                                </Stack>
+                                <Container maxW="1200px">
+                                    <Stack w="full" align="flex-end">
+                                        <Menu direction="rtl">
+                                            {({ isOpen }) => (
+                                                <>
+                                                    <MenuButton isActive={isOpen} as={Button}>
+                                                        Admin
+                                                    </MenuButton>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                    </MenuList>
+                                                </>
+                                            )}
+                                        </Menu>
                                     </Stack>
-                                    <Menu direction="rtl">
-                                        {({ isOpen }) => (
-                                            <>
-                                                <MenuButton isActive={isOpen} as={Button}>
-                                                    Admin
-                                                </MenuButton>
-                                                <MenuList>
-                                                    <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
-                                                </MenuList>
-                                            </>
-                                        )}
-                                    </Menu>
-                                </HStack>
-
-                                <Container maxW="1000px">
                                     <VStack
                                         w="full"
                                         pt="87px"
@@ -293,8 +310,20 @@ const Panel: NextPage = () => {
                         </TabPanel>
 
                         <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
-                            <Stack display="block">
-                                <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
+                            <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                <Button
+                                    display="flex"
+                                    alignItems="center"
+                                    w="30px"
+                                    h="40px"
+                                    mt="30px"
+                                    ml="30px"
+                                    rounded="full"
+                                    bg="white"
+                                    onClick={onOpen}
+                                >
+                                    <Icon as={FaArrowRight} color="gray.700" />
+                                </Button>
                             </Stack>
                             <Container display="flex" flexDirection="column" maxW="1200px" alignItems="center">
                                 <VStack w="fit-content">
@@ -319,7 +348,7 @@ const Panel: NextPage = () => {
                                         align={{ base: 'flex-start', lg: 'center' }}
                                         justifyContent="space-between"
                                     >
-                                        <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
+                                        <Text fontWeight="bold" fontSize="30px">
                                             INVERSIONISTAS
                                         </Text>
 
@@ -328,24 +357,25 @@ const Panel: NextPage = () => {
                                                 onChange={(e) =>
                                                     setFilters({
                                                         ...filters,
-                                                        last_status_updated: e.target.value,
+                                                        created_at: e.target.value,
                                                     })
                                                 }
                                                 w="fit-content"
                                                 variant="outline"
                                                 color="gray.700"
                                                 h="40px"
+                                                defaultValue="asc"
                                             >
                                                 <option value="asc">Más reciente</option>
                                                 <option value="desc">Menos reciente</option>
                                             </Select>
                                             <Select
-                                                onChange={(e) =>
+                                                onChange={(e) => {
                                                     setFilters({
                                                         ...filters,
                                                         status: e.target.value !== 'select' ? e.target.value : '',
-                                                    })
-                                                }
+                                                    });
+                                                }}
                                                 w="fit-content"
                                                 variant="outline"
                                                 h="40px"
@@ -379,8 +409,20 @@ const Panel: NextPage = () => {
                         </TabPanel>
 
                         <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
-                            <Stack display="block">
-                                <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
+                            <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                <Button
+                                    display="flex"
+                                    alignItems="center"
+                                    w="30px"
+                                    h="40px"
+                                    mt="30px"
+                                    ml="30px"
+                                    rounded="full"
+                                    bg="white"
+                                    onClick={onOpen}
+                                >
+                                    <Icon as={FaArrowRight} color="gray.700" />
+                                </Button>
                             </Stack>
                             <Container
                                 marginRight="10px"
@@ -411,12 +453,14 @@ const Panel: NextPage = () => {
                                         align={{ base: 'flex-start', lg: 'center' }}
                                         justifyContent="space-between"
                                     >
-                                        <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
+                                        <Text fontWeight="bold" fontSize="30px">
                                             PROYECTOS POSTULADOS
                                         </Text>
 
                                         <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
                                             <Select
+                                                value={filters?.last_status_updated}
+                                                defaultValue="asc"
                                                 onChange={(e) =>
                                                     setFilters({
                                                         ...filters,
@@ -432,10 +476,11 @@ const Panel: NextPage = () => {
                                                 <option value="desc">Menos reciente</option>
                                             </Select>
                                             <Select
+                                                defaultValue="select"
                                                 onChange={(e) =>
                                                     setFilters({
                                                         ...filters,
-                                                        status: e.target.value !== 'select' ? e.target.value : '',
+                                                        status: e.target.value === 'select' ? '' : e.target.value,
                                                     })
                                                 }
                                                 w="fit-content"
@@ -466,11 +511,24 @@ const Panel: NextPage = () => {
                         </TabPanel>
 
                         <TabPanel pr={{ base: '25px', '2xl': '200px' }}>
-                            <VStack w="full">
-                                <HStack w="full" justify="space-between" align="center" h="fit-content">
-                                    <Stack display="block">
-                                        <Button onClick={onOpen} leftIcon={<FaBars />}></Button>
-                                    </Stack>
+                            <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                <Button
+                                    display="flex"
+                                    alignItems="center"
+                                    w="30px"
+                                    h="40px"
+                                    mt="30px"
+                                    ml="30px"
+                                    rounded="full"
+                                    bg="white"
+                                    onClick={onOpen}
+                                >
+                                    <Icon as={FaArrowRight} color="gray.700" />
+                                </Button>
+                            </Stack>
+
+                            <Container maxW="1200px">
+                                <Stack w="full" align="flex-end">
                                     <Menu direction="rtl">
                                         {({ isOpen }) => (
                                             <>
@@ -483,14 +541,15 @@ const Panel: NextPage = () => {
                                             </>
                                         )}
                                     </Menu>
-                                </HStack>
+                                </Stack>
                                 <VStack
                                     w="full"
+                                    pt="87px"
                                     position="relative"
                                     align="flex-start"
+                                    justify="flex-start"
                                     spacing="15px"
-                                    pb="40px"
-                                    pt="40px"
+                                    marginBottom="40px"
                                 >
                                     <Text fontWeight="bold" fontSize="2xl">
                                         ENVIAR MATCH A UN INVERSIONISTA
@@ -498,10 +557,10 @@ const Panel: NextPage = () => {
                                     <Text fontWeight="normal" fontSize="sm" fontFamily="inter">
                                         Ingresa un correo para enviar un match.
                                     </Text>
-                                </VStack>
 
-                                <SendMatchForm />
-                            </VStack>
+                                    <SendMatchForm />
+                                </VStack>
+                            </Container>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

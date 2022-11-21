@@ -87,18 +87,6 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                     </Text>
                 </Stack>
 
-                <MenuItem
-                    pt="5px"
-                    fontWeight="normal"
-                    fontSize="md"
-                    fontFamily="inter"
-                    textAlign="center"
-                    border="1px"
-                    rounded="50px"
-                >
-                    <Text>Administrar mi cuenta de company pitch</Text>
-                </MenuItem>
-
                 <MenuDivider py="5px" />
 
                 <MenuItem

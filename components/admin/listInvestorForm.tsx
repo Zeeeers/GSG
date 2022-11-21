@@ -88,19 +88,19 @@ const ListInvestorForm = (props: any) => {
 
     return (
         <>
-            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0} w="full">
+            <Table display={{ base: 'none', lg: 'block' }} size="lg" p={0} w="1080px" pt="40px">
                 <Thead>
                     <Tr>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
                             Creación
                         </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
                             Nombre del inversionista
                         </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
                             Correo
                         </Th>
-                        <Th pl={0} fontWeight="bold" color="gray.50" border="none">
+                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
                             Status
                         </Th>
                         <Th pl={0} border="none"></Th>
@@ -117,7 +117,7 @@ const ListInvestorForm = (props: any) => {
                                 : investor?.active === (props?.filters?.status === 'true'),
                         )
                         .sort((a, b) => {
-                            if (props.filters.last_status_updated === 'asc') {
+                            if (props.filters.created_at === 'asc') {
                                 //@ts-ignore
                                 return new Date(b.created_at) - new Date(a.created_at);
                             } else {
@@ -149,7 +149,7 @@ const ListInvestorForm = (props: any) => {
                                         />
                                     </FormControl>
                                 </Td>
-                                <Td fontFamily="inter" pl={0}>
+                                <Td fontFamily="inter" pl="0">
                                     <Button
                                         type="button"
                                         isLoading={deleteProduct}

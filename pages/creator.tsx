@@ -529,9 +529,12 @@ const Creator: NextPage = ({ project, quality }) => {
 
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
 
-                investment_type: postulationProject
-                    ? 'Un proyecto específico dentro de la empresa'
-                    : 'Un proyecto para la empresa',
+                investment_type:
+                    postulationProject && !postulationEmployee
+                        ? 'Un proyecto específico dentro de la empresa'
+                        : !postulationProject && postulationEmployee
+                        ? 'Un proyecto para la empresa'
+                        : undefined,
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
             members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
@@ -611,9 +614,12 @@ const Creator: NextPage = ({ project, quality }) => {
                 additional_document: baseAdditional?.base64,
                 better_project: watch('better_project'),
                 status: 'sketch',
-                investment_type: postulationProject
-                    ? 'Un proyecto específico dentro de la empresa'
-                    : 'Un proyecto para la empresa',
+                investment_type:
+                    postulationProject && !postulationEmployee
+                        ? 'Un proyecto específico dentro de la empresa'
+                        : !postulationProject && postulationEmployee
+                        ? 'Un proyecto para la empresa'
+                        : undefined,
                 progress: Math.round(
                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                         (isCheckCapital && isCheckDeuda
@@ -2019,8 +2025,8 @@ const Creator: NextPage = ({ project, quality }) => {
 
                         <VStack>
                             <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                23. Copia y pega la o las plataformas/redes sociales que consideres relevantes para que
-                                inversionistas conozcan mejor tu proyecto. (Opcional)
+                                23. Copia y pega la URL de la/las plataformas/redes sociales que consideras pueden ser
+                                relevantes para que inversionistas conozcan mejor tu proyecto (Opcional)
                             </Text>
 
                             <VStack spacing="15px" w="full">

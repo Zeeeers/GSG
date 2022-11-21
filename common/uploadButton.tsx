@@ -5,6 +5,8 @@ import { Button, ButtonProps, forwardRef, Input, InputProps } from '@chakra-ui/r
 const UploadButton = forwardRef<InputProps, 'input'>(({ onClick, onChange, children, ...rest }, ref) => {
     return (
         <Button
+            position="relative"
+            cursor="pointer"
             borderBottom="1px"
             borderColor="gray.50"
             rounded="none"
@@ -21,10 +23,10 @@ const UploadButton = forwardRef<InputProps, 'input'>(({ onClick, onChange, child
         >
             {children}
             <Input
+                cursor="pointer"
                 ref={ref}
                 type="file"
                 opacity={0}
-                cursor="pointer"
                 position="absolute"
                 left={0}
                 onClick={(e) => {
