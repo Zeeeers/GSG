@@ -120,7 +120,7 @@ const InterestExperience = ({ setPage }: Props) => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
         const AuthManager = (await auth).default;
 
-        if (isActive) {
+        if (isNews) {
             const { ok: sendOK, data: send } = await sendInterest({
                 token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
                 id: user?.id,

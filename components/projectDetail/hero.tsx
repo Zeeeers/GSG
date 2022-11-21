@@ -329,11 +329,11 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                                 <Button
                                                     onClick={handleInterest}
                                                     variant="solid"
-                                                    background="gray.50"
-                                                    color="gray.800"
+                                                    background="blue.700"
+                                                    color="gray.50"
                                                     border="2px"
                                                     rounded="500px"
-                                                    borderColor="gray.50"
+                                                    borderColor="blue.700"
                                                     fontSize="18px"
                                                     fontFamily="inter"
                                                     h="40px"
@@ -341,7 +341,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                                     _hover={{ borderColor: 'none' }}
                                                     leftIcon={
                                                         <Img
-                                                            src="/images/icons/interest_green.svg"
+                                                            src="/images/icons/interest.svg"
                                                             as={motion.img}
                                                             initial={{ scale: 0 }}
                                                             animate={{
