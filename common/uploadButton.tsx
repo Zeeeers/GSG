@@ -17,7 +17,7 @@ const UploadButton = forwardRef<InputProps, 'input'>(({ onClick, onChange, child
             color="gray.50"
             fontWeight="normal"
             fontFamily="inter"
-            zIndex={30}
+            zIndex={0}
             {...(rest as ButtonProps)}
         >
             {children}
@@ -34,7 +34,7 @@ const UploadButton = forwardRef<InputProps, 'input'>(({ onClick, onChange, child
                 }}
                 width="inherit"
                 height="inherit"
-                zIndex={40}
+                zIndex={20}
                 onChange={onChange}
             />
         </Button>
