@@ -239,7 +239,7 @@ const Explorer: NextPage = () => {
                         position="fixed"
                         right={{ base: '20px', md: '60px' }}
                         bottom={{ base: '20px', md: '50px' }}
-                        background="gray.800"
+                        background={{ base: 'gray.700', xl: 'gray.800' }}
                         w="50px"
                         h="50px"
                         p="10px"

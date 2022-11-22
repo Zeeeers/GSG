@@ -20,6 +20,7 @@ import {
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
+import SelectComponent from './selectComponenet';
 
 const ListProyectsForm = (props: any) => {
     const { data, mutate } = useAdminGsg();
@@ -28,7 +29,8 @@ const ListProyectsForm = (props: any) => {
 
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
-        const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e?.target?.value } });
+
+        const { ok } = await updateStatusGsgProject({ idProject: id, gsgProject: { status: e.target.value } });
 
         if (ok) {
             toast({
@@ -125,8 +127,8 @@ const ListProyectsForm = (props: any) => {
                                 return new Date(a.last_status_updated) - new Date(b.last_status_updated);
                             }
                         })
-                        .map((proyect, i) => (
-                            <Tr key={i}>
+                        .map((proyect) => (
+                            <Tr key={proyect.id}>
                                 <Td fontFamily="inter" pl={0} py="30px" w="13%">
                                     {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
                                         day: 'numeric',
@@ -142,18 +144,7 @@ const ListProyectsForm = (props: any) => {
                                 </Td>
 
                                 <Td fontFamily="inter" pl="40px">
-                                    <Select
-                                        w="163px"
-                                        value={proyect.status}
-                                        onChange={(e) => handleStatus(proyect?.id, e)}
-                                        variant="outline"
-                                        _focus={{ color: 'white' }}
-                                    >
-                                        <option value="in-review">En revisión</option>
-                                        <option value="sketch">Borrador</option>
-                                        <option value="published">Publicado</option>
-                                        <option value="canceled">Finalizado</option>
-                                    </Select>
+                                    <SelectComponent project={proyect} handleStatus={handleStatus} />
                                 </Td>
                                 <Td fontFamily="inter" pl="50px">
                                     <HStack spacing="20px">
@@ -180,7 +171,7 @@ const ListProyectsForm = (props: any) => {
             <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
                 {data?.data?.projects?.map((project) => (
                     <>
-                        <VStack w="full" align="flex-start" pt="30px" spacing="20px">
+                        <VStack key={project.id} w="full" align="flex-start" pt="30px" spacing="20px">
                             <HStack w="full" align="center" justify="space-between">
                                 <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
                                     Fecha
