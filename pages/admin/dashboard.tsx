@@ -39,9 +39,11 @@ import ListProyectsForm from 'components/admin/listProyectsForm';
 import SendMatchForm from 'components/admin/sendMatchForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 import router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
+import { organizationCvs } from 'services/api/lib/organization';
 
 const Panel: NextPage = () => {
     const [page, setPage] = useState(0);
@@ -79,46 +81,56 @@ const Panel: NextPage = () => {
                         <DrawerCloseButton />
                         <DrawerHeader>Panel</DrawerHeader>
 
-                        <DrawerBody>
-                            <Accordion p={0} defaultIndex={[0]} allowMultiple>
-                                <AccordionItem p={0} border="none" fontSize="16px" fontFamily="inter">
-                                    <h2>
-                                        <AccordionButton p={0} border="none">
-                                            <Box flex="1" textAlign="left" border="none">
+                        <DrawerBody display="flex" flexDirection="column" justifyContent="space-between">
+                            <Stack>
+                                <Accordion p={0} defaultIndex={[0]} allowMultiple>
+                                    <AccordionItem p={0} border="none" fontSize="16px" fontFamily="inter">
+                                        <h2>
+                                            <AccordionButton p={0} border="none">
+                                                <Box flex="1" textAlign="left" border="none">
+                                                    Inversionistas
+                                                </Box>
+                                                <AccordionIcon />
+                                            </AccordionButton>
+                                        </h2>
+
+                                        <AccordionPanel pb="5px">
+                                            <Button
+                                                fontWeight={`${page === 0 ? 'bold' : 'normal'}`}
+                                                onClick={() => setPage(0)}
+                                            >
+                                                Nuevo inversionista
+                                            </Button>
+
+                                            <Button
+                                                fontWeight={`${page === 1 ? 'bold' : 'normal'}`}
+                                                onClick={() => setPage(1)}
+                                            >
                                                 Inversionistas
-                                            </Box>
-                                            <AccordionIcon />
-                                        </AccordionButton>
-                                    </h2>
+                                            </Button>
+                                        </AccordionPanel>
+                                    </AccordionItem>
+                                </Accordion>
+                                <VStack align="flex-start" spacing="15px">
+                                    <Button fontWeight={`${page === 2 ? 'bold' : 'normal'}`} onClick={() => setPage(2)}>
+                                        Proyectos postulados
+                                    </Button>
 
-                                    <AccordionPanel pb="5px">
-                                        <Button
-                                            fontWeight={`${page === 0 ? 'bold' : 'normal'}`}
-                                            onClick={() => setPage(0)}
-                                        >
-                                            Nuevo inversionista
-                                        </Button>
+                                    <Divider />
 
-                                        <Button
-                                            fontWeight={`${page === 1 ? 'bold' : 'normal'}`}
-                                            onClick={() => setPage(1)}
-                                        >
-                                            Inversionistas
-                                        </Button>
-                                    </AccordionPanel>
-                                </AccordionItem>
-                            </Accordion>
-                            <VStack align="flex-start" spacing="15px">
-                                <Button fontWeight={`${page === 2 ? 'bold' : 'normal'}`} onClick={() => setPage(2)}>
-                                    Proyectos postulados
-                                </Button>
+                                    <Button fontWeight={`${page === 3 ? 'bold' : 'normal'}`} onClick={() => setPage(3)}>
+                                        Enviar match
+                                    </Button>
+                                </VStack>
+                            </Stack>
 
-                                <Divider />
-
-                                <Button fontWeight={`${page === 3 ? 'bold' : 'normal'}`} onClick={() => setPage(3)}>
-                                    Enviar match
-                                </Button>
-                            </VStack>
+                            <Stack justify="flex-end" mb="75px">
+                                <Link href={organizationCvs()}>
+                                    <Button variant="outline" w="full" h="40px">
+                                        Descargar empresas
+                                    </Button>
+                                </Link>
+                            </Stack>
                         </DrawerBody>
                     </DrawerContent>
                 </Drawer>

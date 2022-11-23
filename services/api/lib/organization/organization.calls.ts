@@ -45,6 +45,10 @@ export const useOrganization = (isPyme?: boolean, falldata?: any): SWRResponse<O
     });
 };
 
+export const organizationCvs = () => {
+    return `${process.env.NEXT_PUBLIC_API_URL}/${ENDPOINT.CVS}`;
+};
+
 // READ
 const organizationProjectFetcher = async (endpoint: string) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
@@ -74,6 +78,7 @@ const organizationCalls = {
     update,
     useOrganization,
     organizationFetcher,
+    organizationCvs,
 };
 
 // Export
