@@ -527,6 +527,17 @@ const Creator: NextPage = ({ project, quality }) => {
 
                 status: 'in-review',
 
+                progress: Math.round(
+                    ((percentDescription() + percentFinance() + percentOther()) * 100) /
+                        (isCheckCapital && isCheckDeuda
+                            ? 26
+                            : isCheckCapital && !isCheckDeuda
+                            ? 25
+                            : !isCheckCapital && isCheckDeuda
+                            ? 23
+                            : 26),
+                ).toString(),
+
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
 
                 investment_type:
@@ -735,6 +746,8 @@ const Creator: NextPage = ({ project, quality }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    console.log(errors);
 
     return (
         <>
@@ -2587,7 +2600,7 @@ const Creator: NextPage = ({ project, quality }) => {
                     isOpen={isCropperOpenMain}
                     onClose={onCropperCloseMain}
                     onCropSave={(img) => {
-                        setValue('main_image', img);
+                        setValue('main_image', img, { shouldValidate: true });
                     }}
                 />
             )}

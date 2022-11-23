@@ -10,7 +10,7 @@ type select = {
 export interface IProjectForm {
     title: string;
     description: string;
-    main_image?: string;
+    main_image: string;
     social_impact?: string;
 
     more_info: select;
@@ -62,7 +62,7 @@ const projectShape: ZodShape<IProjectForm> = {
         .nonempty({ message: 'Campo obligatorio' })
         .min(700, 'Mínimo 700 caracteres')
         .max(1000, 'Máximo 1000 caracteres'),
-    main_image: z.string().optional(),
+    main_image: z.string().min(1, 'Campo obligatorio'),
     social_impact: z.string().optional(),
 
     sector: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
