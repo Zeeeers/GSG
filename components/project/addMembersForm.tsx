@@ -12,10 +12,14 @@ import {
     useToast,
     VStack,
     Avatar,
+    Box,
+    Heading,
+    Text,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
+import UploadZone from 'common/uploadZone';
 import { IMember, memberSchema } from 'forms/project';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -137,33 +141,37 @@ const AddMembersForm = ({ reload, closeModal }) => {
 
                             <Input cursor="pointer" type="hidden" {...register('main_image')} />
 
-                            <Stack w="fit-content" cursor="pointer">
-                                <UploadButton
-                                    cursor="pointer"
-                                    w="full"
-                                    onChange={async (e) => {
-                                        const { validateTypes, getBase64 } = await import('services/images');
+                            <UploadZone
+                                onDrop={async (file) => {
+                                    const { validateTypes, getBase64 } = await import('services/images');
 
-                                        if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            if (e.target.files[0].size > 2000000) {
-                                                toast({
-                                                    title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2mb',
-                                                    status: 'error',
-                                                    duration: 9000,
-                                                    isClosable: true,
-                                                    position: 'top-right',
-                                                });
-                                            } else {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setBaseImg(base);
-                                                onCropperOpen();
-                                            }
+                                    if (file && validateTypes(file[0])) {
+                                        if (file.size > 2000000) {
+                                            toast({
+                                                title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2mb',
+                                                status: 'error',
+                                                duration: 9000,
+                                                isClosable: true,
+                                                position: 'top-right',
+                                            });
+                                        } else {
+                                            const base = await getBase64(file![0]);
+                                            setBaseImg(base);
+                                            onCropperOpen();
                                         }
-                                    }}
-                                >
-                                    Subir imagen
-                                </UploadButton>
-                            </Stack>
+                                    }
+                                }}
+                                variant="unstyled"
+                                borderBottom="2px"
+                                color="gray.50"
+                                fontFamily="inter"
+                                fontWeight="normal"
+                                fontSize="15px"
+                                borderColor="gray.50"
+                                rounded={0}
+                            >
+                                Subir imagen
+                            </UploadZone>
 
                             <FormHelperText>Tamaño máximo 2MB</FormHelperText>
 

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Avatar, Button, HStack, Text, useDisclosure, useToast, VStack, Stack } from '@chakra-ui/react';
-import UploadButton from 'common/uploadButton';
 import EditableTitle from 'common/editableTitle';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import { useUser } from 'services/api/lib/user';
 import { useOrganization } from 'services/api/lib/organization';
 
 import { motion } from 'framer-motion';
+import UploadZone from 'common/uploadZone';
 
 interface Props {
     setPage: (index: number) => void;
@@ -115,7 +115,7 @@ const ProfileExperience = ({ setPage }: Props) => {
             </Text>
             <Stack
                 align={{ base: ' center', md: 'flex-start' }}
-                justify="center"
+                justify={{ base: 'center', md: 'flex-start' }}
                 pt="50px"
                 w="full"
                 direction={{ base: 'column', md: 'row' }}
@@ -132,33 +132,37 @@ const ProfileExperience = ({ setPage }: Props) => {
                         color={'white'}
                     />
 
-                    <Stack w="fit-content">
-                        <UploadButton
-                            w="full"
-                            p={0}
-                            onChange={async (e) => {
-                                const { validateTypes, getBase64 } = await import('services/images');
+                    <UploadZone
+                        onDrop={async (file) => {
+                            const { validateTypes, getBase64 } = await import('services/images');
 
-                                if (e.target?.files && validateTypes(e.target.files[0])) {
-                                    if (e.target.files[0].size >= 2000000) {
-                                        toast({
-                                            title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
-                                            status: 'error',
-                                            duration: 9000,
-                                            isClosable: true,
-                                            position: 'top-right',
-                                        });
-                                    } else {
-                                        const base = await getBase64(e.target.files![0]);
-                                        setBaseImg(base);
-                                        onCropperOpen();
-                                    }
+                            if (file && validateTypes(file[0])) {
+                                if (file[0].size >= 2000000) {
+                                    toast({
+                                        title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                        status: 'error',
+                                        duration: 9000,
+                                        isClosable: true,
+                                        position: 'top-right',
+                                    });
+                                } else {
+                                    const base = await getBase64(file![0]);
+                                    setBaseImg(base);
+                                    onCropperOpen();
                                 }
-                            }}
-                        >
-                            Subir imagen
-                        </UploadButton>
-                    </Stack>
+                            }
+                        }}
+                        variant="unstyled"
+                        borderBottom="2px"
+                        color="gray.50"
+                        fontFamily="inter"
+                        fontWeight="normal"
+                        fontSize="15px"
+                        borderColor="gray.50"
+                        rounded={0}
+                    >
+                        Subir imagen
+                    </UploadZone>
 
                     <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
                         Tamaño máximo 2MB

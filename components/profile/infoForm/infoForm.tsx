@@ -2,7 +2,8 @@
 import { Avatar, Flex, HStack, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import EditableTitle from 'common/editableTitle';
-import UploadButton from 'common/uploadButton';
+
+import UploadZone from 'common/uploadZone';
 import { useState } from 'react';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
@@ -114,33 +115,37 @@ const InfoForm: React.FC = () => {
                                 color={'white'}
                             />
 
-                            <Stack w="fit-content" cursor="pointer">
-                                <UploadButton
-                                    w="full"
-                                    cursor="pointer"
-                                    onChange={async (e) => {
-                                        const { validateTypes, getBase64 } = await import('services/images');
+                            <UploadZone
+                                onDrop={async (file) => {
+                                    const { validateTypes, getBase64 } = await import('services/images');
 
-                                        if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            if (e.target.files[0].size >= 2000000) {
-                                                toast({
-                                                    title: 'La imagen es muy grande, porfavor, sube una imagen menor o igual a 2MB',
-                                                    status: 'error',
-                                                    duration: 9000,
-                                                    isClosable: true,
-                                                    position: 'top-right',
-                                                });
-                                            } else {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setBaseImg(base);
-                                                onCropperOpen();
-                                            }
+                                    if (file && validateTypes(file[0])) {
+                                        if (file[0].size >= 2000000) {
+                                            toast({
+                                                title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                status: 'error',
+                                                duration: 9000,
+                                                isClosable: true,
+                                                position: 'top-right',
+                                            });
+                                        } else {
+                                            const base = await getBase64(file![0]);
+                                            setBaseImg(base);
+                                            onCropperOpen();
                                         }
-                                    }}
-                                >
-                                    Subir imagen
-                                </UploadButton>
-                            </Stack>
+                                    }
+                                }}
+                                variant="unstyled"
+                                borderBottom="2px"
+                                color="gray.50"
+                                fontFamily="inter"
+                                fontWeight="normal"
+                                fontSize="15px"
+                                borderColor="gray.50"
+                                rounded={0}
+                            >
+                                Subir imagen
+                            </UploadZone>
 
                             <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
                                 Tamaño máximo 2MB

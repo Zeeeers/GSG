@@ -16,6 +16,7 @@ import Avatar from '@clyc/optimized-image/components/chakraAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
+import UploadZone from 'common/uploadZone';
 import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
 import dynamic from 'next/dynamic';
 import router from 'next/router';
@@ -148,33 +149,37 @@ const RegisterStepTwoForm: React.FC = () => {
                                     name={watch().organizationName ? 'GSG' : watch().organizationName}
                                 />
 
-                                <Stack w="fit-content">
-                                    <UploadButton
-                                        w="full"
-                                        ml={-2}
-                                        onChange={async (e) => {
-                                            const { validateTypes, getBase64 } = await import('services/images');
+                                <UploadZone
+                                    onDrop={async (file) => {
+                                        const { validateTypes, getBase64 } = await import('services/images');
 
-                                            if (e.target?.files && validateTypes(e.target.files[0])) {
-                                                if (e.target?.files[0].size >= 2000000) {
-                                                    toast({
-                                                        title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
-                                                        status: 'error',
-                                                        duration: 9000,
-                                                        isClosable: true,
-                                                        position: 'top-right',
-                                                    });
-                                                } else {
-                                                    const base = await getBase64(e.target.files![0]);
-                                                    setBaseImg(base);
-                                                    onCropperOpen();
-                                                }
+                                        if (file && validateTypes(file[0])) {
+                                            if (file[0].size >= 2000000) {
+                                                toast({
+                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            } else {
+                                                const base = await getBase64(file![0]);
+                                                setBaseImg(base);
+                                                onCropperOpen();
                                             }
-                                        }}
-                                    >
-                                        Subir logo
-                                    </UploadButton>
-                                </Stack>
+                                        }
+                                    }}
+                                    variant="unstyled"
+                                    borderBottom="2px"
+                                    color="gray.50"
+                                    fontFamily="inter"
+                                    fontWeight="normal"
+                                    fontSize="15px"
+                                    borderColor="gray.50"
+                                    rounded={0}
+                                >
+                                    Subir logo
+                                </UploadZone>
 
                                 <FormHelperText color="gray.300">Tamaño máximo 2MB</FormHelperText>
 
