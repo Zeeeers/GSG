@@ -16,6 +16,7 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
+import { Pagination } from 'common/pagination';
 
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
@@ -25,8 +26,21 @@ import SelectComponent from './selectComponenet';
 const ListProyectsForm = (props: any) => {
     const { data, mutate } = useAdminGsg();
     const [deleteProduct, setDeleteProduct] = useState(false);
+    const [paginationIndex, setPagination] = useState(0);
     const toast = useToast();
 
+    const gsgFilterData = data?.data?.projects
+        ?.filter((project) => project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''))
+        .filter((project) => project?.status.includes(props?.filters?.status ?? ''))
+        .sort((a, b) => {
+            if (props?.filters?.last_status_updated === 'asc') {
+                //@ts-ignore
+                return new Date(b.last_status_updated) - new Date(a.last_status_updated);
+            } else {
+                //@ts-ignore
+                return new Date(a.last_status_updated) - new Date(b.last_status_updated);
+            }
+        });
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
 
@@ -113,21 +127,8 @@ const ListProyectsForm = (props: any) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {data?.data?.projects
-                        ?.filter((project) =>
-                            project.title.toLowerCase().includes(props.filters?.title?.toLowerCase() ?? ''),
-                        )
-                        .filter((project) => project?.status.includes(props?.filters?.status ?? ''))
-                        .sort((a, b) => {
-                            if (props?.filters?.last_status_updated === 'asc') {
-                                //@ts-ignore
-                                return new Date(b.last_status_updated) - new Date(a.last_status_updated);
-                            } else {
-                                //@ts-ignore
-                                return new Date(a.last_status_updated) - new Date(b.last_status_updated);
-                            }
-                        })
-                        .map((proyect) => (
+                    {gsgFilterData
+                        ?.map((proyect) => (
                             <Tr key={proyect.id}>
                                 <Td fontFamily="inter" pl={0} py="30px" w="13%">
                                     {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
@@ -164,9 +165,18 @@ const ListProyectsForm = (props: any) => {
                                     </HStack>
                                 </Td>
                             </Tr>
-                        ))}
+                        ))
+                        .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
                 </Tbody>
             </Table>
+
+            <Stack align="flex-start" w="full">
+                <Pagination
+                    pages={(gsgFilterData?.length ?? 0) / 12}
+                    actualPage={1}
+                    onChange={(page) => setPagination(page)}
+                />
+            </Stack>
 
             <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
                 {data?.data?.projects?.map((project) => (

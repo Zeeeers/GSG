@@ -15,6 +15,7 @@ import {
     FormControl,
     Switch,
 } from '@chakra-ui/react';
+import { Pagination } from 'common/pagination';
 import React, { useState } from 'react';
 import { useInvestorAll } from 'services/api/lib/user';
 import { User } from 'services/api/types/User';
@@ -22,8 +23,26 @@ import { User } from 'services/api/types/User';
 const ListInvestorForm = (props: any) => {
     const [deleteProduct, setDeleteProduct] = useState(false);
     const toast = useToast();
+    const [paginationIndex, setPagination] = useState(0);
 
     const { data: investors, mutate } = useInvestorAll();
+
+    const investorFilter = investors
+        ?.filter((investor) => investor.name.toLowerCase().includes(props.filters?.name?.toLowerCase() ?? ''))
+        .filter((investor, {}, user) =>
+            investor?.active == (props.filters?.status === '')
+                ? user
+                : investor?.active === (props?.filters?.status === 'true'),
+        )
+        .sort((a, b) => {
+            if (props.filters.created_at === 'asc') {
+                //@ts-ignore
+                return new Date(b.created_at) - new Date(a.created_at);
+            } else {
+                //@ts-ignore
+                return new Date(a.created_at) - new Date(b.created_at);
+            }
+        });
 
     const handleStatus = async (id: number) => {
         const { updateStatus } = await import('../../services/api/lib/user');
@@ -107,25 +126,8 @@ const ListInvestorForm = (props: any) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {investors
-                        ?.filter((investor) =>
-                            investor.name.toLowerCase().includes(props.filters?.name?.toLowerCase() ?? ''),
-                        )
-                        .filter((investor, {}, user) =>
-                            investor?.active == (props.filters?.status === '')
-                                ? user
-                                : investor?.active === (props?.filters?.status === 'true'),
-                        )
-                        .sort((a, b) => {
-                            if (props.filters.created_at === 'asc') {
-                                //@ts-ignore
-                                return new Date(b.created_at) - new Date(a.created_at);
-                            } else {
-                                //@ts-ignore
-                                return new Date(a.created_at) - new Date(b.created_at);
-                            }
-                        })
-                        .map((investor: User, i: number) => (
+                    {investorFilter
+                        ?.map((investor: User, i: number) => (
                             <Tr key={i}>
                                 <Td fontFamily="inter" pl={0} py="30px">
                                     {new Date(investor?.created_at).toLocaleString('es-CL', {
@@ -164,9 +166,18 @@ const ListInvestorForm = (props: any) => {
                                     </Button>
                                 </Td>
                             </Tr>
-                        ))}
+                        ))
+                        .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
                 </Tbody>
             </Table>
+
+            <Stack align="flex-start" w="full">
+                <Pagination
+                    pages={(investorFilter?.length ?? 0) / 12}
+                    actualPage={1}
+                    onChange={(page) => setPagination(page)}
+                />
+            </Stack>
 
             <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
                 {investors?.map((investor: User) => (
