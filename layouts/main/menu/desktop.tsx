@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { BsHeartFill } from 'react-icons/bs';
 import { HiChevronDown } from 'react-icons/hi';
 import { RiLogoutBoxRLine, RiUser3Fill } from 'react-icons/ri';
 import { useOrganization } from 'services/api/lib/organization';
@@ -39,13 +40,13 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                 loadingText="Cerrando sesión"
                 transition="ease-in"
                 variant="solid"
-                bg="gray.900"
+                bg="gray.800"
                 color="gray.50"
                 colorScheme="basic"
                 transitionProperty="background"
                 transitionDuration="200ms"
                 _hover={{
-                    backgroundColor: 'gray.800',
+                    backgroundColor: 'gray.700',
                 }}
                 size={'md'}
                 px="10px"
@@ -81,12 +82,28 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                     fontSize="md"
                     fontFamily="inter"
                     onClick={() => {
-                        router.push('/profile');
+                        router.push({ pathname: '/profile', query: { tab: 0 } });
                     }}
                 >
                     <HStack spacing="14px">
                         <Icon w={6} h={6} color="gray.50" as={RiUser3Fill} />
                         <Text>Mi perfil</Text>
+                    </HStack>
+                </MenuItem>
+
+                <MenuDivider />
+
+                <MenuItem
+                    fontWeight="normal"
+                    fontSize="md"
+                    fontFamily="inter"
+                    onClick={() => {
+                        router.push({ pathname: '/profile', query: { tab: 1 } });
+                    }}
+                >
+                    <HStack spacing="14px">
+                        <Icon w={5} h={5} color="gray.50" as={BsHeartFill} />
+                        <Text>Mis intereses</Text>
                     </HStack>
                 </MenuItem>
 

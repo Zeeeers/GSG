@@ -35,13 +35,13 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                 loadingText="Cerrando sesión"
                 transition="ease-in"
                 variant="solid"
-                bg="gray.900"
+                bg={{ base: 'gray.900', md: 'gray.800' }}
                 color="gray.50"
                 colorScheme="basic"
                 transitionProperty="background"
                 transitionDuration="200ms"
                 _hover={{
-                    backgroundColor: 'gray.800',
+                    backgroundColor: 'gray.700',
                 }}
                 size={'md'}
                 px="10px"

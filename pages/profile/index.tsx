@@ -8,6 +8,8 @@ import Navbar from 'layouts/main/navbar';
 import InfoSkeleton from 'components/profile/infoForm/infoForm.skeleton';
 import PassSkeleton from 'components/profile/changePassword/changePassword.skeleton';
 import OdsTab from 'components/profile/ods/odsTab';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 // Dynamic
 const InfoForm = dynamic(() => import('components/profile/infoForm/infoForm'), { loading: () => <InfoSkeleton /> });
@@ -17,6 +19,17 @@ const PassForm = dynamic(() => import('components/profile/changePassword/changeP
 
 // Component
 const UserProfile: NextPage = () => {
+    const [indexPage, setIndexPage] = useState(0);
+    const router = useRouter();
+
+    const { tab } = router.query;
+
+    useEffect(() => {
+        if (tab) {
+            setIndexPage(parseInt(tab.toString()));
+        }
+    }, [tab]);
+
     return (
         <>
             <NextSeo title="Perfil de usuario - GSG" />
@@ -33,14 +46,23 @@ const UserProfile: NextPage = () => {
                 bg={'gray.800'}
                 mt="120px"
             >
-                <Tabs p={0} fontFamily="inter" fontWeight="normal" fontSize="md" isLazy>
+                <Tabs
+                    onChange={(index) => setIndexPage(index)}
+                    index={indexPage}
+                    p={0}
+                    fontFamily="inter"
+                    fontWeight="normal"
+                    fontSize="md"
+                    isLazy
+                >
                     <TabList pl="20px" borderBottom="0" overflowX="auto" overflowY="hidden" pb="15px">
-                        <Tab px="30px" whiteSpace="nowrap">
-                            Intereses
-                        </Tab>
                         <Tab px="30px" whiteSpace="nowrap">
                             Perfil
                         </Tab>
+                        <Tab px="30px" whiteSpace="nowrap">
+                            Intereses
+                        </Tab>
+
                         <Tab px="30px" whiteSpace="nowrap">
                             Contraseña
                         </Tab>
@@ -48,10 +70,10 @@ const UserProfile: NextPage = () => {
 
                     <TabPanels>
                         <TabPanel>
-                            <OdsTab />
+                            <InfoForm />
                         </TabPanel>
                         <TabPanel>
-                            <InfoForm />
+                            <OdsTab />
                         </TabPanel>
 
                         <TabPanel>
