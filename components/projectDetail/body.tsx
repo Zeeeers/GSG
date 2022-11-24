@@ -194,9 +194,11 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                             </VStack>
 
                             <VStack maxW="348px" spacing="15px">
-                                <Button variant="solid" h="40px">
-                                    Solicitar invitación
-                                </Button>
+                                <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
+                                    <Button variant="solid" h="40px">
+                                        Solicitar invitación
+                                    </Button>
+                                </Link>
                                 <Link href="https://www.inversiondeimpacto.cl/sociosgsg" target="_blank">
                                     <Button
                                         variant="unstyled"
