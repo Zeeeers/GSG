@@ -663,7 +663,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
         if (ok) {
             if (isPreview) {
-                window.open(`https://www.gsg-match.com/projectDetail/${project?.id}`, '_blank');
+                window.open(`${window.location.origin}/projectDetail/${project?.id}`, '_blank');
                 setSaveDraft(false);
             } else {
                 setSaveDraft(false);
@@ -746,8 +746,6 @@ const Creator: NextPage = ({ project, quality }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    console.log(errors);
 
     return (
         <>

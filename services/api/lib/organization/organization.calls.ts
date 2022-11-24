@@ -34,7 +34,6 @@ export const organizationFetcher = async (endpoint: string, isPyme?: boolean) =>
     });
 
     const { data } = await api.get<GetOrganizationResponse>(endpoint, '', isPyme ? pymeHeaders(token) : headers(token));
-
     return data?.organization;
 };
 

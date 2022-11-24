@@ -432,7 +432,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                             </VStack>
                         </Flex>
 
-                        <Body project={project} ref={ref} />
+                        <Body project={project} ref={ref} user={user} orga={orga} />
                     </VStack>
                 </Container>
             </Flex>
