@@ -58,6 +58,7 @@ const Explorer: NextPage = () => {
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
     const [isOpenFilter, setIsOpenFilter] = useState(false);
+    const [getPorjects, setGetProjets] = useState([]);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
 
     const router = useRouter();
@@ -71,9 +72,15 @@ const Explorer: NextPage = () => {
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
 
-    const projectSort = gsg?.data?.projects[0].sort((a, b) =>
-        orderBy === 'asc' ? (a.id < b.id ? -1 : 1) : a.id > b.id ? -1 : 1,
-    );
+    const projectSort = gsg?.data?.projects?.flat().sort((a, b) => {
+        if (orderBy === 'desc') {
+            //@ts-ignore
+            return new Date(b.last_status_updated) - new Date(a.last_status_updated);
+        } else {
+            //@ts-ignore
+            return new Date(a.last_status_updated) - new Date(b.last_status_updated);
+        }
+    });
 
     const projectFilter = projectSort
         ?.filter((p) => Object.values(p.qualities).find((p) => filters?.qualities?.includes(p?.name) ?? []))
@@ -186,6 +193,8 @@ const Explorer: NextPage = () => {
         filters?.contributionAmount,
         filters?.investmentTerms,
     ]);
+
+    console.log(gsg?.data?.projects?.flat());
 
     return (
         <>
