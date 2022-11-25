@@ -284,10 +284,16 @@ const Explorer: NextPage = () => {
                                     >
                                         Todos los proyectos de inversión
                                     </Heading>
-                                    <Text>
-                                        A continuación se visualizan todos los proyectos activos dentro de Match. Puedes
-                                        filtrarlos según lo requieras.
-                                    </Text>
+                                    {user ? (
+                                        <Text>
+                                            A continuación se visualizan todos los proyectos activos dentro de Match.
+                                            Puedes filtrarlos según lo requieras.
+                                        </Text>
+                                    ) : (
+                                        <Text>
+                                            A continuación se visualizan todos los proyectos activos dentro de Match.
+                                        </Text>
+                                    )}
                                 </VStack>
 
                                 <Stack
