@@ -194,11 +194,9 @@ const Explorer: NextPage = () => {
         filters?.investmentTerms,
     ]);
 
-    console.log(gsg?.data?.projects?.flat());
-
     return (
         <>
-            <NextSeo title={'Explorador - GSG'} />
+            <NextSeo title={'Explorador - MATCH'} />
             <Navbar />
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 {orga !== undefined &&
@@ -379,7 +377,7 @@ const Explorer: NextPage = () => {
                                                 _focus={{ background: 'gray.700' }}
                                                 _selected={{ background: 'gray.700' }}
                                             >
-                                                Filtro avanzados
+                                                Filtros avanzados
                                             </Button>
                                         )}
                                     </Stack>

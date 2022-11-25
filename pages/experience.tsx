@@ -16,7 +16,7 @@ const Experience = () => {
     return (
         <>
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
-            <NextSeo title={'Bienvenidos a GSG'} />
+            <NextSeo title="Bienvenidos a MATCH" />
             <Stack
                 w="full"
                 h={{ base: indexPage === 0 ? '100vh' : 'full', md: '100vh' }}
