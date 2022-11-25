@@ -27,7 +27,7 @@ const RegisterPage: NextPage = () => {
 
     return (
         <>
-            <NextSeo title={'Registrarse en GSG'} />
+            <NextSeo title={'Registrarse en MATCH'} />
             <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/explorer" />
 
             <LogoBar>

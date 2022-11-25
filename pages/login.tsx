@@ -54,7 +54,7 @@ const LoginPage: NextPage = ({ token }) => {
 
     return (
         <>
-            <NextSeo title={'Iniciar sesión - GSG'} />
+            <NextSeo title={'Iniciar sesión - MATCH'} />
 
             {process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME && (
                 <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dashboard" />

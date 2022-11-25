@@ -7,7 +7,7 @@ const Custom404 = () => {
     const router = useRouter();
     return (
         <>
-            <NextSeo title="Error 404 - GSG" />
+            <NextSeo title="Error 404 - MATCH" />
 
             <Stack
                 bgImage="/images/nasa.jpg"

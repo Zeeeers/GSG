@@ -747,11 +747,9 @@ const Creator: NextPage = ({ project, quality }) => {
         };
     }, []);
 
-    console.log(errors);
-
     return (
         <>
-            <NextSeo title={'Creador de proyecto - GSG'} />
+            <NextSeo title="Creador de proyecto - MATCH" />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
             <HStack

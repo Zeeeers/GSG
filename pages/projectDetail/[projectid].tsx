@@ -21,7 +21,7 @@ const PublicChallenge: NextPage = ({ project }) => {
     return (
         <>
             <NextSeo
-                title={`${project?.title} - GSG`}
+                title={`${project?.title} - MATCH`}
                 description={project?.description}
                 canonical="https://www.gsg-match.com/"
             />
