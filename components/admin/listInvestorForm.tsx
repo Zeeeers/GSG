@@ -171,7 +171,7 @@ const ListInvestorForm = (props: any) => {
                 </Tbody>
             </Table>
 
-            <Stack align="flex-start" w="full">
+            <Stack align="flex-start" w="full" pt="30px">
                 <Pagination
                     pages={Math.ceil((investorFilter?.length ?? 0) / 12)}
                     actualPage={1}
