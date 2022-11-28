@@ -145,79 +145,8 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                     </VStack>
                 )}
             </VStack>
-            {(!user || !adminCookie) && orga?.gsg_project_id !== project?.id && (
-                <Stack pos="relative">
-                    <Stack
-                        spacing="40px"
-                        bg="gray.800"
-                        w="full"
-                        rounded="16px"
-                        py="40px"
-                        px={{ base: '24px', md: '35px' }}
-                        ref={description_finance}
-                        scrollMarginTop="100px"
-                    >
-                        <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
-                            Descripción financiera de {project?.organization?.name}
-                        </Text>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
-                                    La búsqueda de capital es para:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {project?.investment_type}
-                                </Text>
-                            </VStack>
-                        </VStack>
-
-                        <Stack
-                            pos="absolute"
-                            h="500px"
-                            bg="gray.800"
-                            inset={0}
-                            top="90px"
-                            align="center"
-                            justify="center"
-                            spacing="30px"
-                            opacity="0.9"
-                        >
-                            <VStack maxW="348px" spacing="10px">
-                                <Text fontSize="36px" fontWeight="500" lineHeight="32px">
-                                    ¿Eres inversionista?
-                                </Text>
-                                <Text textAlign="center" fontFamily="inter" fontSize="16px" lineHeight="22.4px">
-                                    Solicita tu invitación aquí para registrarte y ver toda la información de la empresa
-                                </Text>
-                            </VStack>
-
-                            <VStack maxW="348px" spacing="15px">
-                                <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
-                                    <Button variant="solid" h="40px">
-                                        Solicitar invitación
-                                    </Button>
-                                </Link>
-                                <Link href="https://www.inversiondeimpacto.cl/sociosgsg" target="_blank">
-                                    <Button
-                                        variant="unstyled"
-                                        borderBottom="2px"
-                                        borderColor="gray.50"
-                                        rounded="none"
-                                        h="fit-content"
-                                        fontFamily="inter"
-                                        fontSize="16px"
-                                    >
-                                        Saber más
-                                    </Button>
-                                </Link>
-                            </VStack>
-                        </Stack>
-                    </Stack>
-                </Stack>
-            )}
-
-            {(user || orga?.gsg_project_id === project?.id || adminCookie) && (
+            {user || orga?.gsg_project_id === project?.id || adminCookie ? (
                 <>
                     <Stack
                         spacing="40px"
@@ -576,6 +505,76 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                         </VStack>
                     </Stack>
                 </>
+            ) : (
+                <Stack pos="relative">
+                    <Stack
+                        spacing="40px"
+                        bg="gray.800"
+                        w="full"
+                        rounded="16px"
+                        py="40px"
+                        px={{ base: '24px', md: '35px' }}
+                        ref={description_finance}
+                        scrollMarginTop="100px"
+                    >
+                        <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
+                            Descripción financiera de {project?.organization?.name}
+                        </Text>
+
+                        <VStack align="flex-start">
+                            <VStack align="flex-start" spacing="5px">
+                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                                    La búsqueda de capital es para:
+                                </Text>
+                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                    {project?.investment_type}
+                                </Text>
+                            </VStack>
+                        </VStack>
+
+                        <Stack
+                            pos="absolute"
+                            h="500px"
+                            bg="gray.800"
+                            inset={0}
+                            top="90px"
+                            align="center"
+                            justify="center"
+                            spacing="30px"
+                            opacity="0.9"
+                        >
+                            <VStack maxW="348px" spacing="10px">
+                                <Text fontSize="36px" fontWeight="500" lineHeight="32px">
+                                    ¿Eres inversionista?
+                                </Text>
+                                <Text textAlign="center" fontFamily="inter" fontSize="16px" lineHeight="22.4px">
+                                    Solicita tu invitación aquí para registrarte y ver toda la información de la empresa
+                                </Text>
+                            </VStack>
+
+                            <VStack maxW="348px" spacing="15px">
+                                <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
+                                    <Button variant="solid" h="40px">
+                                        Solicitar invitación
+                                    </Button>
+                                </Link>
+                                <Link href="https://www.inversiondeimpacto.cl/sociosgsg" target="_blank">
+                                    <Button
+                                        variant="unstyled"
+                                        borderBottom="2px"
+                                        borderColor="gray.50"
+                                        rounded="none"
+                                        h="fit-content"
+                                        fontFamily="inter"
+                                        fontSize="16px"
+                                    >
+                                        Saber más
+                                    </Button>
+                                </Link>
+                            </VStack>
+                        </Stack>
+                    </Stack>
+                </Stack>
             )}
         </Stack>
     );
