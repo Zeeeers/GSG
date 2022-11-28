@@ -266,16 +266,84 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                             </Button>
                         ))}
 
-                    <VStack w="full">
-                        <Flex w="full" direction="column" position="relative">
-                            <Flex
-                                alignItems="center"
-                                justifyContent="center"
-                                w="full"
-                                h={{ base: '140px', md: '20rem' }}
-                                overflow="hidden"
-                            >
-                                <Skeleton isLoaded={!isValidating} h="full" borderRadius={{ base: 0, md: '2xl' }}>
+                    {isValidating ? (
+                        <VStack w="full">
+                            <Flex w="full" direction="column" position="relative">
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    h={{ base: '140px', md: '20rem' }}
+                                    overflow="hidden"
+                                >
+                                    <Skeleton
+                                        h={{ base: '140px', md: '20rem' }}
+                                        w={{ base: 'full', md: 898 }}
+                                        borderRadius={{ base: 0, md: '2xl' }}
+                                    />
+                                </Flex>
+
+                                <VStack
+                                    marginTop={{ base: 0, md: '-5rem' }}
+                                    justifyContent="center"
+                                    h="fit-content"
+                                    zIndex={20}
+                                >
+                                    <VStack
+                                        boxShadow="lg"
+                                        bg="gray.800"
+                                        w={{ base: 'full', md: 898 }}
+                                        h={{ base: 'full', md: 'fit-content' }}
+                                        justifyContent="start"
+                                        alignItems="start"
+                                        rounded={{ base: 0, md: '2xl' }}
+                                        px={{ base: '24px', md: '40px' }}
+                                        py={{ base: '24px', md: '30px' }}
+                                        spacing={0}
+                                    >
+                                        <VStack w="full" h="full" align="flex-start" spacing="15px" mb="20px">
+                                            <Stack
+                                                direction={{ base: 'column', md: 'row' }}
+                                                spacing="17px"
+                                                mb="15px"
+                                                justify="space-between"
+                                                w="full"
+                                                h="full"
+                                            >
+                                                <HStack w="full" h="full">
+                                                    <Skeleton w="48px" h="48px" rounded="full" />
+                                                    <Skeleton w="100px" h="30px" />
+                                                </HStack>
+                                            </Stack>
+
+                                            <VStack h="full" align="flex-start" w="full" spacing="10px">
+                                                <Skeleton w="full" h="40px" />
+                                                <Skeleton w="full" h="240px" />
+                                            </VStack>
+                                        </VStack>
+
+                                        <Skeleton h="24px" w="70px" />
+
+                                        <VStack align="flex-start" w="full" h="full" pt="20px" m={0} spacing={0}>
+                                            <Text fontFamily="inter" color="gray.400" fontSize="16px">
+                                                Rango de levantamiento buscado
+                                            </Text>
+                                            <Skeleton w="325px" h="45px" />
+                                        </VStack>
+                                    </VStack>
+                                </VStack>
+                            </Flex>
+
+                            <Body project={project} ref={ref} user={user} orga={orga} />
+                        </VStack>
+                    ) : (
+                        <VStack w="full">
+                            <Flex w="full" direction="column" position="relative">
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    h={{ base: '140px', md: '20rem' }}
+                                    overflow="hidden"
+                                >
                                     <Img
                                         src={project?.main_image}
                                         alt="Imagen del desafio"
@@ -283,116 +351,112 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                         objectFit="cover"
                                         borderRadius={{ base: 0, md: '2xl' }}
                                     />
-                                </Skeleton>
-                            </Flex>
+                                </Flex>
 
-                            <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" w="full" zIndex={30}>
-                                <VStack
-                                    boxShadow="lg"
-                                    bg="gray.800"
-                                    w={{ base: 'full', md: 898 }}
-                                    h={{ base: 'full', md: 'fit-content' }}
-                                    justifyContent="start"
-                                    alignItems="start"
-                                    rounded={{ base: 0, md: '2xl' }}
-                                    px={{ base: '24px', md: '40px' }}
-                                    py={{ base: '24px', md: '30px' }}
-                                    spacing={0}
-                                >
-                                    <VStack w="full" align="flex-start" spacing="15px" mb="20px">
-                                        <Stack
-                                            direction={{ base: 'column', md: 'row' }}
-                                            spacing="17px"
-                                            mb="15px"
-                                            justify="space-between"
-                                            w="full"
-                                        >
-                                            <HStack>
-                                                <Skeleton isLoaded={!isValidating} w="48px" h="48px" rounded="full">
+                                <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" h="fit-content">
+                                    <VStack
+                                        boxShadow="lg"
+                                        bg="gray.800"
+                                        w={{ base: 'full', md: 898 }}
+                                        h={{ base: 'full', md: 'fit-content' }}
+                                        justifyContent="start"
+                                        alignItems="start"
+                                        rounded={{ base: 0, md: '2xl' }}
+                                        px={{ base: '24px', md: '40px' }}
+                                        py={{ base: '24px', md: '30px' }}
+                                        spacing={0}
+                                    >
+                                        <VStack w="full" h="full" align="flex-start" spacing="15px" mb="20px">
+                                            <Stack
+                                                direction={{ base: 'column', md: 'row' }}
+                                                spacing="17px"
+                                                mb="15px"
+                                                justify="space-between"
+                                                w="full"
+                                                h="full"
+                                            >
+                                                <HStack w="full" h="full">
                                                     <Avatar
                                                         name={project?.organization?.name}
                                                         src={project?.organization?.image}
                                                         w="48px"
                                                         h="48px"
                                                     />
-                                                </Skeleton>
-                                                <Skeleton isLoaded={!isValidating}>
+
                                                     <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
                                                         {project?.organization?.name}
                                                     </Text>
-                                                </Skeleton>
-                                            </HStack>
-                                            {user &&
-                                                Object.values(project?.relations ?? {}).find(
+                                                </HStack>
+                                                {user &&
+                                                    Object.values(project?.relations ?? {}).find(
+                                                        (r) => r.organization_id === user?.organization_id,
+                                                    )?.kinds !== 'interested' && (
+                                                        <Button
+                                                            w="fit-content"
+                                                            onClick={handleInterest}
+                                                            leftIcon={<Img src="/images/icons/interest.svg" />}
+                                                            variant="outline"
+                                                            border="2px"
+                                                            rounded="500px"
+                                                            borderColor="gray.50"
+                                                            h="40px"
+                                                            _hover={{ borderColor: 'none' }}
+                                                        >
+                                                            <Text>Me interesa</Text>
+                                                        </Button>
+                                                    )}
+
+                                                {Object.values(project?.relations ?? {}).find(
                                                     (r) => r.organization_id === user?.organization_id,
-                                                )?.kinds !== 'interested' && (
+                                                )?.kinds === 'interested' && (
                                                     <Button
-                                                        w="fit-content"
                                                         onClick={handleInterest}
-                                                        leftIcon={<Img src="/images/icons/interest.svg" />}
-                                                        variant="outline"
+                                                        variant="solid"
+                                                        background="blue.700"
+                                                        color="gray.50"
                                                         border="2px"
                                                         rounded="500px"
-                                                        borderColor="gray.50"
+                                                        borderColor="blue.700"
+                                                        fontSize="18px"
+                                                        fontFamily="inter"
                                                         h="40px"
+                                                        px="10px"
                                                         _hover={{ borderColor: 'none' }}
+                                                        leftIcon={
+                                                            <Img
+                                                                src="/images/icons/interest.svg"
+                                                                as={motion.img}
+                                                                initial={{ scale: 0 }}
+                                                                animate={{
+                                                                    scale: 1,
+                                                                    transition: {
+                                                                        type: 'spring',
+                                                                        duration: 1,
+                                                                        bounce: 0.6,
+                                                                    },
+                                                                }}
+                                                            />
+                                                        }
                                                     >
-                                                        <Text>Me interesa</Text>
+                                                        <Text>Te interesa</Text>
                                                     </Button>
                                                 )}
-
-                                            {Object.values(project?.relations ?? {}).find(
-                                                (r) => r.organization_id === user?.organization_id,
-                                            )?.kinds === 'interested' && (
-                                                <Button
-                                                    onClick={handleInterest}
-                                                    variant="solid"
-                                                    background="blue.700"
-                                                    color="gray.50"
-                                                    border="2px"
-                                                    rounded="500px"
-                                                    borderColor="blue.700"
-                                                    fontSize="18px"
-                                                    fontFamily="inter"
-                                                    h="40px"
-                                                    px="10px"
-                                                    _hover={{ borderColor: 'none' }}
-                                                    leftIcon={
-                                                        <Img
-                                                            src="/images/icons/interest.svg"
-                                                            as={motion.img}
-                                                            initial={{ scale: 0 }}
-                                                            animate={{
-                                                                scale: 1,
-                                                                transition: {
-                                                                    type: 'spring',
-                                                                    duration: 1,
-                                                                    bounce: 0.6,
-                                                                },
-                                                            }}
-                                                        />
-                                                    }
-                                                >
-                                                    <Text>Te interesa</Text>
-                                                </Button>
+                                            </Stack>
+                                            {user && (
+                                                <HStack px="10px" py="5px" rounded="6px" background="#3B5D89">
+                                                    <Img src="/images/icons/interest.svg" />
+                                                    <Text
+                                                        color="gray.50"
+                                                        fontFamily="inter"
+                                                        fontWeight="400"
+                                                        fontSize="15px"
+                                                    >
+                                                        {`${project?.relations?.interests} inversionistas interesados`}
+                                                    </Text>
+                                                </HStack>
                                             )}
-                                        </Stack>
-                                        {user && (
-                                            <HStack px="10px" py="5px" rounded="6px" background="#3B5D89">
-                                                <Img src="/images/icons/interest.svg" />
-                                                <Text
-                                                    color="gray.50"
-                                                    fontFamily="inter"
-                                                    fontWeight="400"
-                                                    fontSize="15px"
-                                                >
-                                                    {`${project?.relations?.interests} inversionistas interesados`}
-                                                </Text>
-                                            </HStack>
-                                        )}
 
-                                        <VStack align="flex-start" w="full" spacing="10px">
-                                            <Skeleton isLoaded={!isValidating} w="full" h="32px">
+                                            <VStack h="full" align="flex-start" w="full" spacing="10px">
                                                 <Text
                                                     fontSize={{ base: '3xl', md: '4xl' }}
                                                     lineHeight="32px"
@@ -403,16 +467,13 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                 >
                                                     {project?.title}
                                                 </Text>
-                                            </Skeleton>
 
-                                            <Skeleton isLoaded={!isValidating} h="240px" w="full">
                                                 <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
                                                     {project?.description}
                                                 </Text>
-                                            </Skeleton>
+                                            </VStack>
                                         </VStack>
-                                    </VStack>
-                                    <Skeleton isLoaded={!isValidating} h="28px" w="70px">
+
                                         <HStack>
                                             {project?.capital_stage && (
                                                 <BadgeStage capitalStage={project?.capital_stage} />
@@ -423,47 +484,48 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     <BadgeStage capitalStage={project?.debt} />
                                                 ))}
                                         </HStack>
-                                    </Skeleton>
-                                    <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
-                                        <Text fontFamily="inter" color="gray.400" fontSize="16px">
-                                            Rango de levantamiento buscado
-                                        </Text>
-                                        <Flex
-                                            justifyContent="space-between"
-                                            direction={{ base: 'column', md: 'row' }}
-                                            w="full"
-                                            pt="5px"
-                                        >
-                                            <Skeleton isLoaded={!isValidating} w="full" h="45px">
+
+                                        <VStack align="flex-start" w="full" h="full" pt="20px" m={0} spacing={0}>
+                                            <Text fontFamily="inter" color="gray.400" fontSize="16px">
+                                                Rango de levantamiento buscado
+                                            </Text>
+                                            <Flex
+                                                justifyContent="space-between"
+                                                direction={{ base: 'column', md: 'row' }}
+                                                w="full"
+                                                pt="5px"
+                                                h="full"
+                                            >
                                                 <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
                                                     {FinanceGoal(project?.finance_goal)} (CLP)
                                                 </Text>
-                                            </Skeleton>
-                                            <Stack
-                                                alignItems={{ base: 'center', md: 'start' }}
-                                                spacing="5px"
-                                                mt={{ base: '20px', md: 0 }}
-                                                justifyContent="end"
-                                            >
-                                                {(user || orga || adminCookie) && (
-                                                    <Button
-                                                        onClick={onOpen}
-                                                        w={{ base: 'full', md: '212px' }}
-                                                        h="48px"
-                                                        variant="solid"
-                                                    >
-                                                        Contactar
-                                                    </Button>
-                                                )}
-                                            </Stack>
-                                        </Flex>
+
+                                                <Stack
+                                                    alignItems={{ base: 'center', md: 'start' }}
+                                                    spacing="5px"
+                                                    mt={{ base: '20px', md: 0 }}
+                                                    justifyContent="end"
+                                                >
+                                                    {(user || orga || adminCookie) && (
+                                                        <Button
+                                                            onClick={onOpen}
+                                                            w={{ base: 'full', md: '212px' }}
+                                                            h="48px"
+                                                            variant="solid"
+                                                        >
+                                                            Contactar
+                                                        </Button>
+                                                    )}
+                                                </Stack>
+                                            </Flex>
+                                        </VStack>
                                     </VStack>
                                 </VStack>
-                            </VStack>
-                        </Flex>
+                            </Flex>
 
-                        <Body project={project} ref={ref} user={user} orga={orga} />
-                    </VStack>
+                            <Body project={project} ref={ref} user={user} orga={orga} />
+                        </VStack>
+                    )}
                 </Container>
             </Flex>
 

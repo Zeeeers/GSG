@@ -146,12 +146,11 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                 )}
             </VStack>
             {(!user || !adminCookie) && orga?.gsg_project_id !== project?.id && (
-                <Stack pos="relative" h="full">
+                <Stack pos="relative">
                     <Stack
                         spacing="40px"
                         bg="gray.800"
                         w="full"
-                        h="full"
                         rounded="16px"
                         py="40px"
                         px={{ base: '24px', md: '35px' }}
@@ -182,7 +181,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                             align="center"
                             justify="center"
                             spacing="30px"
-                            opacity="100%"
+                            opacity="0.9"
                         >
                             <VStack maxW="348px" spacing="10px">
                                 <Text fontSize="36px" fontWeight="500" lineHeight="32px">
