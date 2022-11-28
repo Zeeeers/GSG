@@ -1,6 +1,18 @@
 // Dependencies
 //@ts-nocheck
-import { Avatar, Button, Container, Flex, HStack, Img, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+    Avatar,
+    Button,
+    Container,
+    Flex,
+    HStack,
+    Img,
+    Skeleton,
+    Stack,
+    Text,
+    useDisclosure,
+    VStack,
+} from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import cookies from 'nookies';
@@ -15,10 +27,11 @@ interface Props {
     project: Gsg | undefined;
     user: User | undefined;
     orga: Organization | undefined;
+    iisValidating: boolean;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
+const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating }) => {
     const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
     const router = useRouter();
 
@@ -262,17 +275,18 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                 h={{ base: '140px', md: '20rem' }}
                                 overflow="hidden"
                             >
-                                <Img
-                                    src={project?.main_image}
-                                    alt="Imagen del desafio"
-                                    w={{ base: 'full', md: 898 }}
-                                    objectFit="cover"
-                                    borderRadius={{ base: 0, md: '2xl' }}
-                                    h="full"
-                                />
+                                <Skeleton isLoaded={!isValidating} h="full" borderRadius={{ base: 0, md: '2xl' }}>
+                                    <Img
+                                        src={project?.main_image}
+                                        alt="Imagen del desafio"
+                                        w={{ base: 'full', md: 898 }}
+                                        objectFit="cover"
+                                        borderRadius={{ base: 0, md: '2xl' }}
+                                    />
+                                </Skeleton>
                             </Flex>
 
-                            <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" w="full">
+                            <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" w="full" zIndex={30}>
                                 <VStack
                                     boxShadow="lg"
                                     bg="gray.800"
@@ -294,15 +308,19 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                             w="full"
                                         >
                                             <HStack>
-                                                <Avatar
-                                                    name={project?.organization?.name}
-                                                    src={project?.organization?.image}
-                                                    w="48px"
-                                                    h="48px"
-                                                />
-                                                <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
-                                                    {project?.organization?.name}
-                                                </Text>
+                                                <Skeleton isLoaded={!isValidating} w="48px" h="48px" rounded="full">
+                                                    <Avatar
+                                                        name={project?.organization?.name}
+                                                        src={project?.organization?.image}
+                                                        w="48px"
+                                                        h="48px"
+                                                    />
+                                                </Skeleton>
+                                                <Skeleton isLoaded={!isValidating}>
+                                                    <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
+                                                        {project?.organization?.name}
+                                                    </Text>
+                                                </Skeleton>
                                             </HStack>
                                             {user &&
                                                 Object.values(project?.relations ?? {}).find(
@@ -374,28 +392,38 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                         )}
 
                                         <VStack align="flex-start" w="full" spacing="10px">
-                                            <Text
-                                                fontSize={{ base: '3xl', md: '4xl' }}
-                                                lineHeight="32px"
-                                                textTransform="uppercase"
-                                                fontWeight="bold"
-                                                textOverflow="ellipsis"
-                                                w="full"
-                                            >
-                                                {project?.title}
-                                            </Text>
+                                            <Skeleton isLoaded={!isValidating} w="full" h="32px">
+                                                <Text
+                                                    fontSize={{ base: '3xl', md: '4xl' }}
+                                                    lineHeight="32px"
+                                                    textTransform="uppercase"
+                                                    fontWeight="bold"
+                                                    textOverflow="ellipsis"
+                                                    w="full"
+                                                >
+                                                    {project?.title}
+                                                </Text>
+                                            </Skeleton>
 
-                                            <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
-                                                {project?.description}
-                                            </Text>
+                                            <Skeleton isLoaded={!isValidating} h="240px" w="full">
+                                                <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
+                                                    {project?.description}
+                                                </Text>
+                                            </Skeleton>
                                         </VStack>
                                     </VStack>
-                                    <HStack>
-                                        {project?.capital_stage && <BadgeStage capitalStage={project?.capital_stage} />}
+                                    <Skeleton isLoaded={!isValidating} h="28px" w="70px">
+                                        <HStack>
+                                            {project?.capital_stage && (
+                                                <BadgeStage capitalStage={project?.capital_stage} />
+                                            )}
 
-                                        {!project?.debt ||
-                                            (project?.debt !== 'other' && <BadgeStage capitalStage={project?.debt} />)}
-                                    </HStack>
+                                            {!project?.debt ||
+                                                (project?.debt !== 'other' && (
+                                                    <BadgeStage capitalStage={project?.debt} />
+                                                ))}
+                                        </HStack>
+                                    </Skeleton>
                                     <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
                                         <Text fontFamily="inter" color="gray.400" fontSize="16px">
                                             Rango de levantamiento buscado
@@ -406,9 +434,11 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate }) => {
                                             w="full"
                                             pt="5px"
                                         >
-                                            <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
-                                                {FinanceGoal(project?.finance_goal)} (CLP)
-                                            </Text>
+                                            <Skeleton isLoaded={!isValidating} w="full" h="45px">
+                                                <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
+                                                    {FinanceGoal(project?.finance_goal)} (CLP)
+                                                </Text>
+                                            </Skeleton>
                                             <Stack
                                                 alignItems={{ base: 'center', md: 'start' }}
                                                 spacing="5px"
