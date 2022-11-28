@@ -558,7 +558,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                                         Solicitar invitación
                                     </Button>
                                 </Link>
-                                <Link href="https://www.inversiondeimpacto.cl/sociosgsg" target="_blank">
+                                <Link href="https://www.inversiondeimpacto.cl/match" target="_blank">
                                     <Button
                                         variant="unstyled"
                                         borderBottom="2px"
