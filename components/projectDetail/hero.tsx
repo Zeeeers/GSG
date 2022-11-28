@@ -266,7 +266,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                             </Button>
                         ))}
 
-                    {isValidating ? (
+                    {!project ? (
                         <VStack w="full">
                             <Flex w="full" direction="column" position="relative">
                                 <Flex
@@ -400,6 +400,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                             rounded="500px"
                                                             borderColor="gray.50"
                                                             h="40px"
+                                                            px="25px"
                                                             _hover={{ borderColor: 'none' }}
                                                         >
                                                             <Text>Me interesa</Text>
@@ -420,7 +421,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         fontSize="18px"
                                                         fontFamily="inter"
                                                         h="40px"
-                                                        px="10px"
+                                                        px="25px"
                                                         _hover={{ borderColor: 'none' }}
                                                         leftIcon={
                                                             <Img

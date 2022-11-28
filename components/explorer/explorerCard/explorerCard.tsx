@@ -26,7 +26,7 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
             transitionDuration="normal"
         >
             <Image
-                src={project.main_image ?? 'images/earth.jpg'}
+                src={project?.main_image ?? 'images/earth.jpg'}
                 alt="cover"
                 objectFit="cover"
                 w="full"
@@ -37,7 +37,7 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
                 <VStack align="flex-start">
                     <HStack w="full" justify="space-between">
                         <HStack>
-                            {project.capital_stage && (
+                            {project?.capital_stage && (
                                 <HStack
                                     display="flex"
                                     justifyContent="center"
@@ -50,7 +50,7 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
                                     color="green.800"
                                     fontFamily="inter"
                                 >
-                                    <Text>{Stage(project.capital_stage)}</Text>
+                                    <Text>{Stage(project?.capital_stage)}</Text>
                                 </HStack>
                             )}
 
@@ -87,7 +87,7 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
 
                     <Stack spacing="5px" mt="10px">
                         <Text fontSize="xl" fontWeight="semibold" noOfLines={2}>
-                            {project.title}
+                            {project?.title}
                         </Text>
                         <Text
                             as="p"
@@ -97,13 +97,13 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
                             lineHeight="20px"
                             noOfLines={5}
                         >
-                            {project.description}
+                            {project?.description}
                         </Text>
                     </Stack>
                 </VStack>
 
                 <Box display={'flex'} flexDirection="column" textAlign="center" w="full" mt="13px">
-                    <Link href={`/projectDetail/${project.id} `} target="_blank">
+                    <Link href={`/projectDetail/${project?.id} `} target="_blank">
                         <Button variant="solid" h="32px" w="full">
                             Ver proyecto
                         </Button>

@@ -47,7 +47,7 @@ export const createInterest: CreateProjectCall = async ({ project }) => {
 };
 
 // READ
-const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
+export const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
     const { data } = await api.get<GetAllGsgResponse>(endpoint, '', isAdmin ? adminHeaders() : undefined);
     return data;
 };

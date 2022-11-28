@@ -36,7 +36,7 @@ import { NextSeo } from 'next-seo';
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useGsg } from 'services/api/lib/gsg';
-import { useGsgProject } from 'services/api/lib/gsg/gsg.calls';
+import { gsgAllFetcher, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
 import { useUser } from 'services/api/lib/user';
@@ -52,13 +52,16 @@ import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
 import Time from 'components/projectDetail/formatText/time';
 import FilterExperienceModal from 'components/experience/filterExperienceModal';
 import Router, { useRouter } from 'next/router';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-const Explorer: NextPage = () => {
+const Explorer: NextPage = ({ projects }) => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [getPorjects, setGetProjets] = useState([]);
+    const [data, setData] = useState([]);
+    const [items, setItems] = useState(9);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
 
     const router = useRouter();
@@ -142,6 +145,14 @@ const Explorer: NextPage = () => {
         { value: 'more-than-4-years', label: 'Más de 48 meses' },
     ];
 
+    console.log(data);
+
+    const fetchMoreData = () => {
+        setTimeout(() => {
+            setData(data.concat(gsg?.data?.projects?.flat().slice(data.length, data.length + 9)));
+        }, 1500);
+    };
+
     useEffect(() => {
         if (user) {
             setIsVisible(true);
@@ -193,6 +204,10 @@ const Explorer: NextPage = () => {
         filters?.contributionAmount,
         filters?.investmentTerms,
     ]);
+
+    useEffect(() => {
+        fetchMoreData();
+    }, [gsg]);
 
     return (
         <>
@@ -1356,3 +1371,21 @@ const Explorer: NextPage = () => {
 };
 
 export default Explorer;
+
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+    try {
+        const data = await gsgAllFetcher(`${process.env.NEXT_PUBLIC_API_URL!}/gsg`);
+
+        return {
+            props: {
+                projects: data?.data.projects,
+            },
+        };
+    } catch (error) {
+        return {
+            props: {
+                quality: {},
+            },
+        };
+    }
+};
