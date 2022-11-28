@@ -16,12 +16,12 @@ const PublicChallenge: NextPage = ({ project }) => {
     const router = useRouter();
     const { data: userProfile } = useUser();
     const { data: orga } = useOrganization(true);
-    const { data: gsg, mutate } = useGsgProject(project?.id);
+    const { data: gsg, mutate, isValidating } = useGsgProject(project?.id);
 
     return (
         <>
             <NextSeo
-                title={`${project?.title} - GSG`}
+                title={`${project?.title} - MATCH`}
                 description={project?.description}
                 canonical="https://www.gsg-match.com/"
             />
@@ -38,7 +38,13 @@ const PublicChallenge: NextPage = ({ project }) => {
                     blur="30px"
                 />
 
-                <HeaderHero project={gsg?.data?.gsg_project} user={userProfile} orga={orga} mutate={mutate} />
+                <HeaderHero
+                    project={gsg?.data?.gsg_project}
+                    user={userProfile}
+                    orga={orga}
+                    mutate={mutate}
+                    isValidating={isValidating}
+                />
             </Flex>
         </>
     );
