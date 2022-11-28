@@ -172,7 +172,7 @@ const ListProyectsForm = (props: any) => {
 
             <Stack align="flex-start" w="full">
                 <Pagination
-                    pages={(gsgFilterData?.length ?? 0) / 12}
+                    pages={Math.ceil((gsgFilterData?.length ?? 0) / 12)}
                     actualPage={1}
                     onChange={(page) => setPagination(page)}
                 />
