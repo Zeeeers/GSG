@@ -670,7 +670,7 @@ const Creator: NextPage = ({ project, quality }) => {
             },
             qualities:
                 selectedOptions?.map((item) => item.value).join(';;') ??
-                project?.qualities.map((item) => item.id).join(';;'),
+                project?.qualities?.map((item) => item.id).join(';;'),
 
             members:
                 members?.length !== 0
