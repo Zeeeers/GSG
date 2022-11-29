@@ -1236,7 +1236,16 @@ const Creator: NextPage = ({ project, quality }) => {
                             </FormControl>
                         </VStack>
 
-                        <Divider paddingTop={'60px'} />
+                        <HStack pt="10px" pb="50px">
+                            <Text fontFamily="inter" fontSize="16px" lineHeight="22.4px">
+                                <span style={{ fontWeight: 'bold' }}>Importante:</span> La información descrita de aquí
+                                en adelante (Descripción financiera e información complementaria), solo podrá ser
+                                visualizada por inversionistas y el equipo de Match. Otras empresas y público en general
+                                no podrán visualizarla.
+                            </Text>
+                        </HStack>
+
+                        <Divider mt={'60px'} />
 
                         <VStack align="flex-start" ref={finance_description}>
                             <Text fontSize="30px" fontWeight="bold" pt="60px" textTransform="uppercase">
