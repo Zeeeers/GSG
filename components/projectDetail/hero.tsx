@@ -507,7 +507,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     mt={{ base: '20px', md: 0 }}
                                                     justifyContent="end"
                                                 >
-                                                    {(user || orga || adminCookie) && (
+                                                    {user || orga?.gsg_project_id === project?.id || adminCookie ? (
                                                         <Button
                                                             onClick={onOpen}
                                                             w={{ base: 'full', md: '212px' }}
@@ -516,6 +516,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         >
                                                             Contactar
                                                         </Button>
+                                                    ) : (
+                                                        ''
                                                     )}
                                                 </Stack>
                                             </Flex>
