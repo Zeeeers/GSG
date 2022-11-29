@@ -1,6 +1,5 @@
 import { Members } from './Member';
 import { OrganizationFormat } from './Organization';
-import { Relations } from './Relations';
 
 // Types
 
@@ -36,7 +35,7 @@ export interface Gsg {
     business_web: string;
     organization: OrganizationFormat;
     debt: debt;
-    relations: Relations;
+    interests: number;
     status: string;
     last_status_updated: string;
 }

@@ -78,7 +78,7 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
                                 <HStack align="center" spacing="5px" userSelect="none">
                                     <Img src="/images/icons/interest.svg" />
                                     <Text fontSize="16px" color="gray.200" fontWeight="500" fontFamily="inter">
-                                        {project?.relations?.interests}
+                                        {project?.interests ?? '0'}
                                     </Text>
                                 </HStack>
                             </Tooltip>
