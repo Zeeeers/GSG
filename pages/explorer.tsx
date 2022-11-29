@@ -54,7 +54,7 @@ import FilterExperienceModal from 'components/experience/filterExperienceModal';
 import Router, { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const Explorer: NextPage = ({ projects }) => {
+const Explorer: NextPage = () => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
@@ -1410,21 +1410,3 @@ const Explorer: NextPage = ({ projects }) => {
 };
 
 export default Explorer;
-
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-    try {
-        const data = await gsgAllFetcher(`${process.env.NEXT_PUBLIC_API_URL!}/gsg`);
-
-        return {
-            props: {
-                projects: data?.data.projects,
-            },
-        };
-    } catch (error) {
-        return {
-            props: {
-                quality: {},
-            },
-        };
-    }
-};
