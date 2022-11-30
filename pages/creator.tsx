@@ -111,8 +111,6 @@ const Creator: NextPage = ({ project, quality }) => {
 
     const [postulationEmployee, setPostulationEmployee] = useState(false);
     const [postulationProject, setPostulationProject] = useState(false);
-    const [otherDescription, setOtherDescription] = useState('');
-    const [otherObject, setOtherObject] = useState('');
 
     const router = useRouter();
 
@@ -154,10 +152,7 @@ const Creator: NextPage = ({ project, quality }) => {
             title: project?.title ?? '',
             main_image: baseImgMain ?? '',
             description: project?.description ?? '',
-            third_parties: {
-                value: !ThirdParties(project?.third_parties) ? 'other' : project?.third_parties ?? '',
-                label: ThirdParties(project?.third_parties) ?? 'Otro',
-            },
+            third_parties: { value: project?.third_parties ?? '', label: ThirdParties(project?.third_parties) },
             sector: { value: project?.sector ?? '', label: Sector(project?.sector) },
             more_info: { value: project?.more_info ?? '', label: Messure(project?.more_info) },
 
@@ -171,8 +166,8 @@ const Creator: NextPage = ({ project, quality }) => {
 
             debt: { value: project?.debt ?? '', label: Stage(project?.debt) },
             investment_objective: {
-                value: !Objetive(project?.investment_objective) ? 'other' : project?.investment_objective ?? '',
-                label: Objetive(project?.investment_objective) ?? 'Otro',
+                value: project?.investment_objective ?? '',
+                label: Objetive(project?.investment_objective),
             },
             guarantee: { value: project?.guarantee ?? '', label: Garantee(project?.guarantee) },
 
@@ -511,11 +506,10 @@ const Creator: NextPage = ({ project, quality }) => {
                 main_image: baseImgMain,
                 social_impact: baseSocialPdf?.base64,
                 more_info: data.more_info?.value,
-                third_parties: data.third_parties?.value === 'other' ? otherDescription : data.third_parties?.value,
+                third_parties: data.third_parties?.value,
                 sector: data.sector?.value,
                 stage: data.stage?.value,
-                investment_objective:
-                    data.investment_objective?.value === 'other' ? otherDescription : data.investment_objective?.value,
+                investment_objective: data.investment_objective?.value,
                 capital_stage: isCheckCapital ? data.capital_stage?.value : null,
                 debt: isCheckDeuda ? data.debt?.value : null,
                 rentability_time: data?.rentability_time,
@@ -608,7 +602,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 main_image: baseImgMain,
                 social_impact: baseSocialPdf?.base64,
                 more_info: proyectMore?.value,
-                third_parties: proyectParties?.value === 'other' ? otherDescription : proyectParties?.value,
+                third_parties: proyectParties?.value,
                 sector: watch('sector')?.value,
                 capital_stage: isCheckCapital ? watch('capital_stage')?.value : null,
                 debt: isCheckDeuda ? proyectDept?.value : null,
@@ -626,11 +620,7 @@ const Creator: NextPage = ({ project, quality }) => {
                 business_model: `${watch('last_sales12')};;${watch('last_sales6')};;${watch('last_client12')};;${watch(
                     'last_client6',
                 )};;${watch('ebitda')};;${watch('patrimony')}`,
-
-                investment_objective:
-                    watch('investment_objective')?.value === 'other'
-                        ? otherObject
-                        : watch('investment_objective')?.value,
+                investment_objective: watch('investment_objective')?.value,
                 additional_info: watch('additional_info'),
                 additional_document: baseAdditional?.base64,
                 better_project: watch('better_project'),
@@ -756,18 +746,6 @@ const Creator: NextPage = ({ project, quality }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    useEffect(() => {
-        if (!ThirdParties(project?.third_parties)) {
-            setOtherDescription(project?.third_parties);
-        }
-    }, [project?.third_parties]);
-
-    useEffect(() => {
-        if (!Objetive(project?.investment_objective)) {
-            setOtherObject(project?.investment_objective);
-        }
-    }, [project?.investment_objective]);
 
     return (
         <>
@@ -1113,14 +1091,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 )}
                             />
 
-                            {proyectParties?.value === 'other' && (
-                                <Input
-                                    placeholder="¿Cuál?"
-                                    mt="10px"
-                                    value={otherDescription}
-                                    onChange={(e) => setOtherDescription(e.target.value)}
-                                />
-                            )}
+                            {proyectParties?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
 
                             <FormErrorMessage
                                 textColor="red.400"
@@ -1722,14 +1693,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                             <CharkaSelect {...field} useBasicStyles options={optionsObject} />
                                         )}
                                     />
-                                    {proyectObject?.value === 'other' && (
-                                        <Input
-                                            placeholder="¿Cuál?"
-                                            mt="10px"
-                                            value={otherObject}
-                                            onChange={(e) => setOtherObject(e.target.value)}
-                                        />
-                                    )}
+                                    {proyectObject?.value === 'other' && <Input placeholder="¿Cuál?" mt="10px" />}
                                     <FormErrorMessage
                                         textColor="red.400"
                                         fontFamily="inter"

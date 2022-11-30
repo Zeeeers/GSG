@@ -1,6 +1,6 @@
 import { Badge, Button, CircularProgress, CircularProgressLabel, HStack, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { GsgFormated } from 'services/api/types/Gsg';
 import { useDraftStore } from 'stores/draftProject';
 
@@ -8,8 +8,6 @@ type StatusProps = {
     project: GsgFormated;
 };
 const StatusProject: React.FC<StatusProps> = ({ project }) => {
-    const [loading, setLoading] = useState(false);
-
     let status = undefined;
     switch (project?.status) {
         case 'in-review':
@@ -61,7 +59,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                     <CircularProgress
                         //@ts-ignore
                         value={project?.progress ?? 0}
-                        display={{ base: 'flex', sm: 'none' }}
+                        display={{ base: 'block', sm: 'none' }}
                         color="teal.500"
                         size="60px"
                         thickness="4px"
@@ -78,22 +76,17 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                 <Text fontFamily="inter">{project?.title}</Text>
                 {project?.status === 'sketch' ? (
                     <Button
-                        loadingText="Cargando..."
-                        isLoading={loading}
                         display={{ base: 'block', sm: 'none' }}
-                        w="fit-content"
+                        w="full"
                         bg="blue.700"
                         _hover={{ bg: 'blue.600' }}
                         h="40px"
                         variant="solid"
                         onClick={() => {
-                            setLoading(true);
-                            router
-                                .push({
-                                    query: { id: project?.id },
-                                    pathname: '/creator',
-                                })
-                                .then(() => setLoading(false));
+                            router.push({
+                                query: { id: project?.id },
+                                pathname: '/creator',
+                            });
                             //@ts-ignore
                             setProject(project);
                         }}
@@ -133,22 +126,16 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                     </CircularProgress>
 
                     <Button
-                        loadingText="Cargando..."
-                        isLoading={loading}
-                        display={{ base: 'none', sm: 'flex' }}
+                        display={{ base: 'none', sm: 'block' }}
                         bg="blue.700"
                         _hover={{ bg: 'blue.600' }}
                         h="40px"
-                        w="fit-content"
                         variant="solid"
                         onClick={() => {
-                            setLoading(true);
-                            router
-                                .push({
-                                    query: { id: project?.id },
-                                    pathname: '/creator',
-                                })
-                                .then(() => setLoading(false));
+                            router.push({
+                                query: { id: project?.id },
+                                pathname: '/creator',
+                            });
                             //@ts-ignore
                             setProject(project);
                         }}

@@ -109,7 +109,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                             Como respaldo de una tercera organización, {project?.organization?.name} cuenta con:
                         </Text>
                         <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                            {ThirdParties(project?.third_parties) ?? project?.third_parties}
+                            {ThirdParties(project?.third_parties)}
                         </Text>
                     </VStack>
                 </VStack>
@@ -216,7 +216,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                                     El objetivo que tiene con la inversión es:
                                 </Text>
                                 <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {Objetive(project?.investment_objective) ?? project?.investment_objective}
+                                    {Objetive(project?.investment_objective)}
                                 </Text>
                             </VStack>
                         </VStack>

@@ -1,22 +1,20 @@
 import { Button, Stack, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 
 const NotProject = () => {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
 
     const createDraft = async () => {
         const { create } = await import('../../../services/api/lib/gsg');
-        setLoading(true);
 
         try {
             const { ok, data } = await create({ project: { status: 'sketch' } });
 
             if (ok) {
-                router
-                    .push({ pathname: '/creator', query: { id: data?.data?.gsg_project?.id } })
-                    .then(() => setLoading(false));
+                router.push({ pathname: '/creator', query: { id: data?.data?.gsg_project?.id } });
+
+                console.log(data);
             }
         } catch (error) {
             console.log(error);
@@ -41,16 +39,7 @@ const NotProject = () => {
                     Tiempo aproximado: 10 a 15 min
                 </Text>
             </VStack>
-            <Button
-                display="flex"
-                loadingText="Cargando proyecto..."
-                isLoading={loading}
-                bg="blue.700"
-                _hover={{ bg: 'blue.600' }}
-                onClick={createDraft}
-                variant="solid"
-                h="40px"
-            >
+            <Button bg="blue.700" _hover={{ bg: 'blue.600' }} onClick={createDraft} variant="solid" h="40px">
                 Postular proyecto
             </Button>
         </Stack>
