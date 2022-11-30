@@ -228,9 +228,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                     </Stack>
 
                     {user &&
-                        (Object.values(project?.relations ?? {}).find(
-                            (r) => r.organization_id === user?.organization_id,
-                        )?.kinds !== 'interested' ? (
+                        (project?.relations?.find((r) => r.organization_id === user?.organization_id)?.kinds !==
+                        'interested' ? (
                             <Button
                                 position="fixed"
                                 onClick={handleInterest}
@@ -388,7 +387,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     </Text>
                                                 </HStack>
                                                 {user &&
-                                                    Object.values(project?.relations ?? {}).find(
+                                                    project?.relations.find(
                                                         (r) => r.organization_id === user?.organization_id,
                                                     )?.kinds !== 'interested' && (
                                                         <Button
@@ -407,7 +406,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         </Button>
                                                     )}
 
-                                                {Object.values(project?.relations ?? {}).find(
+                                                {project?.relations?.find(
                                                     (r) => r.organization_id === user?.organization_id,
                                                 )?.kinds === 'interested' && (
                                                     <Button
@@ -507,7 +506,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     mt={{ base: '20px', md: 0 }}
                                                     justifyContent="end"
                                                 >
-                                                    {(user || orga || adminCookie) && (
+                                                    {user || orga?.gsg_project_id === project?.id || adminCookie ? (
                                                         <Button
                                                             onClick={onOpen}
                                                             w={{ base: 'full', md: '212px' }}
@@ -516,6 +515,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         >
                                                             Contactar
                                                         </Button>
+                                                    ) : (
+                                                        ''
                                                     )}
                                                 </Stack>
                                             </Flex>
