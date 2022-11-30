@@ -155,13 +155,8 @@ const Creator: NextPage = ({ project, quality }) => {
             main_image: baseImgMain ?? '',
             description: project?.description ?? '',
             third_parties: {
-                value:
-                    (project?.third_parties ?? '') !== ''
-                        ? !ThirdParties(project?.third_parties)
-                            ? 'other'
-                            : project?.third_parties ?? ''
-                        : '',
-                label: (project?.third_parties ?? '') !== '' ? ThirdParties(project?.third_parties) ?? 'Otro' : '',
+                value: !ThirdParties(project?.third_parties) ? 'other' : project?.third_parties ?? '',
+                label: ThirdParties(project?.third_parties) ?? 'Otro',
             },
             sector: { value: project?.sector ?? '', label: Sector(project?.sector) },
             more_info: { value: project?.more_info ?? '', label: Messure(project?.more_info) },
@@ -176,16 +171,8 @@ const Creator: NextPage = ({ project, quality }) => {
 
             debt: { value: project?.debt ?? '', label: Stage(project?.debt) },
             investment_objective: {
-                value:
-                    (project?.investment_objective ?? '') !== ''
-                        ? !Objetive(project?.investment_objective)
-                            ? 'other'
-                            : project?.investment_objective ?? ''
-                        : '',
-                label:
-                    (project?.investment_objective ?? '') !== ''
-                        ? Objetive(project?.investment_objective) ?? 'Otro'
-                        : '',
+                value: !Objetive(project?.investment_objective) ? 'other' : project?.investment_objective ?? '',
+                label: Objetive(project?.investment_objective) ?? 'Otro',
             },
             guarantee: { value: project?.guarantee ?? '', label: Garantee(project?.guarantee) },
 
@@ -2341,7 +2328,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     label="Hay campos sin completar"
                                     shouldWrapChildren
                                     bg="red.500"
-                                    isDisabled={isValid && members?.length > 0 ? true : false}
+                                    isDisabled={isSubmitted ? isValid : true}
                                 >
                                     <Button
                                         isLoading={createProyect}
@@ -2351,7 +2338,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         variant="solid"
                                         w="full"
                                         h="40px"
-                                        isDisabled={isValid && members?.length > 0 ? false : true}
+                                        disabled={isSubmitted ? !isValid : false}
                                     >
                                         Postular proyecto
                                     </Button>
@@ -2517,7 +2504,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             <Tooltip
                                 hasArrow
                                 label="Hay campos sin completar"
-                                isDisabled={isValid && members?.length > 0 ? true : false}
+                                isDisabled={isSubmitted ? isValid : true}
                                 shouldWrapChildren
                                 bg="red.500"
                                 w="full"
@@ -2529,7 +2516,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     onClick={handleSubmit(handlePublished)}
                                     variant="solid"
                                     w="241px"
-                                    isDisabled={isValid && members?.length > 0 ? false : true}
+                                    disabled={isSubmitted ? !isValid : false}
                                 >
                                     Postular proyecto
                                 </Button>
@@ -2641,7 +2628,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             w="full"
                             py="8px"
                             h="38px"
-                            isDisabled={isValid && members?.length > 0 ? false : true}
+                            disabled={isSubmitted ? !isValid : false}
                         >
                             Postular proyecto
                         </Button>
