@@ -32,6 +32,8 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
     const { impact, description_finance, other } = ref?.current;
     const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
 
+    console.log(project?.organization?.name.length);
+
     const getInvestorType = () => {
         const lastWord = project?.investment_types?.at(-1);
         const newArray = project?.investment_types?.filter((i) => i !== lastWord);
