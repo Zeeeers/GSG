@@ -32,8 +32,6 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
     const { impact, description_finance, other } = ref?.current;
     const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
 
-    console.log(project?.organization?.name.length);
-
     const getInvestorType = () => {
         const lastWord = project?.investment_types?.at(-1);
         const newArray = project?.investment_types?.filter((i) => i !== lastWord);
@@ -59,7 +57,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                     El impacto de {project?.organization?.name}
                 </Text>
             </Stack>
-            {project?.qualities?.length > 0 && (
+            {Object.values(project?.qualities || {}).length > 0 && (
                 <Stack
                     bg="gray.800"
                     w="full"
@@ -73,7 +71,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                     </Text>
 
                     <Wrap spacingX="60px" spacingY="15px" pt="30px">
-                        {project?.qualities?.map((item, i) => (
+                        {Object.values(project?.qualities || {}).map((item, i) => (
                             <WrapItem key={i}>
                                 <HStack spacing="20px">
                                     <Image src={item.image} w="60px" h="60px" rounded="15px" />
@@ -432,7 +430,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                                 gap="50px"
                             >
                                 {project?.members
-                                    ? project?.members?.map((member, i) => (
+                                    ? Object.values(project?.members || {}).map((member, i) => (
                                           <GridItem key={i}>
                                               <Stack spacing="10px" p={0}>
                                                   <Avatar src={member.main_image} w="96px" h="96px" />
@@ -519,11 +517,9 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                         ref={description_finance}
                         scrollMarginTop="100px"
                     >
-                        <Stack>
-                            <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
-                                Descripción financiera de {project?.organization?.name}
-                            </Text>
-                        </Stack>
+                        <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
+                            Descripción financiera de {project?.organization?.name}
+                        </Text>
 
                         <VStack align="flex-start">
                             <VStack align="flex-start" spacing="5px">
@@ -540,12 +536,12 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                             pos="absolute"
                             h="500px"
                             bg="gray.800"
+                            inset={0}
+                            top="90px"
                             align="center"
                             justify="center"
                             spacing="30px"
                             opacity="0.9"
-                            inset={0}
-                            top={{ base: project?.organization?.name.length < 10 ? '80px' : '150px', sm: '90px' }}
                         >
                             <VStack maxW="348px" spacing="10px">
                                 <Text fontSize="36px" fontWeight="500" lineHeight="32px">

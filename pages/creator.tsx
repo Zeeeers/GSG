@@ -670,7 +670,9 @@ const Creator: NextPage = ({ project, quality }) => {
             },
             qualities:
                 selectedOptions?.map((item) => item.value).join(';;') ??
-                project?.qualities.map((item) => item.id).join(';;'),
+                Object.values(project?.qualities ?? [])
+                    .map((item) => item.id)
+                    .join(';;'),
 
             members:
                 members?.length !== 0
@@ -1063,7 +1065,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                 render={({ field }) => (
                                     <CharkaSelect
                                         {...field}
-                                        defaultValue={project?.qualities?.map((item) => optionsQuality[item.id - 1])}
+                                        defaultValue={Object.values(project?.qualities ?? []).map(
+                                            (item) => optionsQuality[item.id - 1],
+                                        )}
                                         tagVariant="solid"
                                         colorScheme="teal"
                                         isOptionDisabled={() => selectedOptions?.length >= 3}
@@ -2337,7 +2341,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     label="Hay campos sin completar"
                                     shouldWrapChildren
                                     bg="red.500"
-                                    isDisabled={isSubmitted ? (isValid && members?.length > 0 ? true : false) : true}
+                                    isDisabled={isValid && members?.length > 0 ? true : false}
                                 >
                                     <Button
                                         isLoading={createProyect}
@@ -2347,9 +2351,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         variant="solid"
                                         w="full"
                                         h="40px"
-                                        isDisabled={
-                                            isSubmitted ? (isValid && members?.length > 0 ? false : true) : false
-                                        }
+                                        isDisabled={isValid && members?.length > 0 ? false : true}
                                     >
                                         Postular proyecto
                                     </Button>
@@ -2515,7 +2517,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             <Tooltip
                                 hasArrow
                                 label="Hay campos sin completar"
-                                isDisabled={isSubmitted ? (isValid && members?.length > 0 ? true : false) : true}
+                                isDisabled={isValid && members?.length > 0 ? true : false}
                                 shouldWrapChildren
                                 bg="red.500"
                                 w="full"
@@ -2527,7 +2529,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     onClick={handleSubmit(handlePublished)}
                                     variant="solid"
                                     w="241px"
-                                    isDisabled={isSubmitted ? (isValid && members?.length > 0 ? false : true) : false}
+                                    isDisabled={isValid && members?.length > 0 ? false : true}
                                 >
                                     Postular proyecto
                                 </Button>
@@ -2639,7 +2641,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             w="full"
                             py="8px"
                             h="38px"
-                            isDisabled={isSubmitted ? (isValid && members?.length > 0 ? false : true) : false}
+                            isDisabled={isValid && members?.length > 0 ? false : true}
                         >
                             Postular proyecto
                         </Button>
