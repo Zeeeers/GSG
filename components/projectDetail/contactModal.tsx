@@ -130,7 +130,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                 Plataformas y/o redes sociales{' '}
                             </Text>
                             <Wrap spacingX="20px" spacingY="10px">
-                                {web?.split(';;')?.map((e, index) => {
+                                {web?.map((e, index) => {
                                     if (index === 0 && e !== '') {
                                         return (
                                             <WrapItem>

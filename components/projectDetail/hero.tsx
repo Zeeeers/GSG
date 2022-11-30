@@ -387,7 +387,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     </Text>
                                                 </HStack>
                                                 {user &&
-                                                    project?.relations?.find(
+                                                    project?.relations.find(
                                                         (r) => r.organization_id === user?.organization_id,
                                                     )?.kinds !== 'interested' && (
                                                         <Button
@@ -451,7 +451,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         fontWeight="400"
                                                         fontSize="15px"
                                                     >
-                                                        {`${project?.interests} inversionistas interesados`}
+                                                        {`${project?.relations?.interests} inversionistas interesados`}
                                                     </Text>
                                                 </HStack>
                                             )}

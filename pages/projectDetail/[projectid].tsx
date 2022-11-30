@@ -5,19 +5,18 @@ import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { FaBullseye } from 'react-icons/fa';
 import { getGsgProject, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
 import HeaderHero from '../../components/projectDetail/hero';
 
-const PublicChallenge: NextPage = ({ project, projectId, isAdmin }) => {
+const PublicChallenge: NextPage = ({ project }) => {
     const [routerQuery, setRouterQuery] = useState();
 
     const router = useRouter();
     const { data: userProfile } = useUser();
     const { data: orga } = useOrganization(true);
-    const { data: gsg, mutate, isValidating } = useGsgProject(projectId, isAdmin);
+    const { data: gsg, mutate, isValidating } = useGsgProject(project?.id);
 
     return (
         <>
@@ -55,7 +54,6 @@ export default PublicChallenge;
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     const projectId = ctx.params?.projectid as string | undefined;
-    const { adminPreview } = ctx.query;
 
     if (projectId) {
         const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, projectId);
@@ -63,8 +61,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
         return {
             props: {
                 project: data?.data?.gsg_project ?? null,
-                projectId: projectId,
-                isAdmin: adminPreview === 'true' ? true : false,
             },
         };
     } else {
