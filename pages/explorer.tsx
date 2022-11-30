@@ -170,7 +170,7 @@ const Explorer: NextPage = () => {
                         .slice(data.length, data.length + 9),
                 ),
             );
-        }, 500);
+        }, 1500);
     };
 
     useEffect(() => {
@@ -1382,6 +1382,11 @@ const Explorer: NextPage = () => {
                                         </VStack>*/}
 
                             <InfiniteScroll
+                                endMessage={
+                                    <Text fontSize="18px" fontFamily="inter" align="center" mt="40px">
+                                        ¡No hay más proyectos publicados por el momento!
+                                    </Text>
+                                }
                                 dataLength={projectFilter?.length}
                                 next={fetchMoreData}
                                 hasMore={hasMore}
