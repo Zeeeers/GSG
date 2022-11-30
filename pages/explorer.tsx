@@ -86,7 +86,7 @@ const Explorer: NextPage = () => {
     });
 
     const projectFilter = projectSort
-        ?.filter((p) => p?.qualities ?? [].find((p) => filters?.qualities?.includes(p?.name) ?? []))
+        ?.filter((p) => p?.qualities?.find((p) => filters?.qualities?.includes(p?.name) ?? []))
         .filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
         .filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
         .filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])

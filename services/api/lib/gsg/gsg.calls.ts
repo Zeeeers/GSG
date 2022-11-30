@@ -70,13 +70,26 @@ export const useAdminGsg = (): SWRResponse<GetAllGsgResponse | undefined, unknow
     return useSWR([ENDPOINT.ADMIN], gsgAllAdminFetcher);
 };
 
-export const getGsgProject = async (_: string, id: number) => {
-    const { data } = await api.get<GetGsgProjectResponse>(ENDPOINT.DETAIL(id));
+export const getGsgProject = async (_: string, id: number, isAdmin: boolean) => {
+    let userType = '';
+
+    if (process.env.NEXT_PUBLIC_COOKIE_NAME!) {
+        userType = process.env.NEXT_PUBLIC_COOKIE_NAME!;
+    } else {
+        userType = process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!;
+    }
+
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: isAdmin ? 'dev-admin' : userType,
+    });
+
+    const { data } = await api.get<GetGsgProjectResponse>(ENDPOINT.DETAIL(id), {}, headers(token));
     return data;
 };
 
-export const useGsgProject = (id?: number, option?: SWRConfiguration) => {
-    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, option);
+export const useGsgProject = (id?: number, isAdmin?: boolean, option?: SWRConfiguration) => {
+    return useSWR(id ? [ENDPOINT.DETAIL(id), id, isAdmin] : null, getGsgProject, option);
 };
 
 export const getMyGsgProject = async (_: string, token?: string) => {
