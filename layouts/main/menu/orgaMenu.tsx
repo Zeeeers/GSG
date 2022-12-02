@@ -79,8 +79,8 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                         w="32px"
                         mr="10px"
                         icon={<></>}
-                        bgColor={organization?.image ? 'transparent' : 'primary.500'}
-                        color={'white.base'}
+                        bgColor={organization?.image ? 'transparent' : 'blue.700'}
+                        color={'white'}
                     />
                     <Text fontSize="20px" fontWeight="medium">
                         {organization?.name ?? 'GSG'}
