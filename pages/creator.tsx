@@ -1252,7 +1252,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                                         });
                                                     } else {
                                                         const base = await getBase64(e.target.files![0]);
-                                                        setValue('social_impact', e.target.files[0]);
+                                                        setValue('social_impact', base, { shouldValidate: true });
                                                         setBaseSocialPdf({ base64: base, file: e.target.files[0] });
                                                     }
                                                 } else {
@@ -2262,6 +2262,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                                 } else {
                                                     const base = await getBase64(e.target.files![0]);
                                                     setBaseAdditional({ base64: base, file: e.target.files[0] });
+                                                    setValue('additional_document', base, { shouldValidate: true });
                                                 }
                                             } else {
                                                 toast({
