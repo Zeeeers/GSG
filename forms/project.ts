@@ -95,11 +95,11 @@ const projectShape: ZodShape<IProjectForm> = {
 
     debt: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
 
-    linkedinForm: z.string().optional(),
-    facebookForm: z.string().optional(),
-    instagramForm: z.string().optional(),
-    youtubeForm: z.string().optional(),
-    webForm: z.string().optional(),
+    linkedinForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+    facebookForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+    instagramForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+    youtubeForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+    webForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
 };
 
 const memberShape: ZodShape<IMember> = {

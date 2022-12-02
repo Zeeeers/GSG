@@ -2105,8 +2105,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Linkedin</Text>
                                     </HStack>
 
-                                    <FormControl id="linkedinForm" maxW="720px">
+                                    <FormControl id="linkedinForm" maxW="720px" isInvalid={!!errors.linkedinForm}>
                                         <Input {...register('linkedinForm')} />
+                                        <FormErrorMessage>{errors.linkedinForm?.message}</FormErrorMessage>
                                     </FormControl>
                                 </HStack>
 
@@ -2116,8 +2117,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Instagram</Text>
                                     </HStack>
 
-                                    <FormControl id="instagramForm" maxW="720px">
+                                    <FormControl id="instagramForm" maxW="720px" isInvalid={!!errors.instagramForm}>
                                         <Input {...register('instagramForm')} />
+                                        <FormErrorMessage>{errors.instagramForm?.message}</FormErrorMessage>
                                     </FormControl>
                                 </HStack>
 
@@ -2127,8 +2129,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Facebook</Text>
                                     </HStack>
 
-                                    <FormControl id="facebookForm" maxW="720px">
+                                    <FormControl id="facebookForm" maxW="720px" isInvalid={!!errors.facebookForm}>
                                         <Input {...register('facebookForm')} />
+                                        <FormErrorMessage>{errors.facebookForm?.message}</FormErrorMessage>
                                     </FormControl>
                                 </HStack>
 
@@ -2138,8 +2141,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Youtube</Text>
                                     </HStack>
 
-                                    <FormControl id="youtubeForm" maxW="720px">
+                                    <FormControl id="youtubeForm" maxW="720px" isInvalid={!!errors.youtubeForm}>
                                         <Input {...register('youtubeForm')} />
+                                        <FormErrorMessage>{errors.youtubeForm?.message}</FormErrorMessage>
                                     </FormControl>
                                 </HStack>
 
@@ -2149,8 +2153,9 @@ const Creator: NextPage = ({ project, quality }) => {
                                         <Text display={{ base: 'none', md: 'block' }}>Sitio Web</Text>
                                     </HStack>
 
-                                    <FormControl id="webForm" maxW="720px">
+                                    <FormControl id="webForm" maxW="720px" isInvalid={!!errors.webForm}>
                                         <Input {...register('webForm')} />
+                                        <FormErrorMessage>{errors.webForm?.message}</FormErrorMessage>
                                     </FormControl>
                                 </HStack>
                             </VStack>
