@@ -33,7 +33,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from 'layouts/main/navbar';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useGsg } from 'services/api/lib/gsg';
 import { gsgAllFetcher, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
@@ -75,25 +75,29 @@ const Explorer: NextPage = () => {
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
 
-    const projectSort = data?.sort((a, b) => {
-        if (orderBy === 'desc') {
-            //@ts-ignore
-            return new Date(b.last_status_updated) - new Date(a.last_status_updated);
-        } else {
-            //@ts-ignore
-            return new Date(a.last_status_updated) - new Date(b.last_status_updated);
-        }
-    });
+    const filtersResult = () => {
+        const projectSort = gsg?.data?.projects?.flat()?.sort((a, b) => {
+            if (orderBy === 'desc') {
+                //@ts-ignore
+                return new Date(b.last_status_updated) - new Date(a.last_status_updated);
+            } else {
+                //@ts-ignore
+                return new Date(a.last_status_updated) - new Date(b.last_status_updated);
+            }
+        });
 
-    const projectFilter = projectSort
-        ?.filter((p) => Object.values(p?.qualities ?? []).find((p) => filters?.qualities?.includes(p?.name) ?? []))
-        .filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
-        .filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
-        .filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])
-        .filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
-        .filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
-        .filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
-        .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
+        const projectFilter = projectSort
+            ?.filter((p) => Object.values(p?.qualities ?? []).find((p) => filters?.qualities?.includes(p?.name) ?? []))
+            .filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
+            .filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
+            .filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])
+            .filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
+            .filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
+            .filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
+            .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
+
+        return projectFilter;
+    };
 
     const optionsCertification = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -144,34 +148,6 @@ const Explorer: NextPage = () => {
         { value: 'until-4-years', label: 'Hasta 48 meses' },
         { value: 'more-than-4-years', label: 'Más de 48 meses' },
     ];
-
-    const fetchMoreData = () => {
-        if (data.length >= gsg?.data.projects.flat().length) {
-            setHasMore(false);
-            return;
-        } else {
-            setHasMore(true);
-        }
-
-        setTimeout(() => {
-            setData(
-                data.concat(
-                    gsg?.data?.projects
-                        ?.flat()
-                        .sort((a, b) => {
-                            if (orderBy === 'desc') {
-                                //@ts-ignore
-                                return new Date(b.last_status_updated) - new Date(a.last_status_updated);
-                            } else {
-                                //@ts-ignore
-                                return new Date(a.last_status_updated) - new Date(b.last_status_updated);
-                            }
-                        })
-                        .slice(data.length, data.length + 9),
-                ),
-            );
-        }, 500);
-    };
 
     useEffect(() => {
         if (user) {
@@ -224,10 +200,6 @@ const Explorer: NextPage = () => {
         filters?.contributionAmount,
         filters?.investmentTerms,
     ]);
-
-    useEffect(() => {
-        fetchMoreData();
-    }, [gsg]);
 
     return (
         <>
@@ -1359,11 +1331,11 @@ const Explorer: NextPage = () => {
                                 </Collapse>
                             </Stack>
 
-                            {/* <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
+                            <VStack mt={{ base: '20px', md: '40px' }} align="start" spacing="36px">
                                 {gsg ? (
                                     <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                                        {projectFilter?.length !== 0 ? (
-                                            projectFilter?.map((project) => (
+                                        {filtersResult()?.length !== 0 ? (
+                                            filtersResult()?.map((project) => (
                                                 <ExplorerCard key={project.id} project={project} user={user} />
                                             ))
                                         ) : (
@@ -1379,26 +1351,7 @@ const Explorer: NextPage = () => {
                                         ))}
                                     </SimpleGrid>
                                 )}
-                                        </VStack>*/}
-
-                            <InfiniteScroll
-                                dataLength={projectFilter?.length}
-                                next={fetchMoreData}
-                                hasMore={hasMore}
-                                loader={
-                                    <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px" mt="40px">
-                                        {[0, 2, 3, 4, 5, 6].map((item, index) => (
-                                            <CardSkeleton key={index} />
-                                        ))}
-                                    </SimpleGrid>
-                                }
-                            >
-                                <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
-                                    {projectFilter?.map((project) => (
-                                        <ExplorerCard key={project?.id} project={project} user={user} />
-                                    ))}
-                                </SimpleGrid>
-                            </InfiniteScroll>
+                            </VStack>
                         </Stack>
                     )}
                 </AnimatePresence>
