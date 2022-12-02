@@ -10,6 +10,7 @@ import {
     Skeleton,
     Stack,
     Text,
+    Tooltip,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react';
@@ -203,6 +204,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                         >
                             Impacto
                         </Button>
+
                         <Button
                             onClick={() => executeScroll('description_finance')}
                             variant="unstyled"
@@ -214,17 +216,28 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                         >
                             Descripción financiera
                         </Button>
-                        <Button
-                            onClick={() => executeScroll('other')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.other ? 'teal.400' : ''}
-                            borderBottom={isActive.other ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
+                        <Tooltip
+                            hasArrow
+                            label="Información solo disponible para inversionistas"
+                            w="200px"
+                            rounded="16px"
+                            fontFamily="inter"
+                            fontSize="14px"
+                            bg="gray.600"
+                            isDisabled={user || orga?.gsg_project_id === project?.id || adminCookie ? true : false}
                         >
-                            Otra información
-                        </Button>
+                            <Button
+                                onClick={() => executeScroll('other')}
+                                variant="unstyled"
+                                rounded={0}
+                                color={isActive.other ? 'teal.400' : ''}
+                                borderBottom={isActive.other ? '2px' : ''}
+                                _hover={{ color: 'teal.500' }}
+                                fontSize="sm"
+                            >
+                                Otra información
+                            </Button>
+                        </Tooltip>
                     </Stack>
 
                     {user &&
