@@ -2183,6 +2183,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 />
 
                                 <Text
+                                    maxLength={1000}
                                     textColor="gray.300"
                                     fontSize={{ base: 'xs', md: 'sm' }}
                                     fontWeight="medium"
@@ -2296,6 +2297,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                 render={({ field }) => (
                                     <Textarea
                                         {...field}
+                                        maxLength={700}
                                         fontSize={{ base: 'sm', md: 'md' }}
                                         focusBorderColor={'primary.400'}
                                         errorBorderColor={'red.400'}
