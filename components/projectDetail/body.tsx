@@ -537,7 +537,16 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                             h="500px"
                             bg="gray.800"
                             inset={0}
-                            top="90px"
+                            top={{
+                                base:
+                                    project?.organization?.name.length < 10
+                                        ? '80px'
+                                        : project?.organization?.name.length < 20
+                                        ? '120px'
+                                        : '150px',
+                                sm: '80px',
+                                md: '90px',
+                            }}
                             align="center"
                             justify="center"
                             spacing="30px"

@@ -680,15 +680,15 @@ const Explorer: NextPage = () => {
                                                         onChange={(value: Array<string>) => {
                                                             setFilters({
                                                                 ...filters,
-                                                                qualities: value.length === 0 ? undefined : value,
+                                                                qualities: value.length === 0 ? [] : value,
                                                             });
                                                         }}
                                                     >
-                                                        {qualities?.qualities?.map((quality) => (
+                                                        {qualities?.qualities.map((quality) => (
                                                             <MenuItemOption
                                                                 w="full"
                                                                 key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name.toString()}
+                                                                value={quality.icon.name}
                                                                 _checked={{
                                                                     bgColor: 'gray.700',
                                                                 }}
