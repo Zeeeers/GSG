@@ -105,11 +105,31 @@ const projectShape: ZodShape<IProjectForm> = {
 
     debt: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
 
-    linkedinForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
-    facebookForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
-    instagramForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
-    youtubeForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
-    webForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+    linkedinForm: z
+        .string()
+        .url('Formato ingresado incorrecto, el link debe comenzar con https://')
+        .or(z.literal(''))
+        .optional(),
+    facebookForm: z
+        .string()
+        .url('Formato ingresado incorrecto, el link debe comenzar con https://')
+        .or(z.literal(''))
+        .optional(),
+    instagramForm: z
+        .string()
+        .url('Formato ingresado incorrecto, el link debe comenzar con https://')
+        .or(z.literal(''))
+        .optional(),
+    youtubeForm: z
+        .string()
+        .url('Formato ingresado incorrecto, el link debe comenzar con https://')
+        .or(z.literal(''))
+        .optional(),
+    webForm: z
+        .string()
+        .url('Formato ingresado incorrecto, el link debe comenzar con https://')
+        .or(z.literal(''))
+        .optional(),
 
     members: z.array(z.object(memberShape)).nonempty('Debe agregar al menos un miembro'),
 };
