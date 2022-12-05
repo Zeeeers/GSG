@@ -394,6 +394,10 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         src={project?.organization?.image}
                                                         w="48px"
                                                         h="48px"
+                                                        bgColor={
+                                                            project?.organization?.image ? 'transparent' : 'blue.700'
+                                                        }
+                                                        color={'white'}
                                                     />
 
                                                     <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
