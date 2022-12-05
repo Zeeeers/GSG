@@ -178,7 +178,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                         alignItems="end"
                         spacing="30px"
                         zIndex={30}
-                        marginLeft="-110px"
+                        marginLeft={{ md: '-20px', '2xl': '-110px' }}
                         marginTop={sticky ? '5px' : '350px'}
                     >
                         <Button
@@ -350,7 +350,12 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                         </VStack>
                     ) : (
                         <VStack w="full">
-                            <Flex w="full" direction="column" position="relative">
+                            <Flex
+                                w="full"
+                                direction="column"
+                                position="relative"
+                                align={{ base: 'center', xl: 'flex-end', '2xl': 'center' }}
+                            >
                                 <Flex
                                     alignItems="center"
                                     justifyContent="center"
@@ -359,8 +364,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                 >
                                     <Img
                                         src={project?.main_image}
-                                        alt="Imagen del desafio"
-                                        w={{ base: 'full', md: 898 }}
+                                        alt="Imagen del proyecto"
+                                        w={{ base: 'full', '2xl': 898 }}
                                         objectFit="cover"
                                         borderRadius={{ base: 0, md: '2xl' }}
                                     />
@@ -370,7 +375,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                     <VStack
                                         boxShadow="lg"
                                         bg="gray.800"
-                                        w={{ base: 'full', md: 898 }}
+                                        w={{ base: 'full', xl: 903, '2xl': 898 }}
                                         h={{ base: 'full', md: 'fit-content' }}
                                         justifyContent="start"
                                         alignItems="start"
