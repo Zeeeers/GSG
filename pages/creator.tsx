@@ -782,6 +782,10 @@ const Creator: NextPage = ({ project, quality }) => {
         }
     }, [project?.investment_objective]);
 
+    useEffect(() => {
+        setValue('members', members, { shouldValidate: true });
+    }, [members]);
+
     return (
         <>
             <NextSeo title="Creador de proyecto - MATCH" />
@@ -2349,7 +2353,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     label="Hay campos sin completar"
                                     shouldWrapChildren
                                     bg="red.500"
-                                    isDisabled={isSubmitted ? (isValid && members?.length > 0 ? true : false) : true}
+                                    isDisabled={isSubmitted ? (isValid ? true : false) : true}
                                 >
                                     <Button
                                         isLoading={createProyect}
@@ -2359,9 +2363,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                         variant="solid"
                                         w="full"
                                         h="40px"
-                                        isDisabled={
-                                            isSubmitted ? (isValid && members?.length > 0 ? false : true) : false
-                                        }
+                                        isDisabled={isSubmitted ? (isValid ? false : true) : false}
                                     >
                                         Postular proyecto
                                     </Button>
@@ -2527,7 +2529,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             <Tooltip
                                 hasArrow
                                 label="Hay campos sin completar"
-                                isDisabled={isSubmitted ? (isValid && members?.length > 0 ? true : false) : true}
+                                isDisabled={isSubmitted ? (isValid ? true : false) : true}
                                 shouldWrapChildren
                                 bg="red.500"
                                 w="full"
@@ -2539,7 +2541,7 @@ const Creator: NextPage = ({ project, quality }) => {
                                     onClick={handleSubmit(handlePublished)}
                                     variant="solid"
                                     w="241px"
-                                    isDisabled={isSubmitted ? (isValid && members?.length > 0 ? false : true) : false}
+                                    isDisabled={isSubmitted ? (isValid ? false : true) : false}
                                 >
                                     Postular proyecto
                                 </Button>
@@ -2651,7 +2653,7 @@ const Creator: NextPage = ({ project, quality }) => {
                             w="full"
                             py="8px"
                             h="38px"
-                            disabled={isSubmitted ? !isValid : false}
+                            isDisabled={isSubmitted ? (isValid ? false : true) : false}
                         >
                             Postular proyecto
                         </Button>

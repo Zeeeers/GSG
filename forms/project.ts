@@ -7,6 +7,13 @@ type select = {
     value?: string;
     label?: string;
 };
+
+export interface IMember {
+    main_image: string;
+    name: string;
+    position: string;
+    linkedin?: string;
+}
 export interface IProjectForm {
     title: string;
     description: string;
@@ -45,16 +52,19 @@ export interface IProjectForm {
     facebookForm?: string;
     youtubeForm?: string;
     webForm?: string;
-}
 
-export interface IMember {
-    main_image: string;
-    name: string;
-    position: string;
-    linkedin?: string;
+    members: Array<IMember>;
 }
 
 // Schema
+
+const memberShape: ZodShape<IMember> = {
+    main_image: z.string().min(1, 'Campo obligatorio'),
+    name: z.string().nonempty('Campo obligatorio'),
+    position: z.string().nonempty('Campo obligatorio'),
+    linkedin: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+};
+
 const projectShape: ZodShape<IProjectForm> = {
     title: z.string().min(1, 'Campo obligatorio'),
     description: z
@@ -100,13 +110,8 @@ const projectShape: ZodShape<IProjectForm> = {
     instagramForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
     youtubeForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
     webForm: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
-};
 
-const memberShape: ZodShape<IMember> = {
-    main_image: z.string().min(1, 'Campo obligatorio'),
-    name: z.string().nonempty('Campo obligatorio'),
-    position: z.string().nonempty('Campo obligatorio'),
-    linkedin: z.string().url('Formato ingresado incorrecto').or(z.literal('')).optional(),
+    members: z.array(z.object(memberShape)).nonempty('Debe agregar al menos un miembro'),
 };
 
 export const projectSchema = z.object(projectShape);
