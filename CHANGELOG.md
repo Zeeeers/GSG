@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Zeeeers/GSG/compare/v1.0.0...v1.1.0) (2022-12-06)
+
+
+### Features
+
+* **creator:** limit characters in fields ([7105de6](https://github.com/Zeeeers/GSG/commit/7105de62440a86884e3912546af8f478b3ec1468))
+* **creator:** validate the social network fields that the urls have the correct format ([12f282f](https://github.com/Zeeeers/GSG/commit/12f282f8a61a1c37a376fb41925e3d7a389baf2d))
+* **explorer:** local pagination of projects is removed ([134c792](https://github.com/Zeeeers/GSG/commit/134c7928e3e0e8f7d007604b298770fdf6a3bc85))
+* **project:** add tooltip when you are not an investor ([a61c9b0](https://github.com/Zeeeers/GSG/commit/a61c9b02d6dc7518552d1e3137d7e458e133c703))
+* **project:** blue color is added if there is no company image ([9fa55e2](https://github.com/Zeeeers/GSG/commit/9fa55e29b2df6fa823cb41ed3f181bfa66d82353))
+
+
+### Bug Fixes
+
+* **creator:** it is possible to publish without having created members ([befe55c](https://github.com/Zeeeers/GSG/commit/befe55c30e66231f7dae83fdce3d8e3866f24eac))
+* **creator:** publish button crashes when uploading a PDF ([2c51661](https://github.com/Zeeeers/GSG/commit/2c51661053115390e8b2d67321faa42016e07ebd))
+* **explorer:** company avatar is changed to blue by default ([96770d9](https://github.com/Zeeeers/GSG/commit/96770d98fdcaa1d6cb4a6c4a0df5e05640370d76))
+* **project:** gradient box for blocking information, title cover for 320 screens ([37ca883](https://github.com/Zeeeers/GSG/commit/37ca883d531bb5aca89d42a01708aefc6b8f82ce))
+* **project:** menu incorrectly adjusted on 128 ([29021fd](https://github.com/Zeeeers/GSG/commit/29021fda1ce93c4e0e4d27336b4faca688ae746a))
+
 ### 0.0.11 (2022-12-01)
 
 
