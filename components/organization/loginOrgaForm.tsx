@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
+import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage, useToast } from '@chakra-ui/react';
 import InputPassword from 'common/inputPassword';
 import { loginSchema, ILoginData } from 'forms/login';
 
@@ -30,6 +30,8 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
         resolver: zodResolver(loginSchema),
     });
 
+    const toast = useToast();
+
     // Handlers
     const handleLogin = async (data: ILoginData) => {
         setIsLoggingIn(true);
@@ -49,9 +51,28 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
                 },
             });
 
+            toast({
+                title: 'Haz iniciado sesión',
+                description: 'Haz ingresado con éxito.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+
+            router.push((router.query.redirect_to as string) ?? '/explorer');
             setIsLoggingIn(false);
             afterLogin && afterLogin();
         } else {
+            toast({
+                title: 'No se ha podido iniciar sesión',
+                description: 'Ha ocurrido un error al intetar iniciar sesión',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+
             setIsLoggingIn(false);
             setAlert(true);
         }
@@ -67,25 +88,29 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
     }, [router]);
 
     return (
-        <Stack as="form" direction="column" spacing="17px" mt="23px" onSubmit={handleSubmit(handleLogin)}>
+        <Stack as="form" direction="column" spacing="15px" mt="20px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
-                <FormLabel fontSize="md" fontWeight="semibold">
-                    Correo electrónico
+                <FormLabel fontSize="md" fontWeight="normal">
+                    Correo electrónico <span style={{ color: '#4FD1C5' }}>*</span>
                 </FormLabel>
 
                 <Input {...register('email')} size="md" />
 
-                <FormErrorMessage fontWeight={'semibold'}>{errors.email?.message}</FormErrorMessage>
+                <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                    {errors.email?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <FormControl id="password" isInvalid={!!errors.password}>
-                <FormLabel fontSize="md" fontWeight="semibold">
-                    Contraseña
+                <FormLabel fontSize="md" fontWeight="normal">
+                    Contraseña <span style={{ color: '#4FD1C5' }}>*</span>
                 </FormLabel>
 
                 <InputPassword {...register('password')} size="md" />
 
-                <FormErrorMessage fontWeight={'semibold'}>{errors.password?.message}</FormErrorMessage>
+                <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                    {errors.password?.message}
+                </FormErrorMessage>
             </FormControl>
 
             {alert && <DangerAlert message={'Correo electrónico o contraseña incorrecto'} />}
@@ -98,6 +123,7 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
                     isLoading={isLoggingIn}
                     loadingText={'Iniciando sesión'}
                     w={'full'}
+                    h="44px"
                     mb={4}
                 >
                     Iniciar sesión

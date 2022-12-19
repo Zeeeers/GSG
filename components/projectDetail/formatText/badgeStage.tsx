@@ -27,6 +27,7 @@ const BadgeStage: React.FC<StageProps> = ({ capitalStage }) => {
                 px="8px"
                 rounded="6px"
                 mt={0}
+                fontFamily="inter"
             >
                 {Stage(capitalStage)}
             </Badge>

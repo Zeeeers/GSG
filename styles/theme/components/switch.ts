@@ -8,7 +8,7 @@ function baseStyleTrack({ colorScheme: c }: Record<string, any>) {
         height: 'var(--slider-track-height)',
         transitionProperty: 'common',
         transitionDuration: 'fast',
-        bg: 'gray.alpha.16',
+        bg: 'gray.700',
         borderColor: 'gray.500',
         _hover: {
             borderColor: `${c}.400`,
@@ -29,13 +29,13 @@ function baseStyleTrack({ colorScheme: c }: Record<string, any>) {
 }
 
 const baseStyleThumb = {
-    bg: 'white.base',
+    bg: 'white',
     transitionProperty: 'transform',
     transitionDuration: 'normal',
     borderRadius: 'inherit',
     width: 'var(--slider-track-height)',
     height: 'var(--slider-track-height)',
-    borderColor: 'gray.800',
+    borderColor: 'gray.700',
     _checked: {
         transform: 'translateX(var(--slider-thumb-x))',
     },
@@ -76,7 +76,7 @@ const sizes = {
 
 const defaultProps = {
     size: 'lg',
-    colorScheme: 'primary',
+    colorScheme: 'teal',
 };
 
 const switchTheme = {

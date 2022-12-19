@@ -66,7 +66,7 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
         } else {
             toast({
                 title: 'No se ha podido iniciar sesión',
-                description: 'Ha ocurrido un error al intetar iniciar sesión',
+                description: 'Ha ocurrido un error al intentar iniciar sesión',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -88,21 +88,29 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
     }, [router]);
 
     return (
-        <Stack as="form" w="full" direction="column" spacing="20px" pt="30px" onSubmit={handleSubmit(handleLogin)}>
+        <Stack as="form" w="full" direction="column" spacing="15px" pt="20px" onSubmit={handleSubmit(handleLogin)}>
             <FormControl id="email" isInvalid={!!errors.email}>
-                <FormLabel fontSize="md">Correo electrónico</FormLabel>
+                <FormLabel fontSize="md">
+                    Correo electrónico <span style={{ color: '#4FD1C5' }}>*</span>
+                </FormLabel>
 
                 <Input {...register('email')} size="md" />
 
-                <FormErrorMessage fontWeight={'semibold'}>{errors.email?.message}</FormErrorMessage>
+                <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                    {errors.email?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <FormControl id="password" isInvalid={!!errors.password}>
-                <FormLabel fontSize="md">Contraseña</FormLabel>
+                <FormLabel fontSize="md">
+                    Contraseña <span style={{ color: '#4FD1C5' }}>*</span>
+                </FormLabel>
 
                 <InputPassword {...register('password')} size="md" />
 
-                <FormErrorMessage fontWeight={'semibold'}>{errors.password?.message}</FormErrorMessage>
+                <FormErrorMessage textColor="red.400" fontFamily="inter" fontSize="16px" fontWeight={'medium'}>
+                    {errors.password?.message}
+                </FormErrorMessage>
             </FormControl>
 
             {alert && <DangerAlert message={'Correo electrónico o contraseña incorrecto'} />}

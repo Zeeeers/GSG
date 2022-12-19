@@ -1,14 +1,15 @@
 const parts = ['text', 'icon'];
 
 const baseStyleText = {
-    color: 'danger.400',
+    color: 'red.400',
     mt: 2,
     fontSize: 'md',
+    fontWeight: 'semibold',
 };
 
 const baseStyleIcon = {
     marginEnd: '0.5em',
-    color: 'danger.500',
+    color: 'red.500',
 };
 
 const baseStyle = {

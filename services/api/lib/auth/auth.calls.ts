@@ -1,5 +1,5 @@
 // Dependencies
-import { adminHeaders, api, pymeHeaders } from '../../config';
+import { adminHeaders, api, headers, pymeHeaders } from '../../config';
 import ENDPOINT from './auth.endpoints';
 import {
     ActivateAccountCall,
@@ -57,11 +57,16 @@ export const recoverPassword: RecoverPasswordCall = async ({ email }) => {
     return response;
 };
 
-export const createNewPassword: CreateNewPassCall = async ({ password, token }) => {
-    const response = await api.post<CreateNewPassResponse>(ENDPOINT.NEW_PASSWORD, {
-        token,
-        password,
-    });
+//@ts-ignore
+export const createNewPassword: CreateNewPassCall = async ({ password, token, jwt, kind }) => {
+    const response = await api.post<CreateNewPassResponse>(
+        ENDPOINT.NEW_PASSWORD,
+        {
+            token,
+            password,
+        },
+        !kind || kind === 'investor' ? headers(jwt) : pymeHeaders(jwt),
+    );
 
     return response;
 };

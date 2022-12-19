@@ -10,10 +10,13 @@ import { createNewPassword } from 'services/api/lib/auth';
 
 type Props = {
     token: string;
+    jwt: string;
+    kind: string;
+    isRecovery?: boolean;
 };
 
 // Component
-const CreatePasswordForm: React.FC<Props> = ({ token }) => {
+const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind, isRecovery = false }) => {
     // States
     const [isChangingPass, setIsChangingPass] = useState(false);
 
@@ -31,10 +34,24 @@ const CreatePasswordForm: React.FC<Props> = ({ token }) => {
 
         const { ok } = await createNewPassword({
             token: token,
+            //@ts-ignore
+            jwt: jwt,
             password: data.newPassword,
+            kind,
         });
 
         if (ok) {
+            const { AuthManager } = await import('@clyc/next-route-manager');
+            AuthManager.storeToken({
+                cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+                token: jwt,
+                options: {
+                    domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
+                    secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
+                    maxAge: 604800,
+                },
+            });
+
             toast({
                 title: 'Contraseña creada.',
                 description: 'La contraseña ha sido creada con éxito',
@@ -43,7 +60,12 @@ const CreatePasswordForm: React.FC<Props> = ({ token }) => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/login');
+
+            if (isRecovery) {
+                router.push('/explorer');
+            } else {
+                router.push('/experience');
+            }
         } else {
             toast({
                 title: 'No se pudo crear la contraseña',
@@ -75,7 +97,9 @@ const CreatePasswordForm: React.FC<Props> = ({ token }) => {
 
                 <InputPassword {...register('newPassword')} fontWeight="normal" size="md" />
 
-                <FormErrorMessage fontWeight="semibold">{errors.newPassword?.message}</FormErrorMessage>
+                <FormErrorMessage color="red.400" fontWeight="medium">
+                    {errors.newPassword?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <FormControl id="confirmPassword" isInvalid={!!errors.confirmPassword}>
@@ -85,7 +109,9 @@ const CreatePasswordForm: React.FC<Props> = ({ token }) => {
 
                 <InputPassword {...register('confirmPassword')} fontWeight="normal" size="md" />
 
-                <FormErrorMessage fontWeight="semibold">{errors.confirmPassword?.message}</FormErrorMessage>
+                <FormErrorMessage color="red.400" fontWeight="medium">
+                    {errors.confirmPassword?.message}
+                </FormErrorMessage>
             </FormControl>
 
             <Stack w="full">

@@ -1,7 +1,6 @@
 // Dependencies
-import useCropperBase64 from 'hooks/useCropperBase64';
-import { useEffect, useState } from 'react';
-import Cropper from 'react-easy-crop';
+import { Button } from '@chakra-ui/button';
+import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/layout';
 import {
     Modal,
     ModalBody,
@@ -11,9 +10,10 @@ import {
     ModalHeader,
     ModalOverlay,
 } from '@chakra-ui/modal';
-import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/layout';
 import { Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@chakra-ui/slider';
-import { Button } from '@chakra-ui/button';
+import useCropperBase64 from 'hooks/useCropperBase64';
+import { useEffect, useState } from 'react';
+import Cropper from 'react-easy-crop';
 
 // Types
 interface Props {
@@ -46,7 +46,7 @@ const CropperModalBase64: React.FC<Props> = ({ title, baseImg, isOpen, onClose, 
                     </Heading>
                 </ModalHeader>
 
-                <ModalCloseButton size="xl" />
+                <ModalCloseButton size="xl" py="20px" px="20px" />
 
                 <ModalBody p={0}>
                     <Box w={'full'} position="relative" paddingBottom="50%" bg="gray.600">
@@ -73,16 +73,16 @@ const CropperModalBase64: React.FC<Props> = ({ title, baseImg, isOpen, onClose, 
                             value={zoom.get}
                             onChange={(value) => zoom.set(value)}
                         >
-                            <SliderTrack>
-                                <SliderFilledTrack bg="primary.500" />
+                            <SliderTrack bg="gray.800">
+                                <SliderFilledTrack bg="gray.600" />
                             </SliderTrack>
 
-                            <SliderThumb />
+                            <SliderThumb bg="gray.600" />
                         </Slider>
                     </HStack>
                 </ModalBody>
 
-                <ModalFooter borderTop="1px" borderColor="gray.200">
+                <ModalFooter borderTop="1px" borderColor="gray.600">
                     <Flex w="full" justify="flex-end">
                         <Button
                             variant="outline"

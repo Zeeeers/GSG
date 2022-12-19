@@ -1,12 +1,23 @@
 // Dependencies
-import { Button, HStack, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react';
-import Avatar from '@clyc/optimized-image/components/chakraAvatar';
+import {
+    Button,
+    HStack,
+    Icon,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    Text,
+    Avatar,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useOrganization } from 'services/api/lib/organization';
-import { useUser } from 'services/api/lib/user';
+import { BsHeartFill } from 'react-icons/bs';
 import { HiChevronDown } from 'react-icons/hi';
 import { RiLogoutBoxRLine, RiUser3Fill } from 'react-icons/ri';
+import { useOrganization } from 'services/api/lib/organization';
+import { useUser } from 'services/api/lib/user';
 
 // Types
 interface Props {
@@ -18,8 +29,8 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
     // States
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
-    const { data: organization } = useOrganization();
     const { data: user } = useUser();
+    const { data: orga } = useOrganization(true);
 
     return (
         <Menu isLazy>
@@ -46,15 +57,16 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                 <HStack align="center" spacing={0} py="10px">
                     <Avatar
                         size="sm"
-                        name={organization?.name ?? 'GSG'}
-                        src={organization?.image}
-                        alt={organization?.name ?? ''}
-                        tHeight={32}
-                        tWidth={32}
+                        //@ts-ignore
+                        src={user?.organization.image ?? orga?.image}
+                        name={user?.name ?? 'GSG'}
+                        height="32px"
+                        width="32px"
                         mr="10px"
                         icon={<></>}
-                        bgColor={organization?.image ? 'transparent' : 'primary.500'}
-                        color={'white.base'}
+                        //@ts-ignore
+                        bgColor={user?.organization.image ? 'transparent' : 'teal.400'}
+                        color={'white'}
                     />
 
                     <Text as="span" fontWeight="normal" fontSize="md" fontFamily="inter" color="white.base">
@@ -70,12 +82,28 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                     fontSize="md"
                     fontFamily="inter"
                     onClick={() => {
-                        router.push('/profile');
+                        router.push({ pathname: '/profile', query: { tab: 0 } });
                     }}
                 >
                     <HStack spacing="14px">
                         <Icon w={6} h={6} color="gray.50" as={RiUser3Fill} />
                         <Text>Mi perfil</Text>
+                    </HStack>
+                </MenuItem>
+
+                <MenuDivider />
+
+                <MenuItem
+                    fontWeight="normal"
+                    fontSize="md"
+                    fontFamily="inter"
+                    onClick={() => {
+                        router.push({ pathname: '/profile', query: { tab: 1 } });
+                    }}
+                >
+                    <HStack spacing="14px">
+                        <Icon w={5} h={5} color="gray.50" as={BsHeartFill} />
+                        <Text>Mis intereses</Text>
                     </HStack>
                 </MenuItem>
 

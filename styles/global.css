@@ -5,13 +5,13 @@ input::-ms-clear {
 
 * {
     outline: none;
-    
 }
 
 body {
     overflow-x: hidden;
     scroll-margin-top: 200px;
 }
+
 p {
     font-family: 'Inter', sans-serif;
 }

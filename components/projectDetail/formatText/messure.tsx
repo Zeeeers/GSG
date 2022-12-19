@@ -11,6 +11,8 @@ const Messure = (messureProp: string) => {
         case 'certified':
             return (messure =
                 'Mido resultados sociales y/o medioambientales y están certificados y/o validados por terceros independientes a mi organización');
+        case 'in-process-external':
+            return 'Estoy en proceso de medición de resultados validados por un externo';
 
         default: {
             return messure;

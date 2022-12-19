@@ -1,20 +1,22 @@
 // Dependencies
 //@ts-nocheck
 import {
-    Img,
-    Badge,
+    Avatar,
+    Button,
     Container,
     Flex,
-    VStack,
-    Text,
-    Stack,
-    Button,
-    useDisclosure,
     HStack,
-    Avatar,
+    Img,
+    Skeleton,
+    Stack,
+    Text,
+    Tooltip,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
-import { impact } from '@clyc/api-wrapper';
-import CurrencyFormat from 'common/currencyFormat';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
+import cookies from 'nookies';
 import { useEffect, useRef, useState } from 'react';
 import { Gsg } from 'services/api/types/Gsg';
 import Body from './body';
@@ -24,10 +26,16 @@ import FinanceGoal from './formatText/financeGoal';
 
 interface Props {
     project: Gsg | undefined;
+    user: User | undefined;
+    orga: Organization | undefined;
+    iisValidating: boolean;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project }) => {
+const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating }) => {
+    const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
+    const router = useRouter();
+
     // States
     const [sticky, setSticky] = useState(false);
     const [isActive, setIsActive] = useState({
@@ -134,29 +142,43 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
         }
     };
 
+    const handleInterest = async () => {
+        const { createInterest } = await import('../../services/api/lib/gsg');
+
+        try {
+            const { data, ok } = await createInterest({ project: { gsg_projects_id: project?.id } });
+
+            if (ok) {
+                mutate();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    });
+    }, []);
+
     return (
         <>
             <Flex w="full" h="90px" position="absolute" ref={description_general}>
                 <Container
                     maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
-                    pt={{ base: 0, md: 4 }}
                     pb={16}
                     px={{ base: 0, md: 4, lg: 12, xl: 6 }}
                 >
                     <Stack
-                        display={{ base: 'none', md: 'flex' }}
+                        display={{ base: 'none', xl: 'flex' }}
                         position={sticky ? 'fixed' : 'absolute'}
                         alignItems="end"
                         spacing="30px"
                         zIndex={30}
-                        marginLeft="-110px"
+                        marginLeft={{ md: '-20px', '2xl': '-110px' }}
                         marginTop={sticky ? '5px' : '350px'}
                     >
                         <Button
@@ -182,6 +204,7 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                         >
                             Impacto
                         </Button>
+
                         <Button
                             onClick={() => executeScroll('description_finance')}
                             variant="unstyled"
@@ -193,138 +216,345 @@ const HeaderHero: React.FC<Props> = ({ project }) => {
                         >
                             Descripción financiera
                         </Button>
-                        <Button
-                            onClick={() => executeScroll('other')}
-                            variant="unstyled"
-                            rounded={0}
-                            color={isActive.other ? 'teal.400' : ''}
-                            borderBottom={isActive.other ? '2px' : ''}
-                            _hover={{ color: 'teal.500' }}
-                            fontSize="sm"
+                        <Tooltip
+                            hasArrow
+                            label="Información solo disponible para inversionistas"
+                            w="200px"
+                            rounded="16px"
+                            fontFamily="inter"
+                            fontSize="14px"
+                            bg="gray.600"
+                            isDisabled={user || orga?.gsg_project_id === project?.id || adminCookie ? true : false}
                         >
-                            Otra información
-                        </Button>
+                            <Button
+                                onClick={() => executeScroll('other')}
+                                variant="unstyled"
+                                rounded={0}
+                                color={isActive.other ? 'teal.400' : ''}
+                                borderBottom={isActive.other ? '2px' : ''}
+                                _hover={{ color: 'teal.500' }}
+                                fontSize="sm"
+                            >
+                                Otra información
+                            </Button>
+                        </Tooltip>
                     </Stack>
 
-                    <VStack w="full">
-                        <Flex w="full" direction="column" position="relative">
-                            <Flex
-                                alignItems="center"
-                                justifyContent="center"
-                                w="full"
-                                h={{ base: '140px', md: '20rem' }}
-                                overflow="hidden"
+                    {user &&
+                        (Object.values(project?.relations ?? {}).find(
+                            (r) => r.organization_id === user?.organization_id,
+                        )?.kinds !== 'interested' ? (
+                            <Button
+                                position="fixed"
+                                onClick={handleInterest}
+                                leftIcon={<Img src="/images/icons/interest.svg" />}
+                                variant="solid"
+                                rounded="500px"
+                                h="40px"
+                                right="50px"
+                                bottom="30px"
+                                background="gray.700"
+                                _hover={{ background: 'gray.600' }}
                             >
-                                <Img
-                                    src={project?.main_image}
-                                    alt="Imagen del desafio"
-                                    w={{ base: 'full', md: 898 }}
-                                    objectFit="cover"
-                                    borderRadius={{ base: 0, md: '2xl' }}
-                                    h="full"
-                                />
-                            </Flex>
+                                <Text>Me interesa</Text>
+                            </Button>
+                        ) : (
+                            <Button
+                                position="fixed"
+                                onClick={handleInterest}
+                                variant="solid"
+                                background="blue.700"
+                                color="gray.50"
+                                rounded="500px"
+                                fontSize="18px"
+                                fontFamily="inter"
+                                h="40px"
+                                px="15px"
+                                _hover={{ borderColor: 'none' }}
+                                leftIcon={<Img src="/images/icons/interest.svg" />}
+                                right="50px"
+                                bottom="30px"
+                            >
+                                <Text>Te interesa</Text>
+                            </Button>
+                        ))}
 
-                            <Flex
-                                position={{ base: 'relative', md: 'absolute' }}
-                                bottom={{ base: 0, md: '-20rem' }}
-                                justifyContent="center"
-                                w="full"
-                            >
-                                <VStack
-                                    boxShadow="lg"
-                                    bg="blue.700"
-                                    w={{ base: 'full', md: 898 }}
-                                    h={{ base: 'full', md: '-webkit-fit-content' }}
-                                    justifyContent="start"
-                                    alignItems="start"
-                                    rounded={{ base: 0, md: '2xl' }}
-                                    px={{ base: '24px', md: '40px' }}
-                                    py={{ base: '24px', md: '30px' }}
-                                    spacing={0}
+                    {!project ? (
+                        <VStack w="full">
+                            <Flex w="full" direction="column" position="relative">
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    h={{ base: '140px', md: '20rem' }}
+                                    overflow="hidden"
                                 >
-                                    <VStack align="flex-start" spacing="10px" mb="20px">
-                                        <HStack spacing="17px">
-                                            <Avatar
-                                                name={project?.organization.name}
-                                                src={project?.organization.image}
-                                                w="48px"
-                                                h="48px"
-                                            />
-                                            <Text
-                                                fontSize={{ base: 'sm', md: '24px' }}
-                                                fontWeight="medium"
-                                                fontFamily="inter"
-                                            >
-                                                {project?.organization.name}
-                                            </Text>
-                                        </HStack>
-                                        <Text
-                                            fontSize={{ base: 'xl', md: '4xl' }}
-                                            textTransform="uppercase"
-                                            fontWeight="bold"
-                                        >
-                                            {project?.title}
-                                        </Text>
+                                    <Skeleton
+                                        h={{ base: '140px', md: '20rem' }}
+                                        w={{ base: 'full', md: 898 }}
+                                        borderRadius={{ base: 0, md: '2xl' }}
+                                    />
+                                </Flex>
 
-                                        <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
-                                            {project?.description}
-                                        </Text>
-                                    </VStack>
-                                    <BadgeStage capitalStage={project?.capital_stage} />
-                                    <VStack align="flex-start" w="full" pt="20px" m={0} spacing={0}>
-                                        <Text>Rango de levantamiento buscado</Text>
-                                        <Flex
-                                            justifyContent="space-between"
-                                            direction={{ base: 'column', md: 'row' }}
-                                            w="full"
-                                            pt="5px"
-                                        >
-                                            <Text fontSize="3xl" fontWeight="medium">
-                                                {FinanceGoal(project?.finance_goal)} (CLP)
-                                            </Text>
+                                <VStack
+                                    marginTop={{ base: 0, md: '-5rem' }}
+                                    justifyContent="center"
+                                    h="fit-content"
+                                    zIndex={20}
+                                >
+                                    <VStack
+                                        boxShadow="lg"
+                                        bg="gray.800"
+                                        w={{ base: 'full', md: 898 }}
+                                        h={{ base: 'full', md: 'fit-content' }}
+                                        justifyContent="start"
+                                        alignItems="start"
+                                        rounded={{ base: 0, md: '2xl' }}
+                                        px={{ base: '24px', md: '40px' }}
+                                        py={{ base: '24px', md: '30px' }}
+                                        spacing={0}
+                                    >
+                                        <VStack w="full" h="full" align="flex-start" spacing="15px" mb="20px">
                                             <Stack
-                                                alignItems={{ base: 'center', md: 'start' }}
-                                                spacing="5px"
-                                                mt={{ base: '20px', md: 0 }}
-                                                justifyContent="end"
+                                                direction={{ base: 'column', md: 'row' }}
+                                                spacing="17px"
+                                                mb="15px"
+                                                justify="space-between"
+                                                w="full"
+                                                h="full"
                                             >
-                                                <Button
-                                                    onClick={onOpen}
-                                                    w={{ base: 'full', md: '212px' }}
-                                                    h="48px"
-                                                    variant="solid"
-                                                >
-                                                    Contactar
-                                                </Button>
+                                                <HStack w="full" h="full">
+                                                    <Skeleton w="48px" h="48px" rounded="full" />
+                                                    <Skeleton w="100px" h="30px" />
+                                                </HStack>
                                             </Stack>
-                                        </Flex>
+
+                                            <VStack h="full" align="flex-start" w="full" spacing="10px">
+                                                <Skeleton w="full" h="40px" />
+                                                <Skeleton w="full" h="240px" />
+                                            </VStack>
+                                        </VStack>
+
+                                        <Skeleton h="24px" w="70px" />
+
+                                        <VStack align="flex-start" w="full" h="full" pt="20px" m={0} spacing={0}>
+                                            <Text fontFamily="inter" color="gray.400" fontSize="16px">
+                                                Rango de levantamiento buscado
+                                            </Text>
+                                            <Skeleton w="325px" h="45px" />
+                                        </VStack>
                                     </VStack>
                                 </VStack>
                             </Flex>
-                        </Flex>
 
-                        <Flex
-                            w="full"
-                            justifyContent={{ base: 'center', md: 'flex-end' }}
-                            mb={{ base: 4, md: '3rem !important' }}
-                            mt={{ base: '5rem !important', md: '1rem !important' }}
-                            position="relative"
-                            zIndex={100}
-                            minH={8}
-                        ></Flex>
-                    </VStack>
+                            <Body project={project} ref={ref} user={user} orga={orga} />
+                        </VStack>
+                    ) : (
+                        <VStack w="full">
+                            <Flex
+                                w="full"
+                                direction="column"
+                                position="relative"
+                                align={{ base: 'center', xl: 'flex-end', '2xl': 'center' }}
+                            >
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    h={{ base: '140px', md: '20rem' }}
+                                    overflow="hidden"
+                                >
+                                    <Img
+                                        src={project?.main_image}
+                                        alt="Imagen del proyecto"
+                                        w={{ base: 'full', '2xl': 898 }}
+                                        objectFit="cover"
+                                        borderRadius={{ base: 0, md: '2xl' }}
+                                    />
+                                </Flex>
 
-                    <Body project={project} ref={ref} />
+                                <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" h="fit-content">
+                                    <VStack
+                                        boxShadow="lg"
+                                        bg="gray.800"
+                                        w={{ base: 'full', xl: 903, '2xl': 898 }}
+                                        h={{ base: 'full', md: 'fit-content' }}
+                                        justifyContent="start"
+                                        alignItems="start"
+                                        rounded={{ base: 0, md: '2xl' }}
+                                        px={{ base: '24px', md: '40px' }}
+                                        py={{ base: '24px', md: '30px' }}
+                                        spacing={0}
+                                    >
+                                        <VStack w="full" h="full" align="flex-start" spacing="15px" mb="20px">
+                                            <Stack
+                                                direction={{ base: 'column', md: 'row' }}
+                                                spacing="17px"
+                                                mb="15px"
+                                                justify="space-between"
+                                                w="full"
+                                                h="full"
+                                            >
+                                                <HStack w="full" h="full">
+                                                    <Avatar
+                                                        name={project?.organization?.name}
+                                                        src={project?.organization?.image}
+                                                        w="48px"
+                                                        h="48px"
+                                                        bgColor={
+                                                            project?.organization?.image ? 'transparent' : 'blue.700'
+                                                        }
+                                                        color={'white'}
+                                                    />
+
+                                                    <Text fontSize={'24px'} fontWeight="medium" fontFamily="inter">
+                                                        {project?.organization?.name}
+                                                    </Text>
+                                                </HStack>
+                                                {user &&
+                                                    Object.values(project?.relations ?? {}).find(
+                                                        (r) => r.organization_id === user?.organization_id,
+                                                    )?.kinds !== 'interested' && (
+                                                        <Button
+                                                            w="fit-content"
+                                                            onClick={handleInterest}
+                                                            leftIcon={<Img src="/images/icons/interest.svg" />}
+                                                            variant="outline"
+                                                            border="2px"
+                                                            rounded="500px"
+                                                            borderColor="gray.50"
+                                                            h="40px"
+                                                            px="25px"
+                                                            _hover={{ borderColor: 'none' }}
+                                                        >
+                                                            <Text>Me interesa</Text>
+                                                        </Button>
+                                                    )}
+
+                                                {Object.values(project?.relations ?? {}).find(
+                                                    (r) => r.organization_id === user?.organization_id,
+                                                )?.kinds === 'interested' && (
+                                                    <Button
+                                                        onClick={handleInterest}
+                                                        variant="solid"
+                                                        background="blue.700"
+                                                        color="gray.50"
+                                                        border="2px"
+                                                        rounded="500px"
+                                                        borderColor="blue.700"
+                                                        fontSize="18px"
+                                                        fontFamily="inter"
+                                                        h="40px"
+                                                        px="25px"
+                                                        _hover={{ borderColor: 'none' }}
+                                                        leftIcon={
+                                                            <Img
+                                                                src="/images/icons/interest.svg"
+                                                                as={motion.img}
+                                                                initial={{ scale: 0 }}
+                                                                animate={{
+                                                                    scale: 1,
+                                                                    transition: {
+                                                                        type: 'spring',
+                                                                        duration: 1,
+                                                                        bounce: 0.6,
+                                                                    },
+                                                                }}
+                                                            />
+                                                        }
+                                                    >
+                                                        <Text>Te interesa</Text>
+                                                    </Button>
+                                                )}
+                                            </Stack>
+                                            {user && (
+                                                <HStack px="10px" py="5px" rounded="6px" background="#3B5D89">
+                                                    <Img src="/images/icons/interest.svg" />
+                                                    <Text
+                                                        color="gray.50"
+                                                        fontFamily="inter"
+                                                        fontWeight="400"
+                                                        fontSize="15px"
+                                                    >
+                                                        {`${project?.relations?.interests} inversionistas interesados`}
+                                                    </Text>
+                                                </HStack>
+                                            )}
+
+                                            <VStack h="full" align="flex-start" w="full" spacing="10px">
+                                                <Text
+                                                    fontSize={{ base: '3xl', md: '4xl' }}
+                                                    lineHeight="32px"
+                                                    textTransform="uppercase"
+                                                    fontWeight="bold"
+                                                    textOverflow="ellipsis"
+                                                    w="full"
+                                                >
+                                                    {project?.title}
+                                                </Text>
+
+                                                <Text fontSize={{ base: 'sm', md: 'md' }} fontFamily="inter" as="p">
+                                                    {project?.description}
+                                                </Text>
+                                            </VStack>
+                                        </VStack>
+
+                                        <HStack>
+                                            {project?.capital_stage && (
+                                                <BadgeStage capitalStage={project?.capital_stage} />
+                                            )}
+
+                                            {!project?.debt ||
+                                                (project?.debt !== 'other' && (
+                                                    <BadgeStage capitalStage={project?.debt} />
+                                                ))}
+                                        </HStack>
+
+                                        <VStack align="flex-start" w="full" h="full" pt="20px" m={0} spacing={0}>
+                                            <Text fontFamily="inter" color="gray.400" fontSize="16px">
+                                                Rango de levantamiento buscado
+                                            </Text>
+                                            <Flex
+                                                justifyContent="space-between"
+                                                direction={{ base: 'column', md: 'row' }}
+                                                w="full"
+                                                pt="5px"
+                                                h="full"
+                                            >
+                                                <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
+                                                    {FinanceGoal(project?.finance_goal)} (CLP)
+                                                </Text>
+
+                                                <Stack
+                                                    alignItems={{ base: 'center', md: 'start' }}
+                                                    spacing="5px"
+                                                    mt={{ base: '20px', md: 0 }}
+                                                    justifyContent="end"
+                                                >
+                                                    {user || orga?.gsg_project_id === project?.id || adminCookie ? (
+                                                        <Button
+                                                            onClick={onOpen}
+                                                            w={{ base: 'full', md: '212px' }}
+                                                            h="48px"
+                                                            variant="solid"
+                                                        >
+                                                            Contactar
+                                                        </Button>
+                                                    ) : (
+                                                        ''
+                                                    )}
+                                                </Stack>
+                                            </Flex>
+                                        </VStack>
+                                    </VStack>
+                                </VStack>
+                            </Flex>
+
+                            <Body project={project} ref={ref} user={user} orga={orga} />
+                        </VStack>
+                    )}
                 </Container>
             </Flex>
 
-            <ContactModal
-                isOpen={isOpen}
-                onClose={onClose}
-                project={project?.organization}
-                web={project?.business_web}
-            />
+            <ContactModal isOpen={isOpen} onClose={onClose} project={project?.organization} web={project?.contacts} />
         </>
     );
 };

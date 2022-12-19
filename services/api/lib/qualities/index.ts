@@ -1,1 +1,1 @@
-export { useQualityList, default as qualities } from './qualities.calls';
+export { useQualityList, getQualities, default as qualities } from './qualities.calls';

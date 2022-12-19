@@ -5,8 +5,9 @@ const GsgEndpoints = {
     DETAIL: (id: number): string => `/gsg/${id}`,
     OWN: `/gsg/0`,
     JOB: '/admin/gsg/execute_job',
-    STATUS: (projectId: number): string => `/admin/users/${projectId}`,
+    STATUS: (projectId: number): string => `/admin/users/publish_project/${projectId}`,
     CREATE: '/gsg/create',
+    CREATE_INTEREST: '/relations',
 };
 
 // Export

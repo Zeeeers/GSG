@@ -11,7 +11,7 @@ const DangerAlert: React.FC<Props> = ({ message }) => {
     return (
         <Alert
             variant="solid"
-            bg={'danger.400'}
+            bg={'red.400'}
             borderRadius={'lg'}
             fontWeight="semibold"
             textAlign="center"

@@ -1,9 +1,9 @@
 // Dependencies
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Stack, useToast } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { addInvestorShape, IInvestorData } from 'forms/addInvestor';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack, Button, Input, FormControl, FormLabel, FormErrorMessage, useToast } from '@chakra-ui/react';
-import { addInvestorShape, IInvestorData } from 'forms/addInvestor';
 
 // Component
 const AddInvestorForm: React.FC = () => {
@@ -59,13 +59,13 @@ const AddInvestorForm: React.FC = () => {
         <>
             <Stack
                 as="form"
-                w="full"
+                w={{ base: 'full', md: '537px' }}
                 direction="column"
                 spacing="17px"
                 mt="23px"
                 onSubmit={handleSubmit(handleCreateInvestor)}
             >
-                <FormControl id="name" isInvalid={!!errors.name}>
+                <FormControl id="name" isInvalid={!!errors.name} w="full">
                     <FormLabel fontSize="md">Nombre y apellido</FormLabel>
 
                     <Input {...register('name')} size="md" />
@@ -73,7 +73,7 @@ const AddInvestorForm: React.FC = () => {
                     <FormErrorMessage fontWeight={'semibold'}>{errors.name?.message}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl id="email" isInvalid={!!errors.email}>
+                <FormControl id="email" isInvalid={!!errors.email} w="full">
                     <FormLabel fontSize="md">Correo electrónico</FormLabel>
 
                     <Input {...register('email')} size="md" />

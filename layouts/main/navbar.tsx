@@ -9,6 +9,8 @@ import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
 import LoginModal from 'components/login/loginModal';
 import LoginOrgaModal from 'components/organization/loginOrgaModal';
+import { useOrganization } from 'services/api/lib/organization';
+import OrgaMenu from './menu/orgaMenu';
 
 // Types
 const UserMenu = dynamic(() => import('./menu/desktop'));
@@ -22,6 +24,7 @@ const Navbar: React.FC = () => {
     const [isTablet] = useMediaQuery('(min-width: 48em)');
     const router = useRouter();
     const { data: user, mutate } = useUser();
+    const { data: orga, mutate: reloadOrga } = useOrganization(true);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenOrgaLogin, onOpen: onOpenOrgaLogin, onClose: onCloseOrgaLogin } = useDisclosure();
@@ -37,6 +40,16 @@ const Navbar: React.FC = () => {
         mutate();
     };
 
+    const handleLogOutOrga = async () => {
+        const auth = (await import('@clyc/next-route-manager/libs/AuthManager')).default;
+        auth.removeToken(process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!, {
+            domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN!,
+            secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'TRUE',
+        });
+        router.push('/explorer');
+        reloadOrga();
+    };
+
     // Effects
     useEffect(() => {
         router.prefetch('/login');
@@ -50,7 +63,7 @@ const Navbar: React.FC = () => {
         <>
             <HStack
                 w="full"
-                bgColor={{ base: 'gray.700', md: 'gray.900' }}
+                bgColor={{ base: 'gray.800', md: 'gray.900' }}
                 zIndex={50}
                 position="fixed"
                 as="nav"
@@ -65,16 +78,18 @@ const Navbar: React.FC = () => {
                 >
                     <Link href="/explorer" passHref>
                         <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
-                            <Img src="/images/logo_match_blanco.png" />
-                            <Text fontSize="sm" fontWeight="bold" pt={1} cursor="pointer" userSelect="none">
-                                MATCH
-                            </Text>
+                            <Img
+                                src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
+                                w="130px"
+                                h="35px"
+                            />
                         </HStack>
                     </Link>
-                    {user === undefined ? (
+
+                    {user === undefined && orga === undefined ? (
                         isTablet ? (
                             <HStack spacing="15px">
-                                <Button variant="outline" onClick={() => onOpenOrgaLogin()}>
+                                <Button variant="outline" onClick={() => router.push('/register')}>
                                     ¿Eres empresa? levantar capital
                                 </Button>
                                 <Button
@@ -93,16 +108,18 @@ const Navbar: React.FC = () => {
                         ) : (
                             <MobileButton />
                         )
-                    ) : (
+                    ) : user !== undefined ? (
                         <UserMenu onLogOut={handleLogOut} />
+                    ) : (
+                        <OrgaMenu onLogOut={handleLogOutOrga} />
                     )}
                 </Container>
             </HStack>
 
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 
-            <LoginModal isOpen={isOpen} onClose={onClose} />
-            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} />
+            <LoginModal isOpen={isOpen} onClose={onClose} investorReload={mutate} orgaReload={reloadOrga} />
+            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} orgaReload={reloadOrga} />
         </>
     );
 };

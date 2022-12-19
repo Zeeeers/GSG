@@ -26,7 +26,7 @@ const Stage = (capitalStage: string) => {
             return (stage = 'Deuda mezzanine');
 
         case 'other':
-            return (stage = 'otro');
+            return (stage = 'Ninguno');
         default: {
             return stage;
         }

@@ -1,56 +1,57 @@
 // Dependencies
 //@ts-nocheck
-import dynamic from 'next/dynamic';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { forwardRef } from '@chakra-ui/system';
-import { Input } from '@chakra-ui/input';
 import { Alert } from '@chakra-ui/alert';
+import { Button } from '@chakra-ui/button';
+import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/form-control';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { Icon } from '@chakra-ui/icon';
 import { Image } from '@chakra-ui/image';
+import { Input } from '@chakra-ui/input';
 import {
+    AspectRatio,
     Box,
+    BoxProps,
+    Code,
     Flex,
     Heading,
-    OrderedList,
-    UnorderedList,
-    Text,
-    Code,
-    ListItem,
-    AspectRatio,
-    VStack,
     Link,
-    BoxProps,
+    ListItem,
+    OrderedList,
+    Text,
+    UnorderedList,
+    VStack,
 } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/button';
-import { Icon } from '@chakra-ui/icon';
-import { FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/form-control';
-import { useDisclosure } from '@chakra-ui/hooks';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/modal';
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal';
+import { useToast } from '@chakra-ui/react';
+import { forwardRef } from '@chakra-ui/system';
+import { AuthManager } from '@clyc/next-route-manager';
 import imageExtensions from 'image-extensions';
-import ReactPlayer from 'react-player/youtube';
-import { Editable, withReact, useSlate, Slate, ReactEditor, useSelected, useFocused } from 'slate-react';
-import { Editor, Transforms, createEditor, Descendant, Element as SlateElement, BaseEditor, Range } from 'slate';
-import { withHistory, HistoryEditor } from 'slate-history';
-import {
-    FaBold,
-    FaItalic,
-    FaUnderline,
-    FaCode,
-    FaHeading,
-    FaFont,
-    FaQuoteRight,
-    FaListUl,
-    FaListOl,
-    FaImage,
-    FaYoutube,
-    FaFileImage,
-    FaLink,
-    FaUnlink,
-} from 'react-icons/fa';
 import isHotkey from 'is-hotkey';
 import isUrl from 'is-url';
+import dynamic from 'next/dynamic';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    FaBold,
+    FaCode,
+    FaFileImage,
+    FaFont,
+    FaHeading,
+    FaImage,
+    FaItalic,
+    FaLink,
+    FaListOl,
+    FaListUl,
+    FaQuoteRight,
+    FaUnderline,
+    FaUnlink,
+    FaYoutube,
+} from 'react-icons/fa';
 import { IconType } from 'react-icons/lib';
-import { uploadImage, deleteImage } from 'services/api/lib/projectImages/projectImages.calls';
-import { AuthManager } from '@clyc/next-route-manager';
+import ReactPlayer from 'react-player/youtube';
+import { deleteImage, uploadImage } from 'services/api/lib/projectImages/projectImages.calls';
+import { BaseEditor, createEditor, Descendant, Editor, Element as SlateElement, Range, Transforms } from 'slate';
+import { HistoryEditor, withHistory } from 'slate-history';
+import { Editable, ReactEditor, Slate, useFocused, useSelected, useSlate, withReact } from 'slate-react';
 import { useCreateGsgProjectStore } from '../../stores/createGsgProject';
 
 // Dynamic
@@ -135,6 +136,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
         const [videoUrlError, setVideoUrlError] = useState<string | undefined>();
         const [croppedImg, setCroppedImg] = useState<string>();
         const [isUploadingImg, setIsUploadingImg] = useState<boolean>(false);
+        const toast = useToast();
 
         useEffect(() => {
             if (!isOpenImage) {
@@ -196,7 +198,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
 
                         <ModalCloseButton />
 
-                        <ModalBody py={4}>
+                        <ModalBody p="25px">
                             {baseImg === '' && (
                                 <Button variant="outline" w="full" h="fit-content" py={0}>
                                     <VStack w="full" spacing={3} align="center" py={6}>
@@ -220,9 +222,19 @@ const SlateEditor = forwardRef<Props, 'div'>(
                                             const { validateTypes, getBase64 } = await import('services/images');
 
                                             if (e.target?.files && validateTypes(e.target.files[0])) {
-                                                const base = await getBase64(e.target.files![0]);
-                                                setBaseImg(base);
-                                                onOpenCropper();
+                                                if (e.target?.files[0].size >= 2000000) {
+                                                    toast({
+                                                        title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                        status: 'error',
+                                                        duration: 9000,
+                                                        isClosable: true,
+                                                        position: 'top-right',
+                                                    });
+                                                } else {
+                                                    const base = await getBase64(e.target.files![0]);
+                                                    setBaseImg(base);
+                                                    onOpenCropper();
+                                                }
                                             }
                                         }}
                                     />
@@ -232,7 +244,7 @@ const SlateEditor = forwardRef<Props, 'div'>(
                             {croppedImg && <Image src={croppedImg} alt="a" />}
 
                             {croppedImg !== '' && (
-                                <Flex mt={4} w="full" justify="flex-end">
+                                <Flex p="25px" mt={4} w="full" justify="flex-end">
                                     <Button
                                         isLoading={isUploadingImg}
                                         loadingText="Subiendo imagen"
@@ -280,12 +292,13 @@ const SlateEditor = forwardRef<Props, 'div'>(
 
                             <ModalCloseButton />
 
-                            <ModalBody>
+                            <ModalBody p="25px">
                                 <FormControl id="video_url" isInvalid={!!videoUrlError} mb={4}>
                                     <FormLabel>Url del video</FormLabel>
 
                                     <Input
                                         variant="outline"
+                                        textColor="white"
                                         onChange={(e) => setVideoUrl(e.target.value)}
                                         value={videoUrl}
                                     />

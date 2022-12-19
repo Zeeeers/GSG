@@ -1,4 +1,5 @@
 // Dependencies
+//@ts-nocheck
 import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { Flex, HStack, Img, Link, Text, VStack } from '@chakra-ui/react';
@@ -6,12 +7,13 @@ import CreatePasswordForm from 'components/createPassword/createPasswordForm';
 
 type Props = {
     token: string;
+    jwt: string;
 };
 // Page
-const ChangePassword: NextPage<Props> = ({ token }) => {
+const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
     return (
         <>
-            <NextSeo title={'Crear contraseña - GSG'} />
+            <NextSeo title="Crear contraseña - MATCH" />
             <Flex
                 flexDirection="column"
                 alignItems="center"
@@ -36,25 +38,19 @@ const ChangePassword: NextPage<Props> = ({ token }) => {
                     >
                         <Link href="/explorer">
                             <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
-                                <Img src="/images/logo_match_blanco.png" />
-                                <Text
-                                    fontSize="3xl"
-                                    textAlign="start"
-                                    fontWeight="bold"
-                                    color="primary.500"
-                                    pt={1}
-                                    cursor="pointer"
-                                >
-                                    MATCH
-                                </Text>
+                                <Img
+                                    src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
+                                    w="133px"
+                                    h="35px"
+                                />
                             </HStack>
                         </Link>
                         <VStack maxW="504px" alignItems="flex-start">
                             <Text fontSize="24px" textAlign="center">
-                                Hola Martín, te damos la bienvenida a GSG, para continuar crea tu contraseña
+                                Hola!, te damos la bienvenida a GSG, para continuar crea tu contraseña
                             </Text>
 
-                            <CreatePasswordForm token={token} />
+                            <CreatePasswordForm token={token} jwt={jwt} />
                         </VStack>
                     </Flex>
                 </VStack>
@@ -67,9 +63,9 @@ const ChangePassword: NextPage<Props> = ({ token }) => {
 export default ChangePassword;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { token } = context.query;
+    const { token, jwt } = context.query;
 
-    if (!token) {
+    if (!token && !jwt) {
         return {
             redirect: {
                 destination: '/login',
@@ -81,6 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             token,
+            jwt,
         }, // will be passed to the page component as props
     };
 };

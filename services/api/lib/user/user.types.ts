@@ -22,6 +22,36 @@ interface InvestorRequest {
 
 export type CreateInvestorCall = (payload: InvestorRequest) => Promise<ApiResponse<InvestorResponse>>;
 
+// Send Match
+export interface SendMatchForm {
+    email: string;
+}
+
+export interface SendMatchResponse {
+    status: boolean;
+    message: string;
+    user: User;
+}
+interface SendMatchRequest {
+    token: string;
+    data: SendMatchForm;
+}
+
+export type SendMatchCall = (payload: SendMatchRequest) => Promise<ApiResponse<SendMatchResponse>>;
+
+// Send Interest
+export interface SendInterestResponse {
+    status: boolean;
+    message: string;
+    user: User;
+}
+interface SendInterestRequest {
+    token: string;
+    id: number;
+}
+
+export type SendInterestCall = (payload: SendInterestRequest) => Promise<ApiResponse<SendInterestResponse>>;
+
 // Get User Types
 export interface UserResponse {
     status: boolean;
@@ -30,6 +60,14 @@ export interface UserResponse {
 }
 
 export type GetUserCall = (token: string) => Promise<ApiResponse<UserResponse>>;
+
+export interface UsersAllResponse {
+    status: boolean;
+    message: string;
+    data: { users: Array<User> };
+}
+
+export type GetAllUsersCall = (token: string) => Promise<ApiResponse<UserResponse>>;
 
 // Update User Types
 export interface UserForm {
@@ -41,6 +79,7 @@ export interface UserForm {
     lang?: string;
     country_id?: number;
     image?: string;
+    newsletter: boolean;
 }
 
 export interface UpdateUserRequest {
@@ -49,3 +88,19 @@ export interface UpdateUserRequest {
 }
 
 export type UpdateUserCall = (payload: UpdateUserRequest) => Promise<ApiResponse<UserResponse>>;
+
+export interface UpdateUserStatusResponse {
+    success: boolean;
+    message: string;
+    data: { user: User };
+}
+
+export type UpdateUserStatusCall = (idInvestor: number) => Promise<ApiResponse<UpdateUserStatusResponse>>;
+
+// DELETE
+export interface DeleteInvestorResponse {
+    success: boolean;
+    message: string;
+}
+
+export type DeleteInvestorCall = (idInvestor: number) => Promise<ApiResponse<DeleteInvestorResponse>>;

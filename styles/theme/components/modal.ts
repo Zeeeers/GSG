@@ -1,7 +1,10 @@
 const parts = ['overlay', 'dialogContainer', 'dialog', 'header', 'closeButton', 'body', 'footer'];
 
 const baseStyleOverlay = {
-    bg: 'blackAlpha.100',
+    bg: 'none',
+    backdropFilter: 'auto',
+    backdropBrightness: '40%',
+    backdropBlur: '2px',
     zIndex: 'modal',
 };
 

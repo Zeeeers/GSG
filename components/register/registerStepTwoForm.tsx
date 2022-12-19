@@ -1,23 +1,28 @@
 // Dependencies
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
+//@ts-nocheck
 import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    VStack,
-    Input,
     Button,
+    FormControl,
+    FormErrorMessage,
+    FormHelperText,
+    FormLabel,
+    Input,
+    Stack,
     useDisclosure,
     useToast,
+    VStack,
 } from '@chakra-ui/react';
-import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Avatar from '@clyc/optimized-image/components/chakraAvatar';
-import { useRegisterStore } from 'stores/register';
+import { zodResolver } from '@hookform/resolvers/zod';
+import CropperModalAvatar from 'common/cropperModalAvatar';
 import UploadButton from 'common/uploadButton';
+import UploadZone from 'common/uploadZone';
+import { IRegisterTwoForm, registerTwoSchema } from 'forms/register';
+import dynamic from 'next/dynamic';
 import router from 'next/router';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRegisterStore } from 'stores/register';
 
 // Dynamic
 const CropperModal = dynamic(() => import('common/cropperModal'));
@@ -46,7 +51,7 @@ const RegisterStepTwoForm: React.FC = () => {
         setIsCreatingAccount(true);
         const { create } = await import('services/api/lib/organization');
 
-        const { ok } = await create({
+        const { ok, status } = await create({
             user: {
                 name: valuesForm?.userName,
                 email: valuesForm?.userEmail,
@@ -55,6 +60,7 @@ const RegisterStepTwoForm: React.FC = () => {
             },
             organization: {
                 image: values.logo,
+                legal_representative_email: valuesForm?.userEmail,
                 legal_representative_phone: valuesForm?.legalRepPhone,
                 name: values.organizationName,
                 social_number: values.idNumber,
@@ -70,24 +76,43 @@ const RegisterStepTwoForm: React.FC = () => {
                 isClosable: true,
                 position: 'top-right',
             });
-            router.push('/');
+            router.push('/successRegister');
             setIsCreatingAccount(false);
         } else {
-            toast({
-                title: 'No se ha podido crear el usuario',
-                description: 'Ha ocurrido un error al intentar crear el usuario, porfavor, intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
+            if (status === 422) {
+                toast({
+                    title: 'No se ha podido crear el usuario',
+                    description:
+                        'El correo electrónico ingresado ya fue usado. Por favor, intente con un correo distinto.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            } else {
+                toast({
+                    title: 'No se ha podido crear el usuario',
+                    description: 'Ha ocurrido un error al intentar crear el usuario, porfavor, intentelo de nuevo.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top-right',
+                });
+            }
+
             setIsCreatingAccount(false);
         }
     };
 
     return (
         <>
-            <form autoComplete="off" onSubmit={handleSubmit(handleRegister)}>
+            <Stack
+                w={{ base: '100%', md: '460px' }}
+                p={{ md: '24px' }}
+                as="form"
+                autoComplete="off"
+                onSubmit={handleSubmit(handleRegister)}
+            >
                 <VStack my={8} spacing={8} w="full">
                     <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
                         <Button
@@ -115,7 +140,6 @@ const RegisterStepTwoForm: React.FC = () => {
                                     alt={watch().organizationName}
                                     size="2xl"
                                     src={watch().logo}
-                                    icon={<></>}
                                     shadow="lg"
                                     bgColor={'gray.700'}
                                     border="2px"
@@ -125,49 +149,86 @@ const RegisterStepTwoForm: React.FC = () => {
                                     name={watch().organizationName ? 'GSG' : watch().organizationName}
                                 />
 
-                                <Input type="hidden" {...register('logo')} />
-
-                                <UploadButton
-                                    variant="ghost"
-                                    colorScheme="white"
-                                    fontWeight="bold"
-                                    ml={-2}
-                                    onChange={async (e) => {
+                                <UploadZone
+                                    onDrop={async (file) => {
                                         const { validateTypes, getBase64 } = await import('services/images');
 
-                                        if (e.target?.files && validateTypes(e.target.files[0])) {
-                                            const base = await getBase64(e.target.files![0]);
-                                            setBaseImg(base);
-                                            onCropperOpen();
+                                        if (file && validateTypes(file[0])) {
+                                            if (file[0].size >= 2000000) {
+                                                toast({
+                                                    title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                    status: 'error',
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                    position: 'top-right',
+                                                });
+                                            } else {
+                                                const base = await getBase64(file![0]);
+                                                setBaseImg(base);
+                                                onCropperOpen();
+                                            }
                                         }
                                     }}
+                                    variant="unstyled"
+                                    borderBottom="2px"
+                                    color="gray.50"
+                                    fontFamily="inter"
+                                    fontWeight="normal"
+                                    fontSize="15px"
+                                    borderColor="gray.50"
+                                    rounded={0}
                                 >
                                     Subir logo
-                                </UploadButton>
+                                </UploadZone>
 
-                                <FormErrorMessage fontWeight={'semibold'}>{errors.logo?.message}</FormErrorMessage>
+                                <FormHelperText color="gray.300">Tamaño máximo 2MB</FormHelperText>
+
+                                <Input
+                                    visibility="hidden"
+                                    type="hidden"
+                                    {...register('logo')}
+                                    w="fit-content"
+                                    cursor="pointer"
+                                />
+
+                                <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                                    {errors.logo?.message}
+                                </FormErrorMessage>
                             </VStack>
                         </VStack>
                     </FormControl>
 
                     <FormControl id="organizationName" isInvalid={!!errors.organizationName}>
-                        <FormLabel>Nombre de la organización</FormLabel>
+                        <FormLabel>
+                            Nombre de la organización <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
 
                         <Input size="md" {...register('organizationName')} />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.organizationName?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.organizationName?.message}
+                        </FormErrorMessage>
                     </FormControl>
                     <FormControl id="idNumber" isInvalid={!!errors.idNumber}>
-                        <FormLabel>Número o identificador nacional</FormLabel>
+                        <FormLabel>
+                            Número o identificador nacional <span style={{ color: '#4FD1C5' }}>*</span>
+                        </FormLabel>
+
+                        <FormHelperText mt="-3px" color="gray.300">
+                            Ingrese rut sin puntos y con guión
+                        </FormHelperText>
 
                         <Input
+                            mt="10px"
                             size="md"
                             {...register('idNumber')}
                             placeholder="00000000-0"
                             _placeholder={{ color: 'gray.400' }}
                         />
 
-                        <FormErrorMessage fontWeight={'semibold'}>{errors.idNumber?.message}</FormErrorMessage>
+                        <FormErrorMessage textColor="red.400" fontWeight={'semibold'}>
+                            {errors.idNumber?.message}
+                        </FormErrorMessage>
                     </FormControl>
                 </VStack>
 
@@ -182,10 +243,10 @@ const RegisterStepTwoForm: React.FC = () => {
                 >
                     Siguiente
                 </Button>
-            </form>
+            </Stack>
 
             {isCropperOpen && (
-                <CropperModal
+                <CropperModalAvatar
                     title={'Recortar logo'}
                     baseImg={baseImg!}
                     isOpen={isCropperOpen}

@@ -6,13 +6,13 @@ import ENDPOINT from './qualities.endpoints';
 import { GetQualityListResponse } from './qualities.types';
 
 // READ
-const qualityAllFetcher = async (endpoint: string) => {
+export const getQualities = async (endpoint: string) => {
     const { data } = await api.get<GetQualityListResponse>(endpoint);
     return data;
 };
 
 export const useQualityList = (config?: SWRConfiguration): SWRResponse<GetQualityListResponse | undefined, unknown> => {
-    return useSWR([ENDPOINT.BASE], qualityAllFetcher, config);
+    return useSWR([ENDPOINT.BASE], getQualities, config);
 };
 
 /*export const useQualityList = (
@@ -37,6 +37,7 @@ export const useQuality = (
 // Export
 const qualityCalls = {
     useQualityList,
+    getQualities,
     //getQuality,
     //useQuality,
 };

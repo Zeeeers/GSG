@@ -1,31 +1,61 @@
 import {
-    HStack,
-    Tab,
-    TabList,
-    TabPanels,
-    TabPanel,
-    Tabs,
-    Text,
-    VStack,
-    Select,
+    Accordion,
+    AccordionButton,
+    AccordionIcon,
+    AccordionItem,
+    AccordionPanel,
+    Box,
     Button,
+    Container,
+    Divider,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
+    HStack,
+    Icon,
+    Input,
     Menu,
     MenuButton,
-    MenuList,
     MenuItem,
-    Input,
-    Icon,
+    MenuList,
+    Select,
+    Stack,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    Text,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 import PrivatePage from '@clyc/next-route-manager/components/PrivatePage';
 import AddInvestorForm from 'components/admin/createInvestorForm';
+import ListInvestorForm from 'components/admin/listInvestorForm';
 import ListProyectsForm from 'components/admin/listProyectsForm';
+import SendMatchForm from 'components/admin/sendMatchForm';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 import router from 'next/router';
-import React from 'react';
-import { FaSearch } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
+import { organizationCvs } from 'services/api/lib/organization';
 
 const Panel: NextPage = () => {
+    const [page, setPage] = useState(0);
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [filters, setFilters] = useState({
+        last_status_updated: 'asc',
+        created_at: 'asc',
+        status: '',
+        title: '',
+    });
+
     const handleLogOut = async () => {
         const auth = (await import('@clyc/next-route-manager/libs/AuthManager')).default;
         auth.removeToken(process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!, {
@@ -35,132 +65,514 @@ const Panel: NextPage = () => {
         router.push('/admin/login');
     };
 
+    useEffect(() => {
+        setFilters({ ...filters, last_status_updated: 'asc', created_at: 'asc', status: '', title: '' });
+    }, [page]);
+
     return (
         <>
-            <NextSeo title={'Dashboard - Administrador GSG'} />
+            <NextSeo title="Dashboard - Administrador MATCH" />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/login" />
-            <HStack position="absolute" right={60} top={'20px'} w="fit-content">
-                <Menu direction="rtl">
-                    {({ isOpen }) => (
-                        <>
-                            <MenuButton isActive={isOpen} as={Button}>
-                                Admin
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
-                            </MenuList>
-                        </>
-                    )}
-                </Menu>
-            </HStack>
-            <VStack w="full" h="100vh">
-                <Tabs h="full" w="full" bg="gray.900" orientation="vertical">
-                    <TabList bg="gray.800" border="none" w="339px">
-                        <VStack align="start" pt="87px" pb="30px" px="30px">
-                            <Text fontSize="xl" fontWeight="bold">
+
+            <VStack position="relative" w="full" h="100vh">
+                <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+                    <DrawerOverlay backdropFilter="auto" backdropBrightness="40%" />
+                    <DrawerContent bg="gray.800">
+                        <DrawerCloseButton />
+                        <DrawerHeader>Panel</DrawerHeader>
+
+                        <DrawerBody display="flex" flexDirection="column" justifyContent="space-between">
+                            <Stack>
+                                <Accordion p={0} defaultIndex={[0]} allowMultiple>
+                                    <AccordionItem p={0} border="none" fontSize="16px" fontFamily="inter">
+                                        <h2>
+                                            <AccordionButton p={0} border="none">
+                                                <Box flex="1" textAlign="left" border="none">
+                                                    Inversionistas
+                                                </Box>
+                                                <AccordionIcon />
+                                            </AccordionButton>
+                                        </h2>
+
+                                        <AccordionPanel pb="5px">
+                                            <Button
+                                                fontWeight={`${page === 0 ? 'bold' : 'normal'}`}
+                                                onClick={() => setPage(0)}
+                                            >
+                                                Nuevo inversionista
+                                            </Button>
+
+                                            <Button
+                                                fontWeight={`${page === 1 ? 'bold' : 'normal'}`}
+                                                onClick={() => setPage(1)}
+                                            >
+                                                Inversionistas
+                                            </Button>
+                                        </AccordionPanel>
+                                    </AccordionItem>
+                                </Accordion>
+                                <VStack align="flex-start" spacing="15px">
+                                    <Button fontWeight={`${page === 2 ? 'bold' : 'normal'}`} onClick={() => setPage(2)}>
+                                        Proyectos postulados
+                                    </Button>
+
+                                    <Divider />
+
+                                    <Button fontWeight={`${page === 3 ? 'bold' : 'normal'}`} onClick={() => setPage(3)}>
+                                        Enviar match
+                                    </Button>
+                                </VStack>
+                            </Stack>
+
+                            <Stack justify="flex-end" mb="75px">
+                                <Link href={organizationCvs()}>
+                                    <Button variant="outline" w="full" h="40px">
+                                        Descargar empresas
+                                    </Button>
+                                </Link>
+                            </Stack>
+                        </DrawerBody>
+                    </DrawerContent>
+                </Drawer>
+
+                <Tabs
+                    h="full"
+                    w="full"
+                    bg="gray.900"
+                    orientation="vertical"
+                    index={page}
+                    onChange={(index) => setPage(index)}
+                    overflow="hidden"
+                >
+                    <TabList display="none" bg="gray.800" border="none" w={{ base: 'full', xl: '339px' }}>
+                        <VStack align="flex-start" pt="87px" pb="30px" w="full" px="30px">
+                            <Text fontSize="30px" fontWeight="bold">
                                 PANEL
                             </Text>
                         </VStack>
 
+                        <Accordion defaultIndex={[0]} allowMultiple>
+                            <AccordionItem border="none" fontSize="16px" fontFamily="inter">
+                                <h2>
+                                    <AccordionButton border="none" px="30px">
+                                        <Box flex="1" textAlign="left" border="none">
+                                            Inversionistas
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                </h2>
+
+                                <AccordionPanel pb="5px">
+                                    <Tab
+                                        fontFamily="inter"
+                                        justifyContent="flex-start"
+                                        _selected={{
+                                            border: 'none',
+                                            color: 'primary.600',
+                                            fontWeight: 'normal',
+                                            borderRadius: 'none',
+                                            background: 'gray.800',
+                                        }}
+                                        _focus={{
+                                            border: 'none',
+                                        }}
+                                        _checked={{ border: 'none' }}
+                                        fontWeight="normal"
+                                        border="none"
+                                        fontSize="md"
+                                        pl={6}
+                                        pb="15px"
+                                        onClick={() => setPage(0)}
+                                    >
+                                        Nuevo inversionista
+                                    </Tab>
+
+                                    <Tab
+                                        onClick={() => setPage(1)}
+                                        fontFamily="inter"
+                                        justifyContent="flex-start"
+                                        _selected={{
+                                            border: 'none',
+                                            color: 'primary.600',
+                                            fontWeight: 'normal',
+                                            borderRadius: 'none',
+                                            background: 'gray.800',
+                                        }}
+                                        _focus={{
+                                            border: 'none',
+                                        }}
+                                        _checked={{ border: 'none' }}
+                                        fontWeight="normal"
+                                        border="none"
+                                        fontSize="md"
+                                        pl={6}
+                                    >
+                                        Inversionistas
+                                    </Tab>
+                                </AccordionPanel>
+                            </AccordionItem>
+                        </Accordion>
+
                         <Tab
+                            onClick={() => setPage(2)}
+                            px="30px"
+                            fontSize="16px"
                             fontFamily="inter"
                             justifyContent="flex-start"
+                            border="none"
                             _selected={{
                                 border: 'none',
                                 color: 'primary.600',
-                                fontWeight: 'bold',
+
                                 borderRadius: 'none',
-                                background: 'gray.800',
                             }}
                             _focus={{
                                 border: 'none',
                             }}
-                            _checked={{ border: 'none' }}
                             fontWeight="normal"
-                            border="none"
-                            fontSize="md"
-                            pl={6}
-                            py="15px"
-                        >
-                            Nuevo inversionista
-                        </Tab>
-                        <Tab
-                            fontFamily="inter"
-                            justifyContent="flex-start"
-                            border="none"
-                            _selected={{
-                                border: 'none',
-                                color: 'primary.600',
-                                fontWeight: 'bold',
-                                borderRadius: 'none',
-                            }}
-                            _focus={{
-                                border: 'none',
-                            }}
-                            fontWeight="normal"
-                            fontSize="md"
-                            pl={6}
                             py="15px"
                         >
                             Proyectos postulados
                         </Tab>
+
+                        <Divider />
+
+                        <Tab
+                            onClick={() => setPage(3)}
+                            fontFamily="inter"
+                            justifyContent="flex-start"
+                            border="none"
+                            _selected={{
+                                border: 'none',
+                                color: 'primary.600',
+
+                                borderRadius: 'none',
+                            }}
+                            _focus={{
+                                border: 'none',
+                            }}
+                            fontWeight="normal"
+                            fontSize="md"
+                            pl={6}
+                            py="15px"
+                        >
+                            Enviar match
+                        </Tab>
                     </TabList>
 
-                    <TabPanels pt="87px" pl="100px" overflowY="auto">
-                        <TabPanel w="537px">
-                            <VStack position="relative" align="start" spacing="15px" marginBottom="40px">
-                                <Text fontWeight="bold" fontSize="2xl">
-                                    AGREGAR UN NUEVO INVERSIONISTA
-                                </Text>
-                                <Text fontWeight="normal" fontSize="sm" fontFamily="inter">
-                                    La invitación será enviada al correo del inversionista, quien deberá activar su
-                                    cuenta por medio del link presente dentro de este.
-                                </Text>
-                            </VStack>
+                    <TabPanels pl={{ base: '25px', '2xl': '100px' }} overflowY="auto" w="full">
+                        <TabPanel pr={{ base: '25px', '2xl': '200px' }}>
+                            <VStack>
+                                <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                    <Button
+                                        display="flex"
+                                        alignItems="center"
+                                        w="30px"
+                                        h="40px"
+                                        mt="30px"
+                                        ml="30px"
+                                        rounded="full"
+                                        bg="white"
+                                        onClick={onOpen}
+                                    >
+                                        <Icon as={FaArrowRight} color="gray.700" />
+                                    </Button>
+                                </Stack>
+                                <Container maxW="1200px">
+                                    <Stack w="full" align="flex-end">
+                                        <Menu direction="rtl">
+                                            {({ isOpen }) => (
+                                                <>
+                                                    <MenuButton isActive={isOpen} as={Button}>
+                                                        Admin
+                                                    </MenuButton>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                    </MenuList>
+                                                </>
+                                            )}
+                                        </Menu>
+                                    </Stack>
+                                    <VStack
+                                        w="full"
+                                        pt="87px"
+                                        position="relative"
+                                        align="flex-start"
+                                        justify="flex-start"
+                                        spacing="15px"
+                                        marginBottom="40px"
+                                    >
+                                        <Text w={{ base: 'full', md: '537px' }} fontWeight="bold" fontSize="2xl">
+                                            AGREGAR UN NUEVO INVERSIONISTA
+                                        </Text>
+                                        <Text
+                                            w={{ base: 'full', md: '537px' }}
+                                            fontWeight="normal"
+                                            fontSize="sm"
+                                            fontFamily="inter"
+                                        >
+                                            La invitación será enviada al correo del inversionista, quien deberá activar
+                                            su cuenta por medio del link presente dentro de este.
+                                        </Text>
 
-                            <AddInvestorForm />
+                                        <AddInvestorForm />
+                                    </VStack>
+                                </Container>
+                            </VStack>
                         </TabPanel>
 
-                        <TabPanel maxW="1080px">
-                            <HStack align="center" justifyContent="space-between">
-                                <Text fontWeight="bold" fontSize="2xl" marginBottom="40px">
-                                    PROYECTOS POSTULADOS
-                                </Text>
-                                <HStack spacing="15px">
-                                    <Select variant="filled" _focus={{ color: 'white' }} h="32px">
-                                        <option value="select">Filtrar por estado</option>
-                                        <option value="in-review">En revisión</option>
-                                        <option value="sketch">Borrador</option>
-                                        <option value="published">Publicado</option>
-                                        <option value="canceled">Finalizado</option>
-                                    </Select>
+                        <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
+                            <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                <Button
+                                    display="flex"
+                                    alignItems="center"
+                                    w="30px"
+                                    h="40px"
+                                    mt="30px"
+                                    ml="30px"
+                                    rounded="full"
+                                    bg="white"
+                                    onClick={onOpen}
+                                >
+                                    <Icon as={FaArrowRight} color="gray.700" />
+                                </Button>
+                            </Stack>
+                            <Container display="flex" flexDirection="column" maxW="1200px" alignItems="center">
+                                <VStack w="fit-content">
+                                    <Stack w="full" align="flex-end">
+                                        <Menu direction="rtl">
+                                            {({ isOpen }) => (
+                                                <>
+                                                    <MenuButton isActive={isOpen} as={Button}>
+                                                        Admin
+                                                    </MenuButton>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                    </MenuList>
+                                                </>
+                                            )}
+                                        </Menu>
+                                    </Stack>
+                                    <Stack
+                                        pt="40px"
+                                        w="full"
+                                        direction={{ base: 'column', lg: 'row' }}
+                                        align={{ base: 'flex-start', lg: 'center' }}
+                                        justifyContent="space-between"
+                                    >
+                                        <Text fontWeight="bold" fontSize="30px">
+                                            INVERSIONISTAS
+                                        </Text>
 
-                                    <HStack>
-                                        <Input
-                                            w={{ base: 'full', md: '184px' }}
-                                            h="32px"
-                                            variant="outline"
-                                            placeholder="Buscar"
-                                        />
-                                        <Button
-                                            variant="solid"
-                                            bg="gray.600"
-                                            _focus={{ outline: 'none' }}
-                                            aria-label="Buscar"
-                                            textColor="white"
-                                            py="10px"
-                                            px="16px"
-                                            w="110px"
-                                        >
-                                            <HStack w="full" spacing="10px">
-                                                <Icon as={FaSearch} />
-                                                <Text>Buscar</Text>
+                                        <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
+                                            <Select
+                                                onChange={(e) =>
+                                                    setFilters({
+                                                        ...filters,
+                                                        created_at: e.target.value,
+                                                    })
+                                                }
+                                                w="fit-content"
+                                                variant="outline"
+                                                color="gray.700"
+                                                h="40px"
+                                                defaultValue="asc"
+                                            >
+                                                <option value="asc">Más reciente</option>
+                                                <option value="desc">Menos reciente</option>
+                                            </Select>
+                                            <Select
+                                                onChange={(e) => {
+                                                    setFilters({
+                                                        ...filters,
+                                                        status: e.target.value !== 'select' ? e.target.value : '',
+                                                    });
+                                                }}
+                                                w="fit-content"
+                                                variant="outline"
+                                                h="40px"
+                                            >
+                                                <option value="select">Filtrar por estado</option>
+                                                <option value="true">Activo</option>
+                                                <option value="false">Inactivo</option>
+                                            </Select>
+
+                                            <HStack w="fit-content">
+                                                <Input
+                                                    w={{ base: 'full', md: '184px' }}
+                                                    h="40px"
+                                                    variant="outline"
+                                                    placeholder="Buscar"
+                                                    onChange={(e) =>
+                                                        setFilters({
+                                                            ...filters,
+                                                            //@ts-ignore
+                                                            name: e.target.value,
+                                                        })
+                                                    }
+                                                />
                                             </HStack>
-                                        </Button>
-                                    </HStack>
+                                        </Stack>
+                                    </Stack>
+
+                                    <ListInvestorForm filters={filters} />
+                                </VStack>
+                            </Container>
+                        </TabPanel>
+
+                        <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
+                            <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                <Button
+                                    display="flex"
+                                    alignItems="center"
+                                    w="30px"
+                                    h="40px"
+                                    mt="30px"
+                                    ml="30px"
+                                    rounded="full"
+                                    bg="white"
+                                    onClick={onOpen}
+                                >
+                                    <Icon as={FaArrowRight} color="gray.700" />
+                                </Button>
+                            </Stack>
+                            <Container
+                                marginRight="10px"
+                                maxW="1200px"
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                            >
+                                <HStack w="full" justify="flex-end" align="center" h="fit-content">
+                                    <Menu direction="rtl">
+                                        {({ isOpen }) => (
+                                            <>
+                                                <MenuButton isActive={isOpen} as={Button}>
+                                                    Admin
+                                                </MenuButton>
+                                                <MenuList>
+                                                    <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                </MenuList>
+                                            </>
+                                        )}
+                                    </Menu>
                                 </HStack>
-                            </HStack>
-                            <ListProyectsForm />
+                                <VStack w="fit-content">
+                                    <Stack
+                                        pt="40px"
+                                        w="full"
+                                        direction={{ base: 'column', lg: 'row' }}
+                                        align={{ base: 'flex-start', lg: 'center' }}
+                                        justifyContent="space-between"
+                                    >
+                                        <Text fontWeight="bold" fontSize="30px">
+                                            PROYECTOS POSTULADOS
+                                        </Text>
+
+                                        <Stack direction={{ base: 'column', md: 'row' }} w="fit-content" spacing="15px">
+                                            <Select
+                                                value={filters?.last_status_updated}
+                                                defaultValue="asc"
+                                                onChange={(e) =>
+                                                    setFilters({
+                                                        ...filters,
+                                                        last_status_updated: e.target.value,
+                                                    })
+                                                }
+                                                w="fit-content"
+                                                variant="outline"
+                                                color="gray.700"
+                                                h="40px"
+                                            >
+                                                <option value="asc">Más reciente</option>
+                                                <option value="desc">Menos reciente</option>
+                                            </Select>
+                                            <Select
+                                                defaultValue="select"
+                                                onChange={(e) =>
+                                                    setFilters({
+                                                        ...filters,
+                                                        status: e.target.value === 'select' ? '' : e.target.value,
+                                                    })
+                                                }
+                                                w="fit-content"
+                                                variant="outline"
+                                                h="40px"
+                                            >
+                                                <option value="select">Filtrar por estado</option>
+                                                <option value="in-review">En revisión</option>
+                                                <option value="sketch">Borrador</option>
+                                                <option value="published">Publicado</option>
+                                                <option value="canceled">Finalizado</option>
+                                            </Select>
+
+                                            <HStack w="fit-content">
+                                                <Input
+                                                    w={{ base: 'full', md: '184px' }}
+                                                    h="40px"
+                                                    variant="outline"
+                                                    placeholder="Buscar"
+                                                    onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                                />
+                                            </HStack>
+                                        </Stack>
+                                    </Stack>
+                                    <ListProyectsForm filters={filters} />
+                                </VStack>
+                            </Container>
+                        </TabPanel>
+
+                        <TabPanel pr={{ base: '25px', '2xl': '200px' }}>
+                            <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
+                                <Button
+                                    display="flex"
+                                    alignItems="center"
+                                    w="30px"
+                                    h="40px"
+                                    mt="30px"
+                                    ml="30px"
+                                    rounded="full"
+                                    bg="white"
+                                    onClick={onOpen}
+                                >
+                                    <Icon as={FaArrowRight} color="gray.700" />
+                                </Button>
+                            </Stack>
+
+                            <Container maxW="1200px">
+                                <Stack w="full" align="flex-end">
+                                    <Menu direction="rtl">
+                                        {({ isOpen }) => (
+                                            <>
+                                                <MenuButton isActive={isOpen} as={Button}>
+                                                    Admin
+                                                </MenuButton>
+                                                <MenuList>
+                                                    <MenuItem onClick={handleLogOut}>Cerrar sesión</MenuItem>
+                                                </MenuList>
+                                            </>
+                                        )}
+                                    </Menu>
+                                </Stack>
+                                <VStack
+                                    w="full"
+                                    pt="87px"
+                                    position="relative"
+                                    align="flex-start"
+                                    justify="flex-start"
+                                    spacing="15px"
+                                    marginBottom="40px"
+                                >
+                                    <Text fontWeight="bold" fontSize="2xl">
+                                        ENVIAR MATCH A UN INVERSIONISTA
+                                    </Text>
+                                    <Text fontWeight="normal" fontSize="sm" fontFamily="inter">
+                                        Ingresa un correo para enviar un match.
+                                    </Text>
+
+                                    <SendMatchForm />
+                                </VStack>
+                            </Container>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

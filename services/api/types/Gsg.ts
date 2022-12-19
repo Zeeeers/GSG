@@ -1,7 +1,20 @@
 import { Members } from './Member';
 import { OrganizationFormat } from './Organization';
+import { Relations } from './Relations';
 
 // Types
+
+type debt =
+    | 'pre-seed'
+    | 'seed'
+    | 'series-a'
+    | 'series-b'
+    | 'series-c'
+    | 'series-d'
+    | 'senior-debt'
+    | 'mezzanine-debt'
+    | 'other';
+
 export interface Gsg {
     id: number;
     title: string;
@@ -22,6 +35,10 @@ export interface Gsg {
     additional_info: string;
     business_web: string;
     organization: OrganizationFormat;
+    debt: debt;
+    relations: Relations;
+    status: string;
+    last_status_updated: string;
 }
 
 export interface GsgFormated {
@@ -44,4 +61,5 @@ export interface GsgFormated {
     additional_info: string;
     business_web: string;
     members: Array<Members>;
+    status: string;
 }

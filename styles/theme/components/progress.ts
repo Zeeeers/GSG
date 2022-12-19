@@ -22,7 +22,7 @@ const baseStyleLabel = {
     lineHeight: '1',
     fontSize: '0.25em',
     fontWeight: 'bold',
-    color: 'white.base',
+    color: 'black',
 };
 
 const baseStyleTrack = {
@@ -60,7 +60,7 @@ const sizes = {
 
 const defaultProps = {
     size: 'md',
-    colorScheme: 'primary',
+    colorScheme: 'blue.700',
 };
 
 const progressTheme = {

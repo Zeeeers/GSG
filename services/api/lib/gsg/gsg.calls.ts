@@ -1,5 +1,5 @@
 // Dependencies
-import { api, pymeHeaders, adminHeaders } from '../../config';
+import { api, pymeHeaders, adminHeaders, headers } from '../../config';
 import {
     CreateProjectCall,
     CreateProjectResponse,
@@ -10,8 +10,10 @@ import {
     GetMyGsgProjectResponse,
     UpdateGsgProjectCall,
     UpdateGsgProjectResponse,
+    UpdateProjectCall,
+    UpdateProjectResponse,
 } from './gsg.types';
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import ENDPOINT from './gsg.endpoints';
 
 // CREATE
@@ -32,8 +34,20 @@ export const create: CreateProjectCall = async ({ project }) => {
     return response;
 };
 
+// CREATE INTEREST
+export const createInterest: CreateProjectCall = async ({ project }) => {
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+    });
+
+    const response = await api.post<CreateProjectResponse>(ENDPOINT.CREATE_INTEREST, project, headers(token));
+
+    return response;
+};
+
 // READ
-const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
+export const gsgAllFetcher = async (endpoint: string, isAdmin?: boolean) => {
     const { data } = await api.get<GetAllGsgResponse>(endpoint, '', isAdmin ? adminHeaders() : undefined);
     return data;
 };
@@ -61,8 +75,8 @@ export const getGsgProject = async (_: string, id: number) => {
     return data;
 };
 
-export const useGsgProject = (id?: number) => {
-    return useSWR([id ? ENDPOINT.DETAIL(id) : null, id], getGsgProject);
+export const useGsgProject = (id?: number, option?: SWRConfiguration) => {
+    return useSWR(id ? [ENDPOINT.DETAIL(id), id] : null, getGsgProject, option);
 };
 
 export const getMyGsgProject = async (_: string, token?: string) => {
@@ -92,6 +106,24 @@ export const updateStatusGsgProject: UpdateGsgProjectCall = async ({ idProject, 
     return response;
 };
 
+export const updateGsgProject: UpdateProjectCall = async (gsgProject) => {
+    console.log(gsgProject);
+    const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!,
+    });
+
+    const response = await api.patch<UpdateProjectResponse>(
+        ENDPOINT.DETAIL(gsgProject?.idProject),
+
+        gsgProject?.project,
+
+        pymeHeaders(token),
+    );
+
+    return response;
+};
+
 // Delete
 export const deleteGsgProject: DeleteGsgProjectCall = async (idProject) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
@@ -110,6 +142,7 @@ const gsgCalls = {
     updateStatusGsgProject,
     deleteGsgProject,
     create,
+    createInterest,
 };
 
 // Export

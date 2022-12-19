@@ -1,19 +1,11 @@
 // Dependencies
 //@ts-nocheck
-import { useEffect } from 'react';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
-import { NextSeo } from 'next-seo';
-import { useRegisterStore } from 'stores/register';
-import { Flex, Heading, HStack, Img, Link, Text, useMediaQuery, VStack } from '@chakra-ui/react';
-import LogoBar from 'layouts/guest/logoBar';
+import { Flex, HStack, Img, Text, VStack } from '@chakra-ui/react';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
-import RegisterStepOneForm from 'components/register/registerStepOneForm';
-import RegisterStepTwoForm from 'components/register/registerStepTwoForm';
-import CreatePasswordForm from 'components/createPassword/createPasswordForm';
-import RecoveryForm from 'components/recovery/createPasswordForm';
 import AdminLoginForm from 'components/admin/adminLoginForm';
+import { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
+import dynamic from 'next/dynamic';
 
 // Dynamic
 const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
@@ -22,7 +14,7 @@ const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 const AdminLogin: NextPage = () => {
     return (
         <>
-            <NextSeo title={'Iniciar sesión administrador - GSG'} />
+            <NextSeo title="Iniciar sesión administrador - MATCH" />
             <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dashboard" />
             <Flex
                 flexDirection="column"
@@ -47,7 +39,11 @@ const AdminLogin: NextPage = () => {
                         rounded="16px"
                     >
                         <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
-                            <Img src="/images/logo_match_blanco.png" />
+                            <Img
+                                src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
+                                w="40px"
+                                h="40px"
+                            />
                             <Text
                                 fontSize="3xl"
                                 textAlign="start"

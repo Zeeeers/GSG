@@ -1,15 +1,15 @@
 // Dependencies
 //@ts-nocheck
-import { useEffect } from 'react';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { NextSeo } from 'next-seo';
-import { useRegisterStore } from 'stores/register';
-import { Heading } from '@chakra-ui/react';
-import LogoBar from 'layouts/guest/logoBar';
+import { Button, Heading } from '@chakra-ui/react';
 import PublicPage from '@clyc/next-route-manager/components/PublicPage';
 import RegisterStepOneForm from 'components/register/registerStepOneForm';
 import RegisterStepTwoForm from 'components/register/registerStepTwoForm';
+import LogoBar from 'layouts/guest/logoBar';
+import { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useRegisterStore } from 'stores/register';
 
 // Page
 const RegisterPage: NextPage = () => {
@@ -17,6 +17,7 @@ const RegisterPage: NextPage = () => {
     const registerStatus = useRegisterStore((state) => state.status);
     const router = useRouter();
     const step = useRegisterStore((state) => state.step);
+    const clearFormValues = useRegisterStore((state) => state.clearFormValues);
 
     // Effect
     useEffect(() => {
@@ -26,16 +27,27 @@ const RegisterPage: NextPage = () => {
 
     return (
         <>
-            <NextSeo title={'Registrarse en GSG'} />
+            <NextSeo title={'Registrarse en MATCH'} />
             <PublicPage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/explorer" />
 
             <LogoBar>
                 {registerStatus === 'FORM' ? (
                     <>
-                        <Heading as="h1" size="4xl" fontWeight="bold">
+                        <Heading w="full" as="h1" size="4xl" fontWeight="bold" mt="30px" textAlign="start">
                             REGISTRO
                         </Heading>
                         {step === 'ONE' ? <RegisterStepOneForm /> : <RegisterStepTwoForm />}
+
+                        <Button
+                            onClick={() => {
+                                router.push('/login');
+                                clearFormValues();
+                            }}
+                            variant="ghost"
+                            mt="20px"
+                        >
+                            Ya tengo cuenta
+                        </Button>
                     </>
                 ) : (
                     <>

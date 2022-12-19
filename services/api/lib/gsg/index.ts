@@ -6,4 +6,6 @@ export {
     updateStatusGsgProject,
     create,
     deleteGsgProject,
+    updateGsgProject,
+    createInterest,
 } from './gsg.calls';

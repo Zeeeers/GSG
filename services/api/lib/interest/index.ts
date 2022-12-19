@@ -1,1 +1,1 @@
-export { useInterestList, default as interest } from './interest.calls';
+export { useInterestList, useInterest, update, default as interest } from './interest.calls';

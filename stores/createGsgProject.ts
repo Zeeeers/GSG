@@ -14,7 +14,7 @@ interface ICreateGsgProjectStore {
     setProject: (data: Partial<Gsg>) => void;
     clearProjectStore: () => void;
     members: Array<Members>;
-    member: Partial<Members>;
+    member: Partial<Members> | undefined;
     setMembers: (data: Members) => void;
     setMember: (data: Members) => void;
     deleteMember: (data: string) => void;
@@ -28,11 +28,11 @@ export const useCreateGsgProjectStore = create<ICreateGsgProjectStore>((set) => 
     step: 'info',
     project: {},
     members: [],
-    member: {},
+    member: undefined,
     setMember: (member) => set(() => ({ member: member })),
     setMembers: (member) => set((m) => ({ members: [...m.members, member] })),
     deleteMember: (memberID) => set((m) => ({ members: m.members.filter((m) => m.name !== memberID) })),
-    clearMember: () => set({ member: {} }),
+    clearMember: () => set({ member: undefined }),
     setStep: (step) => set({ step }),
     setProject: (data) => set((s) => ({ project: { ...s.project, ...data } })),
     clearProjectStore: () => set({ step: 'info', project: {} }),
