@@ -202,7 +202,7 @@ const Creator: NextPage = ({ project, quality }) => {
             patrimony: project?.business_model?.split(';;')[5],
 
             better_project: project?.better_project ?? '',
-            additional_info: project?.better_project ?? '',
+            additional_info: project?.additional_info ?? '',
 
             linkedinForm: project?.contacts && project?.contacts[0],
             instagramForm: project?.contacts && project?.contacts[1],
