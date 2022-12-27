@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/Zeeeers/GSG/compare/v1.1.0...v1.1.1) (2022-12-27)
+
+
+### Bug Fixes
+
+* **creator:** supplementary information is not retrieved properly ([f6706a1](https://github.com/Zeeeers/GSG/commit/f6706a1efa9998bff81301715cb5e8d08bdc0a56))
+
 ## [1.1.0](https://github.com/Zeeeers/GSG/compare/v1.0.0...v1.1.0) (2022-12-06)
 
 
