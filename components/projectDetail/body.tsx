@@ -168,7 +168,9 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                                     La búsqueda de capital es para:
                                 </Text>
                                 <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {project?.investment_type}
+                                    {project?.investment_type === 'Un proyecto para la empresa'
+                                        ? 'La empresa'
+                                        : 'Un proyecto específico dentro de la empresa'}
                                 </Text>
                             </VStack>
                         </VStack>
