@@ -12,6 +12,7 @@ import {
     Text,
     Avatar,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { HiChevronDown } from 'react-icons/hi';
 import { useOrganization } from 'services/api/lib/organization';
@@ -26,6 +27,8 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
     // States
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const { data: organization } = useOrganization(true);
+
+    const router = useRouter();
 
     return (
         <Menu isLazy>
@@ -86,6 +89,25 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                         {organization?.name ?? 'GSG'}
                     </Text>
                 </Stack>
+
+                <MenuItem
+                    onClick={() => {
+                        router.push({ pathname: '/profile/organization' });
+                    }}
+                    justifyContent="center"
+                    pt="5px"
+                    fontWeight="normal"
+                    fontSize="md"
+                    fontFamily="inter"
+                    textAlign="center"
+                    border="1px"
+                    rounded="50px"
+                    _hover={{
+                        backgroundColor: 'gray.600',
+                    }}
+                >
+                    <Text>Mi perfil</Text>
+                </MenuItem>
 
                 <MenuDivider py="5px" />
 

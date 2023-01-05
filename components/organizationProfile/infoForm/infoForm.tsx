@@ -1,227 +1,206 @@
 // Dependencies
-//@ts-nocheck
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import {
-    Button,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    HStack,
-    Input,
-    InputGroup,
-    InputLeftAddon,
-    Text,
-    Textarea,
-    useToast,
-    VStack,
-    Tooltip,
-} from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Avatar, Flex, HStack, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
+import CropperModalAvatar from 'common/cropperModalAvatar';
+import UploadZone from 'common/uploadZone';
+import { useState } from 'react';
 import { useOrganization } from 'services/api/lib/organization';
-import { IOrgProfileForm, orgProfileSchema } from 'forms/organizationForm';
-import { Organization } from 'services/api/types/Organization';
-import { useUser } from 'services/api/lib/user';
+import InfoSkeleton from './infoForm.skeleton';
 
-// Dynamic
-const SuccessNotification = dynamic(() => import('common/notifications/success'));
-const ErrorNotification = dynamic(() => import('common/notifications/error'));
-
-// Component
-const OrgInfoForm: React.FC = () => {
+// Components
+const InfoForm: React.FC = () => {
     // States
-    const { data: user } = useUser();
-    const [isSavingChanges, setIsSavingChanges] = useState(false);
-    const { data: organization, mutate } = useOrganization();
-    const {
-        register,
-        setValue,
-        formState: { errors },
-        watch,
-        handleSubmit,
-    } = useForm({ resolver: zodResolver(orgProfileSchema) });
-    const watchDescription = watch('description', '');
+    const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
+    const [baseImg, setBaseImg] = useState<string>();
+
+    const { data: organization, mutate } = useOrganization(true);
     const toast = useToast();
 
-    // Handlers
-    const handleSaveChanges = async ({ description, facebook, website, instagram }: IOrgProfileForm) => {
-        setIsSavingChanges(true);
-
-        const orgApi = import('services/api/lib/organization');
+    /*const handleUpdateName = async (value: string) => {
+        const userApi = import('services/api/lib/user');
         const manager = import('@clyc/next-route-manager/libs/AuthManager');
 
-        const { update } = await orgApi;
+        const { update } = await userApi;
         const AuthManager = (await manager).default;
 
-        const { ok, data } = await update({
+        const { ok } = await update({
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            //@ts-ignore
             data: {
-                description,
-                rrss_facebook: facebook,
-                rrss_instagram: instagram,
-                rrss_web: website,
+                name: value,
             },
         });
 
         if (ok) {
             toast({
+                title: 'Actualización exitosa',
+                description: 'Tu nombre ha sido actualizado correctamente.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
                 position: 'top-right',
-                duration: 2000,
-                render: () => (
-                    <SuccessNotification
-                        title={'Actualización exitosa'}
-                        description={'La información de tu empresa ha sido actualizada correctamente.'}
-                    />
-                ),
             });
         } else {
-            <ErrorNotification
-                title={'Error'}
-                description={'Ha ocurrido un error al actualizar los datos, por favor, intentalo de nuevo.'}
-            />;
+            toast({
+                title: 'Error',
+                description: 'Ha ocurrido un error al editar subir tu imagen de perfil, por favor, intentalo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
         }
+    };*/
 
-        mutate((m) => ({ ...m, ...data?.organization } as Organization));
+    const handleUpdateImage = async (value: string) => {
+        const orgaApi = import('services/api/lib/organization');
+        const manager = import('@clyc/next-route-manager/libs/AuthManager');
 
-        setIsSavingChanges(false);
+        const { update: orgaUpdate } = await orgaApi;
+        const AuthManager = (await manager).default;
+
+        const { ok } = await orgaUpdate({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME! }).token,
+            isPyme: true,
+            data: {
+                //@ts-ignore
+                organization: {
+                    image: value,
+                },
+            },
+        });
+
+        if (ok) {
+            mutate();
+            toast({
+                title: 'Actualización exitosa',
+                description: 'Tu imagen de perfil ha sido actualizado correctamente.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        } else {
+            toast({
+                title: 'Error',
+                description: 'Ha ocurrido un error al editar subir tu imagen de perfil, por favor, intentalo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
     };
 
-    // Effects
-    useEffect(() => {
-        setValue('description', organization?.description);
-        setValue('website', organization?.rrss_web);
-        setValue('facebook', organization?.rrss_facebook);
-        setValue('instagram', organization?.rrss_instagram);
-    }, [organization, setValue]);
+    return organization ? (
+        <>
+            <Flex justifyContent={{ base: 'center', md: 'space-between' }} alignItems="center" mt="20px">
+                <VStack spacing="40px" align="flex-start">
+                    <Text fontFamily="barlow" fontSize="30px" textTransform="uppercase" fontWeight="700">
+                        Mi Perfil
+                    </Text>
+                    <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'flex-start'}>
+                        <VStack>
+                            <Avatar
+                                size={'lg'}
+                                name={organization.name ?? 'GSG'}
+                                src={organization?.image ?? ''}
+                                height="96px"
+                                width="96px"
+                                mr={2}
+                                bgColor={organization?.image ? 'transparent' : 'teal.400'}
+                                color={'white'}
+                            />
 
-    return (
-        <VStack
-            as="form"
-            align="start"
-            mt={6}
-            spacing={8}
-            w={{ lg: 8 / 12 }}
-            onSubmit={handleSubmit(handleSaveChanges)}
-        >
-            <FormControl id="description" isInvalid={!!errors.description}>
-                <HStack justify="space-between" alignItems="center">
-                    <FormLabel fontSize="lg" fontWeight="bold">
-                        Descripción de la empresa
-                    </FormLabel>
+                            <UploadZone
+                                onDrop={async (file) => {
+                                    const { validateTypes, getBase64 } = await import('services/images');
 
-                    {!user?.guest && (
-                        <Text
-                            fontSize="lg"
-                            fontWeight="bold"
-                            color={watchDescription?.length < 250 ? 'danger.400' : 'primary.500'}
-                        >
-                            {watchDescription?.length ?? 0}/250
-                        </Text>
-                    )}
-                </HStack>
+                                    if (file && validateTypes(file[0])) {
+                                        if (file[0].size >= 2000000) {
+                                            toast({
+                                                title: 'La imagen es muy grande, porfavor, suba una imagen menor o igual a 2MB',
+                                                status: 'error',
+                                                duration: 9000,
+                                                isClosable: true,
+                                                position: 'top-right',
+                                            });
+                                        } else {
+                                            const base = await getBase64(file![0]);
+                                            setBaseImg(base);
+                                            onCropperOpen();
+                                        }
+                                    }
+                                }}
+                                variant="unstyled"
+                                borderBottom="2px"
+                                color="gray.50"
+                                fontFamily="inter"
+                                fontWeight="normal"
+                                fontSize="15px"
+                                borderColor="gray.50"
+                                rounded={0}
+                            >
+                                Subir imagen
+                            </UploadZone>
 
-                <Textarea
-                    variant="outline"
-                    {...register('description')}
-                    mt={2}
-                    resize="vertical"
-                    minH={24}
-                    isDisabled={user?.guest}
-                    _disabled={{
-                        color: 'black.base',
-                        cursor: 'not-allowed',
+                            <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
+                                Tamaño máximo 2MB
+                            </Text>
+                        </VStack>
+
+                        <VStack alignItems={{ base: 'start', md: 'start' }} spacing={0}>
+                            <HStack>
+                                <Text
+                                    fontSize={{ base: 'xl', lg: '24px' }}
+                                    fontWeight="semibold"
+                                    fontFamily="barlow"
+                                    alignItems={'center'}
+                                    alignContent="center"
+                                    justifyItems={'center'}
+                                >
+                                    {organization.name}
+                                </Text>
+                                {/*<EditableTitle
+                                    fontSize={{ base: 'xl', lg: '24px' }}
+                                    fontWeight="semibold"
+                                    fontFamily="barlow"
+                                    alignItems={'center'}
+                                    alignContent="center"
+                                    justifyItems={'center'}
+                                    defaultValue={organization.name}
+                            onSubmit={handleUpdateName}
+                                />*/}
+                            </HStack>
+
+                            <Text
+                                fontSize={{ base: 'sm', md: '16px' }}
+                                fontWeight={'normal'}
+                                color="gray.400"
+                                fontFamily="inter"
+                            >
+                                {organization?.legal_representative_email ?? 'No hay correo registrado'}
+                            </Text>
+                        </VStack>
+                    </Stack>
+                </VStack>
+            </Flex>
+
+            {isCropperOpen && (
+                <CropperModalAvatar
+                    title={'Recortar logo'}
+                    baseImg={baseImg!}
+                    isOpen={isCropperOpen}
+                    onClose={onCropperClose}
+                    onCropSave={(img) => {
+                        handleUpdateImage(img);
                     }}
                 />
-
-                <FormErrorMessage fontWeight="semibold">{errors.description?.message}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl id="website" isInvalid={!!errors.website}>
-                <FormLabel fontSize="lg" fontWeight="bold">
-                    Sitio web (opcional)
-                </FormLabel>
-
-                <Input
-                    size="md"
-                    variant="outline"
-                    {...register('website')}
-                    mt={2}
-                    placeholder="https://www.ejemplo.com"
-                    isDisabled={user?.guest}
-                    _disabled={{
-                        color: 'black.base',
-                        cursor: 'not-allowed',
-                    }}
-                />
-
-                <FormErrorMessage fontWeight="semibold">{errors.website?.message}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl id="facebook" isInvalid={!!errors.facebook}>
-                <FormLabel fontSize="lg" fontWeight="bold">
-                    Facebook (opcional)
-                </FormLabel>
-
-                <Input
-                    size="md"
-                    variant="outline"
-                    {...register('facebook')}
-                    mt={2}
-                    placeholder="https://www.facebook.com/ejemplo"
-                    isDisabled={user?.guest}
-                    _disabled={{
-                        color: 'black.base',
-                        cursor: 'not-allowed',
-                    }}
-                />
-
-                <FormErrorMessage fontWeight="semibold">{errors.facebook?.message}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl id="instagram" isInvalid={!!errors.instagram}>
-                <FormLabel fontSize="lg" fontWeight="bold">
-                    Instagram (opcional)
-                </FormLabel>
-
-                <InputGroup size="md" mt={2}>
-                    <InputLeftAddon bgColor="gray.100" fontWeight="bold" borderColor="gray.300">
-                        @
-                    </InputLeftAddon>
-
-                    <Input
-                        variant="outline"
-                        {...register('instagram')}
-                        isDisabled={user?.guest}
-                        _disabled={{
-                            color: 'black.base',
-                            cursor: 'not-allowed',
-                        }}
-                    />
-                </InputGroup>
-
-                <FormErrorMessage fontWeight="semibold">{errors.instagram?.message}</FormErrorMessage>
-            </FormControl>
-
-            <Tooltip
-                label={'Solo el administrador de la organización puede actualizar la información.'}
-                isDisabled={!user?.guest}
-                shouldWrapChildren
-            >
-                <Button
-                    type="submit"
-                    loadingText="Guardando cambios"
-                    isLoading={isSavingChanges}
-                    variant="solid"
-                    mt={6}
-                    isDisabled={user?.guest}
-                >
-                    Guardar cambios
-                </Button>
-            </Tooltip>
-        </VStack>
+            )}
+        </>
+    ) : (
+        <InfoSkeleton />
     );
 };
 
 // Export
-export default OrgInfoForm;
+export default InfoForm;

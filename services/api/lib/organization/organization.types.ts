@@ -71,6 +71,7 @@ export type GetOrganizationProjectCall = (token: string) => Promise<ApiResponse<
 // Update Organization Types
 export interface UpdateOrganizationRequest {
     data: OrganizationForm;
+    isPyme?: boolean;
     token: string;
 }
 
