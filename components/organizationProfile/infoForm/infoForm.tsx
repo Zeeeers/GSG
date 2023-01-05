@@ -1,6 +1,7 @@
 // Dependencies
 import { Avatar, Flex, HStack, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import CropperModalAvatar from 'common/cropperModalAvatar';
+import EditableTitle from 'common/editableTitle';
 import UploadZone from 'common/uploadZone';
 import { useState } from 'react';
 import { useOrganization } from 'services/api/lib/organization';
@@ -15,22 +16,26 @@ const InfoForm: React.FC = () => {
     const { data: organization, mutate } = useOrganization(true);
     const toast = useToast();
 
-    /*const handleUpdateName = async (value: string) => {
-        const userApi = import('services/api/lib/user');
+    const handleUpdateName = async (value: string) => {
+        const orgaApi = import('services/api/lib/organization');
         const manager = import('@clyc/next-route-manager/libs/AuthManager');
 
-        const { update } = await userApi;
+        const { update: orgaUpdate } = await orgaApi;
         const AuthManager = (await manager).default;
 
-        const { ok } = await update({
-            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
-            //@ts-ignore
+        const { ok } = await orgaUpdate({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME! }).token,
+            isPyme: true,
             data: {
-                name: value,
+                //@ts-ignore
+                organization: {
+                    name: value,
+                },
             },
         });
 
         if (ok) {
+            mutate();
             toast({
                 title: 'Actualización exitosa',
                 description: 'Tu nombre ha sido actualizado correctamente.',
@@ -49,7 +54,7 @@ const InfoForm: React.FC = () => {
                 position: 'top-right',
             });
         }
-    };*/
+    };
 
     const handleUpdateImage = async (value: string) => {
         const orgaApi = import('services/api/lib/organization');
@@ -150,17 +155,7 @@ const InfoForm: React.FC = () => {
 
                         <VStack alignItems={{ base: 'start', md: 'start' }} spacing={0}>
                             <HStack>
-                                <Text
-                                    fontSize={{ base: 'xl', lg: '24px' }}
-                                    fontWeight="semibold"
-                                    fontFamily="barlow"
-                                    alignItems={'center'}
-                                    alignContent="center"
-                                    justifyItems={'center'}
-                                >
-                                    {organization.name}
-                                </Text>
-                                {/*<EditableTitle
+                                <EditableTitle
                                     fontSize={{ base: 'xl', lg: '24px' }}
                                     fontWeight="semibold"
                                     fontFamily="barlow"
@@ -168,8 +163,8 @@ const InfoForm: React.FC = () => {
                                     alignContent="center"
                                     justifyItems={'center'}
                                     defaultValue={organization.name}
-                            onSubmit={handleUpdateName}
-                                />*/}
+                                    onSubmit={handleUpdateName}
+                                />
                             </HStack>
 
                             <Text
