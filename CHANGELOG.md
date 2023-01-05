@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Zeeeers/GSG/compare/v1.1.3...v1.2.0) (2023-01-05)
+
+
+### Features
+
+* **profile:** add profile for organizations, only edit image ([7bcbc5c](https://github.com/Zeeeers/GSG/commit/7bcbc5c77a3ea03ef9857ecac1060e0f5141ed2f))
+* **profile:** organization can edit name ([cb737ab](https://github.com/Zeeeers/GSG/commit/cb737ab4825a3962f28bbd00ec3c807510cf00a2))
+
 ### [1.1.3](https://github.com/Zeeeers/GSG/compare/v1.1.2...v1.1.3) (2023-01-05)
 
 
