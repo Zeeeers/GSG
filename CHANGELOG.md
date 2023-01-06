@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Zeeeers/GSG/compare/v1.1.0...v1.3.0) (2023-01-06)
+
+
+### Features
+
+* **profile:** add profile for organizations, only edit image ([7bcbc5c](https://github.com/Zeeeers/GSG/commit/7bcbc5c77a3ea03ef9857ecac1060e0f5141ed2f))
+* **profile:** organization can edit name ([cb737ab](https://github.com/Zeeeers/GSG/commit/cb737ab4825a3962f28bbd00ec3c807510cf00a2))
+
+
+### Bug Fixes
+
+* **creator:** supplementary information is not retrieved properly ([f6706a1](https://github.com/Zeeeers/GSG/commit/f6706a1efa9998bff81301715cb5e8d08bdc0a56))
+* **filter-projects:** items remain selected when filtering ([68209ef](https://github.com/Zeeeers/GSG/commit/68209ef32a3f9b8480dfce1518c7a8bbfa2a888a))
+* **register:** layout height is short ([73d5e96](https://github.com/Zeeeers/GSG/commit/73d5e968dabbca9fb78c5126f154cad184a940c5))
+
 ## [1.2.0](https://github.com/Zeeeers/GSG/compare/v1.1.3...v1.2.0) (2023-01-05)
 
 
