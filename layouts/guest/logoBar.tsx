@@ -17,7 +17,7 @@ const LogoBar: React.FC = ({ children }) => {
             bgAttachment="fixed"
             pb="100px"
         >
-            <VStack spacing="30px" mt="20px" h="100vh" w="full">
+            <VStack spacing="30px" mt="20px" h="100%" w="full">
                 <Text fontSize="36px" fontWeight="bold" textTransform="uppercase">
                     Inversión de impacto
                 </Text>
