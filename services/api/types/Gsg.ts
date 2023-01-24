@@ -62,4 +62,5 @@ export interface GsgFormated {
     business_web: string;
     members: Array<Members>;
     status: string;
+    progress: number;
 }
