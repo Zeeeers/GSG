@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://gitlab.com/company-pitch/company-pitch-client/compare/v1.4.0...v1.4.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* **explorer:** projects are not visible ([2874b24](https://gitlab.com/company-pitch/company-pitch-client/commit/2874b24baf416837df6cf837ac2e6d961cd6374e))
+
 ## 1.4.0 (2023-01-24)
 
 
