@@ -101,7 +101,7 @@ const Explorer: NextPage = () => {
             ?.filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
         return projectFilter;
-    }, [filters, orderBy]);
+    }, [filters, orderBy, gsg]);
 
     const optionsCertification = [
         { value: 'certified-b', label: 'Certificación empresa B' },
