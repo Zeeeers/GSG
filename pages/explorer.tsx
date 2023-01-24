@@ -33,7 +33,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from 'layouts/main/navbar';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useGsg } from 'services/api/lib/gsg';
 import { gsgAllFetcher, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
@@ -75,7 +75,7 @@ const Explorer: NextPage = () => {
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
 
-    const filtersResult = () => {
+    const filtersResult = useCallback(() => {
         const projectSort = gsg?.data?.projects?.flat()?.sort((a, b) => {
             if (orderBy === 'desc') {
                 //@ts-ignore
@@ -87,17 +87,21 @@ const Explorer: NextPage = () => {
         });
 
         const projectFilter = projectSort
-            ?.filter((p) => Object.values(p?.qualities ?? []).find((p) => filters?.qualities?.includes(p?.name) ?? []))
-            .filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
-            .filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
-            .filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])
-            .filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
-            .filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
-            .filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
-            .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
+            ?.filter((p) =>
+                Object.values(p?.qualities ?? { qualities: {} }).find(
+                    (p) => filters?.qualities?.includes(p?.name) ?? [],
+                ),
+            )
+            ?.filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
+            ?.filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
+            ?.filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])
+            ?.filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
+            ?.filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
+            ?.filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
+            ?.filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
         return projectFilter;
-    };
+    }, [filters, orderBy]);
 
     const optionsCertification = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -674,7 +678,7 @@ const Explorer: NextPage = () => {
                                                 >
                                                     <MenuOptionGroup w="full" title="Filtro">
                                                         {qualities?.qualities
-                                                            .filter(
+                                                            ?.filter(
                                                                 (qualitie) =>
                                                                     !filters?.qualities?.includes(qualitie.icon.name),
                                                             )
