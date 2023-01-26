@@ -88,13 +88,16 @@ const Explorer: NextPage = () => {
 
         const projectFilter = projectSort
             ?.filter((p) =>
-                Object.values(p?.qualities ?? { qualities: {} }).find(
-                    (p) => filters?.qualities?.includes(p?.name) ?? [],
+                Object.values(p?.qualities ?? { qualities: {} }).some(
+                    (q) => filters?.qualities?.includes(q.name) ?? [],
                 ),
             )
             ?.filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
             ?.filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
-            ?.filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])
+            ?.filter(
+                (p) =>
+                    (filters?.surveyStage?.includes(p?.capital_stage) || filters?.surveyStage?.includes(p?.debt)) ?? [],
+            )
             ?.filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
             ?.filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
             ?.filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
@@ -165,7 +168,7 @@ const Explorer: NextPage = () => {
         if (onboarding && onboarding === 'filter-experience') {
             openExperience(true);
         }
-    }, [isOpenExperience, router.query]);
+    }, [isOpenExperience, router.query, openExperience]);
 
     useEffect(() => {
         if (filters?.qualities?.length === 0) {
@@ -203,12 +206,15 @@ const Explorer: NextPage = () => {
         filters?.expectedReturn,
         filters?.contributionAmount,
         filters?.investmentTerms,
+        setFilters,
+        filters,
     ]);
 
     return (
         <>
             <NextSeo title={'Explorador - MATCH'} />
             <Navbar />
+
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 {orga !== undefined &&
                     (orga?.gsg_project_id ? <StatusProject project={project?.data?.gsg_project} /> : <NotProject />)}
@@ -670,13 +676,13 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup w="full" title="Filtro">
+                                                    <MenuOptionGroup title="Filtro">
                                                         {qualities?.qualities
                                                             ?.filter(
                                                                 (qualitie) =>
@@ -731,7 +737,12 @@ const Explorer: NextPage = () => {
                                                     w={{ base: 'full', sm: '332px' }}
                                                     h="40px"
                                                 >
-                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                    <Flex
+                                                        w="full"
+                                                        px="16px"
+                                                        alignItems="center"
+                                                        justify="space-between"
+                                                    >
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Certificación
                                                             {filters?.certification &&
@@ -743,10 +754,10 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
-                                                    maxHeight="55vh"
                                                     className="custom-scroll"
+                                                    maxHeight="55vh"
                                                     bg="gray.800"
                                                 >
                                                     <MenuOptionGroup title="Filtro">
@@ -801,7 +812,7 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', sm: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
@@ -812,6 +823,7 @@ const Explorer: NextPage = () => {
                                                             ?.filter((ps) => !filters?.projectStage?.includes(ps.value))
                                                             .map((ps, index) => (
                                                                 <MenuItemOption
+                                                                    w="full"
                                                                     key={`${index}-Filter`}
                                                                     value={ps.value}
                                                                     onClick={() =>
@@ -859,7 +871,7 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
@@ -917,7 +929,7 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
@@ -977,7 +989,7 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
@@ -1038,7 +1050,7 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
