@@ -113,22 +113,32 @@ const RegisterStepTwoForm: React.FC = () => {
                 autoComplete="off"
                 onSubmit={handleSubmit(handleRegister)}
             >
-                <VStack my={8} spacing={8} w="full">
-                    <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
-                        <Button
-                            variant="outline"
-                            textColor="teal.300"
-                            borderColor="teal.300"
-                            fontWeight="bold"
-                            _hover={{ background: 'teal.300', color: 'white' }}
-                            borderRadius="full"
-                            w="40px"
-                            h="40px"
-                            onClick={() => setStep('ONE')}
-                        >
-                            {'<-'}
-                        </Button>
-                    </VStack>
+                <VStack alignItems="flex-start" justifyContent="flex-start" w="full">
+                    <Button
+                        variant="outline"
+                        textColor="teal.300"
+                        borderColor="teal.300"
+                        fontWeight="bold"
+                        _hover={{ background: 'teal.300', color: 'white' }}
+                        borderRadius="full"
+                        w="40px"
+                        h="40px"
+                        onClick={() => setStep('ONE')}
+                    >
+                        {'<-'}
+                    </Button>
+                </VStack>
+                <VStack
+                    my={8}
+                    spacing={8}
+                    w="full"
+                    overflowY="scroll"
+                    overflowX="hidden"
+                    className="custom-scroll"
+                    height={{ base: '100%', sm: '400px' }}
+                    pt="24px"
+                    pb="30px"
+                >
                     <FormControl id="logo" isInvalid={!!errors.logo}>
                         <FormLabel fontSize="24px">Información de tu organización</FormLabel>
 
