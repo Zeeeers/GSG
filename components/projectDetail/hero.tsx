@@ -434,6 +434,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     (r) => r.organization_id === user?.organization_id,
                                                 )?.kinds === 'interested' && (
                                                     <Button
+                                                        w="fit-content"
                                                         onClick={handleInterest}
                                                         variant="solid"
                                                         background="blue.700"
