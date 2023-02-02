@@ -28,7 +28,7 @@ import ThirdParties from './formatText/thirdParties';
 import Time from './formatText/time';
 import cookies from 'nookies';
 
-const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
+const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) => {
     const { impact, description_finance, other } = ref?.current;
     const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
 
@@ -74,7 +74,7 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                         {Object.values(project?.qualities || {}).map((item, i) => (
                             <WrapItem key={i}>
                                 <HStack spacing="20px">
-                                    <Image src={item.image} w="60px" h="60px" rounded="15px" />
+                                    <Image src={item.image} w="60px" h="60px" rounded="15px" alt={item.name} />
                                     <Text
                                         fontFamily="inter"
                                         lineHeight="140%"
@@ -554,34 +554,39 @@ const Body = forwardRef<any, any>(({ project, user, orga }, ref) => {
                             spacing="30px"
                             opacity="0.9"
                         >
-                            <VStack maxW="348px" spacing="10px">
+                            <VStack maxW="348px" spacing="12px">
                                 <Text fontSize="36px" fontWeight="500" lineHeight="32px">
                                     ¿Eres inversionista?
                                 </Text>
                                 <Text textAlign="center" fontFamily="inter" fontSize="16px" lineHeight="22.4px">
-                                    Solicita tu invitación aquí para registrarte y ver toda la información de la empresa
+                                    Inicia sesión a continuación para ver más información del proyecto
                                 </Text>
                             </VStack>
 
                             <VStack maxW="348px" spacing="15px">
-                                <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
-                                    <Button variant="solid" h="40px">
-                                        Solicitar invitación
-                                    </Button>
-                                </Link>
-                                <Link href="https://www.inversiondeimpacto.cl/match" target="_blank">
-                                    <Button
-                                        variant="unstyled"
-                                        borderBottom="2px"
-                                        borderColor="gray.50"
-                                        rounded="none"
-                                        h="fit-content"
-                                        fontFamily="inter"
-                                        fontSize="16px"
-                                    >
-                                        Saber más
-                                    </Button>
-                                </Link>
+                                <Button onClick={onOpenLogin} variant="solid" h="40px">
+                                    Iniciar sesión
+                                </Button>
+
+                                <VStack spacing={0}>
+                                    <Text fontFamily="inter" fontSize="16px">
+                                        Si aún no estás registrado
+                                    </Text>
+                                    <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
+                                        <Button
+                                            variant="unstyled"
+                                            borderBottom="1px"
+                                            borderColor="gray.50"
+                                            rounded="none"
+                                            h="fit-content"
+                                            fontFamily="inter"
+                                            fontSize="16px"
+                                            fontWeight="normal"
+                                        >
+                                            solicita tu invitación aquí{' '}
+                                        </Button>
+                                    </Link>
+                                </VStack>
                             </VStack>
                         </Stack>
                     </Stack>

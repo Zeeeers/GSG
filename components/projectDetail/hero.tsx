@@ -29,10 +29,11 @@ interface Props {
     user: User | undefined;
     orga: Organization | undefined;
     iisValidating: boolean;
+    onOpenLogin: () => void;
 }
 
 // Component
-const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating }) => {
+const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating, onOpenLogin }) => {
     const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
     const router = useRouter();
 
@@ -84,64 +85,6 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
         }
     };
 
-    const handleScroll = () => {
-        if (window.scrollY > 370) {
-            setSticky(true);
-        } else if (window.scrollY < 250) {
-            setSticky(false);
-        }
-
-        let description_generalY = description_general.current?.getBoundingClientRect().y ?? 0;
-        let impactY = impact.current?.getBoundingClientRect().y ?? 0;
-        let description_financeY = description_finance.current?.getBoundingClientRect().y ?? 0;
-        let otherY = other.current?.getBoundingClientRect().y ?? 0;
-
-        if (description_generalY < 130) {
-            setIsActive({
-                ...isActive,
-                description_general: true,
-                impact: false,
-                description_finance: false,
-                other: false,
-            });
-        }
-        if (impactY < 130) {
-            setIsActive({
-                ...isActive,
-                description_general: false,
-                impact: true,
-                description_finance: false,
-                other: false,
-            });
-        } else {
-            setIsActive({
-                ...isActive,
-                description_general: true,
-                impact: false,
-                description_finance: false,
-                other: false,
-            });
-        }
-        if (description_financeY < 130) {
-            setIsActive({
-                ...isActive,
-                description_general: false,
-                impact: false,
-                description_finance: true,
-                other: false,
-            });
-        }
-        if (otherY < 130) {
-            setIsActive({
-                ...isActive,
-                description_general: false,
-                impact: false,
-                description_finance: false,
-                other: true,
-            });
-        }
-    };
-
     const handleInterest = async () => {
         const { createInterest } = await import('../../services/api/lib/gsg');
 
@@ -157,12 +100,70 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
     };
 
     useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 370) {
+                setSticky(true);
+            } else if (window.scrollY < 250) {
+                setSticky(false);
+            }
+
+            let description_generalY = description_general.current?.getBoundingClientRect().y ?? 0;
+            let impactY = impact.current?.getBoundingClientRect().y ?? 0;
+            let description_financeY = description_finance.current?.getBoundingClientRect().y ?? 0;
+            let otherY = other.current?.getBoundingClientRect().y ?? 0;
+
+            if (description_generalY < 130) {
+                setIsActive({
+                    ...isActive,
+                    description_general: true,
+                    impact: false,
+                    description_finance: false,
+                    other: false,
+                });
+            }
+            if (impactY < 130) {
+                setIsActive({
+                    ...isActive,
+                    description_general: false,
+                    impact: true,
+                    description_finance: false,
+                    other: false,
+                });
+            } else {
+                setIsActive({
+                    ...isActive,
+                    description_general: true,
+                    impact: false,
+                    description_finance: false,
+                    other: false,
+                });
+            }
+            if (description_financeY < 130) {
+                setIsActive({
+                    ...isActive,
+                    description_general: false,
+                    impact: false,
+                    description_finance: true,
+                    other: false,
+                });
+            }
+            if (otherY < 130) {
+                setIsActive({
+                    ...isActive,
+                    description_general: false,
+                    impact: false,
+                    description_finance: false,
+                    other: true,
+                });
+            }
+        };
+
         window.addEventListener('scroll', handleScroll);
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [isActive]);
 
     return (
         <>
@@ -548,7 +549,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                 </VStack>
                             </Flex>
 
-                            <Body project={project} ref={ref} user={user} orga={orga} />
+                            <Body project={project} ref={ref} user={user} orga={orga} onOpenLogin={onOpenLogin} />
                         </VStack>
                     )}
                 </Container>

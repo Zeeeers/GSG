@@ -15,10 +15,11 @@ const DangerAlert = dynamic(() => import('common/alerts/danger'));
 interface Props {
     isPyme?: boolean;
     afterLogin?: () => void;
+    redirect?: boolean;
 }
 
 // Component
-const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
+const LoginForm: React.FC<Props> = ({ isPyme, afterLogin, redirect = true }) => {
     // State
     const router = useRouter();
     const [alert, setAlert] = useState(false);
@@ -60,7 +61,10 @@ const LoginForm: React.FC<Props> = ({ isPyme, afterLogin }) => {
                 position: 'top-right',
             });
 
-            router.push((router.query.redirect_to as string) ?? '/explorer');
+            if (redirect) {
+                router.push((router.query.redirect_to as string) ?? '/explorer');
+            }
+
             setIsLoggingIn(false);
             afterLogin && afterLogin();
         } else {

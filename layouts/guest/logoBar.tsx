@@ -11,13 +11,14 @@ const LogoBar: React.FC = ({ children }) => {
             alignItems="center"
             bgImage="/images/nasa.jpg"
             bgSize="cover"
-            height="100%"
+            height="100vh"
             w="full"
             bgPosition="center"
             bgAttachment="fixed"
             pb="100px"
+            overflow={{ base: 'auto', '2xl': 'hidden' }}
         >
-            <VStack spacing="30px" mt="20px" h="100%" w="full">
+            <VStack spacing="30px" mt="20px" h="auto" w="full">
                 <Text fontSize="36px" fontWeight="bold" textTransform="uppercase">
                     Inversión de impacto
                 </Text>
@@ -31,6 +32,7 @@ const LogoBar: React.FC = ({ children }) => {
                     p={{ base: '25px', md: 30 }}
                     bgColor="gray.800"
                     rounded="16px"
+                    height="100%"
                 >
                     <Link href="/explorer" passHref>
                         <HStack w="full" spacing={3} alignItems="center" cursor="pointer">

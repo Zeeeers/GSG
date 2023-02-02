@@ -53,23 +53,58 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose, investorReload, or
                                 overflowY="hidden"
                                 pb="10px"
                             >
+                                <Tab px={0} pt="20px" borderBottom="2px" whiteSpace="nowrap">
+                                    Inversionista
+                                </Tab>
                                 <Tab
-                                    pr="15px"
-                                    pl={0}
+                                    ml="15px"
                                     pt="20px"
                                     borderBottom="2px"
                                     textAlign="start"
                                     alignItems="flex-start"
                                     whiteSpace="nowrap"
+                                    w="fit-content"
+                                    px={0}
                                 >
                                     Empresa
-                                </Tab>
-                                <Tab ml="15px" px={0} pt="20px" borderBottom="2px" whiteSpace="nowrap">
-                                    Inversionista
                                 </Tab>
                             </TabList>
 
                             <TabPanels>
+                                <TabPanel px={0}>
+                                    <LoginForm
+                                        afterLogin={() => {
+                                            onClose();
+                                            investorReload();
+                                        }}
+                                        redirect={false}
+                                    />
+
+                                    <Flex flexDirection={'column'} alignItems={'center'}>
+                                        <Link href="/recovery/recoveryPassword" passHref>
+                                            <Button
+                                                variant="link"
+                                                transitionProperty="all"
+                                                transitionDuration={'slow'}
+                                                colorScheme="primary"
+                                                fontWeight="normal"
+                                            >
+                                                Olvidé mi contraseña
+                                            </Button>
+                                        </Link>
+                                        <VStack spacing="7px" mt="36px">
+                                            <Text fontSize={'md'} fontWeight={'normal'} fontFamily="inter">
+                                                ¿Eres inversionista y no tienes cuenta?
+                                            </Text>
+                                            <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
+                                                <Button variant="outline" h="40px">
+                                                    Solicitar una invitación
+                                                </Button>
+                                            </Link>
+                                        </VStack>
+                                    </Flex>
+                                </TabPanel>
+
                                 <TabPanel px={0}>
                                     <LoginOrgaForm
                                         afterLogin={() => {
@@ -105,38 +140,6 @@ const LoginChooseModal: React.FC<Props> = ({ isOpen, onClose, investorReload, or
                                             >
                                                 Registrarme
                                             </Button>
-                                        </VStack>
-                                    </Flex>
-                                </TabPanel>
-                                <TabPanel px={0}>
-                                    <LoginForm
-                                        afterLogin={() => {
-                                            onClose();
-                                            investorReload();
-                                        }}
-                                    />
-
-                                    <Flex flexDirection={'column'} alignItems={'center'}>
-                                        <Link href="/recovery/recoveryPassword" passHref>
-                                            <Button
-                                                variant="link"
-                                                transitionProperty="all"
-                                                transitionDuration={'slow'}
-                                                colorScheme="primary"
-                                                fontWeight="normal"
-                                            >
-                                                Olvidé mi contraseña
-                                            </Button>
-                                        </Link>
-                                        <VStack spacing="7px" mt="36px">
-                                            <Text fontSize={'md'} fontWeight={'normal'} fontFamily="inter">
-                                                ¿Eres inversionista y no tienes cuenta?
-                                            </Text>
-                                            <Link href="mailto:contacto@gsg-match.com?Subject=Solicitud%20nuevo%20inversionista">
-                                                <Button variant="outline" h="40px">
-                                                    Solicitar una invitación
-                                                </Button>
-                                            </Link>
                                         </VStack>
                                     </Flex>
                                 </TabPanel>

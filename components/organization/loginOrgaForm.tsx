@@ -14,10 +14,11 @@ const DangerAlert = dynamic(() => import('common/alerts/danger'));
 // Types
 interface Props {
     afterLogin?: () => void;
+    redirect?: boolean;
 }
 
 // Component
-const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
+const LoginOrgaForm: React.FC<Props> = ({ afterLogin, redirect = true }) => {
     // State
     const router = useRouter();
     const [alert, setAlert] = useState(false);
@@ -60,7 +61,10 @@ const LoginOrgaForm: React.FC<Props> = ({ afterLogin }) => {
                 position: 'top-right',
             });
 
-            router.push((router.query.redirect_to as string) ?? '/explorer');
+            if (redirect) {
+                router.push((router.query.redirect_to as string) ?? '/explorer');
+            }
+
             setIsLoggingIn(false);
             afterLogin && afterLogin();
         } else {

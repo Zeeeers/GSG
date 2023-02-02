@@ -45,7 +45,7 @@ const userFetcher = async (endpoint: string) => {
 };
 
 export const useUser = (): SWRResponse<User | undefined, unknown> => {
-    return useSWR([ENDPOINT.BASE], userFetcher, { revalidateOnFocus: false });
+    return useSWR([ENDPOINT.BASE], userFetcher, { revalidateOnFocus: true });
 };
 
 // FETCH

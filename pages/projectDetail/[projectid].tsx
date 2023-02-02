@@ -1,5 +1,6 @@
 //@ts-nocheck
-import { Flex, Img } from '@chakra-ui/react';
+import { Flex, Img, useDisclosure } from '@chakra-ui/react';
+import LoginChooseModal from 'components/login/loginModal';
 import Navbar from 'layouts/main/navbar';
 import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -14,9 +15,11 @@ const PublicChallenge: NextPage = ({ project }) => {
     const [routerQuery, setRouterQuery] = useState();
 
     const router = useRouter();
-    const { data: userProfile } = useUser();
-    const { data: orga } = useOrganization(true);
+    const { data: userProfile, mutate: reloadUser } = useUser();
+    const { data: orga, mutate: reloadOrga } = useOrganization(true);
     const { data: gsg, mutate, isValidating } = useGsgProject(project?.id);
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
         <>
@@ -40,12 +43,15 @@ const PublicChallenge: NextPage = ({ project }) => {
 
                 <HeaderHero
                     project={gsg?.data?.gsg_project}
+                    onOpenLogin={onOpen}
                     user={userProfile}
                     orga={orga}
                     mutate={mutate}
                     isValidating={isValidating}
                 />
             </Flex>
+
+            <LoginChooseModal isOpen={isOpen} onClose={onClose} investorReload={reloadUser} orgaReload={reloadOrga} />
         </>
     );
 };
