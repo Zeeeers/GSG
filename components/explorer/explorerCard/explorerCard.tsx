@@ -103,7 +103,10 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
                 </VStack>
 
                 <Box display={'flex'} flexDirection="column" textAlign="center" w="full" mt="13px">
-                    <Link href={`/projectDetail/${project?.id} `} target="_blank">
+                    <Link
+                        href={`/project/${project?.id}-${project?.title.toLowerCase().replaceAll(' ', '-')}`}
+                        target="_blank"
+                    >
                         <Button variant="solid" h="32px" w="full">
                             Ver proyecto
                         </Button>

@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 import { Flex, Img, useDisclosure } from '@chakra-ui/react';
 import LoginChooseModal from 'components/login/loginModal';
 import Navbar from 'layouts/main/navbar';
@@ -7,31 +7,59 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getGsgProject, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
+import { GetGsgProjectResponse } from 'services/api/lib/gsg/gsg.types';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
 import HeaderHero from '../../components/projectDetail/hero';
 
-const PublicChallenge: NextPage = ({ project }) => {
-    const [routerQuery, setRouterQuery] = useState();
+interface Props {
+    project: GetGsgProjectResponse;
+}
 
-    const router = useRouter();
+const PublicChallenge: NextPage = ({ project }: Props) => {
     const { data: userProfile, mutate: reloadUser } = useUser();
     const { data: orga, mutate: reloadOrga } = useOrganization(true);
-    const { data: gsg, mutate, isValidating } = useGsgProject(project?.id);
+    const { data: gsg, mutate, isValidating } = useGsgProject(project?.data.gsg_project.id, { initialData: project });
+    const [url, setUrl] = useState('');
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const router = useRouter();
+
+    useEffect(() => {
+        setUrl(window.location.href);
+    }, [router.query]);
 
     return (
         <>
             <NextSeo
-                title={`${project?.title} - MATCH`}
-                description={project?.description}
+                title={`${project?.data.gsg_project.title} - GSG MATCH`}
+                description={project?.data.gsg_project.description}
                 canonical="https://www.gsg-match.com/"
+                openGraph={{
+                    title: project?.data.gsg_project.title,
+                    description: project?.data.gsg_project.description,
+                    url: url,
+                    images: [
+                        {
+                            url: project?.data.gsg_project.main_image,
+                            alt: project?.data.gsg_project.title,
+                        },
+                    ],
+                    site_name: 'GSG MATCH',
+                }}
+                twitter={{
+                    handle: '@handle',
+                    site: '@site',
+                    cardType: 'summary_large_image',
+                }}
             />
+
             <Navbar />
+
             <Flex flexDir="column" paddingTop={{ base: '60px', md: 20 }}>
                 <Img
-                    src={project?.main_image}
+                    src={gsg.data.gsg_project.main_image}
                     h="345px"
                     w="full"
                     objectFit="cover"
@@ -58,20 +86,26 @@ const PublicChallenge: NextPage = ({ project }) => {
 
 export default PublicChallenge;
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-    const projectId = ctx.params?.projectid as string | undefined;
+export const getServerSideProps: GetServerSideProps<Props> = async ({ params, req }) => {
+    try {
+        const projectId = params?.projectid as string | undefined;
 
-    if (projectId) {
-        const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, projectId);
+        const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, Number.parseInt(projectId));
+
+        if (data.error === 'Not Found') {
+            throw new Error(data.error);
+        }
 
         return {
             props: {
-                project: data?.data?.gsg_project ?? null,
+                project: data,
             },
         };
-    } else {
+    } catch (error) {
+        console.error(error);
+
         return {
-            props: null,
+            notFound: true,
         };
     }
 };
