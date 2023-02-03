@@ -145,7 +145,7 @@ const InfoForm: React.FC = () => {
                                 borderColor="gray.50"
                                 rounded={0}
                             >
-                                Subir imagen
+                                Subir logo
                             </UploadZone>
 
                             <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
