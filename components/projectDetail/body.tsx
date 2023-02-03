@@ -551,10 +551,10 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                             }}
                             align="center"
                             justify="center"
-                            spacing="30px"
+                            spacing={0}
                             opacity="0.9"
                         >
-                            <VStack maxW="348px" spacing="12px">
+                            <VStack maxW="348px" spacing="8px">
                                 <Text fontSize="36px" fontWeight="500" lineHeight="32px">
                                     ¿Eres inversionista?
                                 </Text>
@@ -563,7 +563,7 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                                 </Text>
                             </VStack>
 
-                            <VStack maxW="348px" spacing="15px">
+                            <VStack maxW="348px" spacing="32px" pt="16px">
                                 <Button onClick={onOpenLogin} variant="solid" h="40px">
                                     Iniciar sesión
                                 </Button>
