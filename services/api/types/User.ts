@@ -11,6 +11,7 @@ export interface User {
     newsletter: boolean;
     onboarding: boolean;
     organization_id: number;
+    user_pass_created: boolean;
     organization: {
         id: number;
         image: string;
