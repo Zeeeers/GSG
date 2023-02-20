@@ -22,7 +22,6 @@ const OrganizationProfile: NextPage = () => {
                 px={{ base: '15px', md: '70px' }}
                 py={{ base: '60px', md: '40px' }}
                 rounded="xl"
-                shadow={'md'}
                 bg={'gray.800'}
                 mt="120px"
             >
