@@ -73,7 +73,6 @@ const RegisterStepOneForm: React.FC = () => {
                     overflowY="scroll"
                     overflowX="hidden"
                     className="custom-scroll"
-                    height={{ base: '100%', sm: '400px' }}
                     pb="40px"
                 >
                     <FormControl id="userName" isInvalid={!!errors.userName}>

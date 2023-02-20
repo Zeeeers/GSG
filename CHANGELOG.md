@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/Zeeeers/GSG/compare/v1.2.0...v1.5.0) (2023-02-08)
+
+
+### Features
+
+* **header:** new design menu profile ([30613e4](https://github.com/Zeeeers/GSG/commit/30613e4e3866ad8a39ef626aa0dd97b0bc801595))
+* **investor-admin:** add user confirmation column in admin ([38c7ab8](https://github.com/Zeeeers/GSG/commit/38c7ab8fc5983eda9f65426591d00bfeba453a2b))
+* **project:** login in finance description ([c27e877](https://github.com/Zeeeers/GSG/commit/c27e877000c428dd1da3058dd1e4ea3237eeafed))
+* **project:** the route is improved and an opengraph is added ([c5e8659](https://github.com/Zeeeers/GSG/commit/c5e8659f22420dc79dd9cdffdf9df9333adf4489))
+* **register:** add scroll inside container ([49a8fa1](https://github.com/Zeeeers/GSG/commit/49a8fa18038739f4a94f36019bf333e12e09ecbc))
+
+
+### Bug Fixes
+
+* **explorer:** cannot be filtered by debt ([55ccedd](https://github.com/Zeeeers/GSG/commit/55ccedd452097c80064d061ee768456701a09cfe))
+* **explorer:** projects are not visible ([2874b24](https://github.com/Zeeeers/GSG/commit/2874b24baf416837df6cf837ac2e6d961cd6374e))
+* **explorer:** projects without qualities are not shown ([e90596a](https://github.com/Zeeeers/GSG/commit/e90596a9e0cfa0d5b8556480894b5e487d51888b))
+* **project:** ajust with of interest checked in responsive ([3824fbc](https://github.com/Zeeeers/GSG/commit/3824fbcabfe4bbb7da0441219e6b9ff9d39344bd))
+* **register:** layout height is short ([73d5e96](https://github.com/Zeeeers/GSG/commit/73d5e968dabbca9fb78c5126f154cad184a940c5))
+
 ### [1.4.1](https://gitlab.com/company-pitch/company-pitch-client/compare/v1.4.0...v1.4.1) (2023-01-24)
 
 

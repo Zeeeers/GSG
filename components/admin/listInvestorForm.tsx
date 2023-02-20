@@ -243,7 +243,7 @@ const ListInvestorForm = (props: any) => {
                                         onClick={() => handleDelete(investor.id)}
                                         variant="solid"
                                         colorScheme="red"
-                                        w="129px"
+                                        w="fit-content"
                                         px="12px"
                                     >
                                         Eliminar cuenta
@@ -309,8 +309,7 @@ const ListInvestorForm = (props: any) => {
                                     )}
                                 </HStack>
 
-                                <HStack w="full" align="center" justify="space-between">
-                                    <Stack display={{ base: 'none', sm: 'block' }} w="full"></Stack>
+                                <HStack w="full" align="center" justify="end">
                                     <Button
                                         type="button"
                                         isLoading={deleteProduct}
@@ -318,6 +317,7 @@ const ListInvestorForm = (props: any) => {
                                         onClick={() => handleDelete(investor.id)}
                                         variant="solid"
                                         colorScheme="red"
+                                        w="fit-content"
                                     >
                                         Eliminar cuenta
                                     </Button>

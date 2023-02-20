@@ -73,7 +73,7 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                 </HStack>
             </MenuButton>
 
-            <MenuList w="230px" shadow="md" py="23px" px="15px" borderRadius="8px" bg="gray.700">
+            <MenuList w="230px" shadow="2xl" py="23px" px="15px" borderRadius="8px" bg="gray.700" border="none">
                 <Stack w="full" align="center">
                     <Avatar
                         size="lg"
