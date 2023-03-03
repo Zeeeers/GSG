@@ -303,7 +303,6 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                     zIndex={20}
                                 >
                                     <VStack
-                                        boxShadow="lg"
                                         bg="gray.800"
                                         w={{ base: 'full', md: 898 }}
                                         h={{ base: 'full', md: 'fit-content' }}
@@ -374,7 +373,6 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
 
                                 <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" h="fit-content">
                                     <VStack
-                                        boxShadow="lg"
                                         bg="gray.800"
                                         w={{ base: 'full', xl: 903, '2xl': 898 }}
                                         h={{ base: 'full', md: 'fit-content' }}
