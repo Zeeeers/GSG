@@ -24,8 +24,8 @@ export type CreateInvestorCall = (payload: InvestorRequest) => Promise<ApiRespon
 
 // Send Match
 export interface SendMatchForm {
-    email: string;
-    destinary?: string;
+    user_email: string;
+    destinatary_email?: string;
 }
 
 export interface SendMatchResponse {

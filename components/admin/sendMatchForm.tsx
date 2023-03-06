@@ -41,8 +41,8 @@ const SendMatchForm: React.FC = () => {
         const { sendMatch } = await import('services/api/lib/user');
         const { ok, status } = await sendMatch({
             data: {
-                email: email,
-                destinary: isDestinator ? destinary : email,
+                user_email: email,
+                destinatary_email: isDestinator ? destinary : email,
             },
 
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME! }).token,
