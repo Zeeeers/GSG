@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/Zeeeers/GSG/compare/v1.5.0...v1.6.0) (2023-03-06)
+
+
+### Features
+
+* **admin:** add field destinary for force match ([d5c0f23](https://github.com/Zeeeers/GSG/commit/d5c0f23b19f38904f0be07722a3674b45b00f68b))
+
+
+### Bug Fixes
+
+* **register:** ajust height for viewport ([1eec776](https://github.com/Zeeeers/GSG/commit/1eec776acaa41512f6d83031217c23ae10b543f9))
+
 ## [1.5.0](https://github.com/Zeeeers/GSG/compare/v1.2.0...v1.5.0) (2023-02-08)
 
 
