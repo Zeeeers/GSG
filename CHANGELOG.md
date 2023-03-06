@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/Zeeeers/GSG/compare/v1.6.0...v1.6.1) (2023-03-06)
+
+
+### Bug Fixes
+
+* **admin:** change params endpoints for force_match ([e1324e0](https://github.com/Zeeeers/GSG/commit/e1324e055e8e27181023df1c7ba716d81bf78498))
+
 ## [1.6.0](https://github.com/Zeeeers/GSG/compare/v1.5.0...v1.6.0) (2023-03-06)
 
 
