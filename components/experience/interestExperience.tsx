@@ -29,9 +29,10 @@ import { motion } from 'framer-motion';
 
 interface Props {
     setPage: (index: number) => void;
+    setStepStatus: (status: 'Process' | 'DisabledNotification' | 'Finished') => void;
 }
 
-const InterestExperience = ({ setPage }: Props) => {
+const InterestExperience = ({ setPage, setStepStatus }: Props) => {
     const [isActive, setIsActive] = useState(false);
     const [isNews, setIsNews] = useState(false);
     const [isOnboarding, setIsOnboarding] = useState(null);
@@ -156,17 +157,17 @@ const InterestExperience = ({ setPage }: Props) => {
                 exit={{ opacity: 0 }}
                 animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
                 spacing="30px"
-                mt={{ base: '200px', md: '30px' }}
                 w="full"
                 h="full"
+                pb="200px"
             >
                 <VStack alignItems="flex-start" spacing="10px" w="full">
                     <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
-                        Selecciona tus intereses
+                        Elige tus intereses
                     </Text>
                     <Text fontSize="16px" fontWeight={'normal'} fontFamily="inter" lineHeight={6}>
-                        Te haremos recomendaciones a tu correo de acuerdo a los intereses que selecciones en las
-                        siguientes categorías
+                        Selecciona tus intereses en cada una de las siguientes categorías, te haremos recomendaciones a
+                        tu correo con proyectos que hagan match de acuerdo ellos.
                     </Text>
                 </VStack>
 
@@ -174,7 +175,7 @@ const InterestExperience = ({ setPage }: Props) => {
                     <HStack>
                         <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
                         <Text fontFamily="inter">
-                            Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses
+                            Deseo recibir correos quincenalmente con proyectos relacionados a mis intereses
                         </Text>
                     </HStack>
                     <Stack maxH="400px" overflow={{ base: 'auto', md: 'hidden' }}>
@@ -300,23 +301,11 @@ const InterestExperience = ({ setPage }: Props) => {
                             </WrapItem>
                         </Wrap>
                     </Stack>
-                    <Stack direction="row" w="full" align="flex-end" justify="space-between">
-                        <Button variant="ghost" h="40px" color="gray.50" fontSize="16px" onClick={() => setPage(0)}>
-                            Volver
-                        </Button>
-                        <Button variant="solid" h="40px" onClick={() => openOnboarding()}>
-                            Continuar
-                        </Button>
-                    </Stack>
+                    <Button variant="solid" h="40px" onClick={handleOnboarding} w="full">
+                        Finalizar
+                    </Button>
                 </VStack>
             </Stack>
-
-            <OnboardingModal
-                isOpen={isOpenOnboarding}
-                onClose={closeOnboarding}
-                handleOnboarding={handleOnboarding}
-                setIsNews={setIsNews}
-            />
 
             <OdsModal
                 isOpen={isOpenOds}
