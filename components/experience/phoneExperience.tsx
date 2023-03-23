@@ -4,6 +4,7 @@ import { IPhoneData, phoneSchema } from 'forms/experience';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useUser } from 'services/api/lib/user';
 
 interface PhoneExperienceProps {
     setPage: (index: number) => void;
@@ -11,6 +12,7 @@ interface PhoneExperienceProps {
 
 const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
     const [isLoading, setIsLoading] = useState(false);
+    const { data: user } = useUser();
 
     const {
         register,
@@ -23,7 +25,7 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
     const handleName = async ({ legal_representative_phone }: IPhoneData) => {
         setIsLoading(true);
 
-        const userApi = import('services/api/lib/user');
+        const userApi = import('services/api/lib/organization');
         const manager = import('@clyc/next-route-manager/libs/AuthManager');
 
         const { update } = await userApi;
@@ -33,7 +35,6 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
             //@ts-ignore
             data: {
-                //@ts-ignore
                 legal_representative_phone,
             },
         });
@@ -67,6 +68,8 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
                     fontSize="2xl"
                     color="white"
                     borderColor="gray.700"
+                    // @ts-ignore
+                    defaultValue={user?.organization?.legal_representative_phone}
                     {...register('legal_representative_phone')}
                 />
                 <FormErrorMessage>{errors?.legal_representative_phone?.message}</FormErrorMessage>

@@ -17,27 +17,27 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
             <Flex
                 flexDirection="column"
                 alignItems="center"
-                bgImage="/images/nasa.jpg"
                 bgSize="cover"
                 height="1080px"
                 w="full"
                 bgPosition="center"
                 bgAttachment="scroll"
             >
-                <VStack spacing="30px" mt="100px">
+                <VStack spacing="30px" mt="100px" width="full">
                     <Flex
                         flexDirection="column"
-                        alignItems="center"
+                        alignItems="start"
                         margin="auto"
                         marginTop="40px"
                         h="fit-content"
-                        width="fit-content"
+                        width="full"
+                        maxW="500px"
                         p={{ base: '25px', md: 30 }}
-                        bgColor="gray.800"
+                        bgColor="transparent"
                         rounded="16px"
                     >
                         <Link href="/explorer">
-                            <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
+                            <HStack mb="20px" spacing={3} alignItems="start" justify="start" cursor="pointer">
                                 <Img
                                     src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
                                     w="133px"
@@ -45,9 +45,18 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
                                 />
                             </HStack>
                         </Link>
-                        <VStack maxW="504px" alignItems="flex-start">
-                            <Text fontSize="24px" textAlign="center">
-                                Hola!, te damos la bienvenida a GSG, para continuar crea tu contraseña
+                        <VStack w="full" alignItems="flex-start" spacing="12px">
+                            <VStack w="full" spacing="4px" alignItems="flex-start" lineHeight="31.2px">
+                                <Text fontSize="24px" textAlign="start">
+                                    ¡Hola!
+                                </Text>
+                                <Text fontSize="24px" textAlign="start">
+                                    Te damos la bienvenida a GSG
+                                </Text>
+                            </VStack>
+
+                            <Text fontSize="16px" textAlign="start" color="gray.400" lineHeight="22.4px">
+                                Para continuar crea tu contraseña
                             </Text>
 
                             <CreatePasswordForm token={token} jwt={jwt} />

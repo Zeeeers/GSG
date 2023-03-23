@@ -95,7 +95,15 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind, isRecovery = fa
                     Crea tu contraseña
                 </FormLabel>
 
-                <InputPassword {...register('newPassword')} fontWeight="normal" size="md" />
+                <InputPassword
+                    {...register('newPassword')}
+                    fontWeight="normal"
+                    size="md"
+                    variant="flushed"
+                    borderColor="gray.700"
+                    color="gray.50"
+                    fontSize="24px"
+                />
 
                 <FormErrorMessage color="red.400" fontWeight="medium">
                     {errors.newPassword?.message}
@@ -107,7 +115,15 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind, isRecovery = fa
                     Confirmar contraseña
                 </FormLabel>
 
-                <InputPassword {...register('confirmPassword')} fontWeight="normal" size="md" />
+                <InputPassword
+                    {...register('confirmPassword')}
+                    fontWeight="normal"
+                    size="md"
+                    variant="flushed"
+                    borderColor="gray.700"
+                    color="gray.50"
+                    fontSize="24px"
+                />
 
                 <FormErrorMessage color="red.400" fontWeight="medium">
                     {errors.confirmPassword?.message}
@@ -116,14 +132,12 @@ const CreatePasswordForm: React.FC<Props> = ({ token, jwt, kind, isRecovery = fa
 
             <Stack w="full">
                 <Button
-                    mt="17px"
+                    mt="28px"
                     type="submit"
                     variant="solid"
                     isLoading={isChangingPass}
                     loadingText={'Creando contraseña'}
                     w={'full'}
-                    mb="30px"
-                    py="20px"
                     h="44px"
                 >
                     Continuar

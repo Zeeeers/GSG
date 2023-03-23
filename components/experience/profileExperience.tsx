@@ -21,7 +21,7 @@ const ProfileExperience = ({ setPage }: Props) => {
 
     const toast = useToast();
 
-    const handleUpdateImage = async () => {
+    const handleUpdateImage = async (img: string) => {
         setIsLoading(true);
         const orgaApi = import('services/api/lib/organization');
         const manager = import('@clyc/next-route-manager/libs/AuthManager');
@@ -35,14 +35,13 @@ const ProfileExperience = ({ setPage }: Props) => {
             data: {
                 //@ts-ignore
                 organization: {
-                    image: baseImg ?? null,
+                    image: img ?? null,
                 },
             },
         });
 
         if (ok) {
             mutate();
-            setPage(3);
             setIsLoading(false);
         }
     };
@@ -108,7 +107,14 @@ const ProfileExperience = ({ setPage }: Props) => {
                 </Text>
             </VStack>
 
-            <Button isLoading={isLoading} variant="solid" w="full" h="40px" onClick={() => handleUpdateImage()}>
+            <Button
+                isLoading={isLoading}
+                disabled={isLoading}
+                variant="solid"
+                w="full"
+                h="40px"
+                onClick={() => setPage(3)}
+            >
                 Continuar
             </Button>
 
@@ -119,7 +125,7 @@ const ProfileExperience = ({ setPage }: Props) => {
                     isOpen={isCropperOpen}
                     onClose={onCropperClose}
                     onCropSave={(img) => {
-                        setBaseImg(img);
+                        handleUpdateImage(img);
                     }}
                 />
             )}

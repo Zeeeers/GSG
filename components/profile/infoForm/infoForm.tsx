@@ -1,5 +1,5 @@
 // Dependencies
-import { Avatar, Flex, HStack, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
+import { Avatar, Flex, Stack, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import CropperModalAvatar from 'common/cropperModalAvatar';
 import EditableTitle from 'common/editableTitle';
 
@@ -23,10 +23,10 @@ const InfoForm: React.FC = () => {
         const userApi = import('services/api/lib/user');
         const manager = import('@clyc/next-route-manager/libs/AuthManager');
 
-        const { update } = await userApi;
+        const { update: userUpdate } = await userApi;
         const AuthManager = (await manager).default;
 
-        const { ok } = await update({
+        const { ok } = await userUpdate({
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
             //@ts-ignore
             data: {
@@ -46,7 +46,43 @@ const InfoForm: React.FC = () => {
         } else {
             toast({
                 title: 'Error',
-                description: 'Ha ocurrido un error al editar subir tu imagen de perfil, por favor, intentalo de nuevo.',
+                description: 'Ha ocurrido un error al editar tu nombre de perfil, por favor, intentalo de nuevo.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+    };
+
+    const handleUpdatePhone = async (value: string) => {
+        const orgApi = import('services/api/lib/organization');
+        const manager = import('@clyc/next-route-manager/libs/AuthManager');
+
+        const { update: orgaUpdate } = await orgApi;
+        const AuthManager = (await manager).default;
+
+        const { ok } = await orgaUpdate({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            //@ts-ignore
+            data: {
+                legal_representative_phone: value,
+            },
+        });
+
+        if (ok) {
+            toast({
+                title: 'Actualización exitosa',
+                description: 'Tu teléfono ha sido actualizado correctamente.',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        } else {
+            toast({
+                title: 'Error',
+                description: 'Ha ocurrido un error al editar tu teléfono, por favor, intentalo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -98,12 +134,18 @@ const InfoForm: React.FC = () => {
     return user ? (
         <>
             <Flex justifyContent={{ base: 'center', md: 'space-between' }} alignItems="center" mt="40px">
-                <VStack spacing="40px" align="flex-start">
+                <VStack spacing="40px" align="flex-start" w="full" maxW="660px">
                     <Text fontFamily="barlow" fontSize="30px" textTransform="uppercase" fontWeight="700">
                         Mi Perfil
                     </Text>
-                    <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems={'flex-start'}>
-                        <VStack>
+                    <Stack
+                        direction={{ base: 'column', md: 'row' }}
+                        justifyContent="start"
+                        alignItems={'flex-start'}
+                        spacing="48px"
+                        w="full"
+                    >
+                        <VStack w="full" maxW="107px" align="start">
                             <Avatar
                                 size={'lg'}
                                 name={user.name ?? 'GSG'}
@@ -148,24 +190,11 @@ const InfoForm: React.FC = () => {
                             </UploadZone>
 
                             <Text textColor="gray.500" fontSize="13px" fontFamily="inter">
-                                Tamaño máximo 2MB
+                                tamaño max 2mb
                             </Text>
                         </VStack>
 
-                        <VStack alignItems={{ base: 'start', md: 'start' }} spacing={0}>
-                            <HStack>
-                                <EditableTitle
-                                    fontSize={{ base: 'xl', lg: '24px' }}
-                                    fontWeight="semibold"
-                                    fontFamily="barlow"
-                                    alignItems={'center'}
-                                    alignContent="center"
-                                    justifyItems={'center'}
-                                    defaultValue={user.name}
-                                    onSubmit={handleUpdateName}
-                                />
-                            </HStack>
-
+                        <VStack alignItems={{ base: 'start', md: 'start' }} spacing="8px" w="full" maxW="350px">
                             <Text
                                 fontSize={{ base: 'sm', md: '16px' }}
                                 fontWeight={'normal'}
@@ -174,6 +203,41 @@ const InfoForm: React.FC = () => {
                             >
                                 {user?.email}
                             </Text>
+
+                            <VStack spacing="24px" w="full">
+                                <EditableTitle
+                                    fontSize={{ base: 'xl', lg: '24px' }}
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    alignItems={'center'}
+                                    alignContent="center"
+                                    justifyItems={'center'}
+                                    defaultValue={user?.name}
+                                    onSubmit={handleUpdateName}
+                                    w="full"
+                                    borderBottom="2px"
+                                    borderColor="gray.600"
+                                    _hover={{ borderColor: 'teal.500' }}
+                                    transitionDuration="0.2s"
+                                />
+
+                                <EditableTitle
+                                    fontSize={{ base: 'xl', lg: '24px' }}
+                                    fontWeight="normal"
+                                    fontFamily="inter"
+                                    alignItems={'center'}
+                                    alignContent="center"
+                                    justifyItems={'center'}
+                                    //@ts-ignore
+                                    defaultValue={user.organization?.legal_representative_phone}
+                                    onSubmit={handleUpdatePhone}
+                                    w="full"
+                                    borderBottom="2px"
+                                    borderColor="gray.600"
+                                    _hover={{ borderColor: 'teal.500' }}
+                                    transitionDuration="0.2s"
+                                />
+                            </VStack>
                         </VStack>
                     </Stack>
                 </VStack>

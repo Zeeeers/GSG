@@ -1,4 +1,4 @@
-import { Button, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import OnboardingModal from 'components/profile/ods/onboardingModal';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -25,7 +25,7 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
             >
                 <VStack align="start" spacing="32px">
                     <Text fontSize="3xl" fontWeight="bold">
-                        Intereses
+                        INTERESES
                     </Text>
 
                     <VStack align="start" spacing="16px">
@@ -44,7 +44,7 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                         </Button>
                     </VStack>
 
-                    <HStack spacing="16px" w="full">
+                    <Stack direction={{ base: 'column', md: 'row' }} spacing="16px" w="full">
                         <Button
                             variant="solid"
                             h="40px"
@@ -65,7 +65,7 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                         >
                             No por ahora
                         </Button>
-                    </HStack>
+                    </Stack>
                 </VStack>
 
                 <Button

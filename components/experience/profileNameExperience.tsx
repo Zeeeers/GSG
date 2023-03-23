@@ -2,7 +2,7 @@ import { Button, FormControl, FormErrorMessage, Input, Text, VStack } from '@cha
 import { zodResolver } from '@hookform/resolvers/zod';
 import { INameData, nameSchema } from 'forms/experience';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useUser } from 'services/api/lib/user';
 
@@ -17,6 +17,7 @@ const ProfileNameExperience = ({ setPage }: ProfileNameExperienceProps) => {
     const {
         register,
         formState: { errors },
+        setFocus,
         handleSubmit,
     } = useForm<INameData>({
         resolver: zodResolver(nameSchema),
@@ -46,6 +47,10 @@ const ProfileNameExperience = ({ setPage }: ProfileNameExperienceProps) => {
         }
     };
 
+    useEffect(() => {
+        setFocus('name');
+    }, [setFocus]);
+
     return (
         <VStack
             as={motion.form}
@@ -62,6 +67,7 @@ const ProfileNameExperience = ({ setPage }: ProfileNameExperienceProps) => {
             </Text>
             <FormControl id="name" isInvalid={!!errors.name}>
                 <Input
+                    autoFocus={true}
                     defaultValue={user?.name}
                     placeholder="Mi nombre"
                     variant="flushed"

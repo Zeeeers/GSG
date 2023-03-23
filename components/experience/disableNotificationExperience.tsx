@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Icon, Stack, Text, VStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { BsCheck } from 'react-icons/bs';
@@ -19,10 +19,10 @@ const DiableNotificationExperience = ({ setPage, setStepStatus }: DiableNotifica
             exit={{ opacity: 0 }}
             animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
             w="full"
-            align="center"
+            align={{ base: 'start', md: 'center' }}
             spacing="24px"
         >
-            <HStack spacing="15px" align="center">
+            <HStack spacing="15px" align="start" display={{ base: 'none', md: 'flex' }}>
                 <Box
                     display="flex"
                     justifyContent="center"
@@ -34,12 +34,18 @@ const DiableNotificationExperience = ({ setPage, setStepStatus }: DiableNotifica
                 >
                     <Icon as={MdClose} color="red.500" w="30px" h="30px" />
                 </Box>
-                <Text fontSize="30px" fontFamily="inter">
-                    Intereses
-                </Text>
+                <Text fontFamily="inter">Intereses</Text>
             </HStack>
 
-            <HStack align="center" bg="gray.800" py="10px" px="16px" rounded="8px" spacing="24px">
+            <Stack
+                direction={{ base: 'column', md: 'row' }}
+                align={{ base: 'start', md: 'center' }}
+                bg="gray.800"
+                py="10px"
+                px="16px"
+                rounded="8px"
+                spacing="24px"
+            >
                 <HStack spacing="3px">
                     <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                     <Text>Contraseña</Text>
@@ -59,19 +65,34 @@ const DiableNotificationExperience = ({ setPage, setStepStatus }: DiableNotifica
                     <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                     <Text>Contacto</Text>
                 </HStack>
-            </HStack>
 
-            <VStack align="center" spacing="8px" textAlign="center">
-                <Text fontSize="30px" fontWeight="medium">
+                <HStack spacing="3px">
+                    <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                    <Text>Intereses</Text>
+                </HStack>
+            </Stack>
+
+            <VStack align="center" spacing="8px" textAlign={{ base: 'start', md: 'center' }}>
+                <Text
+                    fontSize={{ base: '24px', md: '30px' }}
+                    lineHeight={{ base: '28.8px', md: '32px' }}
+                    fontWeight="bold"
+                >
                     Tu cuenta está completa pero no seleccionaste intereses
                 </Text>
-                <Text w="full" maxW="660px" fontFamily="inter" fontSize="16px">
+                <Text
+                    w="full"
+                    maxW="660px"
+                    fontFamily="inter"
+                    fontSize="16px"
+                    lineHeight={{ base: '22.4px', md: '20.8px' }}
+                >
                     Si quieres activar y recibir correos con proyectos relacionados a tus intereses en áreas de alto
                     impacto puedes hacerlo desde tu perfil
                 </Text>
             </VStack>
 
-            <HStack w="full" maxW="465px" pt="8px">
+            <Stack direction={{ base: 'column', md: 'row' }} w="full" maxW="465px" pt="8px" spacing="16px">
                 <Button
                     w="full"
                     variant="solid"
@@ -96,7 +117,7 @@ const DiableNotificationExperience = ({ setPage, setStepStatus }: DiableNotifica
                 >
                     Ir al explorador
                 </Button>
-            </HStack>
+            </Stack>
         </VStack>
     );
 };

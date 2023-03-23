@@ -58,6 +58,7 @@ const OdsModal: React.FC<Props> = ({ isOpen, onClose, interest, myInterest, relo
         if (ok) {
             setIsLoading(false);
             reload();
+
             toast({
                 //@ts-ignore
                 title: 'ODS guardado con éxito.',

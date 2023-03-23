@@ -69,7 +69,15 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                         color={'white'}
                     />
 
-                    <Text as="span" fontWeight="normal" fontSize="md" fontFamily="inter" color="white.base">
+                    <Text
+                        as="span"
+                        fontWeight="normal"
+                        fontSize="md"
+                        fontFamily="inter"
+                        color="white.base"
+                        overflow="hidden"
+                        maxW={{ base: '55px', sm: 'full' }}
+                    >
                         {user?.name}
                     </Text>
                     <Icon w={6} h={10} color="gray.50" as={HiChevronDown} />

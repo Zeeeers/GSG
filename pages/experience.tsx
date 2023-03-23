@@ -10,6 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import PhoneExperience from 'components/experience/phoneExperience';
 import NotificationExperience from 'components/experience/notificationExperience';
 import DiableNotificationExperience from 'components/experience/disableNotificationExperience';
+import SuccessExperience from 'components/experience/sucessExperience';
 
 const Experience = () => {
     const [indexPage, setIndexPage] = useState(0);
@@ -47,7 +48,7 @@ const Experience = () => {
             </Container>
 
             {stepStatus === 'Process' ? (
-                <Stack w="full" align="center" justify="center" mt="150px">
+                <Stack w="full" align="center" justify="center" mt="61px">
                     <Stack
                         w={{ base: 'fit-content', md: 'full' }}
                         maxW={indexPage <= 2 ? '350px' : indexPage === 3 ? '518px' : '660px'}
@@ -55,7 +56,7 @@ const Experience = () => {
                         alignItems="center"
                         spacing={0}
                         background="transparent"
-                        px={{ base: '25px', md: '0' }}
+                        px={{ base: '16px', md: '0' }}
                         rounded="16px"
                     >
                         <VStack h="full" w="full" align={{ base: 'center', md: 'flex-end' }}>
@@ -91,6 +92,25 @@ const Experience = () => {
                     </Stack>
                 </Stack>
             ) : stepStatus === 'DisabledNotification' ? (
+                <Stack w="full" align="center" justify="center" mt={{ base: '26px', md: '150px' }}>
+                    <Stack
+                        w={{ base: 'fit-content', md: 'full' }}
+                        maxW="744px"
+                        direction={{ base: 'column', md: 'row' }}
+                        alignItems="center"
+                        spacing={0}
+                        background="transparent"
+                        px={{ base: '16px', md: '0' }}
+                        rounded="16px"
+                    >
+                        <VStack h="full" w="full" align={{ base: 'center', md: 'flex-end' }}>
+                            <AnimatePresence exitBeforeEnter>
+                                <DiableNotificationExperience setPage={setIndexPage} setStepStatus={setStepStatus} />
+                            </AnimatePresence>
+                        </VStack>
+                    </Stack>
+                </Stack>
+            ) : (
                 <Stack w="full" align="center" justify="center" mt="150px">
                     <Stack
                         w={{ base: 'fit-content', md: 'full' }}
@@ -104,13 +124,11 @@ const Experience = () => {
                     >
                         <VStack h="full" w="full" align={{ base: 'center', md: 'flex-end' }}>
                             <AnimatePresence exitBeforeEnter>
-                                <DiableNotificationExperience setPage={setIndexPage} setStepStatus={setStepStatus} />
+                                <SuccessExperience />
                             </AnimatePresence>
                         </VStack>
                     </Stack>
                 </Stack>
-            ) : (
-                <></>
             )}
         </>
     );

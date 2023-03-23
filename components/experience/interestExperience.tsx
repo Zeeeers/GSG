@@ -50,7 +50,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
     const { isOpen: isOpenOnboarding, onOpen: openOnboarding, onClose: closeOnboarding } = useDisclosure();
 
     const { data: interest } = useInterestList();
-    const { data: getInterest } = useInterest();
+    const { data: getInterest, mutate: interestReload } = useInterest();
     const { data: user, mutate } = useUser();
 
     const toast = useToast();
@@ -121,23 +121,25 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
         const AuthManager = (await auth).default;
 
-        if (isNews) {
+        if (
+            !(
+                getInterest?.data?.interests.capital_stage == null &&
+                getInterest?.data.interests.expected_rentability == null &&
+                getInterest?.data?.interests.finance_goal == null &&
+                getInterest?.data?.interests.stage == null &&
+                getInterest?.data?.interests.time_lapse == null &&
+                getInterest?.data.interests.third_party == null &&
+                getInterest?.data.interests.qualities == null
+            )
+        ) {
             const { ok: sendOK, data: send } = await sendInterest({
                 token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
                 id: user?.id,
             });
 
-            if (sendOK) {
-                router.push({
-                    pathname: '/explorer',
-                    query: { onboarding: 'filter-experience' },
-                });
-            }
+            setStepStatus('Finished');
         } else {
-            router.push({
-                pathname: '/explorer',
-                query: { onboarding: 'filter-experience' },
-            });
+            setStepStatus('DisabledNotification');
         }
     };
 
@@ -173,7 +175,14 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
 
                 <VStack h="full" align="flex-start" justify="space-between" spacing="30px" w="full">
                     <HStack>
-                        <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
+                        <Checkbox
+                            isChecked={isActive}
+                            rounded="md"
+                            w="18px"
+                            h="18px"
+                            colorScheme="teal"
+                            onChange={handleUpdateNews}
+                        />
                         <Text fontFamily="inter">
                             Deseo recibir correos quincenalmente con proyectos relacionados a mis intereses
                         </Text>
@@ -313,6 +322,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
                 reload={mutate}
+                interestReload={interestReload}
             />
             <ThirdModal
                 isOpen={isOpenThird}
