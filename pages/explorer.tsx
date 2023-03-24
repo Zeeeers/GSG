@@ -42,7 +42,7 @@ import { useQualityList } from 'services/api/lib/qualities';
 import { useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
 import { CgClose } from 'react-icons/cg';
-import { MdFilterList } from 'react-icons/md';
+import { MdClose, MdFilterList } from 'react-icons/md';
 import ThirdParties from 'components/projectDetail/formatText/thirdParties';
 import Stage from 'components/projectDetail/formatText/stage';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
@@ -53,6 +53,7 @@ import Time from 'components/projectDetail/formatText/time';
 import FilterExperienceModal from 'components/experience/filterExperienceModal';
 import Router, { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { BsCheck } from 'react-icons/bs';
 
 const Explorer: NextPage = () => {
     // filter orderBy
@@ -274,6 +275,59 @@ const Explorer: NextPage = () => {
                         <Img src="/images/icons/question.svg" />
                     </Button>
                 )}
+
+                <Stack
+                    direction={{ base: 'column', md: 'row' }}
+                    align="center"
+                    justify="space-between"
+                    mb="32px"
+                    bg="gray.800"
+                    p="20px"
+                    rounded="8px"
+                >
+                    <VStack align="start">
+                        <Text fontSize="24px" fontWeight="medium" fontFamily="inter">
+                            Ayúdanos a completar tu perfil
+                        </Text>
+                        <Stack
+                            direction={{ base: 'column', md: 'row' }}
+                            align={{ base: 'start', md: 'center' }}
+                            bg="gray.800"
+                            py="10px"
+                            rounded="8px"
+                            spacing={{ base: '16px', md: '24px' }}
+                        >
+                            <HStack spacing="3px">
+                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                <Text>Contraseña</Text>
+                            </HStack>
+
+                            <HStack spacing="3px">
+                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                <Text>Nombre</Text>
+                            </HStack>
+
+                            <HStack spacing="3px">
+                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                <Text>Imagen de perfil</Text>
+                            </HStack>
+
+                            <HStack spacing="3px">
+                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                <Text>Contacto</Text>
+                            </HStack>
+
+                            <HStack spacing="3px">
+                                <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                <Text>Intereses</Text>
+                            </HStack>
+                        </Stack>
+                    </VStack>
+
+                    <Button variant="solid" h="40px" w={{ base: 'full', md: 'fit-content' }}>
+                        Actualizar contacto
+                    </Button>
+                </Stack>
 
                 <AnimatePresence>
                     {isVisible && (

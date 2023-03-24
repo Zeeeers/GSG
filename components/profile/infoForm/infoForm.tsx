@@ -230,9 +230,19 @@ const InfoForm: React.FC = () => {
                                     alignItems={'center'}
                                     alignContent="center"
                                     justifyItems={'center'}
+                                    placeholder="+56 9 0000 0000"
                                     //@ts-ignore
                                     defaultValue={
-                                        parsePhoneNumber(user.organization?.legal_representative_phone).number
+                                        user.organization.legal_representative_phone
+                                            ? parsePhoneNumber(user?.organization?.legal_representative_phone)
+                                            : ''
+                                    }
+                                    value={
+                                        user.organization?.legal_representative_phone
+                                            ? formatIncompletePhoneNumber(
+                                                  numberPhone ?? user.organization?.legal_representative_phone,
+                                              )
+                                            : ''
                                     }
                                     onSubmit={handleUpdatePhone}
                                     w="full"
@@ -240,9 +250,6 @@ const InfoForm: React.FC = () => {
                                     borderColor="gray.600"
                                     _hover={{ borderColor: 'teal.500' }}
                                     transitionDuration="0.2s"
-                                    value={formatIncompletePhoneNumber(
-                                        numberPhone ?? user.organization?.legal_representative_phone,
-                                    )}
                                     onChange={(e) => setNumberPhone(e)}
                                 />
                             </VStack>
