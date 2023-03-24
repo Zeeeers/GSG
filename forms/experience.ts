@@ -1,6 +1,7 @@
 // Dependencies
 import { z } from 'zod';
 import { ZodShape } from 'services/validation';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 // Types
 export interface INameData {
@@ -8,7 +9,7 @@ export interface INameData {
 }
 
 export interface IPhoneData {
-    legal_representative_phone: string;
+    legal_representative_phone: { code: string; value: string };
 }
 
 // Schema
@@ -17,7 +18,19 @@ const nameShape: ZodShape<INameData> = {
 };
 
 const phoneShape: ZodShape<IPhoneData> = {
-    legal_representative_phone: z.string().min(1, 'Campo obligatorio').max(9, 'Ingrese un número válido'),
+    legal_representative_phone: z
+        .object({
+            code: z.string(),
+            value: z.string(),
+        })
+        .refine((data) => {
+            try {
+                // @ts-ignore
+                return isValidPhoneNumber(data.value, data.code);
+            } catch (error) {
+                return false;
+            }
+        }, 'Número de teléfono inválido'),
 };
 
 export const nameSchema = z.object(nameShape);

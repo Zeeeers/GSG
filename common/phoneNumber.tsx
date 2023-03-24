@@ -1,46 +1,61 @@
-//@ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Flex, Input, Select, InputGroup, InputLeftElement, Text, HStack } from '@chakra-ui/react';
 import Flag from 'react-world-flags';
-import { AsYouType } from 'libphonenumber-js';
-import { getCountryTelCode } from './../services/countries';
+import { AsYouType, CountryCode, formatIncompletePhoneNumber } from 'libphonenumber-js';
+import { COUNTRIES, getCountryTelCode } from '../services/countries/countries';
+import { Noop, RefCallBack } from 'react-hook-form';
+
+interface PhoneNumberInputProps {
+    value: string;
+    country: CountryCode | string;
+    options: { label: string; value: CountryCode }[];
+    onChange: (value: { code?: string; value: string }) => void;
+    placeholder: string;
+    name: string;
+    ref: RefCallBack;
+    onBlur: Noop;
+}
 
 export default function PhoneNumberInput({
-    size,
     value,
     country,
-    options,
     onChange,
     placeholder,
-    defaultValue,
-    ...rest
-}) {
+    name,
+    ref,
+    onBlur,
+}: PhoneNumberInputProps) {
     let [number, setNumber] = useState(value || '');
     let [selectedCountry, setSelectedCountry] = useState(country || '');
-    let [countryCode, setCountryCode] = useState(getCountryTelCode(country) || '');
+    let [countryCode, setCountryCode] = useState<CountryCode | string | undefined>(getCountryTelCode(country) || '');
 
-    useEffect(() => {
-        setSelectedCountry(country);
-        setCountryCode(getCountryTelCode(country));
-    }, [country]);
+    const countryOptions = COUNTRIES.map(({ name, iso2 }) => ({
+        label: name,
+        value: iso2,
+    }));
 
-    const onCountryChange = (e) => {
+    const onCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
         let value = e.target.value;
         let code = getCountryTelCode(value);
         let parsedNumber = new AsYouType().input(`${code}${number}`);
 
         setCountryCode(code);
         setSelectedCountry(value);
-        onChange(parsedNumber);
+        onChange({ code: code, value: parsedNumber });
     };
 
-    const onPhoneNumberChange = (e) => {
+    const onPhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value;
         let parsedNumber = new AsYouType().input(`${countryCode}${value}`);
 
         setNumber(value);
-        onChange(parsedNumber);
+        onChange({ code: countryCode, value: parsedNumber });
     };
+
+    useEffect(() => {
+        setSelectedCountry(country);
+        setCountryCode(getCountryTelCode(country));
+    }, [country]);
 
     return (
         <InputGroup border="none">
@@ -65,8 +80,8 @@ export default function PhoneNumberInput({
                     variant="flushed"
                     onChange={onCountryChange}
                 >
-                    {options.map((option) => (
-                        <option key={option} value={option.value}>
+                    {countryOptions.map((option: { label: string; value: CountryCode }) => (
+                        <option key={option.label} value={option.value}>
                             {option.label}
                         </option>
                     ))}
@@ -74,6 +89,7 @@ export default function PhoneNumberInput({
                 <Flex pl={2} width="100%" alignItems="center">
                     <HStack alignItems="center" mr="10px" width="50%">
                         <Flag height="1rem" code={selectedCountry || ''} width="20px" />
+
                         <Text fontSize="16px" color="gray.300" fontFamily="inter">
                             {countryCode}
                         </Text>
@@ -82,10 +98,13 @@ export default function PhoneNumberInput({
             </InputLeftElement>
 
             <Input
+                ref={ref}
+                onBlur={onBlur}
                 pl="8rem"
                 type="text"
-                value={number}
-                pattern="[0-9]"
+                // @ts-ignore
+                value={formatIncompletePhoneNumber(number, selectedCountry)}
+                name={name}
                 variant="flushed"
                 color="white"
                 _placeholder={{ color: 'gray.700', fontSize: '24px' }}
@@ -93,7 +112,6 @@ export default function PhoneNumberInput({
                 fontSize="24px"
                 placeholder={placeholder}
                 onChange={onPhoneNumberChange}
-                defaultValue={defaultValue}
             />
         </InputGroup>
     );

@@ -15,5 +15,6 @@ export interface User {
     organization: {
         id: number;
         image: string;
+        legal_representative_phone: string;
     };
 }

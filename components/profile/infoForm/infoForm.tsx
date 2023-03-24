@@ -4,6 +4,7 @@ import CropperModalAvatar from 'common/cropperModalAvatar';
 import EditableTitle from 'common/editableTitle';
 
 import UploadZone from 'common/uploadZone';
+import { formatIncompletePhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 import { useState } from 'react';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
@@ -14,6 +15,7 @@ const InfoForm: React.FC = () => {
     // States
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
     const [baseImg, setBaseImg] = useState<string>();
+    const [numberPhone, setNumberPhone] = useState<string | null>(null);
 
     const { data: user, mutate } = useUser();
     const { data: organization } = useOrganization();
@@ -229,13 +231,19 @@ const InfoForm: React.FC = () => {
                                     alignContent="center"
                                     justifyItems={'center'}
                                     //@ts-ignore
-                                    defaultValue={user.organization?.legal_representative_phone}
+                                    defaultValue={
+                                        parsePhoneNumber(user.organization?.legal_representative_phone).number
+                                    }
                                     onSubmit={handleUpdatePhone}
                                     w="full"
                                     borderBottom="2px"
                                     borderColor="gray.600"
                                     _hover={{ borderColor: 'teal.500' }}
                                     transitionDuration="0.2s"
+                                    value={formatIncompletePhoneNumber(
+                                        numberPhone ?? user.organization?.legal_representative_phone,
+                                    )}
+                                    onChange={(e) => setNumberPhone(e)}
                                 />
                             </VStack>
                         </VStack>
