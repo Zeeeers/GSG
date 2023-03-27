@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useUser } from 'services/api/lib/user';
 import { COUNTRIES } from 'services/countries/countries';
-import { parsePhoneNumber } from 'libphonenumber-js';
+import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 
 interface PhoneExperienceProps {
     setPage: (index: number) => void;
@@ -70,22 +70,22 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
                             {...filed}
                             placeholder="9 0000 0000"
                             country={
-                                user?.user?.organization?.legal_representative_phone
+                                isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '')
                                     ? COUNTRIES?.find(
                                           (country) =>
                                               country?.iso2 ===
                                               parsePhoneNumber(
-                                                  user?.user?.organization?.legal_representative_phone ?? '+56',
+                                                  user?.user?.organization?.legal_representative_phone ?? '0',
                                               )?.country,
                                       )?.iso2
                                     : 'CL'
                             }
                             onChange={onChange}
                             value={
-                                user?.user.organization?.legal_representative_phone
-                                    ? parsePhoneNumber(user?.user.organization?.legal_representative_phone)
+                                isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '')
+                                    ? parsePhoneNumber(user?.user?.organization?.legal_representative_phone ?? '0')
                                           ?.nationalNumber
-                                    : value.value
+                                    : value?.value
                             }
                         />
                     )}

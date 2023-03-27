@@ -77,9 +77,14 @@ const ChangePhoneModal = ({ isOpen, onClose }: ChangePhoneModalProps) => {
                         onSubmit={handleSubmit(handlePhone)}
                         padding="25px"
                     >
-                        <Text fontSize="3xl" fontWeight="bold">
-                            Teléfono de contacto
-                        </Text>
+                        <VStack textAlign="center">
+                            <Text fontSize="3xl" fontWeight="bold">
+                                Teléfono de contacto
+                            </Text>
+                            <Text color="gray.300">
+                                Recuerda que puedes modificar tus datos de contacto en tu perfil cuando quieras.
+                            </Text>
+                        </VStack>
                         <FormControl id="legal_representative_phone" isInvalid={!!errors.legal_representative_phone}>
                             <Controller
                                 name="legal_representative_phone"
