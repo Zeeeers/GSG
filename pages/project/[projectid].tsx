@@ -72,7 +72,7 @@ const PublicChallenge: NextPage = ({ project }: Props) => {
                 <HeaderHero
                     project={gsg?.data?.gsg_project}
                     onOpenLogin={onOpen}
-                    user={userProfile}
+                    user={userProfile?.user}
                     orga={orga}
                     mutate={mutate}
                     isValidating={isValidating}

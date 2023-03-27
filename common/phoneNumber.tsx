@@ -1,15 +1,15 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Flex, Input, Select, InputGroup, InputLeftElement, Text, HStack } from '@chakra-ui/react';
 import Flag from 'react-world-flags';
-import { AsYouType, CountryCode, formatIncompletePhoneNumber } from 'libphonenumber-js';
+import { AsYouType, CountryCode, formatIncompletePhoneNumber, NationalNumber } from 'libphonenumber-js';
 import { COUNTRIES, getCountryTelCode } from '../services/countries/countries';
 import { Noop, RefCallBack } from 'react-hook-form';
 
 interface PhoneNumberInputProps {
-    value: string;
-    country: CountryCode | string;
+    value: NationalNumber | string;
+    country?: CountryCode | string;
     options: { label: string; value: CountryCode }[];
-    onChange: (value: { code?: string; value: string }) => void;
+    onChange: (value: { code?: string; value: NationalNumber | string }) => void;
     placeholder: string;
     name: string;
     ref: RefCallBack;
@@ -18,7 +18,7 @@ interface PhoneNumberInputProps {
 
 export default function PhoneNumberInput({
     value,
-    country,
+    country = 'CL',
     onChange,
     placeholder,
     name,

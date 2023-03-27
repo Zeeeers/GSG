@@ -17,7 +17,7 @@ const ProfileExperience = ({ setPage }: Props) => {
     const { isOpen: isCropperOpen, onOpen: onCropperOpen, onClose: onCropperClose } = useDisclosure();
 
     const { data: organization } = useOrganization();
-    const { data: user, mutate } = useUser();
+    const { data: userResponse, mutate } = useUser();
 
     const toast = useToast();
 
@@ -61,8 +61,8 @@ const ProfileExperience = ({ setPage }: Props) => {
             <VStack mr="20px" w="200px">
                 <Avatar
                     size={'lg'}
-                    name={user?.name ?? 'GSG'}
-                    src={user?.organization?.image ?? ''}
+                    name={userResponse?.user?.name ?? 'GSG'}
+                    src={userResponse?.user?.organization?.image ?? ''}
                     height="96px"
                     width="96px"
                     mr={2}

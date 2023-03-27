@@ -70,17 +70,22 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
                             {...filed}
                             placeholder="9 0000 0000"
                             country={
-                                COUNTRIES?.find(
-                                    (country) =>
-                                        country?.iso2 ===
-                                        parsePhoneNumber(user?.organization.legal_representative_phone ?? 'CL')
-                                            ?.country,
-                                )?.iso2 ?? 'CL'
+                                user?.user?.organization?.legal_representative_phone
+                                    ? COUNTRIES?.find(
+                                          (country) =>
+                                              country?.iso2 ===
+                                              parsePhoneNumber(
+                                                  user?.user?.organization?.legal_representative_phone ?? '+56',
+                                              )?.country,
+                                      )?.iso2
+                                    : 'CL'
                             }
                             onChange={onChange}
                             value={
-                                parsePhoneNumber(user?.organization?.legal_representative_phone ?? 'CL')
-                                    ?.nationalNumber ?? value
+                                user?.user.organization?.legal_representative_phone
+                                    ? parsePhoneNumber(user?.user.organization?.legal_representative_phone)
+                                          ?.nationalNumber
+                                    : value.value
                             }
                         />
                     )}

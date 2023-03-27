@@ -40,7 +40,7 @@ const ErrorNotification = dynamic(() => import('common/notifications/error'));
 // Component
 const OrganizationProfileHeader: React.FC = () => {
     // States
-    const { data: user } = useUser();
+    const { data: userResponse } = useUser();
     const [isConvertingImage, setIsConvertingImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [avatar, setAvatar] = useState<string>();
@@ -109,7 +109,7 @@ const OrganizationProfileHeader: React.FC = () => {
 
                 {organization ? (
                     <HStack spacing={6}>
-                        <Tooltip label="Click para editar logo" hasArrow isDisabled={user?.guest}>
+                        <Tooltip label="Click para editar logo" hasArrow isDisabled={userResponse?.user?.guest}>
                             <Avatar
                                 src={isLoading || isConvertingImage ? '' : avatar ?? organization.image}
                                 alt={organization.name}
@@ -120,7 +120,7 @@ const OrganizationProfileHeader: React.FC = () => {
                                 icon={<Spinner color={'primary.500'} />}
                                 border={`1px solid ${gray100}`}
                             >
-                                {!user?.guest && (
+                                {!userResponse?.user?.guest && (
                                     <Input
                                         cursor="pointer"
                                         type="file"
@@ -131,12 +131,12 @@ const OrganizationProfileHeader: React.FC = () => {
                                         position="absolute"
                                         left={0}
                                         onClick={(e) => {
-                                            if (!user?.guest) {
+                                            if (!userResponse?.user?.guest) {
                                                 (e.target as HTMLInputElement).value = '';
                                             }
                                         }}
                                         onChange={async (e) => {
-                                            if (!user?.guest) {
+                                            if (!userResponse?.user?.guest) {
                                                 setIsConvertingImage(true);
                                                 const { validateTypes, getBase64 } = await import('services/images');
 
@@ -157,7 +157,7 @@ const OrganizationProfileHeader: React.FC = () => {
                                 fontSize={{ base: '3xl', lg: '6xl' }}
                                 defaultValue={organization.name}
                                 onSubmit={(value: string) => handleUpdateNameOrAvatar(value, 'name')}
-                                isDisabled={user?.guest}
+                                isDisabled={userResponse?.user?.guest}
                             />
 
                             <Text fontWeight="medium" fontSize={{ base: 'sm', md: 'lg' }} color="gray.600">

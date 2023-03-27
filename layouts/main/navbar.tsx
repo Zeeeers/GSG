@@ -1,10 +1,9 @@
 // Dependencies
-//@ts-nocheck
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { HStack, Text, useMediaQuery, useDisclosure, Img, Container, Stack } from '@chakra-ui/react';
+import { HStack, useMediaQuery, useDisclosure, Img, Container } from '@chakra-ui/react';
 import { useUser } from '../../services/api/lib/user/user.calls';
 import { Button } from '@chakra-ui/button';
 import LoginModal from 'components/login/loginModal';
@@ -23,11 +22,11 @@ const Navbar: React.FC = () => {
     const [isMenuAvailable, setIsMenuAvailable] = useState(false);
     const [isTablet] = useMediaQuery('(min-width: 48em)');
     const router = useRouter();
-    const { data: user, mutate } = useUser();
+    const { data: userResponse, mutate } = useUser();
     const { data: orga, mutate: reloadOrga } = useOrganization(true);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isOpen: isOpenOrgaLogin, onOpen: onOpenOrgaLogin, onClose: onCloseOrgaLogin } = useDisclosure();
+    const { isOpen: isOpenOrgaLogin, onClose: onCloseOrgaLogin } = useDisclosure();
 
     // Handlers
     const handleLogOut = async () => {
@@ -86,7 +85,7 @@ const Navbar: React.FC = () => {
                         </HStack>
                     </Link>
 
-                    {user === undefined && orga === undefined ? (
+                    {userResponse?.user === undefined && orga === undefined ? (
                         isTablet ? (
                             <HStack spacing="15px">
                                 <Button variant="outline" onClick={() => router.push('/register')}>
@@ -108,7 +107,7 @@ const Navbar: React.FC = () => {
                         ) : (
                             <MobileButton />
                         )
-                    ) : user !== undefined ? (
+                    ) : userResponse?.user !== undefined ? (
                         <UserMenu onLogOut={handleLogOut} />
                     ) : (
                         <OrgaMenu onLogOut={handleLogOutOrga} />
@@ -119,7 +118,7 @@ const Navbar: React.FC = () => {
             {isMenuAvailable && <MobileMenu onLogOut={handleLogOut} />}
 
             <LoginModal isOpen={isOpen} onClose={onClose} investorReload={mutate} orgaReload={reloadOrga} />
-            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} orgaReload={reloadOrga} />
+            <LoginOrgaModal isOpen={isOpenOrgaLogin} onClose={onCloseOrgaLogin} />
         </>
     );
 };

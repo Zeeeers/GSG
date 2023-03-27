@@ -150,8 +150,8 @@ const InfoForm: React.FC = () => {
                         <VStack w="full" maxW="107px" align="start">
                             <Avatar
                                 size={'lg'}
-                                name={user.name ?? 'GSG'}
-                                src={user?.organization?.image ?? ''}
+                                name={user.user.name ?? 'GSG'}
+                                src={user?.user.organization?.image ?? ''}
                                 height="96px"
                                 width="96px"
                                 mr={2}
@@ -203,7 +203,7 @@ const InfoForm: React.FC = () => {
                                 color="gray.400"
                                 fontFamily="inter"
                             >
-                                {user?.email}
+                                {user?.user.email}
                             </Text>
 
                             <VStack spacing="24px" w="full">
@@ -214,7 +214,7 @@ const InfoForm: React.FC = () => {
                                     alignItems={'center'}
                                     alignContent="center"
                                     justifyItems={'center'}
-                                    defaultValue={user?.name}
+                                    defaultValue={user?.user.name}
                                     onSubmit={handleUpdateName}
                                     w="full"
                                     borderBottom="2px"
@@ -233,14 +233,14 @@ const InfoForm: React.FC = () => {
                                     placeholder="+56 9 0000 0000"
                                     //@ts-ignore
                                     defaultValue={
-                                        user.organization.legal_representative_phone
-                                            ? parsePhoneNumber(user?.organization?.legal_representative_phone)
+                                        user.user.organization.legal_representative_phone
+                                            ? parsePhoneNumber(user?.user.organization?.legal_representative_phone)
                                             : ''
                                     }
                                     value={
-                                        user.organization?.legal_representative_phone
+                                        user.user.organization?.legal_representative_phone
                                             ? formatIncompletePhoneNumber(
-                                                  numberPhone ?? user.organization?.legal_representative_phone,
+                                                  numberPhone ?? user.user.organization?.legal_representative_phone,
                                               )
                                             : ''
                                     }

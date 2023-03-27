@@ -31,7 +31,7 @@ import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from 'layouts/main/navbar';
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
@@ -39,7 +39,7 @@ import { useGsg } from 'services/api/lib/gsg';
 import { gsgAllFetcher, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
-import { useUser } from 'services/api/lib/user';
+import { userFetcher, useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
 import { CgClose } from 'react-icons/cg';
 import { MdClose, MdFilterList } from 'react-icons/md';
@@ -55,7 +55,7 @@ import Router, { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BsCheck } from 'react-icons/bs';
 
-const Explorer: NextPage = () => {
+const Explorer: NextPage = ({ user: initialData }) => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
@@ -70,7 +70,7 @@ const Explorer: NextPage = () => {
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
-    const { data: user } = useUser();
+    const { data: userResponse } = useUser(undefined, { revalidateOnFocus: true, initialData: initialData });
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
     const filters = useFilterStore((s) => s.filters);
@@ -158,10 +158,10 @@ const Explorer: NextPage = () => {
     ];
 
     useEffect(() => {
-        if (user) {
+        if (userResponse?.user) {
             setIsVisible(true);
         }
-    }, [user]);
+    }, [userResponse?.user]);
 
     useEffect(() => {
         const { onboarding } = Router.query;
@@ -253,7 +253,7 @@ const Explorer: NextPage = () => {
                     </HStack>
                 )}
 
-                {user && (
+                {userResponse?.user && (
                     <Button
                         onClick={() =>
                             router.push({
@@ -276,58 +276,68 @@ const Explorer: NextPage = () => {
                     </Button>
                 )}
 
-                <Stack
-                    direction={{ base: 'column', md: 'row' }}
-                    align="center"
-                    justify="space-between"
-                    mb="32px"
-                    bg="gray.800"
-                    p="20px"
-                    rounded="8px"
-                >
-                    <VStack align="start">
-                        <Text fontSize="24px" fontWeight="medium" fontFamily="inter">
-                            Ayúdanos a completar tu perfil
-                        </Text>
-                        <Stack
-                            direction={{ base: 'column', md: 'row' }}
-                            align={{ base: 'start', md: 'center' }}
-                            bg="gray.800"
-                            py="10px"
-                            rounded="8px"
-                            spacing={{ base: '16px', md: '24px' }}
-                        >
-                            <HStack spacing="3px">
-                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                <Text>Contraseña</Text>
-                            </HStack>
+                {!userResponse?.user?.organization?.legal_representative_phone && (
+                    <Stack
+                        direction={{ base: 'column', md: 'row' }}
+                        align="center"
+                        justify="space-between"
+                        mb="32px"
+                        bg="gray.800"
+                        p="20px"
+                        rounded="8px"
+                    >
+                        <VStack align="start">
+                            <Text fontSize="24px" fontWeight="medium" fontFamily="inter">
+                                Ayúdanos a completar tu perfil
+                            </Text>
+                            <Stack
+                                direction={{ base: 'column', md: 'row' }}
+                                align={{ base: 'start', md: 'center' }}
+                                bg="gray.800"
+                                py="10px"
+                                rounded="8px"
+                                spacing={{ base: '16px', md: '24px' }}
+                            >
+                                <HStack spacing="3px">
+                                    <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                    <Text>Contraseña</Text>
+                                </HStack>
 
-                            <HStack spacing="3px">
-                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                <Text>Nombre</Text>
-                            </HStack>
+                                <HStack spacing="3px">
+                                    <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                    <Text>Nombre</Text>
+                                </HStack>
 
-                            <HStack spacing="3px">
-                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                <Text>Imagen de perfil</Text>
-                            </HStack>
+                                <HStack spacing="3px">
+                                    {userResponse?.user?.organization?.image ? (
+                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                    ) : (
+                                        <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                    )}
+                                    <Text>Imagen de perfil</Text>
+                                </HStack>
 
-                            <HStack spacing="3px">
-                                <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                <Text>Contacto</Text>
-                            </HStack>
+                                <HStack spacing="3px">
+                                    {userResponse?.user?.organization?.legal_representative_phone ? (
+                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                    ) : (
+                                        <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                    )}
+                                    <Text>Contacto</Text>
+                                </HStack>
 
-                            <HStack spacing="3px">
-                                <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                <Text>Intereses</Text>
-                            </HStack>
-                        </Stack>
-                    </VStack>
+                                <HStack spacing="3px">
+                                    <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                    <Text>Intereses</Text>
+                                </HStack>
+                            </Stack>
+                        </VStack>
 
-                    <Button variant="solid" h="40px" w={{ base: 'full', md: 'fit-content' }}>
-                        Actualizar contacto
-                    </Button>
-                </Stack>
+                        <Button variant="solid" h="40px" w={{ base: 'full', md: 'fit-content' }}>
+                            Actualizar contacto
+                        </Button>
+                    </Stack>
+                )}
 
                 <AnimatePresence>
                     {isVisible && (
@@ -355,7 +365,7 @@ const Explorer: NextPage = () => {
                                     >
                                         Todos los proyectos de inversión
                                     </Heading>
-                                    {user ? (
+                                    {userResponse?.user ? (
                                         <Text>
                                             A continuación se visualizan todos los proyectos activos dentro de Match.
                                             Puedes filtrarlos según lo requieras.
@@ -439,7 +449,7 @@ const Explorer: NextPage = () => {
                                                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                             />
                                         </Stack>
-                                        {user && (
+                                        {userResponse?.user && (
                                             <Button
                                                 leftIcon={<Icon as={MdFilterList} w="20px" h="20px" />}
                                                 onClick={() => setIsOpenFilter(!isOpenFilter)}
@@ -1396,7 +1406,11 @@ const Explorer: NextPage = () => {
                                     <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                                         {filtersResult()?.length !== 0 ? (
                                             filtersResult()?.map((project) => (
-                                                <ExplorerCard key={project.id} project={project} user={user} />
+                                                <ExplorerCard
+                                                    key={project.id}
+                                                    project={project}
+                                                    user={userResponse?.user}
+                                                />
                                             ))
                                         ) : (
                                             <Text fontSize="lg" fontWeight="medium">
@@ -1420,6 +1434,22 @@ const Explorer: NextPage = () => {
             <FilterExperienceModal isOpen={isOpenExperience} onClose={closeExperience} />
         </>
     );
+};
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
+    try {
+        const response = await userFetcher(req);
+
+        return {
+            props: {
+                user: response,
+            },
+        };
+    } catch (error) {
+        return {
+            props: {},
+        };
+    }
 };
 
 export default Explorer;

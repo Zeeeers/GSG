@@ -1,6 +1,6 @@
 // Dependencies
 import { adminHeaders, api, headers } from '../../config';
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import ENDPOINT from './user.endpoints';
 import {
     UserResponse,
@@ -17,6 +17,7 @@ import {
     UpdateUserStatusResponse,
 } from './user.types';
 import { User } from 'services/api/types/User';
+import { IncomingMessage } from 'http';
 
 // POST
 export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
@@ -35,17 +36,20 @@ export const sendInterest: SendInterestCall = async ({ token, id }) => {
 };
 
 // READ
-const userFetcher = async (endpoint: string) => {
+export const userFetcher = async (req?: IncomingMessage) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
-    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! });
+    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!, req: req });
 
-    const { data } = await api.get<UserResponse>(endpoint, '', headers(token));
+    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(token));
 
-    return data?.user;
+    return response.data;
 };
 
-export const useUser = (): SWRResponse<User | undefined, unknown> => {
-    return useSWR([ENDPOINT.BASE], userFetcher, { revalidateOnFocus: true });
+export const useUser = (
+    req?: IncomingMessage,
+    config?: SWRConfiguration,
+): SWRResponse<InvestorResponse | undefined, unknown> => {
+    return useSWR([req, ENDPOINT.BASE], userFetcher, config);
 };
 
 // FETCH
@@ -103,6 +107,7 @@ const userCalls = {
     investorAllFetcher,
     deleteInvestor,
     updateStatus,
+    userFetcher,
 };
 
 // Export

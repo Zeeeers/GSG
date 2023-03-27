@@ -68,7 +68,7 @@ const ProfileNameExperience = ({ setPage }: ProfileNameExperienceProps) => {
             <FormControl id="name" isInvalid={!!errors.name}>
                 <Input
                     autoFocus={true}
-                    defaultValue={user?.name}
+                    defaultValue={user?.user.name}
                     placeholder="Mi nombre"
                     variant="flushed"
                     _placeholder={{ color: 'gray.500' }}
