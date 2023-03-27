@@ -35,6 +35,9 @@ const ChangePhoneModal = ({ isOpen, onClose }: ChangePhoneModalProps) => {
         handleSubmit,
     } = useForm<IPhoneData>({
         resolver: zodResolver(phoneSchema),
+        defaultValues: {
+            legal_representative_phone: { code: 'CL', value: '' },
+        },
     });
 
     const handlePhone = async ({ legal_representative_phone }: IPhoneData) => {
