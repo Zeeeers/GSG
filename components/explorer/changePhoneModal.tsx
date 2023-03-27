@@ -36,7 +36,12 @@ const ChangePhoneModal = ({ isOpen, onClose }: ChangePhoneModalProps) => {
     } = useForm<IPhoneData>({
         resolver: zodResolver(phoneSchema),
         defaultValues: {
-            legal_representative_phone: { code: 'CL', value: '' },
+            legal_representative_phone: {
+                code: 'CL',
+                value: isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '')
+                    ? user?.user?.organization?.legal_representative_phone
+                    : '',
+            },
         },
     });
 

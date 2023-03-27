@@ -9,7 +9,7 @@ export interface INameData {
 }
 
 export interface IPhoneData {
-    legal_representative_phone: { code: string; value: string };
+    legal_representative_phone: { code?: string; value?: string };
 }
 
 // Schema
@@ -20,15 +20,16 @@ const nameShape: ZodShape<INameData> = {
 const phoneShape: ZodShape<IPhoneData> = {
     legal_representative_phone: z
         .object({
-            code: z.string(),
-            value: z.string(),
+            code: z.string().optional(),
+            value: z.string().optional(),
         })
         .refine((data) => {
-            try {
+            console.log(data);
+            if (data?.value) {
                 // @ts-ignore
-                return isValidPhoneNumber(data.value, data.code);
-            } catch (error) {
-                return false;
+                return isValidPhoneNumber(data.code + data.value, data.code);
+            } else {
+                return true;
             }
         }, 'Número de teléfono inválido'),
 };

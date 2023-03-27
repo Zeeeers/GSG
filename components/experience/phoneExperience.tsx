@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useUser } from 'services/api/lib/user';
 import { COUNTRIES } from 'services/countries/countries';
-import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
+import { AsYouType, isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 
 interface PhoneExperienceProps {
     setPage: (index: number) => void;
@@ -24,7 +24,12 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
     } = useForm<IPhoneData>({
         resolver: zodResolver(phoneSchema),
         defaultValues: {
-            legal_representative_phone: { code: 'CL', value: '' },
+            legal_representative_phone: {
+                code: '+56',
+                value: isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '')
+                    ? parsePhoneNumber(user?.user?.organization?.legal_representative_phone ?? '')?.nationalNumber
+                    : '',
+            },
         },
     });
 
@@ -37,10 +42,16 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
         const { update } = await userApi;
         const AuthManager = (await manager).default;
 
+        let parsedNumber = new AsYouType().input(
+            `${legal_representative_phone?.value ? legal_representative_phone?.code : ''}${
+                legal_representative_phone?.value
+            }`,
+        );
+
         const { ok } = await update({
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
             data: {
-                legal_representative_phone: legal_representative_phone.value,
+                legal_representative_phone: parsedNumber,
             },
         });
 
