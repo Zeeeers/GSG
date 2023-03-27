@@ -13,7 +13,7 @@ const SuccessExperience = () => {
                 pathname: '/explorer',
                 query: { onboarding: 'filter-experience' },
             });
-        }, 5000);
+        }, 6000);
     }, [router]);
 
     return (
