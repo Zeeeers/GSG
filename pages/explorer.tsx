@@ -54,6 +54,10 @@ import FilterExperienceModal from 'components/experience/filterExperienceModal';
 import Router, { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BsCheck } from 'react-icons/bs';
+import cookies from 'cookie';
+import { useInterest } from 'services/api/lib/interest';
+import ChangePhoneModal from 'components/explorer/changePhoneModal';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 const Explorer: NextPage = ({ user: initialData }) => {
     // filter orderBy
@@ -64,6 +68,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
     const [data, setData] = useState([]);
     const [hasMore, setHasMore] = useState(true);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
+    const { isOpen: isOpenPhone, onOpen: openPhone, onClose: closePhone } = useDisclosure();
 
     const router = useRouter();
 
@@ -73,6 +78,10 @@ const Explorer: NextPage = ({ user: initialData }) => {
     const { data: userResponse } = useUser(undefined, { revalidateOnFocus: true, initialData: initialData });
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
+    const { data: getInterest } = useInterest();
+
+    console.log(getInterest);
+
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
 
@@ -276,68 +285,101 @@ const Explorer: NextPage = ({ user: initialData }) => {
                     </Button>
                 )}
 
-                {!userResponse?.user?.organization?.legal_representative_phone && (
-                    <Stack
-                        direction={{ base: 'column', md: 'row' }}
-                        align="center"
-                        justify="space-between"
-                        mb="32px"
-                        bg="gray.800"
-                        p="20px"
-                        rounded="8px"
-                    >
-                        <VStack align="start">
-                            <Text fontSize="24px" fontWeight="medium" fontFamily="inter">
-                                Ayúdanos a completar tu perfil
-                            </Text>
-                            <Stack
-                                direction={{ base: 'column', md: 'row' }}
-                                align={{ base: 'start', md: 'center' }}
-                                bg="gray.800"
-                                py="10px"
-                                rounded="8px"
-                                spacing={{ base: '16px', md: '24px' }}
+                {userResponse?.user &&
+                    (isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '') ? null : (
+                        <Stack
+                            direction={{ base: 'column', md: 'row' }}
+                            align="center"
+                            justify="space-between"
+                            mb="32px"
+                            bg="gray.800"
+                            p="20px"
+                            rounded="8px"
+                        >
+                            <VStack align="start">
+                                <Text fontSize="24px" fontWeight="medium" fontFamily="inter">
+                                    Ayúdanos a completar tu perfil
+                                </Text>
+                                <Stack
+                                    direction={{ base: 'column', md: 'row' }}
+                                    align={{ base: 'start', md: 'center' }}
+                                    bg="gray.800"
+                                    py="10px"
+                                    rounded="8px"
+                                    spacing={{ base: '16px', md: '24px' }}
+                                >
+                                    <HStack spacing="3px">
+                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                        <Text>Contraseña</Text>
+                                    </HStack>
+
+                                    <HStack spacing="3px">
+                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                        <Text>Nombre</Text>
+                                    </HStack>
+
+                                    <HStack spacing="3px">
+                                        {userResponse?.user?.organization?.image ? (
+                                            <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                        ) : (
+                                            <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                        )}
+                                        <Text>Imagen de perfil</Text>
+                                    </HStack>
+
+                                    <HStack spacing="3px">
+                                        {userResponse?.user?.organization?.legal_representative_phone &&
+                                        isValidPhoneNumber(
+                                            userResponse?.user?.organization?.legal_representative_phone,
+                                        ) ? (
+                                            <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                        ) : (
+                                            <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                        )}
+                                        <Text>Contacto</Text>
+                                    </HStack>
+
+                                    <HStack spacing="3px">
+                                        {!(
+                                            getInterest?.data?.interests.capital_stage == null &&
+                                            getInterest?.data?.interests.expected_rentability == null &&
+                                            getInterest?.data?.interests.finance_goal == null &&
+                                            getInterest?.data?.interests.stage == null &&
+                                            getInterest?.data?.interests.time_lapse == null &&
+                                            getInterest?.data?.interests.third_party == null &&
+                                            getInterest?.data?.interests.qualities == null
+                                        ) ? (
+                                            <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                                        ) : (
+                                            <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                                        )}
+                                        <Text>Intereses</Text>
+                                    </HStack>
+                                </Stack>
+                            </VStack>
+
+                            <Button
+                                onClick={() => {
+                                    if (
+                                        userResponse?.user?.organization?.legal_representative_phone &&
+                                        isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)
+                                    ) {
+                                        router.push({
+                                            pathname: '/profile',
+                                            query: 'tab=1',
+                                        });
+                                    } else {
+                                        openPhone();
+                                    }
+                                }}
+                                variant="solid"
+                                h="40px"
+                                w={{ base: 'full', md: 'fit-content' }}
                             >
-                                <HStack spacing="3px">
-                                    <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                    <Text>Contraseña</Text>
-                                </HStack>
-
-                                <HStack spacing="3px">
-                                    <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                    <Text>Nombre</Text>
-                                </HStack>
-
-                                <HStack spacing="3px">
-                                    {userResponse?.user?.organization?.image ? (
-                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                    ) : (
-                                        <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                    )}
-                                    <Text>Imagen de perfil</Text>
-                                </HStack>
-
-                                <HStack spacing="3px">
-                                    {userResponse?.user?.organization?.legal_representative_phone ? (
-                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                    ) : (
-                                        <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                    )}
-                                    <Text>Contacto</Text>
-                                </HStack>
-
-                                <HStack spacing="3px">
-                                    <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                    <Text>Intereses</Text>
-                                </HStack>
-                            </Stack>
-                        </VStack>
-
-                        <Button variant="solid" h="40px" w={{ base: 'full', md: 'fit-content' }}>
-                            Actualizar contacto
-                        </Button>
-                    </Stack>
-                )}
+                                Actualizar contacto
+                            </Button>
+                        </Stack>
+                    ))}
 
                 <AnimatePresence>
                     {isVisible && (
@@ -1432,6 +1474,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
             </Container>
 
             <FilterExperienceModal isOpen={isOpenExperience} onClose={closeExperience} />
+            <ChangePhoneModal isOpen={isOpenPhone} onClose={closePhone} />
         </>
     );
 };

@@ -4,7 +4,7 @@ import CropperModalAvatar from 'common/cropperModalAvatar';
 import EditableTitle from 'common/editableTitle';
 
 import UploadZone from 'common/uploadZone';
-import { formatIncompletePhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
+import { formatIncompletePhoneNumber, isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 import { useState } from 'react';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
@@ -150,7 +150,7 @@ const InfoForm: React.FC = () => {
                         <VStack w="full" maxW="107px" align="start">
                             <Avatar
                                 size={'lg'}
-                                name={user.user.name ?? 'GSG'}
+                                name={user?.user?.name ?? 'GSG'}
                                 src={user?.user.organization?.image ?? ''}
                                 height="96px"
                                 width="96px"
@@ -214,7 +214,7 @@ const InfoForm: React.FC = () => {
                                     alignItems={'center'}
                                     alignContent="center"
                                     justifyItems={'center'}
-                                    defaultValue={user?.user.name}
+                                    defaultValue={user?.user?.name}
                                     onSubmit={handleUpdateName}
                                     w="full"
                                     borderBottom="2px"
@@ -230,15 +230,14 @@ const InfoForm: React.FC = () => {
                                     alignItems={'center'}
                                     alignContent="center"
                                     justifyItems={'center'}
-                                    placeholder="+56 9 0000 0000"
                                     //@ts-ignore
                                     defaultValue={
-                                        user.user.organization.legal_representative_phone
+                                        isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '0')
                                             ? parsePhoneNumber(user?.user.organization?.legal_representative_phone)
                                             : ''
                                     }
                                     value={
-                                        user.user.organization?.legal_representative_phone
+                                        isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '0')
                                             ? formatIncompletePhoneNumber(
                                                   numberPhone ?? user.user.organization?.legal_representative_phone,
                                               )

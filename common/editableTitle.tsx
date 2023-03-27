@@ -25,7 +25,7 @@ const EditableTitle = forwardRef<EditableProps, any>(({ fontSize, ...props }, re
                 w="full"
             >
                 <>
-                    <EditablePreview fontSize={fontSize} fontWeight="normal" _placeholder={{ color: 'gray.600' }} />
+                    <EditablePreview fontSize={fontSize} fontWeight="normal" />
                     <EditableInput fontSize={fontSize} fontWeight="normal" minW={{ lg: 'full' }} />
                 </>
 
