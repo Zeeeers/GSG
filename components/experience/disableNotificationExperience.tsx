@@ -22,7 +22,7 @@ const DiableNotificationExperience = ({ setPage, setStepStatus }: DiableNotifica
             align={{ base: 'start', md: 'center' }}
             spacing="24px"
         >
-            <HStack spacing="15px" align="start" display={{ base: 'none', md: 'flex' }}>
+            <HStack spacing="15px" align={{ base: 'start', md: 'center' }} display={{ base: 'none', md: 'flex' }}>
                 <Box
                     display="flex"
                     justifyContent="center"
@@ -34,7 +34,9 @@ const DiableNotificationExperience = ({ setPage, setStepStatus }: DiableNotifica
                 >
                     <Icon as={MdClose} color="red.500" w="30px" h="30px" />
                 </Box>
-                <Text fontFamily="inter">Intereses</Text>
+                <Text fontFamily="inter" fontSize={{ base: '', md: '30px' }}>
+                    Intereses
+                </Text>
             </HStack>
 
             <Stack

@@ -24,7 +24,6 @@ const phoneShape: ZodShape<IPhoneData> = {
             value: z.string().optional(),
         })
         .refine((data) => {
-            console.log(data);
             if (data?.value) {
                 // @ts-ignore
                 return isValidPhoneNumber(data.code + data.value, data.code);

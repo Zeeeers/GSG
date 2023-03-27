@@ -13,7 +13,7 @@ const SuccessExperience = () => {
                 pathname: '/explorer',
                 query: { onboarding: 'filter-experience' },
             });
-        }, 7000);
+        }, 4000);
     }, [router]);
 
     return (
@@ -21,7 +21,7 @@ const SuccessExperience = () => {
             as={motion.div}
             initial={{ x: -200, opacity: 0 }}
             exit={{ opacity: 0 }}
-            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.5 } }}
             w="full"
             align="center"
             spacing="48px"

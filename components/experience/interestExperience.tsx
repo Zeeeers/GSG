@@ -51,7 +51,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
 
     const { data: interest } = useInterestList();
     const { data: getInterest, mutate: interestReload } = useInterest();
-    const { data: user, mutate } = useUser();
+    const { data: userResponse, mutate } = useUser();
 
     const toast = useToast();
     const router = useRouter();
@@ -134,7 +134,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
         ) {
             const { ok: sendOK, data: send } = await sendInterest({
                 token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
-                id: user?.id,
+                id: userResponse?.user?.id,
             });
 
             setStepStatus('Finished');
@@ -144,12 +144,12 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
     };
 
     useEffect(() => {
-        if (user) {
+        if (userResponse) {
             //@ts-ignore
-            setIsActive(user?.newsletter);
-            setIsOnboarding(user?.onboarding);
+            setIsActive(userResponse?.user?.newsletter);
+            setIsOnboarding(userResponse?.user?.onboarding);
         }
-    }, [user]);
+    }, [userResponse]);
 
     return (
         <>
