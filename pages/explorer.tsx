@@ -65,6 +65,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [getPorjects, setGetProjets] = useState([]);
+    const [visible, setVisible] = useState(true);
     const [data, setData] = useState([]);
     const [hasMore, setHasMore] = useState(true);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
@@ -79,8 +80,6 @@ const Explorer: NextPage = ({ user: initialData }) => {
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
     const { data: getInterest } = useInterest();
-
-    console.log(getInterest);
 
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
@@ -286,6 +285,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
                 )}
 
                 {userResponse?.user &&
+                    visible &&
                     (isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '') ? null : (
                         <Stack
                             direction={{ base: 'column', md: 'row' }}
@@ -337,6 +337,23 @@ const Explorer: NextPage = ({ user: initialData }) => {
                                             <Icon as={MdClose} color="red.500" w="24px" h="24px" />
                                         )}
                                         <Text>Contacto</Text>
+                                    </HStack>
+
+                                    <Divider
+                                        display={{ base: 'none', md: 'block' }}
+                                        orientation="vertical"
+                                        h="20px"
+                                        w="2px"
+                                    />
+
+                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                                        <Icon
+                                            as={userResponse?.user.newsletter ? BsCheck : MdClose}
+                                            color={userResponse?.user.newsletter ? 'teal.500' : 'red.500'}
+                                            w="24px"
+                                            h="24px"
+                                        />
+                                        <Text>Correo Match</Text>
                                     </HStack>
 
                                     <HStack spacing="3px">

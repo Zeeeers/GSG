@@ -73,7 +73,7 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
             onSubmit={handleSubmit(handlePhone)}
         >
             <Text fontSize="3xl" fontWeight="bold">
-                Teléfono de contacto
+                TELÉFONO DE CONTACTO
             </Text>
             <FormControl id="legal_representative_phone" isInvalid={!!errors.legal_representative_phone}>
                 <Controller

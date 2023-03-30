@@ -1,4 +1,6 @@
 // Types
+
+export type Frequency = 'biweekly' | 'monthly' | null;
 export interface User {
     id: number;
     active?: boolean;
@@ -12,6 +14,7 @@ export interface User {
     onboarding: boolean;
     organization_id: number;
     user_pass_created: boolean;
+    frequency_newsletter: Frequency;
     organization: {
         id: number;
         image: string;

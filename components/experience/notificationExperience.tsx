@@ -1,7 +1,9 @@
-import { Button, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import OnboardingModal from 'components/profile/ods/onboardingModal';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useUser } from 'services/api/lib/user';
+import { Frequency } from 'services/api/types/User';
 
 interface NotificationExperienceProps {
     setPage: (index: number) => void;
@@ -9,8 +11,39 @@ interface NotificationExperienceProps {
 }
 
 const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperienceProps) => {
+    const { data: userResponse } = useUser();
+
     const { isOpen: isOpenOnboarding, onOpen: openOnboarding, onClose: closeOnboarding } = useDisclosure();
-    const [isNotification, setIsNotification] = useState<boolean | null>(null);
+    const [notification, setNotification] = useState<Frequency>(userResponse?.user?.frequency_newsletter ?? null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleUpdateNews = async () => {
+        setIsLoading(true);
+        const auth = import('@clyc/next-route-manager/libs/AuthManager');
+        const userApi = import('../../services/api/lib/user');
+
+        const AuthManager = (await auth).default;
+        const { update } = await userApi;
+
+        const { ok } = await update({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            data: {
+                newsletter: notification !== null ? true : false,
+                frequency_newsletter: notification,
+            },
+        });
+
+        if (ok) {
+            setIsLoading(false);
+
+            if (notification !== null) {
+                setPage(4);
+                setStepStatus('Process');
+            } else {
+                setStepStatus('DisabledNotification');
+            }
+        }
+    };
 
     return (
         <>
@@ -24,15 +57,21 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                 spacing="48px"
             >
                 <VStack align="start" spacing="32px">
-                    <Text fontSize="3xl" fontWeight="bold">
-                        INTERESES
+                    <Text fontSize="3xl" fontWeight="bold" textTransform="uppercase">
+                        ¡Recibe tu correo Match!
                     </Text>
 
                     <VStack align="start" spacing="16px">
-                        <Text fontSize="2xl" fontFamily="inter" lineHeight="32px">
-                            ¿Te gustaría recibir correos cada dos semanas con proyectos relacionados a tus intereses en
-                            áreas de alto impacto?
-                        </Text>
+                        <VStack>
+                            <Text fontSize="2xl" fontFamily="inter" lineHeight="32px">
+                                ¿Con qué frecuencia deseas recibir correos con proyectos de alto impacto que hagan match
+                                en relación a tus intereses?
+                            </Text>
+                            <Text fontSize="16px" fontFamily="inter" lineHeight="22.4px" textColor="gray.400">
+                                Se te enviará un correo con un resumen de todos los proyectos que hayan coincidido con
+                                algún interés que tengas.
+                            </Text>
+                        </VStack>
                         <Button
                             variant="link"
                             color="gray.50"
@@ -44,28 +83,41 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                         </Button>
                     </VStack>
 
-                    <Stack direction={{ base: 'column', md: 'row' }} spacing="16px" w="full">
+                    <VStack spacing="16px" w="full">
                         <Button
+                            justifyContent="start"
                             variant="solid"
                             h="40px"
                             w="full"
-                            bg={isNotification ? 'teal.800' : 'gray.600'}
-                            _hover={{ bg: isNotification ? 'teal.700' : 'teal.600' }}
-                            onClick={() => setIsNotification(true)}
+                            bg={notification === 'biweekly' ? 'teal.800' : 'gray.600'}
+                            _hover={{ bg: notification === 'biweekly' ? 'teal.700' : 'teal.600' }}
+                            onClick={() => setNotification('biweekly')}
                         >
-                            Sí, deseo recibir correos
+                            De forma quincenal
                         </Button>
                         <Button
+                            justifyContent="start"
                             variant="solid"
                             h="40px"
                             w="full"
-                            bg={!isNotification ? 'teal.800' : 'gray.600'}
-                            _hover={{ bg: !isNotification ? 'teal.700' : 'teal.600' }}
-                            onClick={() => setIsNotification(false)}
+                            bg={notification === 'monthly' ? 'teal.800' : 'gray.600'}
+                            _hover={{ bg: notification === 'monthly' ? 'teal.700' : 'teal.600' }}
+                            onClick={() => setNotification('monthly')}
                         >
-                            No por ahora
+                            Una vez por mes
                         </Button>
-                    </Stack>
+                        <Button
+                            justifyContent="start"
+                            variant="solid"
+                            h="40px"
+                            w="full"
+                            bg={notification === null ? 'teal.800' : 'gray.600'}
+                            _hover={{ bg: notification === null ? 'teal.700' : 'teal.600' }}
+                            onClick={() => setNotification(null)}
+                        >
+                            No deseo recibir correos por ahora
+                        </Button>
+                    </VStack>
                 </VStack>
 
                 <Button
@@ -73,9 +125,8 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                     w="full"
                     variant="solid"
                     h="40px"
-                    onClick={() => {
-                        isNotification ? setPage(4) : setStepStatus('DisabledNotification');
-                    }}
+                    onClick={() => handleUpdateNews()}
+                    isLoading={isLoading}
                 >
                     Continuar
                 </Button>

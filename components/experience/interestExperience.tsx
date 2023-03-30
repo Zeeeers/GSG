@@ -1,31 +1,19 @@
-//@ts-nocheck
+// @ts-nocheck
 import CapitalStageModal from 'components/profile/ods/capitalStageModal';
 import ExpectedRentabilityModal from 'components/profile/ods/expectedRentabilityModal';
 import FinanceGoalModal from 'components/profile/ods/FinanceGoalModal';
 import OdsModal from 'components/profile/ods/odsModal';
-import OnboardingModal from 'components/profile/ods/onboardingModal';
 import StageModal from 'components/profile/ods/stageModal';
 import ThirdModal from 'components/profile/ods/thirdModal';
 import TimeLapseModal from 'components/profile/ods/timeLapseModal';
 import { useState, useEffect } from 'react';
-import {
-    Button,
-    Checkbox,
-    HStack,
-    Img,
-    Stack,
-    Text,
-    useDisclosure,
-    useToast,
-    VStack,
-    Wrap,
-    WrapItem,
-} from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Button, HStack, Icon, Img, Stack, Text, useDisclosure, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
 import { useUser } from 'services/api/lib/user';
 import { sendInterest } from 'services/api/lib/user/user.calls';
 import { motion } from 'framer-motion';
+import { BsCheck } from 'react-icons/bs';
+import { Frequency } from 'services/api/types/User';
 
 interface Props {
     setPage: (index: number) => void;
@@ -34,7 +22,6 @@ interface Props {
 
 const InterestExperience = ({ setPage, setStepStatus }: Props) => {
     const [isActive, setIsActive] = useState(false);
-    const [isNews, setIsNews] = useState(false);
     const [isOnboarding, setIsOnboarding] = useState(null);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
     const { isOpen: isOpenThird, onOpen: openThird, onClose: closeThird } = useDisclosure();
@@ -47,74 +34,22 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
         onClose: closeExpectedRentabilityModal,
     } = useDisclosure();
     const { isOpen: isOpenTimeLapse, onOpen: openTimeLapse, onClose: closeTimeLapse } = useDisclosure();
-    const { isOpen: isOpenOnboarding, onOpen: openOnboarding, onClose: closeOnboarding } = useDisclosure();
 
     const { data: interest } = useInterestList();
     const { data: getInterest, mutate: interestReload } = useInterest();
     const { data: userResponse, mutate } = useUser();
 
-    const toast = useToast();
-    const router = useRouter();
-
-    const handleUpdateNews = async () => {
-        const auth = import('@clyc/next-route-manager/libs/AuthManager');
-        const userApi = import('../../services/api/lib/user');
-
-        const AuthManager = (await auth).default;
-        const { update } = await userApi;
-
-        const { ok, data } = await update({
-            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
-            //@ts-ignore
-            data: {
-                newsletter: !isActive,
-            },
-        });
-
-        if (ok) {
-            mutate().then(() =>
-                toast({
-                    //@ts-ignore
-                    title: data?.user.newsletter
-                        ? 'La recepción de correos de acuerdo a los intereses ha sido activado con éxito'
-                        : 'La recepción de correos de acuerdo a los intereses ha sido desactivada con éxito',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top-right',
-                }),
-            );
-        } else {
-            toast({
-                title: 'Ha ocurrido un error la intentar activar el acuerdo de recepcion de correos.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-            setIsActive(false);
+    const formatFrecuency = (frecuency: Frequency) => {
+        if (!frecuency) {
+            return null;
         }
-    };
 
-    const handleUpdateOnboarding = async (value) => {
-        const auth = import('@clyc/next-route-manager/libs/AuthManager');
-        const userApi = import('../../services/api/lib/user');
+        const frecuencyData = {
+            biweekly: 'quincenalmente',
+            monthly: 'mensualmente',
+        };
 
-        const AuthManager = (await auth).default;
-        const { update } = await userApi;
-
-        const { ok, data } = await update({
-            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
-            //@ts-ignore
-            data: {
-                onboarding: !value,
-            },
-        });
-
-        const { ok: sendOK, data: send } = await sendInterest({
-            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
-            id: user?.id,
-        });
+        return frecuencyData[frecuency];
     };
 
     const handleOnboarding = async () => {
@@ -129,7 +64,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 getInterest?.data?.interests.stage == null &&
                 getInterest?.data?.interests.time_lapse == null &&
                 getInterest?.data.interests.third_party == null &&
-                getInterest?.data.interests.qualities == null
+                getInterest?.data?.interests.qualities == null
             )
         ) {
             const { ok: sendOK, data: send } = await sendInterest({
@@ -163,6 +98,12 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 h="full"
                 pb="200px"
             >
+                <HStack px="16px" py="8px" w="fit-content" bg="gray.800" rounded="4px" h="33px">
+                    <Icon as={BsCheck} w="25px" h="25px" color="teal.500" />
+                    <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
+                        Deseo recibir correos {formatFrecuency(userResponse?.user.frequency_newsletter ?? null)}
+                    </Text>
+                </HStack>
                 <VStack alignItems="flex-start" spacing="10px" w="full">
                     <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" lineHeight="130%">
                         Elige tus intereses
@@ -174,19 +115,6 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 </VStack>
 
                 <VStack h="full" align="flex-start" justify="space-between" spacing="30px" w="full">
-                    <HStack>
-                        <Checkbox
-                            isChecked={isActive}
-                            rounded="md"
-                            w="18px"
-                            h="18px"
-                            colorScheme="teal"
-                            onChange={handleUpdateNews}
-                        />
-                        <Text fontFamily="inter">
-                            Deseo recibir correos quincenalmente con proyectos relacionados a mis intereses
-                        </Text>
-                    </HStack>
                     <Stack maxH="400px" overflow={{ base: 'auto', md: 'hidden' }}>
                         <Wrap h="full" spacingX="30px" spacingY="20px" fontFamily="inter">
                             <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
