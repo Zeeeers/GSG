@@ -308,17 +308,17 @@ const Explorer: NextPage = ({ user: initialData }) => {
                                     rounded="8px"
                                     spacing={{ base: '16px', md: '24px' }}
                                 >
-                                    <HStack spacing="3px">
+                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
                                         <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                                         <Text>Contraseña</Text>
                                     </HStack>
 
-                                    <HStack spacing="3px">
+                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
                                         <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                                         <Text>Nombre</Text>
                                     </HStack>
 
-                                    <HStack spacing="3px">
+                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
                                         {userResponse?.user?.organization?.image ? (
                                             <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                                         ) : (
@@ -327,7 +327,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
                                         <Text>Imagen de perfil</Text>
                                     </HStack>
 
-                                    <HStack spacing="3px">
+                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
                                         {userResponse?.user?.organization?.legal_representative_phone &&
                                         isValidPhoneNumber(
                                             userResponse?.user?.organization?.legal_representative_phone,
@@ -356,7 +356,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
                                         <Text>Correo Match</Text>
                                     </HStack>
 
-                                    <HStack spacing="3px">
+                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
                                         {!(
                                             getInterest?.data?.interests.capital_stage == null &&
                                             getInterest?.data?.interests.expected_rentability == null &&

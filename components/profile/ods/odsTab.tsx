@@ -4,6 +4,7 @@ import {
     Button,
     Checkbox,
     HStack,
+    Icon,
     Img,
     Stack,
     Text,
@@ -13,10 +14,15 @@ import {
     Wrap,
     WrapItem,
 } from '@chakra-ui/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { BsCheck } from 'react-icons/bs';
+import { IoIosArrowDown } from 'react-icons/io';
+import { MdClose } from 'react-icons/md';
 import { useInterest, useInterestList } from 'services/api/lib/interest';
 import { useUser } from 'services/api/lib/user';
+import { Frequency } from 'services/api/types/User';
 import CapitalStageModal from './capitalStageModal';
 import ExpectedRentabilityModal from './expectedRentabilityModal';
 import FinanceGoalModal from './FinanceGoalModal';
@@ -29,6 +35,7 @@ import TimeLapseModal from './timeLapseModal';
 // Components
 const OdsTab: React.FC = () => {
     const [isActive, setIsActive] = useState(false);
+    const [isOpenNews, setIsOpenNews] = useState(false);
     const [isOnboarding, setIsOnboarding] = useState(null);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
     const { isOpen: isOpenThird, onOpen: openThird, onClose: closeThird } = useDisclosure();
@@ -50,7 +57,7 @@ const OdsTab: React.FC = () => {
     const toast = useToast();
     const router = useRouter();
 
-    const handleUpdateNews = async () => {
+    const handleUpdateNews = async (frecuency) => {
         const auth = import('@clyc/next-route-manager/libs/AuthManager');
         const userApi = import('../../../services/api/lib/user');
 
@@ -61,7 +68,8 @@ const OdsTab: React.FC = () => {
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
             //@ts-ignore
             data: {
-                newsletter: !isActive,
+                frequency_newsletter: frecuency,
+                newsletter: frecuency !== null ? true : false,
             },
         });
 
@@ -69,24 +77,18 @@ const OdsTab: React.FC = () => {
             mutate().then(() =>
                 toast({
                     //@ts-ignore
-                    title: data?.user.newsletter
-                        ? 'La recepción de correos de acuerdo a los intereses ha sido activado con éxito'
-                        : 'La recepción de correos de acuerdo a los intereses ha sido desactivada con éxito',
-                    status: 'success',
+                    title:
+                        frecuency !== null
+                            ? 'Recibiras correos' + ' ' + formatFrecuency(frecuency)
+                            : 'No recibirás correos',
+                    status: frecuency !== null ? 'success' : 'warning',
                     duration: 9000,
                     isClosable: true,
                     position: 'top-right',
                 }),
             );
-        } else {
-            toast({
-                title: 'Ha ocurrido un error la intentar activar el acuerdo de recepcion de correos.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-            setIsActive(false);
+
+            setIsOpenNews(false);
         }
     };
 
@@ -106,11 +108,33 @@ const OdsTab: React.FC = () => {
         });
     };
 
-    useEffect(() => {
-        if (user) {
-            setIsActive(user?.newsletter);
+    const frecuencyArray = [
+        {
+            label: 'Quincenal',
+            value: 'biweekly',
+        },
+        {
+            label: 'Mensual',
+            value: 'monthly',
+        },
+        {
+            label: 'No deseo recibir correos',
+            value: null,
+        },
+    ];
+
+    const formatFrecuency = (frecuency: Frequency) => {
+        if (!frecuency) {
+            return null;
         }
-    }, [user]);
+
+        const frecuencyData = {
+            biweekly: 'quincenalmente',
+            monthly: 'mensualmente',
+        };
+
+        return frecuencyData[frecuency];
+    };
 
     return (
         <>
@@ -126,10 +150,68 @@ const OdsTab: React.FC = () => {
                 </VStack>
 
                 <VStack align="flex-start" spacing="30px">
-                    <HStack>
-                        <Checkbox isChecked={isActive} onChange={handleUpdateNews} />
-                        <Text>Deseo rercibir correos semanalmente con proyectos relacionados a mis intereses</Text>
-                    </HStack>
+                    <VStack pos="relative">
+                        <HStack
+                            px="16px"
+                            py="8px"
+                            w="fit-content"
+                            bg="gray.900"
+                            rounded="4px"
+                            h="fit-content"
+                            cursor="pointer"
+                            onClick={() => setIsOpenNews(!isOpenNews)}
+                        >
+                            <Icon
+                                as={user?.user.newsletter ? BsCheck : MdClose}
+                                w="25px"
+                                h="25px"
+                                color={user?.user.newsletter ? 'teal.500' : 'red.500'}
+                            />
+                            <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
+                                {user?.user.newsletter
+                                    ? `Deseo recibir correos ${formatFrecuency(
+                                          user?.user.frequency_newsletter ?? null,
+                                      )}`
+                                    : 'Los correos se encuentran desactivados'}
+                            </Text>
+
+                            <Icon as={IoIosArrowDown} color="white" />
+                        </HStack>
+
+                        <AnimatePresence>
+                            {isOpenNews && (
+                                <VStack
+                                    as={motion.div}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    pos="absolute"
+                                    bottom={-32}
+                                    align="start"
+                                    justify="start"
+                                    w="full"
+                                    bg="gray.900"
+                                    rounded="4px"
+                                >
+                                    {frecuencyArray.map((frecuency: Frequency) => (
+                                        <Stack
+                                            key={frecuency.value}
+                                            onClick={() => handleUpdateNews(frecuency.value)}
+                                            w="full"
+                                            px="16px"
+                                            py="8px"
+                                            _hover={{ bg: 'gray.800', cursor: 'pointer' }}
+                                        >
+                                            <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
+                                                {frecuency.label}
+                                            </Text>
+                                        </Stack>
+                                    ))}
+                                </VStack>
+                            )}
+                        </AnimatePresence>
+                    </VStack>
+
                     <Wrap spacingX="30px" spacingY="20px">
                         <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                             <VStack
