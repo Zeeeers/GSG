@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { BsCheck } from 'react-icons/bs';
 import { MdClose } from 'react-icons/md';
-
 import { useUser } from 'services/api/lib/user';
 
 interface DiableNotificationExperienceProps {
@@ -53,63 +52,91 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                 </Text>
             </HStack>
 
-            <Stack
-                direction={{ base: 'column', md: 'row' }}
-                align={{ base: 'start', md: 'center' }}
-                bg="gray.800"
-                py="10px"
-                px="16px"
-                rounded="8px"
-                spacing="24px"
-                w="fit-content"
-            >
-                <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                    <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                    <Text>Contraseña</Text>
-                </HStack>
+            {page === 3 ? (
+                <Stack
+                    direction={{ base: 'column', md: 'row' }}
+                    align={{ base: 'start', md: 'center' }}
+                    bg="gray.800"
+                    py="10px"
+                    px="16px"
+                    rounded="8px"
+                    spacing="24px"
+                    w="fit-content"
+                >
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                        <Text fontSize="13px">Contraseña</Text>
+                    </HStack>
 
-                <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                    <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                    <Text>Nombre</Text>
-                </HStack>
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
+                        <Text fontSize="13px">Nombre</Text>
+                    </HStack>
 
-                <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                    <Icon
-                        as={userResponse?.user.organization.image ? BsCheck : MdClose}
-                        color={userResponse?.user.organization.image ? 'teal.500' : 'red.500'}
-                        w="24px"
-                        h="24px"
-                    />
-                    <Text>Imagen de perfil</Text>
-                </HStack>
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon
+                            as={userResponse?.user.organization.image ? BsCheck : MdClose}
+                            color={userResponse?.user.organization.image ? 'teal.500' : 'red.500'}
+                            w="24px"
+                            h="24px"
+                        />
+                        <Text fontSize="13px">Imagen de perfil</Text>
+                    </HStack>
 
-                <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                    <Icon
-                        as={userResponse?.user.organization.legal_representative_phone ? BsCheck : MdClose}
-                        color={userResponse?.user.organization.legal_representative_phone ? 'teal.500' : 'red.500'}
-                        w="24px"
-                        h="24px"
-                    />
-                    <Text>Contacto</Text>
-                </HStack>
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon
+                            as={userResponse?.user.organization.legal_representative_phone ? BsCheck : MdClose}
+                            color={userResponse?.user.organization.legal_representative_phone ? 'teal.500' : 'red.500'}
+                            w="24px"
+                            h="24px"
+                        />
+                        <Text fontSize="13px">Contacto</Text>
+                    </HStack>
 
-                <Divider display={{ base: 'none', md: 'block' }} orientation="vertical" h="20px" w="2px" />
+                    <Divider display={{ base: 'none', md: 'block' }} orientation="vertical" h="20px" w="2px" />
 
-                <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                    <Icon
-                        as={userResponse?.user.newsletter ? BsCheck : MdClose}
-                        color={userResponse?.user.newsletter ? 'teal.500' : 'red.500'}
-                        w="24px"
-                        h="24px"
-                    />
-                    <Text>Correo Match</Text>
-                </HStack>
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon
+                            as={userResponse?.user.newsletter ? BsCheck : MdClose}
+                            color={userResponse?.user.newsletter ? 'teal.500' : 'red.500'}
+                            w="24px"
+                            h="24px"
+                        />
+                        <Text fontSize="13px">Correo Match</Text>
+                    </HStack>
 
-                <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                    <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                    <Text>Intereses</Text>
-                </HStack>
-            </Stack>
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                        <Text fontSize="13px">Intereses</Text>
+                    </HStack>
+                </Stack>
+            ) : (
+                <Stack
+                    direction={{ base: 'column', md: 'row' }}
+                    align={{ base: 'start', md: 'center' }}
+                    bg="gray.800"
+                    py="10px"
+                    px="16px"
+                    rounded="8px"
+                    spacing="24px"
+                    w="full"
+                >
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon
+                            as={userResponse?.user.newsletter ? BsCheck : MdClose}
+                            color={userResponse?.user.newsletter ? 'teal.500' : 'red.500'}
+                            w="24px"
+                            h="24px"
+                        />
+                        <Text fontSize="13px">Correo Match</Text>
+                    </HStack>
+
+                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                        <Icon as={MdClose} color="red.500" w="24px" h="24px" />
+                        <Text fontSize="13px">Intereses</Text>
+                    </HStack>
+                </Stack>
+            )}
 
             <VStack align="start" spacing="8px" textAlign="start">
                 <Text fontSize="24px" lineHeight={{ base: '28.8px', md: '31.2px' }} fontWeight="medium">
@@ -126,8 +153,8 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                     color="gray.400"
                 >
                     {page === 3
-                        ? 'Si quieres activar y recibir correos con proyectos relacionados a tus intereses en áreas de alto impacto puedes hacerlo desde tu perfil'
-                        : 'Al elegir tus intereses, te aseguramos recibir correos con proyectos afines que podrían ser de gran interés para ti'}
+                        ? 'Si continúas, te perderás la oportunidad de recibir correos que coincidan con proyectos relacionados a tus preferencias. Puedes cambiar esto luego en tu perfil.'
+                        : 'Si no seleccionas algún interés, te perderás la oportunidad de recibir correos que coincidan con proyectos relacionados a tus preferencias. Puedes cambiar esto luego en tu perfil.'}
                 </Text>
             </VStack>
 
@@ -140,7 +167,7 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                         setStepStatus('Process');
                     }}
                 >
-                    Quiero recibir correos
+                    {page === 3 ? ' Quiero recibir correos' : 'Seleccionar mis intereses'}
                 </Button>
                 <Button
                     w="full"

@@ -58,6 +58,7 @@ import cookies from 'cookie';
 import { useInterest } from 'services/api/lib/interest';
 import ChangePhoneModal from 'components/explorer/changePhoneModal';
 import { isValidPhoneNumber } from 'libphonenumber-js';
+import NavProfile from 'components/explorer/navProfile';
 
 const Explorer: NextPage = ({ user: initialData }) => {
     // filter orderBy
@@ -287,115 +288,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
                 {userResponse?.user &&
                     visible &&
                     (isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '') ? null : (
-                        <Stack
-                            direction={{ base: 'column', md: 'row' }}
-                            align="center"
-                            justify="space-between"
-                            mb="32px"
-                            bg="gray.800"
-                            p="20px"
-                            rounded="8px"
-                        >
-                            <VStack align="start">
-                                <Text fontSize="24px" fontWeight="medium" fontFamily="inter">
-                                    Ayúdanos a completar tu perfil
-                                </Text>
-                                <Stack
-                                    direction={{ base: 'column', md: 'row' }}
-                                    align={{ base: 'start', md: 'center' }}
-                                    bg="gray.800"
-                                    py="10px"
-                                    rounded="8px"
-                                    spacing={{ base: '16px', md: '24px' }}
-                                >
-                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                        <Text>Contraseña</Text>
-                                    </HStack>
-
-                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                                        <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                        <Text>Nombre</Text>
-                                    </HStack>
-
-                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                                        {userResponse?.user?.organization?.image ? (
-                                            <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                        ) : (
-                                            <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                        )}
-                                        <Text>Imagen de perfil</Text>
-                                    </HStack>
-
-                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                                        {userResponse?.user?.organization?.legal_representative_phone &&
-                                        isValidPhoneNumber(
-                                            userResponse?.user?.organization?.legal_representative_phone,
-                                        ) ? (
-                                            <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                        ) : (
-                                            <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                        )}
-                                        <Text>Contacto</Text>
-                                    </HStack>
-
-                                    <Divider
-                                        display={{ base: 'none', md: 'block' }}
-                                        orientation="vertical"
-                                        h="20px"
-                                        w="2px"
-                                    />
-
-                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                                        <Icon
-                                            as={userResponse?.user.newsletter ? BsCheck : MdClose}
-                                            color={userResponse?.user.newsletter ? 'teal.500' : 'red.500'}
-                                            w="24px"
-                                            h="24px"
-                                        />
-                                        <Text>Correo Match</Text>
-                                    </HStack>
-
-                                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                                        {!(
-                                            getInterest?.data?.interests.capital_stage == null &&
-                                            getInterest?.data?.interests.expected_rentability == null &&
-                                            getInterest?.data?.interests.finance_goal == null &&
-                                            getInterest?.data?.interests.stage == null &&
-                                            getInterest?.data?.interests.time_lapse == null &&
-                                            getInterest?.data?.interests.third_party == null &&
-                                            getInterest?.data?.interests.qualities == null
-                                        ) ? (
-                                            <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
-                                        ) : (
-                                            <Icon as={MdClose} color="red.500" w="24px" h="24px" />
-                                        )}
-                                        <Text>Intereses</Text>
-                                    </HStack>
-                                </Stack>
-                            </VStack>
-
-                            <Button
-                                onClick={() => {
-                                    if (
-                                        userResponse?.user?.organization?.legal_representative_phone &&
-                                        isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)
-                                    ) {
-                                        router.push({
-                                            pathname: '/profile',
-                                            query: 'tab=1',
-                                        });
-                                    } else {
-                                        openPhone();
-                                    }
-                                }}
-                                variant="solid"
-                                h="40px"
-                                w={{ base: 'full', md: 'fit-content' }}
-                            >
-                                Actualizar contacto
-                            </Button>
-                        </Stack>
+                        <NavProfile userResponse={userResponse} getInterest={getInterest} openPhone={openPhone} />
                     ))}
 
                 <AnimatePresence>
