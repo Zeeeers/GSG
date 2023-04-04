@@ -288,12 +288,13 @@ const Explorer: NextPage = ({ user: initialData }) => {
                     </Button>
                 )}
 
-                {userResponse?.user && userResponse.user.onboarding && !userResponse.user.newsletter && (
+                {userResponse?.user && visible && userResponse.user.onboarding && (
                     <NavProfile
                         userResponse={userResponse}
                         getInterest={getInterest}
                         openPhone={openPhone}
                         reloadUser={userReload}
+                        setVisible={setVisible}
                     />
                 )}
 
