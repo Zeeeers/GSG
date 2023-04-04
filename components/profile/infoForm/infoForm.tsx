@@ -236,13 +236,9 @@ const InfoForm: React.FC = () => {
                                             ? parsePhoneNumber(user?.user.organization?.legal_representative_phone)
                                             : ''
                                     }
-                                    value={
-                                        isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '0')
-                                            ? formatIncompletePhoneNumber(
-                                                  numberPhone ?? user.user.organization?.legal_representative_phone,
-                                              )
-                                            : ''
-                                    }
+                                    value={formatIncompletePhoneNumber(
+                                        numberPhone ?? user?.user.organization?.legal_representative_phone ?? '',
+                                    )}
                                     onSubmit={handleUpdatePhone}
                                     w="full"
                                     borderBottom="2px"
