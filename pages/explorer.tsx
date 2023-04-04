@@ -77,7 +77,10 @@ const Explorer: NextPage = ({ user: initialData }) => {
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
-    const { data: userResponse } = useUser(undefined, { revalidateOnFocus: true, initialData: initialData });
+    const { data: userResponse, mutate: userReload } = useUser(undefined, {
+        revalidateOnFocus: true,
+        initialData: initialData,
+    });
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
     const { data: getInterest } = useInterest();
@@ -285,11 +288,14 @@ const Explorer: NextPage = ({ user: initialData }) => {
                     </Button>
                 )}
 
-                {userResponse?.user &&
-                    visible &&
-                    (isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '') ? null : (
-                        <NavProfile userResponse={userResponse} getInterest={getInterest} openPhone={openPhone} />
-                    ))}
+                {userResponse?.user && userResponse.user.onboarding && !getInterest?.data.interests.has_preferences && (
+                    <NavProfile
+                        userResponse={userResponse}
+                        getInterest={getInterest}
+                        openPhone={openPhone}
+                        reloadUser={userReload}
+                    />
+                )}
 
                 <AnimatePresence>
                     {isVisible && (

@@ -90,12 +90,12 @@ const ProfileIncomplete = ({ userResponse, openPhone }: ProfileIncompleteProps) 
                             userResponse?.user?.organization?.legal_representative_phone &&
                             isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)
                         ) {
-                            openPhone();
-                        } else {
                             router.push({
                                 pathname: '/profile',
                                 query: 'tab=0',
                             });
+                        } else {
+                            openPhone();
                         }
                     }}
                     variant="outline"

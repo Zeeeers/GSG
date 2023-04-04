@@ -11,15 +11,36 @@ interface NewProfileProps {
     userResponse: InvestorResponse;
     getInterest: GetInterestListResponse;
     openPhone: () => void;
+    reloadUser: () => void;
 }
 
-const NavProfile = ({ userResponse, getInterest, openPhone }: NewProfileProps) => {
+const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser }: NewProfileProps) => {
     const [stepPage, setStepPage] = useState(0);
 
     const step = [
         <ActiveMatch key="stepActive" userResponse={userResponse} getInterest={getInterest} />,
         <ProfileIncomplete key="stepProfile" userResponse={userResponse} openPhone={openPhone} />,
     ];
+
+    const handleClose = async () => {
+        const userApi = import('services/api/lib/user');
+        const manager = import('@clyc/next-route-manager/libs/AuthManager');
+
+        const { update: userUpdate } = await userApi;
+        const AuthManager = (await manager).default;
+
+        const { ok } = await userUpdate({
+            token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
+            data: {
+                // @ts-ignore
+                onboarding: false,
+            },
+        });
+
+        if (ok) {
+            reloadUser();
+        }
+    };
 
     useEffect(() => {
         setTimeout(() => {
@@ -46,7 +67,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone }: NewProfileProps) =
                     ))}
                 </HStack>
 
-                <IconButton aria-label="Close" icon={<Icon as={MdClose} w="20px" h="20px" />} />
+                <IconButton aria-label="Close" icon={<Icon as={MdClose} w="20px" h="20px" />} onClick={handleClose} />
             </HStack>
             <AnimatePresence exitBeforeEnter>{step[stepPage]}</AnimatePresence>
         </VStack>

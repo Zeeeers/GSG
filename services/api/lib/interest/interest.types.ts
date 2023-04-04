@@ -5,5 +5,7 @@ import { Interest } from 'services/api/types/Interest';
 export interface GetInterestListResponse {
     status: boolean;
     message: string;
-    data: Interest;
+    data: {
+        interests: Interest;
+    };
 }
