@@ -17,7 +17,7 @@ const ProfileIncomplete = ({ userResponse, openPhone }: ProfileIncompleteProps) 
     return (
         <VStack
             as={motion.div}
-            initial={{ opacity: 0, x: 100 }}
+            initial={{ opacity: 0, x: 20 }}
             animate={{
                 opacity: 1,
                 x: 0,

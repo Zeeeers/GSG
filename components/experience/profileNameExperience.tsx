@@ -62,7 +62,7 @@ const ProfileNameExperience = ({ setPage }: ProfileNameExperienceProps) => {
             spacing="48px"
             onSubmit={handleSubmit(handleName)}
         >
-            <Text fontSize="3xl" fontWeight="bold">
+            <Text fontSize="3xl" fontWeight="bold" lineHeight="120%">
                 CONFIRMA TU NOMBRE
             </Text>
             <FormControl id="name" isInvalid={!!errors.name}>

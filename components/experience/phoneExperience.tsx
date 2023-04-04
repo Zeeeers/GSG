@@ -72,7 +72,7 @@ const PhoneExperience = ({ setPage }: PhoneExperienceProps) => {
             spacing="48px"
             onSubmit={handleSubmit(handlePhone)}
         >
-            <Text fontSize="3xl" fontWeight="bold">
+            <Text fontSize="3xl" fontWeight="bold" lineHeight="120%">
                 TELÉFONO DE CONTACTO
             </Text>
             <FormControl id="legal_representative_phone" isInvalid={!!errors.legal_representative_phone}>

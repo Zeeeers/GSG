@@ -1,8 +1,7 @@
 // Dependencies
-//@ts-nocheck
+// @ts-nocheck
 import {
     Button,
-    Checkbox,
     HStack,
     Icon,
     Img,
@@ -16,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BsCheck } from 'react-icons/bs';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdClose } from 'react-icons/md';
@@ -27,16 +26,13 @@ import CapitalStageModal from './capitalStageModal';
 import ExpectedRentabilityModal from './expectedRentabilityModal';
 import FinanceGoalModal from './FinanceGoalModal';
 import OdsModal from './odsModal';
-import OnboardingModal from './onboardingModal';
 import StageModal from './stageModal';
 import ThirdModal from './thirdModal';
 import TimeLapseModal from './timeLapseModal';
 
 // Components
 const OdsTab: React.FC = () => {
-    const [isActive, setIsActive] = useState(false);
     const [isOpenNews, setIsOpenNews] = useState(false);
-    const [isOnboarding, setIsOnboarding] = useState(null);
     const { isOpen: isOpenOds, onOpen: openOds, onClose: closeOds } = useDisclosure();
     const { isOpen: isOpenThird, onOpen: openThird, onClose: closeThird } = useDisclosure();
     const { isOpen: isOpenStage, onOpen: openStage, onClose: closeStage } = useDisclosure();
@@ -48,7 +44,6 @@ const OdsTab: React.FC = () => {
         onClose: closeExpectedRentabilityModal,
     } = useDisclosure();
     const { isOpen: isOpenTimeLapse, onOpen: openTimeLapse, onClose: closeTimeLapse } = useDisclosure();
-    const { isOpen: isOpenOnboarding, onOpen: openOnboarding, onClose: closeOnboarding } = useDisclosure();
 
     const { data: interest } = useInterestList();
     const { data: getInterest, mutate } = useInterest();
@@ -78,9 +73,11 @@ const OdsTab: React.FC = () => {
                 toast({
                     //@ts-ignore
                     title:
-                        frecuency !== null
-                            ? 'Recibiras correos' + ' ' + formatFrecuency(frecuency)
-                            : 'No recibirás correos',
+                        frecuency === 'biweekly'
+                            ? 'Correos match quincenal' + ' ' + 'activado'
+                            : frecuency === 'monthly'
+                            ? 'Correos match mensual' + ' ' + 'activado'
+                            : 'Correo match desactivado',
                     status: frecuency !== null ? 'success' : 'warning',
                     duration: 9000,
                     isClosable: true,
@@ -110,11 +107,11 @@ const OdsTab: React.FC = () => {
 
     const frecuencyArray = [
         {
-            label: 'Quincenal',
+            label: 'Recibir correo quincenalmente',
             value: 'biweekly',
         },
         {
-            label: 'Mensual',
+            label: 'Recibir correo mensualmente',
             value: 'monthly',
         },
         {
@@ -151,30 +148,35 @@ const OdsTab: React.FC = () => {
 
                 <VStack align="flex-start" spacing="30px">
                     <VStack align="start" justify="start" spacing="8px">
-                        <VStack pos="relative">
+                        <VStack pos="relative" w={{ base: 'full', md: '366px' }}>
                             <HStack
                                 px="16px"
                                 py="8px"
-                                w="fit-content"
+                                w="full"
+                                justify="space-between"
                                 bg="gray.700"
                                 rounded="4px"
                                 h="fit-content"
                                 cursor="pointer"
+                                _hover={{ bg: 'gray.600' }}
+                                transitionDuration="0.2s"
                                 onClick={() => setIsOpenNews(!isOpenNews)}
                             >
-                                <Icon
-                                    as={user?.user.newsletter ? BsCheck : MdClose}
-                                    w="25px"
-                                    h="25px"
-                                    color={user?.user.newsletter ? 'teal.500' : 'red.500'}
-                                />
-                                <Text fontSize="14px" fontFamily="inter" lineHeight="20.8px">
-                                    {user?.user.newsletter
-                                        ? `Deseo recibir correos ${formatFrecuency(
-                                              user?.user.frequency_newsletter ?? null,
-                                          )}`
-                                        : 'No deseo recibir correos'}
-                                </Text>
+                                <HStack spacing="8px" align="center">
+                                    <Icon
+                                        as={user?.user.newsletter ? BsCheck : MdClose}
+                                        w="25px"
+                                        h="25px"
+                                        color={user?.user.newsletter ? 'teal.500' : 'red.500'}
+                                    />
+                                    <Text fontSize="14px" fontFamily="inter" lineHeight="20.8px">
+                                        {user?.user.newsletter
+                                            ? `Deseo recibir correos ${formatFrecuency(
+                                                  user?.user.frequency_newsletter ?? null,
+                                              )}`
+                                            : 'No deseo recibir correos'}
+                                    </Text>
+                                </HStack>
 
                                 <Icon as={IoIosArrowDown} color="white" />
                             </HStack>
@@ -187,11 +189,12 @@ const OdsTab: React.FC = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0 }}
                                         pos="absolute"
-                                        bottom={-32}
+                                        bottom="-130px"
                                         align="start"
                                         justify="start"
                                         w="full"
-                                        bg="gray.900"
+                                        bg="gray.700"
+                                        shadow="md"
                                         rounded="4px"
                                     >
                                         {frecuencyArray.map((frecuency: Frequency) => (
@@ -201,7 +204,20 @@ const OdsTab: React.FC = () => {
                                                 w="full"
                                                 px="16px"
                                                 py="8px"
-                                                _hover={{ bg: 'gray.800', cursor: 'pointer' }}
+                                                rounded="4px"
+                                                bg={
+                                                    user?.user.frequency_newsletter === frecuency.value
+                                                        ? 'teal.500'
+                                                        : 'gray.700'
+                                                }
+                                                _hover={{
+                                                    bg:
+                                                        user?.user.frequency_newsletter === frecuency.value
+                                                            ? 'teal.500'
+                                                            : 'gray.600',
+                                                    cursor: 'pointer',
+                                                }}
+                                                transitionDuration="0.2s"
                                             >
                                                 <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
                                                     {frecuency.label}

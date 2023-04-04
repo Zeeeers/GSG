@@ -55,7 +55,7 @@ const ProfileExperience = ({ setPage }: Props) => {
             w="full"
             spacing="48px"
         >
-            <Text fontSize="30px" textTransform="uppercase" fontWeight="bold" w="full">
+            <Text fontSize="30px" textTransform="uppercase" fontWeight="bold" w="full" lineHeight="120%">
                 Elige tu foto de perfil
             </Text>
             <VStack mr="20px" w="200px">

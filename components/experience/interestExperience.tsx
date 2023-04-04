@@ -88,9 +88,9 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 h="full"
                 pb="200px"
             >
-                <HStack px="16px" py="8px" w="fit-content" bg="gray.800" rounded="4px" h="33px">
+                <HStack px="16px" py="8px" bg="gray.800" rounded="4px" h="fit-content" w="fit-content">
                     <Icon as={BsCheck} w="25px" h="25px" color="teal.500" />
-                    <Text fontSize="14px" fontWeight="medium" fontFamily="inter">
+                    <Text fontSize="14px" fontWeight="normal" fontFamily="inter">
                         Deseo recibir correos {formatFrecuency(userResponse?.user.frequency_newsletter ?? null)}
                     </Text>
                 </HStack>
@@ -106,7 +106,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
 
                 <VStack h="full" align="flex-start" justify="space-between" spacing="48px" w="full">
                     <VStack spacing="18px">
-                        <Stack maxH="400px" overflow={{ base: 'auto', md: 'hidden' }}>
+                        <Stack maxH="400px" overflowY={{ base: 'auto', md: 'hidden' }} overflowX="hidden">
                             <Wrap h="full" spacingX="30px" spacingY="20px" fontFamily="inter">
                                 <WrapItem w={{ base: 'full', sm: 'fit-content' }}>
                                     <VStack
@@ -258,7 +258,7 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 onClose={closeOds}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
                 interestReload={interestReload}
             />
             <ThirdModal
@@ -266,42 +266,42 @@ const InterestExperience = ({ setPage, setStepStatus }: Props) => {
                 onClose={closeThird}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
             />
             <StageModal
                 isOpen={isOpenStage}
                 onClose={closeStage}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
             />
             <CapitalStageModal
                 isOpen={isOpenCapitalStage}
                 onClose={closeCapitalStage}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
             />
             <ExpectedRentabilityModal
                 isOpen={isOpenExpectedRentabilityModal}
                 onClose={closeExpectedRentabilityModal}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
             />
             <FinanceGoalModal
                 isOpen={isOpenFinanceGoal}
                 onClose={closeFinanceGoal}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
             />
             <TimeLapseModal
                 isOpen={isOpenTimeLapse}
                 onClose={closeTimeLapse}
                 interest={interest?.data}
                 myInterest={getInterest?.data?.interests}
-                reload={mutate}
+                reload={interestReload}
             />
         </>
     );

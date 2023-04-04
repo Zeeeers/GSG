@@ -60,20 +60,20 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                     py="10px"
                     px="16px"
                     rounded="8px"
-                    spacing="24px"
+                    spacing="10px"
                     w="fit-content"
                 >
-                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                    <HStack spacing="0px" fontSize="13px" fontFamily="inter" align="center" justify="center">
                         <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                         <Text fontSize="13px">Contraseña</Text>
                     </HStack>
 
-                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                    <HStack spacing="0px" fontSize="13px" fontFamily="inter">
                         <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                         <Text fontSize="13px">Nombre</Text>
                     </HStack>
 
-                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                    <HStack spacing="0px" fontSize="13px" fontFamily="inter" align="center" justify="center">
                         <Icon
                             as={userResponse?.user.organization.image ? BsCheck : MdClose}
                             color={userResponse?.user.organization.image ? 'teal.500' : 'red.500'}
@@ -83,7 +83,7 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                         <Text fontSize="13px">Imagen de perfil</Text>
                     </HStack>
 
-                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                    <HStack spacing="0px" fontSize="13px" fontFamily="inter">
                         <Icon
                             as={userResponse?.user.organization.legal_representative_phone ? BsCheck : MdClose}
                             color={userResponse?.user.organization.legal_representative_phone ? 'teal.500' : 'red.500'}
@@ -95,7 +95,7 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
 
                     <Divider display={{ base: 'none', md: 'block' }} orientation="vertical" h="20px" w="2px" />
 
-                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                    <HStack spacing="0px" fontSize="13px" fontFamily="inter">
                         <Icon
                             as={userResponse?.user.newsletter ? BsCheck : MdClose}
                             color={userResponse?.user.newsletter ? 'teal.500' : 'red.500'}
@@ -105,7 +105,7 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                         <Text fontSize="13px">Correo Match</Text>
                     </HStack>
 
-                    <HStack spacing="3px" fontSize="13px" fontFamily="inter">
+                    <HStack spacing="0px" fontSize="13px" fontFamily="inter">
                         <Icon as={MdClose} color="red.500" w="24px" h="24px" />
                         <Text fontSize="13px">Intereses</Text>
                     </HStack>
@@ -120,6 +120,7 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                     rounded="8px"
                     spacing="24px"
                     w="full"
+                    maxW="640px"
                 >
                     <HStack spacing="3px" fontSize="13px" fontFamily="inter">
                         <Icon
@@ -138,20 +139,13 @@ const DiableNotificationExperience = ({ page, setStepStatus }: DiableNotificatio
                 </Stack>
             )}
 
-            <VStack align="start" spacing="8px" textAlign="start">
+            <VStack align="start" spacing="8px" textAlign="start" w="full" maxW="640px">
                 <Text fontSize="24px" lineHeight={{ base: '28.8px', md: '31.2px' }} fontWeight="medium">
                     {page === 3
-                        ? 'No recibirás el correo match con proyectos de tu interés, ¿Seguro que quieres continuar?'
+                        ? 'No recibirás el correo match con proyectos de tu interés,  ¿Seguro que quieres continuar?'
                         : '¿Estás seguro de querer continuar sin seleccionar intereses?'}
                 </Text>
-                <Text
-                    w="full"
-                    maxW="660px"
-                    fontFamily="inter"
-                    fontSize="16px"
-                    lineHeight={{ base: '22.4px', md: '20.8px' }}
-                    color="gray.400"
-                >
+                <Text fontFamily="inter" fontSize="16px" lineHeight={{ base: '22.4px', md: '20.8px' }} color="gray.400">
                     {page === 3
                         ? 'Si continúas, te perderás la oportunidad de recibir correos que coincidan con proyectos relacionados a tus preferencias. Puedes cambiar esto luego en tu perfil.'
                         : 'Si no seleccionas algún interés, te perderás la oportunidad de recibir correos que coincidan con proyectos relacionados a tus preferencias. Puedes cambiar esto luego en tu perfil.'}

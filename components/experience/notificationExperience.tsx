@@ -55,10 +55,11 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                 w="full"
                 align="start"
                 spacing="48px"
+                pb="50px"
             >
                 <VStack align="start" spacing="32px">
-                    <Text fontSize="3xl" fontWeight="bold" textTransform="uppercase">
-                        ¡Recibe tu correo Match!
+                    <Text fontSize="3xl" fontWeight="bold" textTransform="uppercase" lineHeight="120%">
+                        Recibe tu correo Match
                     </Text>
 
                     <VStack align="start" spacing="16px">
@@ -89,6 +90,8 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                             variant="solid"
                             h="40px"
                             w="full"
+                            fontWeight="normal"
+                            fontFamily="inter"
                             bg={notification === 'biweekly' ? 'teal.800' : 'gray.600'}
                             _hover={{ bg: notification === 'biweekly' ? 'teal.700' : 'teal.600' }}
                             onClick={() => setNotification('biweekly')}
@@ -100,6 +103,8 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                             variant="solid"
                             h="40px"
                             w="full"
+                            fontWeight="normal"
+                            fontFamily="inter"
                             bg={notification === 'monthly' ? 'teal.800' : 'gray.600'}
                             _hover={{ bg: notification === 'monthly' ? 'teal.700' : 'teal.600' }}
                             onClick={() => setNotification('monthly')}
@@ -111,6 +116,8 @@ const NotificationExperience = ({ setPage, setStepStatus }: NotificationExperien
                             variant="solid"
                             h="40px"
                             w="full"
+                            fontWeight="normal"
+                            fontFamily="inter"
                             bg={notification === null ? 'teal.800' : 'gray.600'}
                             _hover={{ bg: notification === null ? 'teal.700' : 'teal.600' }}
                             onClick={() => setNotification(null)}

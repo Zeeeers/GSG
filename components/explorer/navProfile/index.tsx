@@ -49,7 +49,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser }: NewPro
             } else {
                 setStepPage(0);
             }
-        }, 5000);
+        }, 10000);
     }, [stepPage]);
 
     return (

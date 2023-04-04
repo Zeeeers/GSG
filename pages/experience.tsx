@@ -95,7 +95,7 @@ const Experience = () => {
                 <Stack w="full" align="center" justify="center" mt={{ base: '26px', md: '150px' }}>
                     <Stack
                         w={{ base: 'fit-content', md: 'full' }}
-                        maxW="800px"
+                        maxW="700px"
                         direction={{ base: 'column', md: 'row' }}
                         alignItems="center"
                         spacing={0}
@@ -105,7 +105,11 @@ const Experience = () => {
                     >
                         <VStack h="full" w="full" align={{ base: 'center', md: 'flex-end' }}>
                             <AnimatePresence exitBeforeEnter>
-                                <DiableNotificationExperience setPage={setIndexPage} setStepStatus={setStepStatus} page={indexPage}/>
+                                <DiableNotificationExperience
+                                    setPage={setIndexPage}
+                                    setStepStatus={setStepStatus}
+                                    page={indexPage}
+                                />
                             </AnimatePresence>
                         </VStack>
                     </Stack>
