@@ -288,7 +288,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
                     </Button>
                 )}
 
-                {userResponse?.user && userResponse.user.onboarding && !getInterest?.data.interests.has_preferences && (
+                {userResponse?.user && userResponse.user.onboarding && !userResponse.user.newsletter && (
                     <NavProfile
                         userResponse={userResponse}
                         getInterest={getInterest}
