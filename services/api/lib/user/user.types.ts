@@ -1,6 +1,6 @@
 // Dependencies
 import { ApiResponse } from 'apisauce';
-import { User } from '../../types/User';
+import { Frequency, User } from '../../types/User';
 
 // Create Investor Types
 export interface InvestorForm {
@@ -24,7 +24,8 @@ export type CreateInvestorCall = (payload: InvestorRequest) => Promise<ApiRespon
 
 // Send Match
 export interface SendMatchForm {
-    email: string;
+    user_email: string;
+    destinatary_email?: string;
 }
 
 export interface SendMatchResponse {
@@ -80,6 +81,7 @@ export interface UserForm {
     country_id?: number;
     image?: string;
     newsletter: boolean;
+    frequency_newsletter: Frequency;
 }
 
 export interface UpdateUserRequest {

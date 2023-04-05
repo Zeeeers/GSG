@@ -58,19 +58,27 @@ const UserMenu: React.FC<Props> = ({ onLogOut }) => {
                     <Avatar
                         size="sm"
                         //@ts-ignore
-                        src={user?.organization.image ?? orga?.image}
-                        name={user?.name ?? 'GSG'}
+                        src={user?.user?.organization?.image ?? orga?.image}
+                        name={user?.user?.name ?? 'GSG'}
                         height="32px"
                         width="32px"
                         mr="10px"
                         icon={<></>}
                         //@ts-ignore
-                        bgColor={user?.organization.image ? 'transparent' : 'teal.400'}
+                        bgColor={user?.user?.organization?.image ? 'transparent' : 'teal.400'}
                         color={'white'}
                     />
 
-                    <Text as="span" fontWeight="normal" fontSize="md" fontFamily="inter" color="white.base">
-                        {user?.name}
+                    <Text
+                        as="span"
+                        fontWeight="normal"
+                        fontSize="md"
+                        fontFamily="inter"
+                        color="white.base"
+                        overflow="hidden"
+                        maxW={{ base: '55px', sm: 'full' }}
+                    >
+                        {user?.user?.name}
                     </Text>
                     <Icon w={6} h={10} color="gray.50" as={HiChevronDown} />
                 </HStack>

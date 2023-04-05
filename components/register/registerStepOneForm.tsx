@@ -34,7 +34,7 @@ const RegisterStepOneForm: React.FC = () => {
     const formValues = useRegisterStore((s) => s.formValues);
     const {
         register,
-        formState: { errors },
+        formState: { errors, isValid, isSubmitted },
         handleSubmit,
     } = useForm<IRegisterOneForm>({
         resolver: zodResolver(registerOneShema),
@@ -67,7 +67,14 @@ const RegisterStepOneForm: React.FC = () => {
                     INFORMACIÓN DEL USUARIO
                 </Heading>
 
-                <VStack align="start" spacing={8}>
+                <VStack
+                    align="start"
+                    spacing={8}
+                    overflowY="scroll"
+                    overflowX="hidden"
+                    className="custom-scroll"
+                    pb="40px"
+                >
                     <FormControl id="userName" isInvalid={!!errors.userName}>
                         <FormLabel>
                             Nombre y apellido <span style={{ color: '#4FD1C5' }}>*</span>
@@ -145,11 +152,11 @@ const RegisterStepOneForm: React.FC = () => {
                             {errors.termsCheck?.message}
                         </FormErrorMessage>
                     </FormControl>
-
-                    <Button type="submit" variant="solid" mb={8} h="44px" w="full">
-                        Siguiente
-                    </Button>
                 </VStack>
+
+                <Button disabled={isSubmitted && !isValid} type="submit" variant="solid" mb={8} h="44px" w="full">
+                    Siguiente
+                </Button>
             </Stack>
 
             {isTermsOpen && <TermsModal isOpen={isTermsOpen} onClose={onTermsClose} />}

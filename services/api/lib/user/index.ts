@@ -6,5 +6,6 @@ export {
     sendMatch,
     useInvestorAll,
     updateStatus,
+    userFetcher,
     default as user,
 } from './user.calls';

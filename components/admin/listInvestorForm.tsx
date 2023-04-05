@@ -14,9 +14,13 @@ import {
     VStack,
     FormControl,
     Switch,
+    Icon,
 } from '@chakra-ui/react';
+import { Tooltip } from '@chakra-ui/react';
 import { Pagination } from 'common/pagination';
 import React, { useState } from 'react';
+import { BsCheck } from 'react-icons/bs';
+import { FaEllipsisH } from 'react-icons/fa';
 import { useInvestorAll } from 'services/api/lib/user';
 import { User } from 'services/api/types/User';
 
@@ -113,14 +117,49 @@ const ListInvestorForm = (props: any) => {
                         <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
                             Creación
                         </Th>
-                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
+                        <Th
+                            pl={0}
+                            fontWeight="700"
+                            fontSize="18px"
+                            fontFamily="inter"
+                            color="gray.50"
+                            border="none"
+                            w="200px"
+                        >
                             Nombre del inversionista
                         </Th>
-                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
+                        <Th
+                            pl={0}
+                            fontWeight="700"
+                            fontSize="18px"
+                            fontFamily="inter"
+                            color="gray.50"
+                            border="none"
+                            w="200px"
+                        >
                             Correo
                         </Th>
-                        <Th pl={0} fontWeight="700" fontSize="18px" fontFamily="inter" color="gray.50" border="none">
+                        <Th
+                            pl={0}
+                            fontWeight="700"
+                            fontSize="18px"
+                            fontFamily="inter"
+                            color="gray.50"
+                            border="none"
+                            w="65px"
+                        >
                             Status
+                        </Th>
+                        <Th
+                            pl={0}
+                            fontWeight="700"
+                            fontSize="18px"
+                            fontFamily="inter"
+                            color="gray.50"
+                            border="none"
+                            w="120px"
+                        >
+                            Confirmada
                         </Th>
                         <Th pl={0} border="none"></Th>
                     </Tr>
@@ -136,20 +175,65 @@ const ListInvestorForm = (props: any) => {
                                         year: 'numeric',
                                     })}
                                 </Td>
-                                <Td fontFamily="inter" pl={0} py="30px">
-                                    {investor.name}
+                                <Td fontFamily="inter" pl={0} py="30px" w="200px">
+                                    {investor?.name}
                                 </Td>
-                                <Td fontFamily="inter" pl={0}>
-                                    {investor.email}
+                                <Td fontFamily="inter" pl={0} w="200px">
+                                    {investor?.email}
                                 </Td>
 
                                 <Td fontFamily="inter" pl={0}>
                                     <FormControl display="flex" alignItems="center">
                                         <Switch
-                                            onChange={() => handleStatus(investor.id)}
-                                            isChecked={investor.active}
+                                            size="md"
+                                            onChange={() => handleStatus(investor?.id)}
+                                            isChecked={investor?.active}
                                         />
                                     </FormControl>
+                                </Td>
+
+                                <Td fontFamily="inter" pl={0}>
+                                    {investor?.user_pass_created ? (
+                                        <Tooltip
+                                            hasArrow
+                                            label="Cuenta confirmada"
+                                            bg="teal.500"
+                                            fontFamily="inter"
+                                            fontSize="14px"
+                                            rounded="16px"
+                                            py="4px"
+                                            px="10px"
+                                            direction="rtl"
+                                        >
+                                            <Stack bg="teal.500" w="22px" rounded="full">
+                                                <Icon w="22px" h="22px" color="gray.50" as={BsCheck} />
+                                            </Stack>
+                                        </Tooltip>
+                                    ) : (
+                                        <Tooltip
+                                            hasArrow
+                                            label="Cuenta pendiente"
+                                            bg="gray.500"
+                                            fontFamily="inter"
+                                            fontSize="14px"
+                                            rounded="16px"
+                                            py="4px"
+                                            px="10px"
+                                            direction="rtl"
+                                        >
+                                            <Stack
+                                                justify="center"
+                                                align="center"
+                                                bg="gray.500"
+                                                w="22px"
+                                                h="22px"
+                                                rounded="full"
+                                                px="10px"
+                                            >
+                                                <Icon w={3} h={3} color="gray.50" as={FaEllipsisH} />
+                                            </Stack>
+                                        </Tooltip>
+                                    )}
                                 </Td>
                                 <Td fontFamily="inter" pl="0">
                                     <Button
@@ -159,7 +243,7 @@ const ListInvestorForm = (props: any) => {
                                         onClick={() => handleDelete(investor.id)}
                                         variant="solid"
                                         colorScheme="red"
-                                        w="129px"
+                                        w="fit-content"
                                         px="12px"
                                     >
                                         Eliminar cuenta
@@ -171,6 +255,81 @@ const ListInvestorForm = (props: any) => {
                 </Tbody>
             </Table>
 
+            <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
+                {investors
+                    ?.map((investor: User) => (
+                        <>
+                            <VStack w="full" align="flex-start" pt="30px" spacing="20px">
+                                <HStack w="full" align="center" justify="space-between">
+                                    <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                        Nombre del inversionista
+                                    </Text>
+
+                                    <Text>{investor.name}</Text>
+                                </HStack>
+
+                                <HStack w="full" align="center" justify="space-between">
+                                    <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                        Correo
+                                    </Text>
+
+                                    <Text>{investor.email}</Text>
+                                </HStack>
+
+                                <HStack w="full" align="center" justify="space-between">
+                                    <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
+                                        Status
+                                    </Text>
+                                    <FormControl display="flex" alignItems="center">
+                                        <Switch
+                                            onChange={() => handleStatus(investor.id)}
+                                            isChecked={investor.active}
+                                        />
+                                    </FormControl>
+                                </HStack>
+
+                                <HStack w="full" fontFamily="inter" pl={0}>
+                                    <Text>Confirmada</Text>
+                                    {investor?.user_pass_created ? (
+                                        <Stack bg="teal.500" w="22px" rounded="full">
+                                            <Icon w="22px" h="22px" color="gray.50" as={BsCheck} />
+                                        </Stack>
+                                    ) : (
+                                        <Stack
+                                            justify="center"
+                                            align="center"
+                                            bg="gray.500"
+                                            w="22px"
+                                            h="22px"
+                                            rounded="full"
+                                            px="10px"
+                                        >
+                                            <Icon w={3} h={3} color="gray.50" as={FaEllipsisH} />
+                                        </Stack>
+                                    )}
+                                </HStack>
+
+                                <HStack w="full" align="center" justify="end">
+                                    <Button
+                                        type="button"
+                                        isLoading={deleteProduct}
+                                        loadingText="Eliminando producto"
+                                        onClick={() => handleDelete(investor.id)}
+                                        variant="solid"
+                                        colorScheme="red"
+                                        w="fit-content"
+                                    >
+                                        Eliminar cuenta
+                                    </Button>
+                                </HStack>
+                            </VStack>
+
+                            <Divider />
+                        </>
+                    ))
+                    .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
+            </VStack>
+
             <Stack align="flex-start" w="full" pt="30px">
                 <Pagination
                     pages={Math.ceil((investorFilter?.length ?? 0) / 12)}
@@ -178,55 +337,6 @@ const ListInvestorForm = (props: any) => {
                     onChange={(page) => setPagination(page)}
                 />
             </Stack>
-
-            <VStack display={{ base: 'block', lg: 'none' }} w="full" align="flex-start" mt="40px">
-                {investors?.map((investor: User) => (
-                    <>
-                        <VStack w="full" align="flex-start" pt="30px" spacing="20px">
-                            <HStack w="full" align="center" justify="space-between">
-                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Nombre del inversionista
-                                </Text>
-
-                                <Text>{investor.name}</Text>
-                            </HStack>
-
-                            <HStack w="full" align="center" justify="space-between">
-                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Correo
-                                </Text>
-
-                                <Text>{investor.email}</Text>
-                            </HStack>
-
-                            <HStack w="full" align="center" justify="space-between">
-                                <Text display={{ base: 'none', sm: 'block' }} fontSize="16px">
-                                    Status
-                                </Text>
-                                <FormControl display="flex" alignItems="center">
-                                    <Switch onChange={() => handleStatus(investor.id)} isChecked={investor.active} />
-                                </FormControl>
-                            </HStack>
-
-                            <HStack w="full" align="center" justify="space-between">
-                                <Stack display={{ base: 'none', sm: 'block' }} w="full"></Stack>
-                                <Button
-                                    type="button"
-                                    isLoading={deleteProduct}
-                                    loadingText="Eliminando producto"
-                                    onClick={() => handleDelete(investor.id)}
-                                    variant="solid"
-                                    colorScheme="red"
-                                >
-                                    Eliminar cuenta
-                                </Button>
-                            </HStack>
-                        </VStack>
-
-                        <Divider />
-                    </>
-                ))}
-            </VStack>
         </>
     );
 };

@@ -96,7 +96,7 @@ const FinanceGoalModal: React.FC<Props> = ({ isOpen, onClose, interest, myIntere
                 <ModalCloseButton />
                 <ModalHeader p={0} mb="20px" ref={initialRef} tabIndex={2}>
                     <VStack alignItems="flex-start" spacing="10px">
-                        <Heading fontFamily="barlow" fontSize="24px" lineHeight="20.8px" textTransform="uppercase">
+                        <Heading fontFamily="barlow" fontSize="24px" lineHeight="130%" textTransform="uppercase">
                             MONTO DE APORTE BUSCADO (CLP)
                         </Heading>
                         <Text fontFamily="inter" fontSize="16px" lineHeight="20.8px" fontWeight="normal">

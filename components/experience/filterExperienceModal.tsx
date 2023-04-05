@@ -11,6 +11,7 @@ import {
     Stack,
     Img,
 } from '@chakra-ui/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -26,7 +27,14 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     const router = useRouter();
 
     const welcome = (
-        <VStack align="center">
+        <VStack
+            key="welcome"
+            as={motion.div}
+            initial={{ x: -50, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+            align="center"
+        >
             <Img
                 src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
                 w="213px"
@@ -50,7 +58,14 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     );
 
     const explorer = (
-        <VStack align="center">
+        <VStack
+            key="explorer"
+            as={motion.div}
+            initial={{ x: -50, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+            align="center"
+        >
             <Stack background="gray.600" p="15px" rounded="12px">
                 <Img src="/images/icons/explorer.svg" />
             </Stack>
@@ -74,7 +89,14 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     );
 
     const review = (
-        <VStack align="center">
+        <VStack
+            key="review"
+            as={motion.div}
+            initial={{ x: -50, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+            align="center"
+        >
             <Stack background="gray.600" p="15px" rounded="12px">
                 <Img src="/images/icons/pharap.svg" />
             </Stack>
@@ -91,7 +113,14 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
     );
 
     const contact = (
-        <VStack align="center">
+        <VStack
+            key="contact"
+            as={motion.div}
+            initial={{ x: -50, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            animate={{ x: 0, opacity: 1, transition: { type: 'spring', duration: 0.8 } }}
+            align="center"
+        >
             <Stack background="gray.600" p="15px" rounded="12px">
                 <Img src="/images/icons/contact.svg" />
             </Stack>
@@ -125,8 +154,8 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <ModalContent rounded="2xl" px="30px" py="40px">
                 <ModalCloseButton />
                 <ModalBody mb={6} pt={0}>
-                    <VStack alignItems="flex-start" w="full" spacing="30px">
-                        {page[indexPage]}
+                    <VStack alignItems="flex-start" w="full" spacing="30px" transition="all">
+                        <AnimatePresence exitBeforeEnter>{page[indexPage]}</AnimatePresence>
 
                         <HStack w="full" justify="space-between">
                             {indexPage === 0 && (
@@ -144,6 +173,19 @@ const FilterExperienceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                     fontSize="16px"
                                 >
                                     Saltar
+                                </Button>
+                            )}
+
+                            {indexPage > 0 && (
+                                <Button
+                                    onClick={() => setIndexPage(indexPage - 1)}
+                                    variant="ghost"
+                                    h="40px"
+                                    color="gray.50"
+                                    fontFamily="inter"
+                                    fontSize="16px"
+                                >
+                                    Atrás
                                 </Button>
                             )}
 

@@ -59,7 +59,6 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         </Badge>
                     </HStack>
                     <CircularProgress
-                        //@ts-ignore
                         value={project?.progress ?? 0}
                         display={{ base: 'flex', sm: 'none' }}
                         color="teal.500"
@@ -67,11 +66,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         thickness="4px"
                     >
                         <CircularProgressLabel fontFamily="inter" fontSize="14px">
-                            {
-                                //@ts-ignore
-                                project?.progress ?? 0
-                            }
-                            %
+                            {project?.progress ?? 0}%
                         </CircularProgressLabel>
                     </CircularProgress>
                 </HStack>
@@ -116,7 +111,6 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
             {project?.status === 'sketch' ? (
                 <HStack spacing="30px">
                     <CircularProgress
-                        //@ts-ignore
                         value={project?.progress ?? 0}
                         display={{ base: 'none', sm: 'block' }}
                         color="teal.500"
@@ -124,11 +118,7 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         thickness="10px"
                     >
                         <CircularProgressLabel fontFamily="inter" fontSize="14px">
-                            {
-                                //@ts-ignore
-                                project?.progress ?? 0
-                            }
-                            %
+                            {project?.progress ?? 0}%
                         </CircularProgressLabel>
                     </CircularProgress>
 

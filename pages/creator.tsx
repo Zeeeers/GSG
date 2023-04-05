@@ -202,7 +202,7 @@ const Creator: NextPage = ({ project, quality }) => {
             patrimony: project?.business_model?.split(';;')[5],
 
             better_project: project?.better_project ?? '',
-            additional_info: project?.better_project ?? '',
+            additional_info: project?.additional_info ?? '',
 
             linkedinForm: project?.contacts && project?.contacts[0],
             instagramForm: project?.contacts && project?.contacts[1],
@@ -686,7 +686,12 @@ const Creator: NextPage = ({ project, quality }) => {
 
         if (ok) {
             if (isPreview) {
-                window.open(`${window.location.origin}/projectDetail/${project?.id}`, '_blank');
+                window.open(
+                    `${window.location.origin}/project/${project?.id}-${project?.title
+                        .toLowerCase()
+                        .replaceAll(' ', '-')}`,
+                    '_blank',
+                );
                 setSaveDraft(false);
             } else {
                 setSaveDraft(false);
@@ -788,7 +793,7 @@ const Creator: NextPage = ({ project, quality }) => {
 
     return (
         <>
-            <NextSeo title="Creador de proyecto - MATCH" />
+            <NextSeo title="Creador de proyecto - MATCH" noindex />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
             <HStack

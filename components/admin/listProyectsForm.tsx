@@ -149,7 +149,12 @@ const ListProyectsForm = (props: any) => {
                                 </Td>
                                 <Td fontFamily="inter" pl="50px">
                                     <HStack spacing="20px">
-                                        <Link href={`/projectDetail/${proyect?.id}`} target="_blank">
+                                        <Link
+                                            href={`/project/${proyect?.id}-${proyect?.title
+                                                .toLowerCase()
+                                                .replaceAll(' ', '-')}`}
+                                            target="_blank"
+                                        >
                                             <Button variant="solid">Ver proyecto</Button>
                                         </Link>
                                         <Button

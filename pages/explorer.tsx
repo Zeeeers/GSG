@@ -31,18 +31,18 @@ import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from 'layouts/main/navbar';
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useGsg } from 'services/api/lib/gsg';
 import { gsgAllFetcher, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { useOrganization } from 'services/api/lib/organization';
 import { useQualityList } from 'services/api/lib/qualities';
-import { useUser } from 'services/api/lib/user';
+import { userFetcher, useUser } from 'services/api/lib/user';
 import { useFilterStore } from 'stores/filters';
 import { CgClose } from 'react-icons/cg';
-import { MdFilterList } from 'react-icons/md';
+import { MdClose, MdFilterList } from 'react-icons/md';
 import ThirdParties from 'components/projectDetail/formatText/thirdParties';
 import Stage from 'components/projectDetail/formatText/stage';
 import StageCapital from 'components/projectDetail/formatText/stageCapital';
@@ -53,29 +53,42 @@ import Time from 'components/projectDetail/formatText/time';
 import FilterExperienceModal from 'components/experience/filterExperienceModal';
 import Router, { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { BsCheck } from 'react-icons/bs';
+import cookies from 'cookie';
+import { useInterest } from 'services/api/lib/interest';
+import ChangePhoneModal from 'components/explorer/changePhoneModal';
+import { isValidPhoneNumber } from 'libphonenumber-js';
+import NavProfile from 'components/explorer/navProfile';
 
-const Explorer: NextPage = () => {
+const Explorer: NextPage = ({ user: initialData }) => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [getPorjects, setGetProjets] = useState([]);
+    const [visible, setVisible] = useState(true);
     const [data, setData] = useState([]);
     const [hasMore, setHasMore] = useState(true);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
+    const { isOpen: isOpenPhone, onOpen: openPhone, onClose: closePhone } = useDisclosure();
 
     const router = useRouter();
 
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
-    const { data: user } = useUser();
+    const { data: userResponse, mutate: userReload } = useUser(undefined, {
+        revalidateOnFocus: true,
+        initialData: initialData,
+    });
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
+    const { data: getInterest } = useInterest();
+
     const filters = useFilterStore((s) => s.filters);
     const setFilters = useFilterStore((s) => s.setFilters);
 
-    const filtersResult = () => {
+    const filtersResult = useCallback(() => {
         const projectSort = gsg?.data?.projects?.flat()?.sort((a, b) => {
             if (orderBy === 'desc') {
                 //@ts-ignore
@@ -87,17 +100,24 @@ const Explorer: NextPage = () => {
         });
 
         const projectFilter = projectSort
-            ?.filter((p) => Object.values(p?.qualities ?? []).find((p) => filters?.qualities?.includes(p?.name) ?? []))
-            .filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
-            .filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
-            .filter((p) => filters?.surveyStage?.includes(p?.capital_stage) ?? [])
-            .filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
-            .filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
-            .filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
-            .filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
+            ?.filter((p) =>
+                Object.values(p?.qualities ?? { qualities: {} }).some(
+                    (q) => filters?.qualities?.includes(q.name) ?? [],
+                ),
+            )
+            ?.filter((p) => filters?.certification?.includes(p?.third_parties) ?? [])
+            ?.filter((p) => filters?.projectStage?.includes(p?.stage) ?? [])
+            ?.filter(
+                (p) =>
+                    (filters?.surveyStage?.includes(p?.capital_stage) || filters?.surveyStage?.includes(p?.debt)) ?? [],
+            )
+            ?.filter((p) => filters?.expectedReturn?.includes(p?.expected_rentability) ?? [])
+            ?.filter((p) => filters?.contributionAmount?.includes(p?.finance_goal) ?? [])
+            ?.filter((p) => filters?.investmentTerms?.includes(p?.time_lapse) ?? [])
+            ?.filter((p) => p?.title?.toLowerCase().includes(filters?.search?.toLowerCase() ?? ''));
 
         return projectFilter;
-    };
+    }, [filters, orderBy, gsg]);
 
     const optionsCertification = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -150,10 +170,10 @@ const Explorer: NextPage = () => {
     ];
 
     useEffect(() => {
-        if (user) {
+        if (userResponse?.user) {
             setIsVisible(true);
         }
-    }, [user]);
+    }, [userResponse?.user]);
 
     useEffect(() => {
         const { onboarding } = Router.query;
@@ -161,7 +181,7 @@ const Explorer: NextPage = () => {
         if (onboarding && onboarding === 'filter-experience') {
             openExperience(true);
         }
-    }, [isOpenExperience, router.query]);
+    }, [isOpenExperience, router.query, openExperience]);
 
     useEffect(() => {
         if (filters?.qualities?.length === 0) {
@@ -199,12 +219,15 @@ const Explorer: NextPage = () => {
         filters?.expectedReturn,
         filters?.contributionAmount,
         filters?.investmentTerms,
+        setFilters,
+        filters,
     ]);
 
     return (
         <>
             <NextSeo title={'Explorador - MATCH'} />
             <Navbar />
+
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 {orga !== undefined &&
                     (orga?.gsg_project_id ? <StatusProject project={project?.data?.gsg_project} /> : <NotProject />)}
@@ -242,7 +265,7 @@ const Explorer: NextPage = () => {
                     </HStack>
                 )}
 
-                {user && (
+                {userResponse?.user && (
                     <Button
                         onClick={() =>
                             router.push({
@@ -263,6 +286,16 @@ const Explorer: NextPage = () => {
                     >
                         <Img src="/images/icons/question.svg" />
                     </Button>
+                )}
+
+                {userResponse?.user && visible && userResponse.user.onboarding && (
+                    <NavProfile
+                        userResponse={userResponse}
+                        getInterest={getInterest}
+                        openPhone={openPhone}
+                        reloadUser={userReload}
+                        setVisible={setVisible}
+                    />
                 )}
 
                 <AnimatePresence>
@@ -291,7 +324,7 @@ const Explorer: NextPage = () => {
                                     >
                                         Todos los proyectos de inversión
                                     </Heading>
-                                    {user ? (
+                                    {userResponse?.user ? (
                                         <Text>
                                             A continuación se visualizan todos los proyectos activos dentro de Match.
                                             Puedes filtrarlos según lo requieras.
@@ -375,7 +408,7 @@ const Explorer: NextPage = () => {
                                                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                             />
                                         </Stack>
-                                        {user && (
+                                        {userResponse?.user && (
                                             <Button
                                                 leftIcon={<Icon as={MdFilterList} w="20px" h="20px" />}
                                                 onClick={() => setIsOpenFilter(!isOpenFilter)}
@@ -666,51 +699,51 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        w="full"
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={filters?.qualities}
-                                                        onChange={(value: Array<string>) => {
-                                                            setFilters({
-                                                                ...filters,
-                                                                qualities: value.length === 0 ? [] : value,
-                                                            });
-                                                        }}
-                                                    >
-                                                        {qualities?.qualities.map((quality) => (
-                                                            <MenuItemOption
-                                                                w="full"
-                                                                key={`${quality.id}-Filter`}
-                                                                value={quality.icon.name}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                <Flex align="center" justify="flex-start" w="full">
-                                                                    <Image
-                                                                        rounded="full"
-                                                                        Width={32}
-                                                                        Height={32}
-                                                                        mr={4}
-                                                                        src={quality.icon.image}
-                                                                        alt={quality.icon.name}
-                                                                    />
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {qualities?.qualities
+                                                            ?.filter(
+                                                                (qualitie) =>
+                                                                    !filters?.qualities?.includes(qualitie.icon.name),
+                                                            )
+                                                            .map((quality) => (
+                                                                <MenuItemOption
+                                                                    w="full"
+                                                                    key={`${quality.id}-Filter`}
+                                                                    value={quality.icon.name}
+                                                                    onClick={(e) => {
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            qualities: [
+                                                                                ...(filters?.qualities ?? []),
+                                                                                quality.icon.name,
+                                                                            ],
+                                                                        });
+                                                                    }}
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    <Flex align="center" justify="flex-start" w="full">
+                                                                        <Image
+                                                                            rounded="full"
+                                                                            Width={32}
+                                                                            Height={32}
+                                                                            mr={4}
+                                                                            src={quality.icon.image}
+                                                                            alt={quality.icon.name}
+                                                                        />
 
-                                                                    {quality.icon.name}
-                                                                </Flex>
-                                                            </MenuItemOption>
-                                                        ))}
+                                                                        {quality.icon.name}
+                                                                    </Flex>
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -727,7 +760,12 @@ const Explorer: NextPage = () => {
                                                     w={{ base: 'full', sm: '332px' }}
                                                     h="40px"
                                                 >
-                                                    <Flex px="16px" alignItems="center" justify="space-between">
+                                                    <Flex
+                                                        w="full"
+                                                        px="16px"
+                                                        alignItems="center"
+                                                        justify="space-between"
+                                                    >
                                                         <Text as="p" fontFamily="inter" fontSize="16px">
                                                             Certificación
                                                             {filters?.certification &&
@@ -739,42 +777,36 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
-                                                    maxHeight="55vh"
                                                     className="custom-scroll"
+                                                    maxHeight="55vh"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={
-                                                            filters?.certification?.length === 0
-                                                                ? undefined
-                                                                : filters?.certification
-                                                        }
-                                                        onChange={(value: Array<string>) =>
-                                                            setFilters({
-                                                                ...filters,
-                                                                certification: value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
-                                                    >
-                                                        {optionsCertification?.map((c, index) => (
-                                                            <MenuItemOption
-                                                                key={`${index}-Filter`}
-                                                                value={c.value}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                {c.label}
-                                                            </MenuItemOption>
-                                                        ))}
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {optionsCertification
+                                                            ?.filter((c) => !filters?.certification?.includes(c.value))
+                                                            .map((c, index) => (
+                                                                <MenuItemOption
+                                                                    key={`${index}-Filter`}
+                                                                    value={c.value}
+                                                                    onClick={() =>
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            certification: [
+                                                                                ...(filters?.certification ?? []),
+                                                                                c.value,
+                                                                            ],
+                                                                        })
+                                                                    }
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    {c.label}
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -803,38 +835,37 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', sm: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={filters?.projectStage}
-                                                        onChange={(value: Array<string>) =>
-                                                            setFilters({
-                                                                ...filters,
-                                                                projectStage: value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
-                                                    >
-                                                        {optionsProjectStage?.map((ps, index) => (
-                                                            <MenuItemOption
-                                                                key={`${index}-Filter`}
-                                                                value={ps.value}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                {ps.label}
-                                                            </MenuItemOption>
-                                                        ))}
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {optionsProjectStage
+                                                            ?.filter((ps) => !filters?.projectStage?.includes(ps.value))
+                                                            .map((ps, index) => (
+                                                                <MenuItemOption
+                                                                    w="full"
+                                                                    key={`${index}-Filter`}
+                                                                    value={ps.value}
+                                                                    onClick={() =>
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            projectStage: [
+                                                                                ...(filters?.projectStage ?? []),
+                                                                                ps.value,
+                                                                            ],
+                                                                        })
+                                                                    }
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    {ps.label}
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -863,38 +894,36 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={filters?.surveyStage}
-                                                        onChange={(value: Array<string>) =>
-                                                            setFilters({
-                                                                ...filters,
-                                                                surveyStage: value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
-                                                    >
-                                                        {optionsSurveyStage.map((ss, index) => (
-                                                            <MenuItemOption
-                                                                key={`${index}-Filter`}
-                                                                value={ss.value}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                {ss.label}
-                                                            </MenuItemOption>
-                                                        ))}
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {optionsSurveyStage
+                                                            ?.filter((ss) => !filters?.surveyStage?.includes(ss.value))
+                                                            ?.map((ss, index) => (
+                                                                <MenuItemOption
+                                                                    key={`${index}-Filter`}
+                                                                    value={ss.value}
+                                                                    onClick={() =>
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            surveyStage: [
+                                                                                ...(filters?.surveyStage ?? []),
+                                                                                ss.value,
+                                                                            ],
+                                                                        })
+                                                                    }
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    {ss.label}
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -923,38 +952,38 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={filters?.expectedReturn}
-                                                        onChange={(value: Array<string>) =>
-                                                            setFilters({
-                                                                ...filters,
-                                                                expectedReturn: value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
-                                                    >
-                                                        {optionsExpectedReturn.map((er, index) => (
-                                                            <MenuItemOption
-                                                                key={`${index}-Filter`}
-                                                                value={er.value}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                {er.label}
-                                                            </MenuItemOption>
-                                                        ))}
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {optionsExpectedReturn
+                                                            ?.filter(
+                                                                (er) => !filters?.expectedReturn?.includes(er.value),
+                                                            )
+                                                            .map((er, index) => (
+                                                                <MenuItemOption
+                                                                    key={`${index}-Filter`}
+                                                                    value={er.value}
+                                                                    onClick={() =>
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            expectedReturn: [
+                                                                                ...(filters?.expectedReturn ?? []),
+                                                                                er.value,
+                                                                            ],
+                                                                        })
+                                                                    }
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    {er.label}
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -983,39 +1012,39 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={filters?.contributionAmount}
-                                                        onChange={(value: Array<string>) =>
-                                                            setFilters({
-                                                                ...filters,
-                                                                contributionAmount:
-                                                                    value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
-                                                    >
-                                                        {optionContributionAmount?.map((ca, index) => (
-                                                            <MenuItemOption
-                                                                key={`${index}-Filter`}
-                                                                value={ca.value}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                {ca.label}
-                                                            </MenuItemOption>
-                                                        ))}
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {optionContributionAmount
+                                                            ?.filter(
+                                                                (ca) =>
+                                                                    !filters?.contributionAmount?.includes(ca.value),
+                                                            )
+                                                            ?.map((ca, index) => (
+                                                                <MenuItemOption
+                                                                    key={`${index}-Filter`}
+                                                                    value={ca.value}
+                                                                    onClick={() =>
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            contributionAmount: [
+                                                                                ...(filters?.contributionAmount ?? []),
+                                                                                ca.value,
+                                                                            ],
+                                                                        })
+                                                                    }
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    {ca.label}
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -1044,38 +1073,38 @@ const Explorer: NextPage = () => {
                                                 </MenuButton>
 
                                                 <MenuList
-                                                    w={{ base: 'full', md: '332px' }}
+                                                    w={{ base: '290px', sm: '332px' }}
                                                     overflowY="auto"
                                                     maxHeight="55vh"
                                                     className="custom-scroll"
                                                     bg="gray.800"
                                                 >
-                                                    <MenuOptionGroup
-                                                        title="Filtro"
-                                                        type="checkbox"
-                                                        value={filters?.investmentTerms}
-                                                        onChange={(value: Array<string>) =>
-                                                            setFilters({
-                                                                ...filters,
-                                                                investmentTerms: value.length === 0 ? undefined : value,
-                                                            })
-                                                        }
-                                                    >
-                                                        {optionsInvestmentTerms?.map((i, index) => (
-                                                            <MenuItemOption
-                                                                key={`${index}-Filter`}
-                                                                value={i.value}
-                                                                _checked={{
-                                                                    bgColor: 'gray.700',
-                                                                }}
-                                                                rounded="none"
-                                                                fontWeight="medium"
-                                                                icon={<></>}
-                                                                iconSpacing={'unset'}
-                                                            >
-                                                                {i.label}
-                                                            </MenuItemOption>
-                                                        ))}
+                                                    <MenuOptionGroup title="Filtro">
+                                                        {optionsInvestmentTerms
+                                                            ?.filter(
+                                                                (i) => !filters?.investmentTerms?.includes(i.value),
+                                                            )
+                                                            .map((i, index) => (
+                                                                <MenuItemOption
+                                                                    key={`${index}-Filter`}
+                                                                    value={i.value}
+                                                                    onClick={() =>
+                                                                        setFilters({
+                                                                            ...filters,
+                                                                            investmentTerms: [
+                                                                                ...(filters?.investmentTerms ?? []),
+                                                                                i.value,
+                                                                            ],
+                                                                        })
+                                                                    }
+                                                                    rounded="none"
+                                                                    fontWeight="medium"
+                                                                    icon={<></>}
+                                                                    iconSpacing={'unset'}
+                                                                >
+                                                                    {i.label}
+                                                                </MenuItemOption>
+                                                            ))}
                                                     </MenuOptionGroup>
                                                 </MenuList>
                                             </Menu>
@@ -1336,7 +1365,11 @@ const Explorer: NextPage = () => {
                                     <SimpleGrid w="full" columns={{ base: 1, md: 2, lg: 3 }} spacing="37px">
                                         {filtersResult()?.length !== 0 ? (
                                             filtersResult()?.map((project) => (
-                                                <ExplorerCard key={project.id} project={project} user={user} />
+                                                <ExplorerCard
+                                                    key={project.id}
+                                                    project={project}
+                                                    user={userResponse?.user}
+                                                />
                                             ))
                                         ) : (
                                             <Text fontSize="lg" fontWeight="medium">
@@ -1358,8 +1391,25 @@ const Explorer: NextPage = () => {
             </Container>
 
             <FilterExperienceModal isOpen={isOpenExperience} onClose={closeExperience} />
+            <ChangePhoneModal isOpen={isOpenPhone} onClose={closePhone} />
         </>
     );
+};
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
+    try {
+        const response = await userFetcher(req);
+
+        return {
+            props: {
+                user: response,
+            },
+        };
+    } catch (error) {
+        return {
+            props: {},
+        };
+    }
 };
 
 export default Explorer;

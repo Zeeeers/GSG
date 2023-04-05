@@ -65,8 +65,12 @@ export const useOrganizationProject = (idProject: number): SWRResponse<Organizat
 };
 
 // UPDATE
-export const update: UpdateOrganizationCall = async ({ token, data }) => {
-    const response = await api.patch<UpdateOrganizationResponse>(ENDPOINT.BASE, data, headers(token));
+export const update: UpdateOrganizationCall = async ({ token, isPyme, data }) => {
+    const response = await api.patch<UpdateOrganizationResponse>(
+        ENDPOINT.BASE,
+        data,
+        isPyme ? pymeHeaders(token) : headers(token),
+    );
 
     return response;
 };

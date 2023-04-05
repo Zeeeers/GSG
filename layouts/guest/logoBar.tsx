@@ -2,22 +2,25 @@
 //@ts-nocheck
 import { Flex, HStack, Img, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // Component
 const LogoBar: React.FC = ({ children }) => {
+    const router = useRouter();
+
     return (
         <Flex
             flexDirection="column"
             alignItems="center"
             bgImage="/images/nasa.jpg"
             bgSize="cover"
-            height="100%"
+            height={{ base: '100%', xl: router.asPath === '/login' ? '100vh' : '100%' }}
             w="full"
             bgPosition="center"
             bgAttachment="fixed"
-            pb="100px"
+            pb="70px"
         >
-            <VStack spacing="30px" mt="20px" h="100vh" w="full">
+            <VStack spacing="30px" mt="20px" h="fit-content" w="full">
                 <Text fontSize="36px" fontWeight="bold" textTransform="uppercase">
                     Inversión de impacto
                 </Text>
@@ -26,11 +29,12 @@ const LogoBar: React.FC = ({ children }) => {
                     alignItems="center"
                     margin="auto"
                     marginTop="40px"
-                    h="fit-content"
+                    h="100vh"
                     w={{ base: 'full', sm: '460px' }}
                     p={{ base: '25px', md: 30 }}
                     bgColor="gray.800"
                     rounded="16px"
+                    h="fit-content"
                 >
                     <Link href="/explorer" passHref>
                         <HStack w="full" spacing={3} alignItems="center" cursor="pointer">

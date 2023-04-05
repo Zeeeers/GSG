@@ -18,18 +18,19 @@ const EditableTitle = forwardRef<EditableProps, any>(({ fontSize, ...props }, re
         {({ isEditing, onEdit, onCancel, onSubmit }) => (
             <Stack
                 direction={{ base: isEditing ? 'column' : 'row', lg: 'row' }}
-                justifyContent="left"
+                justifyContent="space-between"
                 spacing={{ base: 3, lg: 6 }}
                 shouldWrapChildren
                 alignItems={'center'}
+                w="full"
             >
                 <>
-                    <EditablePreview fontSize={fontSize} fontWeight="bold" />
-                    <EditableInput fontSize={fontSize} fontWeight="bold" minW={{ lg: 'full' }} />
+                    <EditablePreview fontSize={fontSize} fontWeight="normal" />
+                    <EditableInput fontSize={fontSize} fontWeight="normal" minW={{ lg: 'full' }} />
                 </>
 
                 {!props.isDisabled && (
-                    <HStack spacing={4}>
+                    <HStack spacing={4} align="flex-end" justify="flex-end" w="full">
                         {isEditing ? (
                             <>
                                 <Tooltip hasArrow placement="bottom" label="Guardar" aria-label="Guardar">

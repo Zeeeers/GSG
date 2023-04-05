@@ -30,4 +30,5 @@ export interface Interest {
     time_lapse: TimeLapse;
     expected_rentability: ExpectedRentability;
     qualities: Array<Quality>;
+    has_preferences: boolean;
 }

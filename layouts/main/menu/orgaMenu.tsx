@@ -12,8 +12,10 @@ import {
     Text,
     Avatar,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { HiChevronDown } from 'react-icons/hi';
+import { RiLogoutBoxRLine, RiUser3Fill } from 'react-icons/ri';
 import { useOrganization } from 'services/api/lib/organization';
 
 // Types
@@ -26,6 +28,8 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
     // States
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const { data: organization } = useOrganization(true);
+
+    const router = useRouter();
 
     return (
         <Menu isLazy>
@@ -69,20 +73,20 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                 </HStack>
             </MenuButton>
 
-            <MenuList w="300px" shadow="md" py="23px" px="15px" borderRadius="8px 8px 16px 16px">
-                <Stack w="full" align="center" pb="10px">
+            <MenuList w="230px" shadow="2xl" py="23px" px="15px" borderRadius="8px" bg="gray.700" border="none">
+                <Stack w="full" align="center">
                     <Avatar
                         size="lg"
                         name={organization?.name ?? 'GSG'}
                         src={organization?.image}
-                        h="32px"
-                        w="32px"
+                        h="48px"
+                        w="48px"
                         mr="10px"
                         icon={<></>}
                         bgColor={organization?.image ? 'transparent' : 'blue.700'}
                         color={'white'}
                     />
-                    <Text fontSize="20px" fontWeight="medium">
+                    <Text fontSize="16px" fontFamily="inter" fontWeight="medium">
                         {organization?.name ?? 'GSG'}
                     </Text>
                 </Stack>
@@ -93,16 +97,35 @@ const OrgaMenu: React.FC<Props> = ({ onLogOut }) => {
                     fontWeight="normal"
                     fontSize="md"
                     fontFamily="inter"
-                    textAlign="center"
-                    alignContent="center"
-                    justifyContent="center"
+                    onClick={() => {
+                        router.push({ pathname: '/profile/organization' });
+                    }}
+                    _hover={{ bg: 'gray.600' }}
+                    rounded="4px"
+                >
+                    <HStack spacing="14px">
+                        <Icon w={5} h={5} color="gray.50" as={RiUser3Fill} />
+                        <Text>Mi perfil</Text>
+                    </HStack>
+                </MenuItem>
+
+                <MenuItem
+                    mt="14px"
+                    fontWeight="normal"
+                    fontSize="md"
+                    fontFamily="inter"
                     onClick={async () => {
                         setIsLoggingOut(true);
                         await onLogOut();
                         setIsLoggingOut(false);
                     }}
+                    _hover={{ bg: 'gray.600' }}
+                    rounded="4px"
                 >
-                    <Text>Cerrar Sesión</Text>
+                    <HStack spacing="14px">
+                        <Icon w={5} h={5} color="gray.50" as={RiLogoutBoxRLine} />
+                        <Text>Cerrar Sesión</Text>
+                    </HStack>
                 </MenuItem>
             </MenuList>
         </Menu>
