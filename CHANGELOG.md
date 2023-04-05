@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://gitlab.com/company-pitch/company-pitch-client/compare/v1.6.1...v1.7.0) (2023-04-05)
+
+
+### Features
+
+* **experience:** change options newslatter in frecuency data ([4877272](https://gitlab.com/company-pitch/company-pitch-client/commit/487727266bc42d8bfbe1e88afad0ca17f0246dfc))
+* **explorer:** add banner investor complete profile ([7df9eb6](https://gitlab.com/company-pitch/company-pitch-client/commit/7df9eb6e09cd069a4e5e1522563b2d412bd8cd59))
+* **explorer:** banner profile incomplete view only complete info ([6d69d7d](https://gitlab.com/company-pitch/company-pitch-client/commit/6d69d7d0506aa256d6ad043f74702c1304b60157))
+* **explorer:** change banner menu ([9b74fa7](https://gitlab.com/company-pitch/company-pitch-client/commit/9b74fa7c1d13eb12cf0b7af860ea802757e8c207))
+* **explorer:** change validations view banner profile incomplete ([98a252d](https://gitlab.com/company-pitch/company-pitch-client/commit/98a252d5205fbe130ed6bc0acd7990fcb5d5f54f))
+* **explorer:** close board profile incomplete ([1e67a7e](https://gitlab.com/company-pitch/company-pitch-client/commit/1e67a7e193d65338c14232bf72c4095016d62886))
+* **input:** phone number component with select flags countries ([4c41d33](https://gitlab.com/company-pitch/company-pitch-client/commit/4c41d33a21fd71664ced68f30db92b9d3b2b25e2))
+* **onboarding:** complete redesign of onboarding ([37f851d](https://gitlab.com/company-pitch/company-pitch-client/commit/37f851d06944f9d4fba0bb1ad51efcefd71bb7f7))
+* **onboarding:** redesign onboarding and new field phone register ([7e579f6](https://gitlab.com/company-pitch/company-pitch-client/commit/7e579f61f73f2b9ab5db3d8a8bcb6820accadf95))
+* **phonenumber:** optional phone number ([7a7b9c1](https://gitlab.com/company-pitch/company-pitch-client/commit/7a7b9c1ba295fd39d7218b829d18b0068406a010))
+* **profile:** add alert interest and emails not selected ([eb494d6](https://gitlab.com/company-pitch/company-pitch-client/commit/eb494d634294bc0fef92ff7f2d7077765d9795fe))
+* **profile:** change news frecuency in profile ([ba984fb](https://gitlab.com/company-pitch/company-pitch-client/commit/ba984fb85b4d14872b11217072f159f3a4403d6e))
+
+
+### Bug Fixes
+
+* **change-phone:** add modal change phone if not complete ([1daf187](https://gitlab.com/company-pitch/company-pitch-client/commit/1daf1872748483e4ef4064ef2aa7c37bbaa50d4c))
+* **completeprofile:** add SSR in explorer for get user data ([a54ab1e](https://gitlab.com/company-pitch/company-pitch-client/commit/a54ab1e4e789a9158f4501df7722f995cd7bc634))
+* **creator:** change width image and change "GSG" to "MATCH" in SEO ([3a7b41d](https://gitlab.com/company-pitch/company-pitch-client/commit/3a7b41d1a5cc6eee8d60c294704bbb15df551350))
+* **experience:** ajust design desktop and mobile ([e19192f](https://gitlab.com/company-pitch/company-pitch-client/commit/e19192f12c770ad5a1ced2b6f5afbdbccf46f0ec))
+* **experience:** default value field ([3d8a669](https://gitlab.com/company-pitch/company-pitch-client/commit/3d8a6696b5f7ee6f5758eb55e5f22f4a7bc3b701))
+* **experience:** valid phone number fix ([21da742](https://gitlab.com/company-pitch/company-pitch-client/commit/21da7424d9ee249ba25c137ac8f72424fa3d4d3a))
+* **explorer:** update profile not index reset ([d7e672c](https://gitlab.com/company-pitch/company-pitch-client/commit/d7e672ce8939634d1e8ba2793735416e46fabc29))
+* **navbar:** menu responsive open when login ([e474d11](https://gitlab.com/company-pitch/company-pitch-client/commit/e474d1140727dac51b337c366738ef7e9864642b))
+* **phone-number-input:** add validations format un field ([1b16db0](https://gitlab.com/company-pitch/company-pitch-client/commit/1b16db01dc47be1dc70e7ed4fb6c256439b26336))
+* **profile:** field not changes numbers ([f223dac](https://gitlab.com/company-pitch/company-pitch-client/commit/f223dacc7f852fca5d63eae3c992decd8d8ab036))
+
 ### [1.6.1](https://github.com/Zeeeers/GSG/compare/v1.6.0...v1.6.1) (2023-03-06)
 
 
