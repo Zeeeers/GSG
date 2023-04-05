@@ -43,7 +43,7 @@ const SuccessExperience = () => {
                         <Icon as={BsCheck} w="54px" h="54px" color="teal.500" />
                     </Box>
                     <Text fontSize="30px" fontWeight="bold">
-                        CUENTA COMPLETADA
+                        CREANDO TU CUENTA
                     </Text>
                 </VStack>
 
