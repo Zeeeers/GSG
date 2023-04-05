@@ -16,9 +16,14 @@ interface NewProfileProps {
     setVisible: (show: boolean) => void;
 }
 
+type StepType = {
+    name: string;
+    component: JSX.Element;
+};
+
 const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisible }: NewProfileProps) => {
     const [stepPage, setStepPage] = useState(0);
-    const [step, setStep] = useState<any>([]);
+    const [step, setStep] = useState<StepType[]>([]);
 
     const handleClose = async () => {
         const userApi = import('services/api/lib/user');
@@ -105,7 +110,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
         <VStack align="start" justify="space-between" mb="32px" bg="gray.800" p="20px" rounded="8px">
             <HStack w="full" justify="space-between" align="start">
                 <HStack spacing="4px">
-                    {step.map((item: any, index: number) => (
+                    {step.map((item, index) => (
                         <HStack key={index} align="center" spacing="8px">
                             <Button
                                 variant="unstyled"
