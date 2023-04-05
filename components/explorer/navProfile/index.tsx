@@ -61,6 +61,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
                     component: <ActiveMatch key="stepActive" userResponse={userResponse} getInterest={getInterest} />,
                 },
             ]);
+            setStepPage(0);
         }
 
         if (!isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)) {
@@ -72,6 +73,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
                     ),
                 },
             ]);
+            setStepPage(0);
         }
 
         if (
