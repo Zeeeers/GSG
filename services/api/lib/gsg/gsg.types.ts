@@ -29,6 +29,9 @@ export interface ProjectForm {
     business_web?: string;
     additional_document?: string;
 
+    current_goal?: string;
+    fundraising_start_month?: Date;
+
     status: string;
 }
 

@@ -1,28 +1,11 @@
 import { Button, Stack, Text, VStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 
-const NotProject = () => {
-    const router = useRouter();
-    const [loading, setLoading] = useState(false);
+interface NotProjectProps {
+    openGoal: () => void;
+}
 
-    const createDraft = async () => {
-        const { create } = await import('../../../services/api/lib/gsg');
-        setLoading(true);
-
-        try {
-            const { ok, data } = await create({ project: { status: 'sketch' } });
-
-            if (ok) {
-                router
-                    .push({ pathname: '/creator', query: { id: data?.data?.gsg_project?.id } })
-                    .then(() => setLoading(false));
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+const NotProject = ({ openGoal }: NotProjectProps) => {
     return (
         <Stack
             bg="gray.700"
@@ -43,11 +26,9 @@ const NotProject = () => {
             </VStack>
             <Button
                 display="flex"
-                loadingText="Cargando proyecto..."
-                isLoading={loading}
                 bg="blue.700"
                 _hover={{ bg: 'blue.600' }}
-                onClick={createDraft}
+                onClick={openGoal}
                 variant="solid"
                 h="40px"
             >
