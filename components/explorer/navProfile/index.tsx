@@ -1,4 +1,4 @@
-import { HStack, VStack, Box, IconButton, Icon } from '@chakra-ui/react';
+import { HStack, VStack, IconButton, Icon, Button } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { useState, useEffect } from 'react';
@@ -42,18 +42,36 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
 
     useEffect(() => {
         const stepSteps = [
-            <ActiveMatch key="stepActive" userResponse={userResponse} getInterest={getInterest} />,
-            <ProfileIncomplete key="stepProfile" userResponse={userResponse} openPhone={openPhone} />,
+            {
+                name: 'Match',
+                component: <ActiveMatch key="stepActive" userResponse={userResponse} getInterest={getInterest} />,
+            },
+            {
+                name: 'Perfil',
+                component: <ProfileIncomplete key="stepProfile" userResponse={userResponse} openPhone={openPhone} />,
+            },
         ];
 
         setStep([]);
 
         if (!userResponse.user.newsletter) {
-            setStep([<ActiveMatch key="stepActive" userResponse={userResponse} getInterest={getInterest} />]);
+            setStep([
+                {
+                    name: 'Match',
+                    component: <ActiveMatch key="stepActive" userResponse={userResponse} getInterest={getInterest} />,
+                },
+            ]);
         }
 
         if (!isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)) {
-            setStep([<ProfileIncomplete key="stepProfile" userResponse={userResponse} openPhone={openPhone} />]);
+            setStep([
+                {
+                    name: 'Perfil',
+                    component: (
+                        <ProfileIncomplete key="stepProfile" userResponse={userResponse} openPhone={openPhone} />
+                    ),
+                },
+            ]);
         }
 
         if (
@@ -71,7 +89,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
         }
     }, [userResponse, openPhone, getInterest, setVisible]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         setTimeout(() => {
             if (stepPage === 0 && step.length === 2) {
                 setStepPage(stepPage + 1);
@@ -79,26 +97,35 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
                 setStepPage(0);
             }
         }, 10000);
-    }, [step.length, stepPage]);
+    }, [step.length, stepPage]);*/
 
     return (
         <VStack align="start" justify="space-between" mb="32px" bg="gray.800" p="20px" rounded="8px">
             <HStack w="full" justify="space-between" align="start">
                 <HStack spacing="4px">
-                    {step.map((_item: any, index: number) => (
-                        <Box
-                            key={index}
-                            w="12px"
-                            h="12px"
-                            rounded="full"
-                            bg={index === stepPage ? '#3B5D89' : 'gray.600'}
-                        ></Box>
+                    {step.map((item: any, index: number) => (
+                        <HStack key={index} align="center" spacing="8px">
+                            <Button
+                                variant="unstyled"
+                                color={index === stepPage ? 'gray.300' : 'gray.400'}
+                                borderBottom={index === stepPage ? '2px' : 'none'}
+                                borderColor="blue.700"
+                                fontSize="13px"
+                                fontFamily="inter"
+                                padding={0}
+                                rounded={0}
+                                h="fit-content"
+                                onClick={() => setStepPage(index)}
+                            >
+                                {item?.name}
+                            </Button>
+                        </HStack>
                     ))}
                 </HStack>
 
                 <IconButton aria-label="Close" icon={<Icon as={MdClose} w="20px" h="20px" />} onClick={handleClose} />
             </HStack>
-            <AnimatePresence exitBeforeEnter>{step[stepPage]}</AnimatePresence>
+            <AnimatePresence exitBeforeEnter>{step[stepPage]?.component}</AnimatePresence>
         </VStack>
     );
 };

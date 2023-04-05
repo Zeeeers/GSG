@@ -3,9 +3,12 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { BsCheck } from 'react-icons/bs';
+import { MdClose } from 'react-icons/md';
+import { useUser } from 'services/api/lib/user';
 
 const SuccessExperience = () => {
     const router = useRouter();
+    const { data: userResponse } = useUser();
 
     useEffect(() => {
         setTimeout(() => {
@@ -103,7 +106,12 @@ const SuccessExperience = () => {
                             bg="gray.800"
                             rounded="full"
                         >
-                            <Icon as={BsCheck} w="20px" h="20px" color="teal.500" />
+                            <Icon
+                                as={userResponse?.user.organization.image ? BsCheck : MdClose}
+                                color={userResponse?.user.organization.image ? 'teal.500' : 'red.500'}
+                                w="20px"
+                                h="20px"
+                            />
                         </Box>
                         <Text>Imagen de perfil</Text>
                     </HStack>
@@ -124,7 +132,14 @@ const SuccessExperience = () => {
                             bg="gray.800"
                             rounded="full"
                         >
-                            <Icon as={BsCheck} w="20px" h="20px" color="teal.500" />
+                            <Icon
+                                as={userResponse?.user.organization.legal_representative_phone ? BsCheck : MdClose}
+                                color={
+                                    userResponse?.user.organization.legal_representative_phone ? 'teal.500' : 'red.500'
+                                }
+                                w="20px"
+                                h="20px"
+                            />
                         </Box>
                         <Text>Contacto</Text>
                     </HStack>

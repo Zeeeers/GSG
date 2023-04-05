@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import PhoneNumberInput from 'common/phoneNumber';
 import { IPhoneData, phoneSchema } from 'forms/experience';
 import { motion } from 'framer-motion';
-import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
+import { isValidPhoneNumber, parsePhoneNumber, AsYouType } from 'libphonenumber-js';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useUser } from 'services/api/lib/user';
@@ -37,7 +37,7 @@ const ChangePhoneModal = ({ isOpen, onClose }: ChangePhoneModalProps) => {
         resolver: zodResolver(phoneSchema),
         defaultValues: {
             legal_representative_phone: {
-                code: 'CL',
+                code: '+56',
                 value: isValidPhoneNumber(user?.user?.organization?.legal_representative_phone ?? '')
                     ? user?.user?.organization?.legal_representative_phone
                     : '',
@@ -54,10 +54,16 @@ const ChangePhoneModal = ({ isOpen, onClose }: ChangePhoneModalProps) => {
         const { update } = await userApi;
         const AuthManager = (await manager).default;
 
+        let parsedNumber = new AsYouType().input(
+            `${legal_representative_phone?.value ? legal_representative_phone?.code : ''}${
+                legal_representative_phone?.value
+            }`,
+        );
+
         const { ok } = await update({
             token: new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! }).token,
             data: {
-                legal_representative_phone: legal_representative_phone.value,
+                legal_representative_phone: parsedNumber,
             },
         });
 

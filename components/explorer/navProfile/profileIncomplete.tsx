@@ -74,8 +74,7 @@ const ProfileIncomplete = ({ userResponse, openPhone }: ProfileIncompleteProps) 
                     </HStack>
 
                     <HStack spacing="3px" fontSize="13px" fontFamily="inter">
-                        {userResponse?.user?.organization?.legal_representative_phone &&
-                        isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone) ? (
+                        {isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '') ? (
                             <Icon as={BsCheck} color="teal.500" w="24px" h="24px" />
                         ) : (
                             <Icon as={MdClose} color="red.500" w="24px" h="24px" />
@@ -86,10 +85,7 @@ const ProfileIncomplete = ({ userResponse, openPhone }: ProfileIncompleteProps) 
 
                 <Button
                     onClick={() => {
-                        if (
-                            userResponse?.user?.organization?.legal_representative_phone &&
-                            isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)
-                        ) {
+                        if (isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '')) {
                             router.push({
                                 pathname: '/profile',
                                 query: 'tab=0',
