@@ -148,7 +148,7 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
 
             {user || orga?.gsg_project_id === project?.id || adminCookie ? (
                 <>
-                    {project.current_goal === 'fundraising' ? (
+                    {project?.current_goal === 'fundraising' ? (
                         <Stack
                             spacing="40px"
                             bg="gray.800"
