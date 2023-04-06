@@ -117,7 +117,7 @@ const ListProyectsForm = (props: any) => {
 
     return (
         <>
-            <TableContainer maxW="1200px">
+            <TableContainer maxW="1300px">
                 <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
                     <Thead>
                         <Tr>
@@ -159,93 +159,97 @@ const ListProyectsForm = (props: any) => {
                                 color="gray.50"
                                 border="none"
                             >
-                                Objetivo{' '}
-                                <Popover placement="bottom">
-                                    {() => (
-                                        <>
-                                            <PopoverTrigger>
-                                                <Button>
-                                                    <Icon as={BsInfoCircleFill} w="18px" h="18px" />
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <Portal>
-                                                <PopoverContent
-                                                    bg="gray.700"
-                                                    border="none"
-                                                    py="30px"
-                                                    px="20px"
-                                                    w="full"
-                                                    maxW="380px"
-                                                >
-                                                    <PopoverHeader
-                                                        fontSize="24px"
-                                                        fontWeight="bold"
-                                                        bg="blue.800"
-                                                        px="10px"
-                                                        py={0}
+                                <HStack spacing={0} align="center" p={0}>
+                                    <Text>Objetivo</Text>
+                                    <Popover placement="bottom" p={0}>
+                                        {() => (
+                                            <>
+                                                <PopoverTrigger>
+                                                    <Button w="18px" h="18px" p={0} m={0}>
+                                                        <Icon as={BsInfoCircleFill} w="18px" h="18px" />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <Portal>
+                                                    <PopoverContent
+                                                        bg="gray.700"
                                                         border="none"
-                                                        textTransform="uppercase"
+                                                        py="30px"
+                                                        px="20px"
+                                                        w="full"
+                                                        maxW="380px"
                                                     >
-                                                        Descripción de cada objetivo
-                                                    </PopoverHeader>
-
-                                                    <PopoverArrow bg="gray.700" border="none" w="50px" h="50px" />
-
-                                                    <PopoverBody border="none">
-                                                        <UnorderedList
-                                                            spacing="20px"
-                                                            fontFamily="inter"
-                                                            lineHeight="140%"
-                                                            fontSize="14px"
-                                                            color="gray.300"
+                                                        <PopoverHeader
+                                                            fontSize="24px"
+                                                            fontWeight="bold"
+                                                            bg="blue.800"
+                                                            px="10px"
+                                                            py={0}
+                                                            border="none"
+                                                            textTransform="uppercase"
                                                         >
-                                                            <ListItem>
-                                                                <Text>
-                                                                    <Text
-                                                                        as="span"
-                                                                        fontWeight="bold"
-                                                                        fontFamily="inter"
-                                                                    >
-                                                                        Financiamiento:{' '}
+                                                            Descripción de cada objetivo
+                                                        </PopoverHeader>
+
+                                                        <PopoverArrow bg="gray.700" border="none" w="50px" h="50px" />
+
+                                                        <PopoverBody border="none">
+                                                            <UnorderedList
+                                                                spacing="20px"
+                                                                fontFamily="inter"
+                                                                lineHeight="140%"
+                                                                fontSize="14px"
+                                                                color="gray.300"
+                                                            >
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text
+                                                                            as="span"
+                                                                            fontWeight="bold"
+                                                                            fontFamily="inter"
+                                                                        >
+                                                                            Financiamiento:{' '}
+                                                                        </Text>
+                                                                        La empresa busca levantar financiamiento
                                                                     </Text>
-                                                                    La empresa busca levantar financiamiento
-                                                                </Text>
-                                                            </ListItem>
-                                                            <ListItem>
-                                                                <Text>
-                                                                    <Text as="span" fontWeight="bold">
-                                                                        Visibilidad (Negro):{' '}
+                                                                </ListItem>
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text as="span" fontWeight="bold">
+                                                                            Visibilidad (Negro):{' '}
+                                                                        </Text>
+                                                                        Empresa busca visibilidad sin buscar
+                                                                        financiamiento
                                                                     </Text>
-                                                                    Empresa busca visibilidad sin buscar financiamiento
-                                                                </Text>
-                                                            </ListItem>
-                                                            <ListItem>
-                                                                <Text>
-                                                                    <Text as="span" fontWeight="bold">
-                                                                        Visibilidad (Azul):{' '}
+                                                                </ListItem>
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text as="span" fontWeight="bold">
+                                                                            Visibilidad (Azul):{' '}
+                                                                        </Text>
+                                                                        Empresa busca visibilidad, ha determinado una
+                                                                        fecha en la que quiere levantar financiamiento y
+                                                                        está dentro del plazo
                                                                     </Text>
-                                                                    Empresa busca visibilidad, ha determinado una fecha
-                                                                    en la que quiere levantar financiamiento y está
-                                                                    dentro del plazo
-                                                                </Text>
-                                                            </ListItem>
-                                                            <ListItem>
-                                                                <Text>
-                                                                    <Text as="span" fontWeight="bold">
-                                                                        Visibilidad (rojo):{' '}
+                                                                </ListItem>
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text as="span" fontWeight="bold">
+                                                                            Visibilidad (rojo):{' '}
+                                                                        </Text>
+                                                                        Empresa busca visibilidad, ha determinado una
+                                                                        fecha en la que quiere levantar financiamiento y
+                                                                        el plazo ha expirado, hay que comunicarse con
+                                                                        ellos
                                                                     </Text>
-                                                                    Empresa busca visibilidad, ha determinado una fecha
-                                                                    en la que quiere levantar financiamiento y el plazo
-                                                                    ha expirado, hay que comunicarse con ellos
-                                                                </Text>
-                                                            </ListItem>
-                                                        </UnorderedList>
-                                                    </PopoverBody>
-                                                </PopoverContent>
-                                            </Portal>
-                                        </>
-                                    )}
-                                </Popover>
+                                                                </ListItem>
+                                                            </UnorderedList>
+                                                        </PopoverBody>
+                                                    </PopoverContent>
+                                                </Portal>
+                                            </>
+                                        )}
+                                    </Popover>
+                                </HStack>
                             </Th>
                             <Th
                                 pl="40px"
@@ -291,7 +295,7 @@ const ListProyectsForm = (props: any) => {
                                             </Text>
                                         </Tooltip>
                                     </Td>
-                                    <Td fontFamily="inter" pl={0} maxW="148px">
+                                    <Td fontFamily="inter" p={0} maxW="100" m={0}>
                                         <Stack
                                             py="4px"
                                             px="10px"
