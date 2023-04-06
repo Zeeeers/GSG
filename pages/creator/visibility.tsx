@@ -146,8 +146,6 @@ const Visibility: NextPage = ({ project, quality }) => {
         },
     });
 
-    console.log(errors);
-
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
     const proyectParties = watch('third_parties');
@@ -319,7 +317,7 @@ const Visibility: NextPage = ({ project, quality }) => {
     };
 
     const handlePublished = async (data: IProjectForm) => {
-        //setCreateProyect(true);
+        setCreateProyect(true);
         const dataProject = {
             gsg_project: {
                 current_goal: 'visibility',
@@ -1691,13 +1689,13 @@ const Visibility: NextPage = ({ project, quality }) => {
                     <HStack w="full" justify="space-between" color="gray.50" fontFamily="inter">
                         <Text fontSize="15px">Tu progreso actual</Text>
                         <Text fontSize="15px" fontFamily="inter" fontWeight="medium">
-                            {`${Math.round(((percentDescription() + percentOther()) * 100) / 9)}%`}
+                            {`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9))}%`}
                         </Text>
                     </HStack>
 
                     <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
                         <Stack
-                            w={`${Math.round(((percentDescription() + percentOther()) * 100) / 9)}%`}
+                            w={`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9))}%`}
                             h="full"
                             background="teal.400"
                             rounded="20px"

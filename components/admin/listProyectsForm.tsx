@@ -7,6 +7,7 @@ import {
     Select,
     Stack,
     Table,
+    TableContainer,
     Tbody,
     Td,
     Text,
@@ -15,6 +16,7 @@ import {
     Tr,
     useToast,
     VStack,
+    Tooltip,
 } from '@chakra-ui/react';
 import { Pagination } from 'common/pagination';
 
@@ -41,6 +43,7 @@ const ListProyectsForm = (props: any) => {
                 return new Date(a.last_status_updated) - new Date(b.last_status_updated);
             }
         });
+
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
 
@@ -101,79 +104,148 @@ const ListProyectsForm = (props: any) => {
 
     return (
         <>
-            <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
-                <Thead>
-                    <Tr>
-                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
-                            Fecha
-                        </Th>
-                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
-                            Nombre del proyecto
-                        </Th>
-                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
-                            Empresa
-                        </Th>
-                        <Th
-                            pl="40px"
-                            fontWeight="bold"
-                            fontFamily="inter"
-                            fontSize="18px"
-                            color="gray.50"
-                            border="none"
-                        >
-                            Status
-                        </Th>
-                        <Th pl={0} border="none"></Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {gsgFilterData
-                        ?.map((proyect) => (
-                            <Tr key={proyect.id}>
-                                <Td fontFamily="inter" pl={0} py="30px" w="13%">
-                                    {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
-                                        day: 'numeric',
-                                        month: 'numeric',
-                                        year: 'numeric',
-                                    })}
-                                </Td>
-                                <Td fontFamily="inter" pl={0} py="30px">
-                                    {proyect?.title}
-                                </Td>
-                                <Td fontFamily="inter" pl={0}>
-                                    {proyect?.organization.name}
-                                </Td>
+            <TableContainer maxW="1200px">
+                <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
+                    <Thead>
+                        <Tr>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Fecha
+                            </Th>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Nombre del proyecto
+                            </Th>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Empresa
+                            </Th>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Objetivo{' '}
+                            </Th>
+                            <Th
+                                pl="40px"
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Status
+                            </Th>
+                            <Th pl={0} border="none"></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {gsgFilterData
+                            ?.map((proyect) => (
+                                <Tr key={proyect.id}>
+                                    <Td fontFamily="inter" pl={0} py="30px" w="13%">
+                                        {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
+                                            day: 'numeric',
+                                            month: 'numeric',
+                                            year: 'numeric',
+                                        })}
+                                    </Td>
+                                    <Td fontFamily="inter" pl={0} py="30px" maxW="100px">
+                                        <Tooltip label={proyect?.title} bg="gray.700" hasArrow>
+                                            <Text overflow="hidden" textOverflow="ellipsis">
+                                                {proyect?.title}
+                                            </Text>
+                                        </Tooltip>
+                                    </Td>
+                                    <Td
+                                        fontFamily="inter"
+                                        pl={0}
+                                        maxW="100px"
+                                        overflow="hidden"
+                                        textOverflow="ellipsis"
+                                    >
+                                        <Tooltip label={proyect?.organization.name} bg="gray.700" hasArrow>
+                                            <Text overflow="hidden" textOverflow="ellipsis">
+                                                {proyect?.organization.name}
+                                            </Text>
+                                        </Tooltip>
+                                    </Td>
+                                    <Td fontFamily="inter" pl={0} maxW="148px">
+                                        <Stack
+                                            py="4px"
+                                            px="10px"
+                                            w="fit-content"
+                                            h="29px"
+                                            bg={
+                                                proyect?.fundraising_start_month
+                                                    ? new Date(proyect?.fundraising_start_month) < new Date()
+                                                        ? 'red.500'
+                                                        : 'blue.500'
+                                                    : 'gray.800'
+                                            }
+                                            rounded="8px"
+                                        >
+                                            <Text fontSize="15px" fontFamily="inter">
+                                                {proyect?.current_goal === 'visibility'
+                                                    ? 'Visibilidad'
+                                                    : 'Financiamiento'}
+                                            </Text>
+                                        </Stack>
+                                    </Td>
 
-                                <Td fontFamily="inter" pl="40px">
-                                    <SelectComponent project={proyect} handleStatus={handleStatus} />
-                                </Td>
-                                <Td fontFamily="inter" pl="50px">
-                                    <HStack spacing="20px">
-                                        <Link
-                                            href={`/project/${proyect?.id}-${proyect?.title
-                                                .toLowerCase()
-                                                .replaceAll(' ', '-')}`}
-                                            target="_blank"
-                                        >
-                                            <Button variant="solid">Ver proyecto</Button>
-                                        </Link>
-                                        <Button
-                                            type="button"
-                                            isLoading={deleteProduct}
-                                            loadingText="Eliminando producto"
-                                            onClick={() => handleDelete(proyect?.id)}
-                                            variant="solid"
-                                            colorScheme="red"
-                                        >
-                                            Eliminar
-                                        </Button>
-                                    </HStack>
-                                </Td>
-                            </Tr>
-                        ))
-                        .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
-                </Tbody>
-            </Table>
+                                    <Td fontFamily="inter" pl="40px" maxW="200px">
+                                        <SelectComponent project={proyect} handleStatus={handleStatus} />
+                                    </Td>
+                                    <Td fontFamily="inter" pl="50px">
+                                        <HStack spacing="20px">
+                                            <Link
+                                                href={`/project/${proyect?.id}-${proyect?.title
+                                                    .toLowerCase()
+                                                    .replaceAll(' ', '-')}`}
+                                                target="_blank"
+                                            >
+                                                <Button variant="solid">Ver proyecto</Button>
+                                            </Link>
+                                            <Button
+                                                type="button"
+                                                isLoading={deleteProduct}
+                                                loadingText="Eliminando producto"
+                                                onClick={() => handleDelete(proyect?.id)}
+                                                variant="solid"
+                                                colorScheme="red"
+                                            >
+                                                Eliminar
+                                            </Button>
+                                        </HStack>
+                                    </Td>
+                                </Tr>
+                            ))
+                            .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
+                    </Tbody>
+                </Table>
+            </TableContainer>
 
             <Stack align="flex-start" w="full" pt="30px">
                 <Pagination
