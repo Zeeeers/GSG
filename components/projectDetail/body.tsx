@@ -148,274 +148,302 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
 
             {user || orga?.gsg_project_id === project?.id || adminCookie ? (
                 <>
-                    <Stack
-                        spacing="40px"
-                        bg="gray.800"
-                        w="full"
-                        rounded="16px"
-                        py="40px"
-                        px={{ base: '24px', md: '35px' }}
-                        ref={description_finance}
-                        scrollMarginTop="100px"
-                    >
-                        <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
-                            Descripción financiera de {project?.organization?.name}
-                        </Text>
+                    {project.current_goal === 'fundraising' ? (
+                        <Stack
+                            spacing="40px"
+                            bg="gray.800"
+                            w="full"
+                            rounded="16px"
+                            py="40px"
+                            px={{ base: '24px', md: '35px' }}
+                            ref={description_finance}
+                            scrollMarginTop="100px"
+                        >
+                            <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
+                                Descripción financiera de {project?.organization?.name}
+                            </Text>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
-                                    La búsqueda de capital es para:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {project?.investment_type === 'Un proyecto para la empresa'
-                                        ? 'La empresa'
-                                        : 'Un proyecto específico dentro de la empresa'}
-                                </Text>
-                            </VStack>
-                        </VStack>
-
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
-                                    La etapa en la cual se encuentra el proyecto:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {StageCapital(project?.stage)}
-                                </Text>
-                            </VStack>
-                        </VStack>
-
-                        {project?.debt && (
                             <VStack align="flex-start">
                                 <VStack align="flex-start" spacing="5px">
-                                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                        Tipo de financiamiento buscado:
+                                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                                        La búsqueda de capital es para:
                                     </Text>
                                     <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {Stage(project?.debt)}
+                                        {project?.investment_type === 'Un proyecto para la empresa'
+                                            ? 'La empresa'
+                                            : 'Un proyecto específico dentro de la empresa'}
                                     </Text>
                                 </VStack>
                             </VStack>
-                        )}
 
-                        {project?.investment_types?.length > 0 && (
                             <VStack align="flex-start">
                                 <VStack align="flex-start" spacing="5px">
-                                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                        El tipo de inversionista que busca es:
+                                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                                        La etapa en la cual se encuentra el proyecto:
                                     </Text>
                                     <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {getInvestorType()}
+                                        {StageCapital(project?.stage)}
                                     </Text>
                                 </VStack>
                             </VStack>
-                        )}
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                    El objetivo que tiene con la inversión es:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {Objetive(project?.investment_objective) ?? project?.investment_objective}
-                                </Text>
-                            </VStack>
-                        </VStack>
+                            {project?.debt && (
+                                <VStack align="flex-start">
+                                    <VStack align="flex-start" spacing="5px">
+                                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                            Tipo de financiamiento buscado:
+                                        </Text>
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {Stage(project?.debt)}
+                                        </Text>
+                                    </VStack>
+                                </VStack>
+                            )}
 
-                        {project?.capital_stage && (
+                            {project?.investment_types?.length > 0 && (
+                                <VStack align="flex-start">
+                                    <VStack align="flex-start" spacing="5px">
+                                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                            El tipo de inversionista que busca es:
+                                        </Text>
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {getInvestorType()}
+                                        </Text>
+                                    </VStack>
+                                </VStack>
+                            )}
+
                             <VStack align="flex-start">
                                 <VStack align="flex-start" spacing="5px">
                                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                        El levantamiento actual de capital en la cual se encuentra es:
+                                        El objetivo que tiene con la inversión es:
                                     </Text>
                                     <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {Stage(project?.capital_stage)}
+                                        {Objetive(project?.investment_objective) ?? project?.investment_objective}
                                     </Text>
                                 </VStack>
                             </VStack>
-                        )}
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                    Cuenta con garantías:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {Garantee(project?.guarantee)}
-                                </Text>
-                            </VStack>
-                        </VStack>
+                            {project?.capital_stage && (
+                                <VStack align="flex-start">
+                                    <VStack align="flex-start" spacing="5px">
+                                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                            El levantamiento actual de capital en la cual se encuentra es:
+                                        </Text>
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {Stage(project?.capital_stage)}
+                                        </Text>
+                                    </VStack>
+                                </VStack>
+                            )}
 
-                        {project?.expected_rentability && (
                             <VStack align="flex-start">
                                 <VStack align="flex-start" spacing="5px">
                                     <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                        La rentabilidad que {project?.organization.name} espera obtener es:
+                                        Cuenta con garantías:
                                     </Text>
                                     <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {Rentability(project?.expected_rentability)}
+                                        {Garantee(project?.guarantee)}
                                     </Text>
                                 </VStack>
                             </VStack>
-                        )}
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                    El rango de monto del aporte que se busca es:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {FinanceGoal(project?.finance_goal)} (CLP)
-                                </Text>
-                            </VStack>
-                        </VStack>
+                            {project?.expected_rentability && (
+                                <VStack align="flex-start">
+                                    <VStack align="flex-start" spacing="5px">
+                                        <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                            La rentabilidad que {project?.organization.name} espera obtener es:
+                                        </Text>
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {Rentability(project?.expected_rentability)}
+                                        </Text>
+                                    </VStack>
+                                </VStack>
+                            )}
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
-                                    Umbral de rentabilidad o Break Even Point proyectado:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {project?.rentability_time ?? 0} {project?.rentability_time !== 1 ? 'Meses' : 'Mes'}
-                                </Text>
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                        El rango de monto del aporte que se busca es:
+                                    </Text>
+                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                        {FinanceGoal(project?.finance_goal)} (CLP)
+                                    </Text>
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    En relación a los plazos de inversión, {project?.organization?.name} buscaría un
-                                    plazo de:
-                                </Text>
-                                <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                    {Time(project?.time_lapse)}
-                                </Text>
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" fontSize="md" color="gray.400">
+                                        Umbral de rentabilidad o Break Even Point proyectado:
+                                    </Text>
+                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                        {project?.rentability_time ?? 0}{' '}
+                                        {project?.rentability_time !== 1 ? 'Meses' : 'Mes'}
+                                    </Text>
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    Ventas en los últimos 12 meses:
-                                </Text>
-                                {project?.business_model?.split(';;')[0] !== 'No deseo entregar esta información' ? (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {new Intl.NumberFormat('es-CL', {
-                                            style: 'currency',
-                                            currency: 'CLP',
-                                            minimumFractionDigits: 0,
-                                        }).format(project?.business_model?.split(';;')[0] ?? 0)}
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        En relación a los plazos de inversión, {project?.organization?.name} buscaría un
+                                        plazo de:
                                     </Text>
-                                ) : (
                                     <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        La empresa no desea entregar esta información
+                                        {Time(project?.time_lapse)}
                                     </Text>
-                                )}
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    Ventas en los últimos 6 meses:
-                                </Text>
-                                {project?.business_model?.split(';;')[1] !== 'No deseo entregar esta información' ? (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {new Intl.NumberFormat('es-CL', {
-                                            style: 'currency',
-                                            currency: 'CLP',
-                                            minimumFractionDigits: 0,
-                                        }).format(project?.business_model?.split(';;')[1] ?? 0)}
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        Ventas en los últimos 12 meses:
                                     </Text>
-                                ) : (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        La empresa no desea entregar esta información
-                                    </Text>
-                                )}
+                                    {project?.business_model?.split(';;')[0] !==
+                                    'No deseo entregar esta información' ? (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {new Intl.NumberFormat('es-CL', {
+                                                style: 'currency',
+                                                currency: 'CLP',
+                                                minimumFractionDigits: 0,
+                                            }).format(project?.business_model?.split(';;')[0] ?? 0)}
+                                        </Text>
+                                    ) : (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            La empresa no desea entregar esta información
+                                        </Text>
+                                    )}
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    Clientes en los últimos 12 meses:
-                                </Text>
-                                {project?.business_model?.split(';;')[2] !== 'No deseo entregar esta información' ? (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {new Intl.NumberFormat('es-CL', {
-                                            minimumFractionDigits: 0,
-                                        }).format(project?.business_model?.split(';;')[2] ?? 0)}
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        Ventas en los últimos 6 meses:
                                     </Text>
-                                ) : (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        La empresa no desea entregar esta información
-                                    </Text>
-                                )}
+                                    {project?.business_model?.split(';;')[1] !==
+                                    'No deseo entregar esta información' ? (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {new Intl.NumberFormat('es-CL', {
+                                                style: 'currency',
+                                                currency: 'CLP',
+                                                minimumFractionDigits: 0,
+                                            }).format(project?.business_model?.split(';;')[1] ?? 0)}
+                                        </Text>
+                                    ) : (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            La empresa no desea entregar esta información
+                                        </Text>
+                                    )}
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    Clientes en los últimos 6 meses:
-                                </Text>
-                                {project?.business_model?.split(';;')[3] !== 'No deseo entregar esta información' ? (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {new Intl.NumberFormat('es-CL', {
-                                            minimumFractionDigits: 0,
-                                        }).format(project?.business_model?.split(';;')[3] ?? 0)}
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        Clientes en los últimos 12 meses:
                                     </Text>
-                                ) : (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        La empresa no desea entregar esta información
-                                    </Text>
-                                )}
+                                    {project?.business_model?.split(';;')[2] !==
+                                    'No deseo entregar esta información' ? (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {new Intl.NumberFormat('es-CL', {
+                                                minimumFractionDigits: 0,
+                                            }).format(project?.business_model?.split(';;')[2] ?? 0)}
+                                        </Text>
+                                    ) : (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            La empresa no desea entregar esta información
+                                        </Text>
+                                    )}
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    EBITDA
-                                </Text>
-                                {project?.business_model?.split(';;')[4] !== 'No deseo entregar esta información' ? (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {new Intl.NumberFormat('es-CL', {
-                                            style: 'currency',
-                                            currency: 'CLP',
-                                            minimumFractionDigits: 0,
-                                        }).format(project?.business_model?.split(';;')[4] ?? 0)}
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        Clientes en los últimos 6 meses:
                                     </Text>
-                                ) : (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        La empresa no desea entregar esta información
-                                    </Text>
-                                )}
+                                    {project?.business_model?.split(';;')[3] !==
+                                    'No deseo entregar esta información' ? (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {new Intl.NumberFormat('es-CL', {
+                                                minimumFractionDigits: 0,
+                                            }).format(project?.business_model?.split(';;')[3] ?? 0)}
+                                        </Text>
+                                    ) : (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            La empresa no desea entregar esta información
+                                        </Text>
+                                    )}
+                                </VStack>
                             </VStack>
-                        </VStack>
 
-                        <VStack align="flex-start">
-                            <VStack align="flex-start" spacing="5px">
-                                <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
-                                    Deuda/ Patrimonio
-                                </Text>
-                                {project?.business_model?.split(';;')[5] !== 'No deseo entregar esta información' ? (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        {new Intl.NumberFormat('es-CL', {
-                                            style: 'currency',
-                                            currency: 'CLP',
-                                            minimumFractionDigits: 0,
-                                        }).format(project?.business_model?.split(';;')[5] ?? 0)}
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        EBITDA
                                     </Text>
-                                ) : (
-                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
-                                        La empresa no desea entregar esta información
-                                    </Text>
-                                )}
+                                    {project?.business_model?.split(';;')[4] !==
+                                    'No deseo entregar esta información' ? (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {new Intl.NumberFormat('es-CL', {
+                                                style: 'currency',
+                                                currency: 'CLP',
+                                                minimumFractionDigits: 0,
+                                            }).format(project?.business_model?.split(';;')[4] ?? 0)}
+                                        </Text>
+                                    ) : (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            La empresa no desea entregar esta información
+                                        </Text>
+                                    )}
+                                </VStack>
                             </VStack>
-                        </VStack>
-                    </Stack>
+
+                            <VStack align="flex-start">
+                                <VStack align="flex-start" spacing="5px">
+                                    <Text as="p" fontFamily="inter" lineHeight="140%" fontSize="md" color="gray.400">
+                                        Deuda/ Patrimonio
+                                    </Text>
+                                    {project?.business_model?.split(';;')[5] !==
+                                    'No deseo entregar esta información' ? (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            {new Intl.NumberFormat('es-CL', {
+                                                style: 'currency',
+                                                currency: 'CLP',
+                                                minimumFractionDigits: 0,
+                                            }).format(project?.business_model?.split(';;')[5] ?? 0)}
+                                        </Text>
+                                    ) : (
+                                        <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                            La empresa no desea entregar esta información
+                                        </Text>
+                                    )}
+                                </VStack>
+                            </VStack>
+                        </Stack>
+                    ) : (
+                        <Stack
+                            spacing="40px"
+                            bg="gray.800"
+                            w="full"
+                            rounded="16px"
+                            py="60px"
+                            px={{ base: '24px', md: '30px' }}
+                            ref={description_finance}
+                            scrollMarginTop="100px"
+                        >
+                            <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium" lineHeight="130%">
+                                Descripción financiera de {project?.organization?.name}
+                            </Text>
+                            <Text fontSize="24px" lineHeight="130%">
+                                Este proyecto por el momento solo busca estar visible dentro del ecosistema de impacto,
+                                por lo que no dispone de una descripción financiera.
+                            </Text>
+                        </Stack>
+                    )}
 
                     <Stack pl="27px" spacing="27px" w="full" ref={other} scrollMarginTop="100px">
                         <Text ref={other} fontSize={{ base: '3xl', md: '4xl' }} fontWeight="medium">
