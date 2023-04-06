@@ -59,6 +59,7 @@ import Sector from 'components/projectDetail/formatText/sector';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { IProjectForm, projectSchema } from 'forms/projectVisibility';
+import CurrentGoalModal from 'components/creator/currentGoalModal';
 
 // Page
 const Visibility: NextPage = ({ project, quality }) => {
@@ -75,6 +76,8 @@ const Visibility: NextPage = ({ project, quality }) => {
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
     const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
     const [isOpenToggle, onToggle] = useState(false);
+
+    const { isOpen: isOpenGoal, onOpen: openGoal, onClose: closeGoal } = useDisclosure();
 
     const [isDate, setIsDate] = useState(null);
 
@@ -141,8 +144,23 @@ const Visibility: NextPage = ({ project, quality }) => {
             youtubeForm: project?.contacts && project?.contacts[3],
             webForm: project?.contacts && project?.contacts[4],
 
-            monthStart: { label: null, value: '' },
-            yearStart: { label: null, value: '' },
+            monthStart: {
+                label:
+                    project?.fundraising_start_month !== null
+                        ? new Date(project?.fundraising_start_month).toLocaleString('es-CL', { month: 'long' })
+                        : null,
+                value:
+                    project?.fundraising_start_month !== null
+                        ? new Date(project?.fundraising_start_month).getMonth()
+                        : null,
+            },
+            yearStart: {
+                label:
+                    project?.fundraising_start_month !== null
+                        ? new Date(project?.fundraising_start_month).getFullYear()
+                        : null,
+                value: new Date(project?.fundraising_start_month).getFullYear(),
+            },
         },
     });
 
@@ -412,7 +430,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                 )};;${watch('webForm')}`,
 
                 fundraising_start_month:
-                    atch('yearStart').value || watch('monthStart').value
+                    watch('yearStart').value || watch('monthStart').value
                         ? new Date(watch('yearStart').value, watch('monthStart').value - 1)
                         : null,
             },
@@ -507,6 +525,14 @@ const Visibility: NextPage = ({ project, quality }) => {
         setValue('members', members, { shouldValidate: true });
     }, [members]);
 
+    useEffect(() => {
+        if (watch('yearStart').value !== null && watch('monthStart').value !== null) {
+            setIsDate(true);
+        } else {
+            setIsDate(false);
+        }
+    }, []);
+
     return (
         <>
             <NextSeo title="Creador de proyecto - MATCH" noindex />
@@ -589,12 +615,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 </Text>
                                 . Si deseas cambiar tu elección{' '}
                                 <Button
-                                    onClick={() =>
-                                        router.push({
-                                            pathname: `/creator/fundraising`,
-                                            query: { id: project.id },
-                                        })
-                                    }
+                                    onClick={openGoal}
                                     variant="link"
                                     fontWeight="normal"
                                     fontSize="16px"
@@ -1417,7 +1438,14 @@ const Visibility: NextPage = ({ project, quality }) => {
                         </FormControl>
 
                         {isDate && (
-                            <VStack w="full" align="start" spacing="15px">
+                            <VStack
+                                as={motion.div}
+                                initial={{ opacity: 0, y: -50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                w="full"
+                                align="start"
+                                spacing="15px"
+                            >
                                 <Text fontSize="16px" fontFamily="inter" lineHeight="140%">
                                     15. Selecciona la fecha aproximada <span style={{ color: '#4FD1C5' }}>*</span>
                                 </Text>
@@ -1751,6 +1779,8 @@ const Visibility: NextPage = ({ project, quality }) => {
 
             <AddMembersModal isOpen={isOpen} onClose={onClose} reload={mutate} />
             <SuccessModal isOpen={isOpenSuccess} onClose={onCloseSuccess} />
+
+            <CurrentGoalModal isOpen={isOpenGoal} onClose={closeGoal} isCreated={false} />
         </>
     );
 };

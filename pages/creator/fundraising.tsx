@@ -77,6 +77,7 @@ import Sector from 'components/projectDetail/formatText/sector';
 import { motion } from 'framer-motion';
 import Router, { useRouter } from 'next/router';
 import InputDisabled from 'common/inputDisabled';
+import CurrentGoalModal from 'components/creator/currentGoalModal';
 
 // Page
 const Fundraising: NextPage = ({ project, quality }) => {
@@ -93,6 +94,9 @@ const Fundraising: NextPage = ({ project, quality }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
     const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
+
+    const { isOpen: isOpenGoal, onOpen: openGoal, onClose: closeGoal } = useDisclosure();
+
     const [isOpenToggle, onToggle] = useState(false);
 
     const [createProyect, setCreateProyect] = useState(false);
@@ -878,12 +882,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                 </Text>
                                 . Si deseas cambiar tu elección{' '}
                                 <Button
-                                    onClick={() =>
-                                        router.push({
-                                            pathname: `/creator/visibility`,
-                                            query: { id: project.id },
-                                        })
-                                    }
+                                    onClick={openGoal}
                                     variant="link"
                                     fontWeight="normal"
                                     fontSize="16px"
@@ -2711,6 +2710,8 @@ const Fundraising: NextPage = ({ project, quality }) => {
 
             <AddMembersModal isOpen={isOpen} onClose={onClose} reload={mutate} />
             <SuccessModal isOpen={isOpenSuccess} onClose={onCloseSuccess} />
+
+            <CurrentGoalModal isOpen={isOpenGoal} onClose={closeGoal} isCreated={false} />
         </>
     );
 };

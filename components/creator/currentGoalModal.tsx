@@ -1,6 +1,6 @@
 import { HStack } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react';
-import { Modal, ModalOverlay, ModalContent, ModalBody, VStack, Text, Button, Icon } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalBody, VStack, Text, Button, Icon, Image } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -9,9 +9,10 @@ import { BsCheck } from 'react-icons/bs';
 interface CurrentGoalModalProps {
     isOpen: boolean;
     onClose: () => void;
+    isCreated?: boolean;
 }
 
-const CurrentGoalModal = ({ isOpen, onClose }: CurrentGoalModalProps) => {
+const CurrentGoalModal = ({ isOpen, onClose, isCreated = true }: CurrentGoalModalProps) => {
     const [currentGoal, setCurrentGoal] = useState<'visibility' | 'fundraising' | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -36,12 +37,25 @@ const CurrentGoalModal = ({ isOpen, onClose }: CurrentGoalModalProps) => {
         }
     };
 
+    const switchView = () => {
+        if (isCreated) {
+            createDraft();
+        } else {
+            setLoading(true);
+            router
+                .push({ pathname: `/creator/${currentGoal}`, query: { id: router.query.id } })
+                .then(() => setLoading(false));
+        }
+    };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
             <ModalOverlay />
             <ModalContent rounded="2xl" p={0} bg="gray.700">
                 <ModalBody w="full" px="32px" py="48px">
                     <VStack w="full" align="start" spacing="24px">
+                        <Image src="/images/icons/document_icon.svg" w="60px" h="auto" alt="document" />
+
                         <VStack textAlign="start">
                             <Text fontSize="3xl" fontWeight="bold" lineHeight="120%" textTransform="uppercase">
                                 ¿Cuál es el motivo que tienes al postular este proyecto?
@@ -125,7 +139,7 @@ const CurrentGoalModal = ({ isOpen, onClose }: CurrentGoalModalProps) => {
                         </VStack>
 
                         <Button
-                            onClick={createDraft}
+                            onClick={switchView}
                             type="submit"
                             w="full"
                             variant="solid"
