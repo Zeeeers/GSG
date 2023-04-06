@@ -2,10 +2,7 @@
 // @ts-nocheck
 import {
     Avatar,
-    Box,
     Button,
-    Checkbox,
-    Collapse,
     Container,
     Divider,
     FormControl,
@@ -17,9 +14,6 @@ import {
     Image,
     Img,
     Input,
-    InputGroup,
-    InputLeftAddon,
-    InputLeftElement,
     Link,
     Stack,
     Text,
@@ -28,10 +22,8 @@ import {
     useDisclosure,
     useToast,
     VStack,
-    UnorderedList,
-    ListItem,
-    Highlight,
     Select,
+    Collapse,
 } from '@chakra-ui/react';
 import TooltipPrettie from 'common/tooltip';
 import { PrivatePage } from '@clyc/next-route-manager';
@@ -41,21 +33,13 @@ import CropperModalBase64 from 'common/cropperModalBase64';
 import UploadButton from 'common/uploadButton';
 import AddMembersModal from 'components/project/addMembersModal';
 import SuccessModal from 'components/project/successModal';
-import FinanceGoal from 'components/projectDetail/formatText/financeGoal';
-import Garantee from 'components/projectDetail/formatText/garantee';
 import Messure from 'components/projectDetail/formatText/messure';
-import Objetive from 'components/projectDetail/formatText/objective';
-import Rentability from 'components/projectDetail/formatText/rentability';
-import Stage from 'components/projectDetail/formatText/stage';
-import StageCapital from 'components/projectDetail/formatText/stageCapital';
 import ThirdParties from 'components/projectDetail/formatText/thirdParties';
-import Time from 'components/projectDetail/formatText/time';
-import { IProjectForm, projectSchema } from 'forms/project';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FaCheck, FaCheckCircle, FaTrash } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
 import {
     IoIosArrowDown,
@@ -64,21 +48,17 @@ import {
     IoLogoLinkedin,
     IoLogoYoutube,
     IoMdEye,
-    IoMdGlobe,
-    IoMdInformationCircle,
 } from 'react-icons/io';
 import { useMembers } from 'services/api/lib/member';
 import { getQualities } from 'services/api/lib/qualities';
-import { Descendant } from 'slate';
 import { useCreateGsgProjectStore } from 'stores/createGsgProject';
 import { getGsgProject } from 'services/api/lib/gsg';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import Sector from 'components/projectDetail/formatText/sector';
 import { motion } from 'framer-motion';
-import Router, { useRouter } from 'next/router';
-import InputDisabled from 'common/inputDisabled';
-import { Field } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { IProjectForm, projectSchema } from 'forms/projectVisibility';
 
 // Page
 const Visibility: NextPage = ({ project, quality }) => {
@@ -91,31 +71,20 @@ const Visibility: NextPage = ({ project, quality }) => {
     const [baseSocialPdf, setBaseSocialPdf] = useState<basePDFType | undefined>(project?.social_impact);
     const [baseAdditional, setBaseAdditional] = useState<basePDFType | undefined>(project?.additional_document);
 
-    const { onOpen: onCropperOpen } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
     const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
     const [isOpenToggle, onToggle] = useState(false);
 
+    const [isDate, setIsDate] = useState(null);
+
     const [createProyect, setCreateProyect] = useState(false);
     const [saveDraft, setSaveDraft] = useState(false);
-    const [isStage, setIsStage] = useState(false);
 
-    //const project = useDraftStore((s) => s.project);
     const setMember = useCreateGsgProjectStore((s) => s.setMember);
-    const deleteMember = useCreateGsgProjectStore((s) => s.deleteMember);
-    const [contenido, setContenido] = useState<Descendant[]>();
+
     const [selectedOptions, setSelectedOptions] = useState();
-    const [selectInvestor, setSelectInvestor] = useState();
-    const [isOtherParties, setIsOtherParties] = useState(false);
-
-    const [isCheckCapital, setIsCheckCapital] = useState(false);
-    const [isCheckDeuda, setIsCheckDeuda] = useState(false);
-
-    const [postulationEmployee, setPostulationEmployee] = useState(false);
-    const [postulationProject, setPostulationProject] = useState(false);
     const [otherDescription, setOtherDescription] = useState('');
-    const [otherObject, setOtherObject] = useState('');
 
     const router = useRouter();
 
@@ -123,10 +92,6 @@ const Visibility: NextPage = ({ project, quality }) => {
         description: true,
         other: false,
     });
-
-    const getNameFile = (url) => {
-        return url(url.indexOf('/') + 2).split('/');
-    };
 
     const { data: members, mutate } = useMembers();
     const toast = useToast({});
@@ -175,27 +140,20 @@ const Visibility: NextPage = ({ project, quality }) => {
             facebookForm: project?.contacts && project?.contacts[2],
             youtubeForm: project?.contacts && project?.contacts[3],
             webForm: project?.contacts && project?.contacts[4],
+
+            monthStart: { label: null, value: '' },
+            yearStart: { label: null, value: '' },
         },
     });
 
+    console.log(errors);
+
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
-    const proyectMainImage = watch('main_image');
-    const proyectOds = watch('qualities');
     const proyectParties = watch('third_parties');
     const proyectMore = watch('more_info');
 
-    const proyectWeb = watch('business_web');
-    const proyectSocial = watch('social_impact');
-    const proyectCapital = watch('capital_stage');
-    const proyectDept = watch('debt');
-    const proyectInvestType = watch('investment_types');
-    const proyectRentability = watch('expected_rentability');
-
     const proyectBetter = watch('better_project', project?.better_project ?? '');
-    const proyectBusiness = watch('business_model', project?.business_model ?? '');
-
-    const proyectObject = watch('investment_objective');
 
     const optionsThirty = [
         { value: 'certified-b', label: 'Certificación empresa B' },
@@ -215,75 +173,6 @@ const Visibility: NextPage = ({ project, quality }) => {
             label: 'Mido resultados sociales y/o medioambientales y están certificados y/o validados por terceros independientes a mi organización',
         },
         { value: 'in-process-external', label: 'Estoy en proceso de medición de resultados validados por un externo' },
-    ];
-
-    const optionsStage = [
-        { value: 'development', label: 'Producto o servicio en desarrollo' },
-        { value: 'mvp', label: 'Producto o servicio en prototipo en pilotaje' },
-        { value: 'ready_to_launch', label: 'Producto o servicio listo para lanzar al mercado' },
-        { value: 'already_launched', label: 'Producto o servicio ya en el mercado' },
-    ];
-
-    const optionsCapital = [
-        { value: 'pre-seed', label: 'Pre-seed' },
-        { value: 'seed', label: 'Seed' },
-        { value: 'series-a', label: 'Serie A' },
-        { value: 'series-b', label: 'Serie B' },
-        { value: 'series-c', label: 'Serie C' },
-        { value: 'series-d', label: 'Serie D' },
-    ];
-
-    const optionsDeuda = [
-        { value: 'senior-debt', label: 'Deuda senior' },
-        { value: 'mezzanine-debt', label: 'Deuda mezzanine' },
-    ];
-
-    const optionsObject = [
-        { value: 'to-begin', label: 'Capital para comenzar' },
-        { value: 'to-scale', label: 'Capital para escalar' },
-        { value: 'to-innovate', label: 'Capital para innovar' },
-        { value: 'other', label: 'Otro' },
-    ];
-
-    const optionsGuarantee = [
-        { value: '0-20%', label: 'Entre un 0 y 20%' },
-        { value: '21-40%', label: 'Entre un 21 y 40%' },
-        { value: '41-60%', label: 'Entre un 41 y 60%' },
-        { value: '61-80%', label: 'Entre un 61 y 80%' },
-        { value: '81-100%', label: 'Entre un 81 y 100%' },
-    ];
-
-    const optionsRenta = [
-        { value: '1-5', label: 'Entre 1 y 5%' },
-        { value: '6-10', label: 'Entre 6 y 10%' },
-        { value: '11-20', label: 'Entre 11 y 20%' },
-        { value: 'more-than-21', label: 'Más de 21%' },
-    ];
-
-    const optionsFinance = [
-        { value: 'less-than-20', label: 'Menos de 20 millones' },
-        { value: '20-49', label: '20 millones y hasta 49 millones' },
-        { value: '50-99', label: '50 millones y hasta 99 millones' },
-        { value: '100-249', label: '100 millones y hasta 249 millones' },
-        { value: '250', label: '250 millones' },
-        { value: 'more-than-250', label: 'Sobre 250 millones' },
-        { value: 'more-than-1000', label: 'Sobre 1000 millones' },
-    ];
-
-    const optionsTime = [
-        { value: 'unti-a-year', label: 'Hasta 12 meses' },
-        { value: 'until-2-years', label: 'Hasta 24 meses' },
-        { value: 'until-3-years', label: 'Hasta 36 meses' },
-        { value: 'until-4-years', label: 'Hasta 48 meses' },
-        { value: 'more-than-4-years', label: 'Más de 48 meses' },
-    ];
-
-    const optionsInvestor = [
-        { value: 'Inversor ancla', label: 'Inversor ancla' },
-        { value: 'Inversores atomizados', label: 'Inversores atomizados' },
-        { value: 'Sponsor', label: 'Sponsor' },
-        { value: 'Minoritarios', label: 'Minoritarios' },
-        { value: 'Cualquiera', label: 'Cualquiera' },
     ];
 
     const optionsSector = [
@@ -318,6 +207,33 @@ const Visibility: NextPage = ({ project, quality }) => {
         { value: 'Others', label: 'Otros' },
         { value: 'Multisectorial', label: 'Multisectorial' },
     ];
+
+    const generateMonthOptions = () => {
+        const months = [];
+        const date = new Date(2023, 0);
+
+        for (let i = 0; i < 12; i++) {
+            months.push({
+                value: i + 1,
+                label: date.toLocaleString('es-ES', { month: 'long' }),
+            });
+            date.setMonth(date.getMonth() + 1); // avanzar al siguiente mes
+        }
+
+        return months;
+    };
+
+    const generateYearOptions = () => {
+        const years = [];
+        const currentYear = new Date().getFullYear();
+
+        for (let i = 0; i < 3; i++) {
+            const year = currentYear + i;
+            years.push({ value: year, label: year });
+        }
+
+        return years;
+    };
 
     const percentDescription = () => {
         const percent = [];
@@ -364,6 +280,18 @@ const Visibility: NextPage = ({ project, quality }) => {
             percent.push('');
         }
 
+        if (isDate !== null && isDate) {
+            percent.push('');
+        }
+
+        if (watch('monthStart').value) {
+            percent.push(watch('monthStart').value);
+        }
+
+        if (watch('yearStart').value) {
+            percent.push(watch('yearStart').value);
+        }
+
         return percent.length;
     };
 
@@ -391,7 +319,7 @@ const Visibility: NextPage = ({ project, quality }) => {
     };
 
     const handlePublished = async (data: IProjectForm) => {
-        setCreateProyect(true);
+        //setCreateProyect(true);
         const dataProject = {
             gsg_project: {
                 current_goal: 'visibility',
@@ -413,6 +341,10 @@ const Visibility: NextPage = ({ project, quality }) => {
                 progress: Math.round(((percentDescription() + percentOther()) * 100) / 9).toString(),
 
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
+
+                fundraising_start_month: data.yearStart?.value
+                    ? new Date(data.yearStart?.value, data.monthStart?.value - 1)
+                    : null,
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
             members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
@@ -480,6 +412,11 @@ const Visibility: NextPage = ({ project, quality }) => {
                 contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
                     'youtubeForm',
                 )};;${watch('webForm')}`,
+
+                fundraising_start_month:
+                    atch('yearStart').value || watch('monthStart').value
+                        ? new Date(watch('yearStart').value, watch('monthStart').value - 1)
+                        : null,
             },
             qualities:
                 selectedOptions?.map((item) => item.value).join(';;') ??
@@ -751,8 +688,6 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 {errors?.description?.message}
                             </FormErrorMessage>
                         </FormControl>
-
-                        {/*TODO: useCropper for upload image product*/}
 
                         <FormControl id="main_image" isInvalid={!!errors.main_image}>
                             <FormLabel lineHeight="140%">
@@ -1426,34 +1361,122 @@ const Visibility: NextPage = ({ project, quality }) => {
                             </FormLabel>
 
                             <HStack w="full" maxW="395px">
-                                <Button variant="solid" w="full" h="40px" bg="gray.700" _hover={{ bg: 'gray.600' }}>
+                                <Button
+                                    onClick={() => {
+                                        setIsDate(true);
+                                        setValue('monthStart.value', '', {
+                                            shouldValidate: true,
+                                            shouldDirty: false,
+                                        });
+                                        setValue('yearStart.value', '', {
+                                            shouldValidate: true,
+                                            shouldDirty: false,
+                                        });
+                                    }}
+                                    variant="solid"
+                                    w="full"
+                                    h="40px"
+                                    bg={isDate !== null && isDate ? 'teal.500' : 'gray.700'}
+                                    _hover={{ bg: 'gray.600' }}
+                                >
                                     Si
                                 </Button>
-                                <Button variant="solid" w="full" h="40px" bg="gray.700" _hover={{ bg: 'gray.600' }}>
+                                <Button
+                                    onClick={() => {
+                                        setIsDate(false);
+                                        setValue(
+                                            'monthStart',
+                                            { value: null, label: null },
+                                            {
+                                                shouldValidate: true,
+                                                shouldDirty: false,
+                                            },
+                                        );
+                                        setValue(
+                                            'yearStart',
+                                            { value: null, label: null },
+                                            {
+                                                shouldValidate: true,
+                                                shouldDirty: false,
+                                            },
+                                        );
+                                    }}
+                                    variant="solid"
+                                    w="full"
+                                    h="40px"
+                                    bg={isDate !== null && !isDate ? 'teal.500' : 'gray.700'}
+                                    _hover={{ bg: 'gray.600' }}
+                                >
                                     No
                                 </Button>
                             </HStack>
+
+                            {isDate === null && (
+                                <Text color="red.400" fontWeight="medium" fontFamily="inter" mt="15px">
+                                    Selecciona una opcion
+                                </Text>
+                            )}
                         </FormControl>
 
-                        <VStack w="full" align="start" spacing="15px">
-                            <Text fontSize="16px" fontFamily="inter" lineHeight="140%">
-                                15. Selecciona la fecha aproximada <span style={{ color: '#4FD1C5' }}>*</span>
-                            </Text>
+                        {isDate && (
+                            <VStack w="full" align="start" spacing="15px">
+                                <Text fontSize="16px" fontFamily="inter" lineHeight="140%">
+                                    15. Selecciona la fecha aproximada <span style={{ color: '#4FD1C5' }}>*</span>
+                                </Text>
 
-                            <HStack w="full">
-                                <FormControl w="full">
-                                    <FormLabel lineHeight="140%">Mes</FormLabel>
+                                <HStack w="full" align="start">
+                                    <FormControl w="full" id="monthStart" isInvalid={!!errors.monthStart}>
+                                        <FormLabel lineHeight="140%">Mes</FormLabel>
 
-                                    <Select w="full" placeholder="Seleccionar" />
-                                </FormControl>
+                                        <Controller
+                                            name="monthStart"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CharkaSelect
+                                                    {...field}
+                                                    useBasicStyles
+                                                    options={generateMonthOptions()}
+                                                />
+                                            )}
+                                        />
 
-                                <FormControl w="full">
-                                    <FormLabel lineHeight="140%">Año</FormLabel>
+                                        <FormErrorMessage
+                                            textColor="red.400"
+                                            fontFamily="inter"
+                                            fontSize="16px"
+                                            fontWeight={'medium'}
+                                        >
+                                            {errors.monthStart?.value?.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
 
-                                    <Select w="full" />
-                                </FormControl>
-                            </HStack>
-                        </VStack>
+                                    <FormControl w="full" id="monthStart" isInvalid={!!errors.yearStart}>
+                                        <FormLabel lineHeight="140%">Año</FormLabel>
+
+                                        <Controller
+                                            name="yearStart"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <CharkaSelect
+                                                    {...field}
+                                                    useBasicStyles
+                                                    options={generateYearOptions()}
+                                                />
+                                            )}
+                                        />
+
+                                        <FormErrorMessage
+                                            textColor="red.400"
+                                            fontFamily="inter"
+                                            fontSize="16px"
+                                            fontWeight={'medium'}
+                                        >
+                                            {errors.yearStart?.value?.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                </HStack>
+                            </VStack>
+                        )}
 
                         <HStack spacing="20px" mt={{ base: '10px', md: 0 }} w="full">
                             <Button
@@ -1513,13 +1536,15 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <HStack w="full" justify="space-between" color="gray.500" fontFamily="inter">
                             <Text fontSize="15px">Tu progreso actual</Text>
                             <Text fontSize="15px" fontWeight="semibold">
-                                {`${Math.round(((percentDescription() + percentOther()) * 100) / 9)}%`}
+                                {`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9))}%`}
                             </Text>
                         </HStack>
 
                         <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
                             <Stack
-                                w={`${Math.round(((percentDescription() + percentOther()) * 100) / 9)}%`}
+                                w={`${Math.round(
+                                    ((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9),
+                                )}%`}
                                 h="full"
                                 background="teal.400"
                                 rounded="20px"
@@ -1575,7 +1600,9 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 )}
                                 <Text>Otra información relevante</Text>
                             </HStack>
-                            {percentOther() === 3 && <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />}
+                            {percentOther() === (isDate ? 6 : 3) && (
+                                <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
+                            )}
                         </HStack>
                     </VStack>
 

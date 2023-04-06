@@ -86,7 +86,8 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                             router
                                 .push({
                                     query: { id: project?.id },
-                                    pathname: '/creator',
+                                    // @ts-ignore
+                                    pathname: `/creator/${project?.current_goal}`,
                                 })
                                 .then(() => setLoading(false));
                             //@ts-ignore
@@ -136,7 +137,8 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                             router
                                 .push({
                                     query: { id: project?.id },
-                                    pathname: '/creator',
+                                    // @ts-ignore
+                                    pathname: `/creator/${project?.current_goal}`,
                                 })
                                 .then(() => setLoading(false));
                             //@ts-ignore

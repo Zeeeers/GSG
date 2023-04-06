@@ -1,4 +1,5 @@
 //Dependencies
+// @ts-nocheck
 import { ZodShape } from 'services/validation';
 import { z } from 'zod';
 
@@ -35,6 +36,15 @@ export interface IProjectForm {
     webForm?: string;
 
     members: Array<IMember>;
+
+    monthStart: {
+        value?: number;
+        label?: string;
+    };
+    yearStart: {
+        value?: number;
+        label?: number;
+    };
 }
 
 // Schema
@@ -93,6 +103,16 @@ const projectShape: ZodShape<IProjectForm> = {
         .optional(),
 
     members: z.array(z.object(memberShape)).nonempty('Debe agregar al menos un miembro'),
+
+    monthStart: z.object({
+        value: z.number({ invalid_type_error: 'Campo obligatorio' }).min(1, 'Campo obligatorio').optional().nullable(),
+        label: z.string().optional().nullable(),
+    }),
+
+    yearStart: z.object({
+        value: z.number({ invalid_type_error: 'Campo obligatorio' }).min(1, 'Campo obligatorio').optional().nullable(),
+        label: z.number().optional().nullable(),
+    }),
 };
 
 export const projectSchema = z.object(projectShape);
