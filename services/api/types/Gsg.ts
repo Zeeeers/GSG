@@ -65,4 +65,5 @@ export interface GsgFormated {
     members: Array<Members>;
     status: string;
     progress: number;
+    current_goal: 'visibility' | 'fundraising';
 }
