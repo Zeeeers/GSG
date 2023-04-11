@@ -36,12 +36,14 @@ import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
 import { BsInfoCircleFill } from 'react-icons/bs';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
-import SelectComponent from './selectComponenet';
+import ContentTable from './projectTable/contentTable';
+import SelectComponent from './projectTable/selectComponenet';
 
 const ListProyectsForm = (props: any) => {
     const { data, mutate } = useAdminGsg();
-    const [deleteProduct, setDeleteProduct] = useState(false);
+
     const [paginationIndex, setPagination] = useState(0);
+
     const toast = useToast();
 
     const gsgFilterData = data?.data?.projects
@@ -77,36 +79,6 @@ const ListProyectsForm = (props: any) => {
             toast({
                 title: 'Error al actualizar',
                 description: 'Ha ocurrido un error al intentar actualizar el proyecto, porfavor intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-        }
-    };
-
-    const handleDelete = async (id: number) => {
-        setDeleteProduct(true);
-        const { deleteGsgProject } = await import('../../services/api/lib/gsg');
-        const { ok } = await deleteGsgProject(id);
-
-        if (ok) {
-            setDeleteProduct(false);
-            toast({
-                title: 'Proyecto eliminado',
-                description: `Se ha eliminado el proyecto exitosamente.`,
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-
-            mutate();
-        } else {
-            setDeleteProduct(false);
-            toast({
-                title: 'Error al eliminar',
-                description: 'Ha ocurrido un error al intentar eliminar el proyecto, porfavor intentelo de nuevo.',
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -267,83 +239,12 @@ const ListProyectsForm = (props: any) => {
                     <Tbody>
                         {gsgFilterData
                             ?.map((proyect) => (
-                                <Tr key={proyect.id}>
-                                    <Td fontFamily="inter" pl={0} py="30px" w="13%">
-                                        {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
-                                            day: 'numeric',
-                                            month: 'numeric',
-                                            year: 'numeric',
-                                        })}
-                                    </Td>
-                                    <Td fontFamily="inter" pl={0} py="30px" maxW="100px">
-                                        <Tooltip label={proyect?.title} bg="gray.700" hasArrow>
-                                            <Text overflow="hidden" textOverflow="ellipsis">
-                                                {proyect?.title}
-                                            </Text>
-                                        </Tooltip>
-                                    </Td>
-                                    <Td
-                                        fontFamily="inter"
-                                        pl={0}
-                                        maxW="100px"
-                                        overflow="hidden"
-                                        textOverflow="ellipsis"
-                                    >
-                                        <Tooltip label={proyect?.organization.name} bg="gray.700" hasArrow>
-                                            <Text overflow="hidden" textOverflow="ellipsis">
-                                                {proyect?.organization.name}
-                                            </Text>
-                                        </Tooltip>
-                                    </Td>
-                                    <Td fontFamily="inter" p={0} maxW="100" m={0}>
-                                        <Stack
-                                            py="4px"
-                                            px="10px"
-                                            w="fit-content"
-                                            h="29px"
-                                            bg={
-                                                proyect?.fundraising_start_month
-                                                    ? new Date(proyect?.fundraising_start_month) < new Date()
-                                                        ? 'red.500'
-                                                        : 'blue.500'
-                                                    : 'gray.800'
-                                            }
-                                            rounded="8px"
-                                        >
-                                            <Text fontSize="15px" fontFamily="inter">
-                                                {proyect?.current_goal === 'visibility'
-                                                    ? 'Visibilidad'
-                                                    : 'Financiamiento'}
-                                            </Text>
-                                        </Stack>
-                                    </Td>
-
-                                    <Td fontFamily="inter" pl="40px" maxW="200px">
-                                        <SelectComponent project={proyect} handleStatus={handleStatus} />
-                                    </Td>
-                                    <Td fontFamily="inter" pl="50px">
-                                        <HStack spacing="20px">
-                                            <Link
-                                                href={`/project/${proyect?.id}-${proyect?.title
-                                                    .toLowerCase()
-                                                    .replaceAll(' ', '-')}`}
-                                                target="_blank"
-                                            >
-                                                <Button variant="solid">Ver proyecto</Button>
-                                            </Link>
-                                            <Button
-                                                type="button"
-                                                isLoading={deleteProduct}
-                                                loadingText="Eliminando producto"
-                                                onClick={() => handleDelete(proyect?.id)}
-                                                variant="solid"
-                                                colorScheme="red"
-                                            >
-                                                Eliminar
-                                            </Button>
-                                        </HStack>
-                                    </Td>
-                                </Tr>
+                                <ContentTable
+                                    key={proyect?.id}
+                                    proyect={proyect}
+                                    handleStatus={handleStatus}
+                                    mutate={mutate}
+                                />
                             ))
                             .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
                     </Tbody>
@@ -438,9 +339,7 @@ const ListProyectsForm = (props: any) => {
                                     </Link>
                                     <Button
                                         type="button"
-                                        isLoading={deleteProduct}
                                         loadingText="Eliminando producto"
-                                        onClick={() => handleDelete(project.id)}
                                         variant="solid"
                                         colorScheme="red"
                                     >
