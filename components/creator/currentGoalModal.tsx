@@ -5,14 +5,16 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { BsCheck } from 'react-icons/bs';
+import { UpdateProjectRequest } from 'services/api/lib/gsg/gsg.types';
 
 interface CurrentGoalModalProps {
     isOpen: boolean;
     onClose: () => void;
     isCreated?: boolean;
+    projectId: UpdateProjectRequest['idProject'];
 }
 
-const CurrentGoalModal = ({ isOpen, onClose, isCreated = true }: CurrentGoalModalProps) => {
+const CurrentGoalModal = ({ isOpen, onClose, isCreated = true, projectId }: CurrentGoalModalProps) => {
     const [currentGoal, setCurrentGoal] = useState<'visibility' | 'fundraising' | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -37,14 +39,31 @@ const CurrentGoalModal = ({ isOpen, onClose, isCreated = true }: CurrentGoalModa
         }
     };
 
+    const updateDraft = async () => {
+        const { updateGsgProject } = await import('../../services/api/lib/gsg');
+        setLoading(true);
+
+        try {
+            const { ok, data } = await updateGsgProject({
+                idProject: projectId,
+                project: { status: 'sketch', current_goal: currentGoal },
+            });
+
+            if (ok) {
+                router
+                    .push({ pathname: `/creator/${currentGoal}`, query: { id: data?.data?.gsg_project?.id } })
+                    .then(() => setLoading(false));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const switchView = () => {
         if (isCreated) {
             createDraft();
         } else {
-            setLoading(true);
-            router
-                .push({ pathname: `/creator/${currentGoal}`, query: { id: router.query.id } })
-                .then(() => setLoading(false));
+            updateDraft();
         }
     };
 

@@ -114,7 +114,7 @@ export type UpdateGsgProjectCall = (payload: UpdateGsgProjectRequest) => Promise
 //Update
 
 export interface UpdateProjectRequest {
-    project: Gsg;
+    project: ProjectForm;
     idProject: number;
 }
 

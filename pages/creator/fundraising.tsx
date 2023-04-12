@@ -2711,7 +2711,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
             <AddMembersModal isOpen={isOpen} onClose={onClose} reload={mutate} />
             <SuccessModal isOpen={isOpenSuccess} onClose={onCloseSuccess} />
 
-            <CurrentGoalModal isOpen={isOpenGoal} onClose={closeGoal} isCreated={false} />
+            <CurrentGoalModal isOpen={isOpenGoal} onClose={closeGoal} isCreated={false} projectId={project?.id} />
         </>
     );
 };

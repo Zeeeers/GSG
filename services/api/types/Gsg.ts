@@ -40,7 +40,7 @@ export interface Gsg {
     status: string;
     last_status_updated: string;
     fundraising_start_month?: string;
-    current_goal: 'visibility' | 'fundraising';
+    current_goal: 'visibility' | 'fundraising' | null;
 }
 
 export interface GsgFormated {
