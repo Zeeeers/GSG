@@ -27,10 +27,11 @@ import StageCapital from './formatText/stageCapital';
 import ThirdParties from './formatText/thirdParties';
 import Time from './formatText/time';
 import cookies from 'nookies';
+import { useEffect, useState } from 'react';
 
 const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) => {
+    const [isAdmin, setIsAdmin] = useState(false);
     const { impact, description_finance, other } = ref?.current;
-    const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
 
     const getInvestorType = () => {
         const lastWord = project?.investment_types?.at(-1);
@@ -49,6 +50,16 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
             return newArray.join(', ') + ' o ' + lastWord;
         }
     };
+
+    useEffect(() => {
+        const adminCookie = cookies.get()[process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!];
+
+        if (adminCookie) {
+            setIsAdmin(true);
+        } else {
+            setIsAdmin(false);
+        }
+    }, []);
 
     return (
         <Stack alignItems="start" pt="90px" pb="150px" px={{ xl: '227px' }} spacing="40px" scrollPaddingTop="100px">
@@ -146,7 +157,7 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                 )}
             </VStack>
 
-            {user || orga?.gsg_project_id === project?.id || adminCookie ? (
+            {user || orga?.gsg_project_id === project?.id || isAdmin ? (
                 <>
                     {project?.current_goal === 'fundraising' ? (
                         <Stack
