@@ -531,13 +531,15 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     >
                                                         {project.organization.name} no está en búsqueda de
                                                         financiamiento, comenzará en{' '}
-                                                        {new Date(project?.fundraising_start_month).toLocaleDateString(
-                                                            'es-CL',
-                                                            {
-                                                                month: 'long',
-                                                            },
-                                                        )}{' '}
-                                                        {new Date(project?.fundraising_start_month).getFullYear()}
+                                                        {new Date(
+                                                            project?.fundraising_start_month + 'T00:00:00-03:00',
+                                                        ).toLocaleDateString('es-CL', {
+                                                            month: 'long',
+                                                            timeZone: 'UTC',
+                                                        })}{' '}
+                                                        {new Date(
+                                                            project?.fundraising_start_month + 'T00:00:00-03:00',
+                                                        ).getFullYear()}
                                                     </Text>
                                                 ) : (
                                                     <Text

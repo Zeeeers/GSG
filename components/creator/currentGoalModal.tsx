@@ -24,7 +24,7 @@ const CurrentGoalModal = ({ isOpen, onClose, isCreated = true }: CurrentGoalModa
 
         try {
             const { ok, data } = await create({
-                project: { status: 'sketch' },
+                project: { status: 'sketch', current_goal: currentGoal },
             });
 
             if (ok) {
@@ -63,7 +63,7 @@ const CurrentGoalModal = ({ isOpen, onClose, isCreated = true }: CurrentGoalModa
                             <Text color="gray.50" lineHeight="140%">
                                 De acuerdo a tu elección se habilitarán campos distintos que tendrás que completar para
                                 subir tu proyecto en Match. Así mismo, se le hará saber a inversionistas si tu proyecto
-                                busca levantar inversión o no.
+                                busca financiamiento o no.
                             </Text>
                         </VStack>
 
@@ -117,7 +117,7 @@ const CurrentGoalModal = ({ isOpen, onClose, isCreated = true }: CurrentGoalModa
                                 onClick={() => setCurrentGoal('fundraising')}
                             >
                                 <Text fontWeight="normal" fontFamily="inter" fontSize="16px">
-                                    Busco levantar inversión para mi proyecto de impacto
+                                    Busco financiamiento para mi proyecto de impacto
                                 </Text>
 
                                 {currentGoal === 'fundraising' && (

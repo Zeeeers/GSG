@@ -34,7 +34,7 @@ export interface IProjectForm {
 
     investment_types?: Array<select>;
     rentability_time: string;
-    better_project: string;
+    //better_project: string;
     additional_info: string;
     additional_document?: string;
 
@@ -97,7 +97,7 @@ const projectShape: ZodShape<IProjectForm> = {
     investment_types: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
 
     rentability_time: z.string().min(1, 'Campo obligatorio'),
-    better_project: z.string().nonempty('Campo obligatorio'),
+    //better_project: z.string().nonempty('Campo obligatorio'),
     additional_info: z.string().nonempty({ message: 'Campo obligatorio' }).max(1000, 'Máximo 1000 caracteres'),
     additional_document: z.string().optional(),
 

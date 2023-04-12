@@ -25,7 +25,7 @@ export interface IProjectForm {
     third_parties: select;
     more_info: select;
 
-    better_project: string;
+    //better_project: string;
     additional_info: string;
     additional_document?: string;
 
@@ -70,7 +70,7 @@ const projectShape: ZodShape<IProjectForm> = {
     more_info: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     third_parties: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
 
-    better_project: z.string().nonempty('Campo obligatorio'),
+    //better_project: z.string().nonempty('Campo obligatorio'),
     additional_info: z.string().nonempty({ message: 'Campo obligatorio' }).max(1000, 'Máximo 1000 caracteres'),
     additional_document: z.string().optional(),
 

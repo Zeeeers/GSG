@@ -147,19 +147,25 @@ const Visibility: NextPage = ({ project, quality }) => {
             monthStart: {
                 label:
                     project?.fundraising_start_month !== null
-                        ? new Date(project?.fundraising_start_month).toLocaleString('es-CL', { month: 'long' })
+                        ? new Date(project?.fundraising_start_month + 'T00:00:00-03:00').toLocaleString('es-CL', {
+                              month: 'long',
+                              timeZone: 'UTC',
+                          })
                         : null,
                 value:
                     project?.fundraising_start_month !== null
-                        ? new Date(project?.fundraising_start_month).getMonth()
+                        ? new Date(project?.fundraising_start_month + 'T00:00:00-03:00').getMonth() + 1
                         : null,
             },
             yearStart: {
                 label:
                     project?.fundraising_start_month !== null
-                        ? new Date(project?.fundraising_start_month).getFullYear()
+                        ? new Date(project?.fundraising_start_month + 'T00:00:00-03:00').getFullYear()
                         : null,
-                value: new Date(project?.fundraising_start_month).getFullYear(),
+                value:
+                    project?.fundraising_start_month !== null
+                        ? new Date(project?.fundraising_start_month + 'T00:00:00-03:00').getFullYear()
+                        : null,
             },
         },
     });
@@ -284,9 +290,9 @@ const Visibility: NextPage = ({ project, quality }) => {
     const percentOther = () => {
         const percent = [];
 
-        if (watch('better_project') !== '') {
+        /*if (watch('better_project') !== '') {
             percent.push(watch('better_project'));
-        }
+        }*/
 
         if (watch('additional_info') !== '') {
             percent.push(watch('additional_info'));
@@ -300,12 +306,12 @@ const Visibility: NextPage = ({ project, quality }) => {
             percent.push('');
         }
 
-        if (watch('monthStart').value) {
-            percent.push(watch('monthStart').value);
+        if (watch('monthStart').value?.toString()) {
+            percent.push(watch('monthStart').value?.toString());
         }
 
-        if (watch('yearStart').value) {
-            percent.push(watch('yearStart').value);
+        if (watch('yearStart').value?.toString()) {
+            percent.push(watch('yearStart').value?.toString());
         }
 
         return percent.length;
@@ -348,13 +354,13 @@ const Visibility: NextPage = ({ project, quality }) => {
                 more_info: data.more_info?.value,
                 third_parties: data.third_parties?.value === 'other' ? otherDescription : data.third_parties?.value,
 
-                better_project: data.better_project,
+                //better_project: data.better_project,
                 additional_info: data.additional_info,
                 additional_document: baseAdditional?.base64,
 
                 status: 'in-review',
 
-                progress: Math.round(((percentDescription() + percentOther()) * 100) / 9).toString(),
+                progress: Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8)).toString(),
 
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
 
@@ -422,9 +428,12 @@ const Visibility: NextPage = ({ project, quality }) => {
                 third_parties: proyectParties?.value === 'other' ? otherDescription : proyectParties?.value,
                 sector: watch('sector')?.value,
 
+                additional_info: watch('additional_info'),
+                additional_document: baseAdditional?.base64,
+
                 status: 'sketch',
 
-                progress: Math.round(((percentDescription() + percentOther()) * 100) / 9).toString(),
+                progress: Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8)).toString(),
                 contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
                     'youtubeForm',
                 )};;${watch('webForm')}`,
@@ -1334,7 +1343,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                             )}
                         </FormControl>
 
-                        <FormControl id="better_project" isInvalid={!!errors.better_project}>
+                        {/*  <FormControl id="better_project" isInvalid={!!errors.better_project}>
                             <FormLabel lineHeight="140%">
                                 13. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse de una
                                 potencial inserción de un inversionista? <span style={{ color: '#4FD1C5' }}>*</span>
@@ -1371,7 +1380,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                             >
                                 {errors.better_project?.message}
                             </FormErrorMessage>
-                        </FormControl>
+                        </FormControl>*/}
 
                         <FormControl>
                             <FormLabel lineHeight="140%">
@@ -1562,14 +1571,14 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <HStack w="full" justify="space-between" color="gray.500" fontFamily="inter">
                             <Text fontSize="15px">Tu progreso actual</Text>
                             <Text fontSize="15px" fontWeight="semibold">
-                                {`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9))}%`}
+                                {`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8))}%`}
                             </Text>
                         </HStack>
 
                         <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
                             <Stack
                                 w={`${Math.round(
-                                    ((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9),
+                                    ((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8),
                                 )}%`}
                                 h="full"
                                 background="teal.400"
@@ -1626,7 +1635,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 )}
                                 <Text>Otra información relevante</Text>
                             </HStack>
-                            {percentOther() === (isDate ? 6 : 3) && (
+                            {percentOther() === (isDate ? 5 : 2) && (
                                 <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />
                             )}
                         </HStack>
@@ -1717,13 +1726,13 @@ const Visibility: NextPage = ({ project, quality }) => {
                     <HStack w="full" justify="space-between" color="gray.50" fontFamily="inter">
                         <Text fontSize="15px">Tu progreso actual</Text>
                         <Text fontSize="15px" fontFamily="inter" fontWeight="medium">
-                            {`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9))}%`}
+                            {`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8))}%`}
                         </Text>
                     </HStack>
 
                     <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
                         <Stack
-                            w={`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 12 : 9))}%`}
+                            w={`${Math.round(((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8))}%`}
                             h="full"
                             background="teal.400"
                             rounded="20px"

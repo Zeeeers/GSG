@@ -439,8 +439,16 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                                 Descripción financiera de {project?.organization?.name}
                             </Text>
                             <Text fontSize="24px" lineHeight="130%">
-                                Este proyecto por el momento solo busca estar visible dentro del ecosistema de impacto,
-                                por lo que no dispone de una descripción financiera.
+                                {project.fundraising_start_month
+                                    ? `Este proyecto no está en búsqueda de financiamiento actualmente, comenzará en ${new Date(
+                                          project?.fundraising_start_month + 'T00:00:00-03:00',
+                                      ).toLocaleDateString('es-CL', {
+                                          month: 'long',
+                                          timeZone: 'UTC',
+                                      })} ${new Date(
+                                          project?.fundraising_start_month + 'T00:00:00-03:00',
+                                      ).getFullYear()}`
+                                    : 'Este proyecto por el momento solo busca estar visible dentro del ecosistema de impacto, por lo que no dispone de una descripción financiera.'}
                             </Text>
                         </Stack>
                     )}

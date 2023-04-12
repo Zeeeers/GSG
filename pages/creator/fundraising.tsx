@@ -472,9 +472,9 @@ const Fundraising: NextPage = ({ project, quality }) => {
     const percentOther = () => {
         const percent = [];
 
-        if (watch('better_project') !== '') {
+        /* if (watch('better_project') !== '') {
             percent.push(watch('better_project'));
-        }
+        }*/
 
         if (watch('additional_info') !== '') {
             percent.push(watch('additional_info'));
@@ -556,12 +556,12 @@ const Fundraising: NextPage = ({ project, quality }) => {
                 progress: Math.round(
                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                         (isCheckCapital && isCheckDeuda
-                            ? 26
-                            : isCheckCapital && !isCheckDeuda
                             ? 25
+                            : isCheckCapital && !isCheckDeuda
+                            ? 24
                             : !isCheckCapital && isCheckDeuda
-                            ? 23
-                            : 26),
+                            ? 22
+                            : 25),
                 ).toString(),
 
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
@@ -666,12 +666,12 @@ const Fundraising: NextPage = ({ project, quality }) => {
                 progress: Math.round(
                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                         (isCheckCapital && isCheckDeuda
-                            ? 26
-                            : isCheckCapital && !isCheckDeuda
                             ? 25
+                            : isCheckCapital && !isCheckDeuda
+                            ? 24
                             : !isCheckCapital && isCheckDeuda
-                            ? 23
-                            : 26),
+                            ? 22
+                            : 25),
                 ).toString(),
                 contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
                     'youtubeForm',
@@ -2330,7 +2330,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                             )}
                         </FormControl>
 
-                        <FormControl id="better_project" isInvalid={!!errors.better_project}>
+                        {/* <FormControl id="better_project" isInvalid={!!errors.better_project}>
                             <FormLabel lineHeight="140%">
                                 26. Espacio de mejora continua: ¿Cómo crees que tu proyecto podría beneficiarse de una
                                 potencial inserción de un inversionista? <span style={{ color: '#4FD1C5' }}>*</span>
@@ -2367,7 +2367,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                             >
                                 {errors.better_project?.message}
                             </FormErrorMessage>
-                        </FormControl>
+                        </FormControl> */}
 
                         <HStack spacing="20px" mt={{ base: '10px', md: 0 }} w="full">
                             <Button
@@ -2430,12 +2430,12 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                 {`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                         (isCheckCapital && isCheckDeuda
-                                            ? 26
-                                            : isCheckCapital && !isCheckDeuda
                                             ? 25
+                                            : isCheckCapital && !isCheckDeuda
+                                            ? 24
                                             : !isCheckCapital && isCheckDeuda
-                                            ? 23
-                                            : 26),
+                                            ? 22
+                                            : 25),
                                 )}%`}
                             </Text>
                         </HStack>
@@ -2445,12 +2445,12 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                 w={`${Math.round(
                                     ((percentDescription() + percentFinance() + percentOther()) * 100) /
                                         (isCheckCapital && isCheckDeuda
-                                            ? 26
-                                            : isCheckCapital && !isCheckDeuda
                                             ? 25
+                                            : isCheckCapital && !isCheckDeuda
+                                            ? 24
                                             : !isCheckCapital && isCheckDeuda
-                                            ? 23
-                                            : 26),
+                                            ? 22
+                                            : 25),
                                 )}%`}
                                 h="full"
                                 background="teal.400"
@@ -2541,7 +2541,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                 )}
                                 <Text>Otra información relevante</Text>
                             </HStack>
-                            {percentOther() === 3 && <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />}
+                            {percentOther() === 2 && <Icon as={BsCheckCircleFill} color="teal.500" w="25px" h="25px" />}
                         </HStack>
                     </VStack>
 
