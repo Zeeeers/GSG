@@ -60,6 +60,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { IProjectForm, projectSchema } from 'forms/projectVisibility';
 import CurrentGoalModal from 'components/creator/currentGoalModal';
+import EmailCopyModal from 'components/explorer/statusProject/emailCopyModal';
 
 // Page
 const Visibility: NextPage = ({ project, quality }) => {
@@ -75,6 +76,7 @@ const Visibility: NextPage = ({ project, quality }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
     const { isOpen: isCropperOpenMain, onOpen: onCropperOpenMain, onClose: onCropperCloseMain } = useDisclosure();
+    const { isOpen: isOpenCopy, onOpen: onOpenEmail, onClose: onCloseCopy } = useDisclosure();
     const [isOpenToggle, onToggle] = useState(false);
 
     const { isOpen: isOpenGoal, onOpen: openGoal, onClose: closeGoal } = useDisclosure();
@@ -677,9 +679,9 @@ const Visibility: NextPage = ({ project, quality }) => {
                             </FormLabel>
 
                             <FormHelperText mb="10px" fontFamily="inter" color="gray.300" lineHeight="140%">
-                                Porfavor detalla al inversionista en qué consiste el proyecto, cuál es su enfoque, los
-                                objetivos generales y específicos que tienen, y cualquier otra información que
-                                consideres relevante.
+                                Por favor detalla al inversionista en qué consiste el proyecto, cuál es su propósito,
+                                los objetivos generales y específicos que tienen, propuesta de valor y a quién va
+                                dirigido
                             </FormHelperText>
 
                             <Controller
@@ -927,8 +929,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '60%' }}>
                             <HStack align="flex-start" spacing="0px">
                                 <FormLabel lineHeight="140%">
-                                    7. ¿Actualmente tienes información sobre cómo mides tus resultados de impacto?{' '}
-                                    <span style={{ color: '#4FD1C5' }}>*</span>
+                                    7. ¿Miden resultados de impacto? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
 
                                 <TooltipPrettie>
@@ -1679,14 +1680,15 @@ const Visibility: NextPage = ({ project, quality }) => {
                             </Tooltip>
                         </VStack>
 
-                        <Link
-                            href="mailto:contacto@gsg-match.com
-"
+                        <Text
+                            fontFamily="inter"
+                            fontSize="14px"
+                            cursor="pointer"
+                            _hover={{ textDecor: 'underline' }}
+                            onClick={onOpenEmail}
                         >
-                            <Text fontFamily="inter" fontSize="14px">
-                                ¿Necesitas ayuda? Contáctanos
-                            </Text>
-                        </Link>
+                            ¿Necesitas ayuda? Contáctanos
+                        </Text>
                     </VStack>
                 </Stack>
             </HStack>
@@ -1790,6 +1792,7 @@ const Visibility: NextPage = ({ project, quality }) => {
             <SuccessModal isOpen={isOpenSuccess} onClose={onCloseSuccess} />
 
             <CurrentGoalModal isOpen={isOpenGoal} onClose={closeGoal} isCreated={false} projectId={project?.id} />
+            <EmailCopyModal isOpen={isOpenCopy} onClose={onCloseCopy} />
         </>
     );
 };

@@ -543,7 +543,7 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                         )}
                     </Stack>
 
-                    <Stack pl="27px" pr="27px" spacing="27px">
+                    {/*<Stack pl="27px" pr="27px" spacing="27px">
                         <VStack align="flex-start" spacing="5px">
                             <Text as="p" fontSize="3xl">
                                 Espacios de mejora continua
@@ -552,7 +552,7 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                                 {project?.better_project ?? 'Sin información'}
                             </Text>
                         </VStack>
-                    </Stack>
+                    </Stack> */}
                 </>
             ) : (
                 <Stack pos="relative">

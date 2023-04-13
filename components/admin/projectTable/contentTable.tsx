@@ -91,10 +91,12 @@ const ContentTable = ({ proyect, handleStatus, mutate }: ContentTableProps) => {
                         w="fit-content"
                         h="29px"
                         bg={
-                            proyect?.fundraising_start_month
-                                ? new Date(proyect?.fundraising_start_month) < new Date()
-                                    ? 'red.500'
-                                    : 'blue.500'
+                            proyect?.current_goal === 'visibility'
+                                ? proyect?.fundraising_start_month
+                                    ? new Date(proyect?.fundraising_start_month) < new Date()
+                                        ? 'red.500'
+                                        : 'blue.500'
+                                    : 'gray.800'
                                 : 'gray.800'
                         }
                         rounded="8px"
