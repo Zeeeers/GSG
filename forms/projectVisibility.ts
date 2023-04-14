@@ -1,4 +1,5 @@
 //Dependencies
+// @ts-nocheck
 import { ZodShape } from 'services/validation';
 import { z } from 'zod';
 
@@ -18,34 +19,15 @@ export interface IProjectForm {
     title: string;
     description: string;
     main_image: string;
-    social_impact?: string;
-
-    more_info: select;
-    third_parties: select;
-    sector: select;
-    stage?: select;
-    investment_objective?: select;
-    capital_stage?: select;
-    guarantee?: select;
-    expected_rentability?: select;
-    finance_goal: select;
-    time_lapse: select;
     qualities?: select;
+    social_impact?: string;
+    sector: select;
+    third_parties: select;
+    more_info: select;
 
-    investment_types?: Array<select>;
-    rentability_time: string;
     //better_project: string;
     additional_info: string;
     additional_document?: string;
-
-    debt?: select;
-
-    last_sales12: string;
-    last_sales6: string;
-    last_client12: string;
-    last_client6: string;
-    ebitda: string;
-    patrimony: string;
 
     linkedinForm?: string;
     instagramForm?: string;
@@ -54,6 +36,15 @@ export interface IProjectForm {
     webForm?: string;
 
     members: Array<IMember>;
+
+    monthStart: {
+        value?: number;
+        label?: string;
+    };
+    yearStart: {
+        value?: number;
+        label?: number;
+    };
 }
 
 // Schema
@@ -78,32 +69,12 @@ const projectShape: ZodShape<IProjectForm> = {
     sector: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     more_info: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
     third_parties: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
-    stage: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
-    investment_objective: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
-    capital_stage: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
 
-    guarantee: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }).optional(),
-    expected_rentability: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
-    finance_goal: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
-    time_lapse: z.object({ value: z.string().nonempty('Campo obligatorio'), label: z.string() }),
-
-    last_sales12: z.string().nonempty('Campo obligatorio'),
-    last_sales6: z.string().nonempty('Campo obligatorio'),
-    ebitda: z.string().nonempty('Campo obligatorio'),
-    last_client12: z.string().nonempty('Campo obligatorio'),
-    last_client6: z.string().nonempty('Campo obligatorio'),
-    patrimony: z.string().nonempty('Campo obligatorio'),
-
-    investment_types: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
-
-    rentability_time: z.string().min(1, 'Campo obligatorio'),
     //better_project: z.string().nonempty('Campo obligatorio'),
     additional_info: z.string().nonempty({ message: 'Campo obligatorio' }).max(1000, 'Máximo 1000 caracteres'),
     additional_document: z.string().optional(),
 
     qualities: z.object({ value: z.string(), label: z.string() }).optional(),
-
-    debt: z.object({ value: z.string().optional(), label: z.string().optional() }).optional(),
 
     linkedinForm: z
         .string()
@@ -132,6 +103,16 @@ const projectShape: ZodShape<IProjectForm> = {
         .optional(),
 
     members: z.array(z.object(memberShape)).nonempty('Debe agregar al menos un miembro'),
+
+    monthStart: z.object({
+        value: z.number({ invalid_type_error: 'Campo obligatorio' }).min(1, 'Campo obligatorio').optional().nullable(),
+        label: z.string().optional().nullable(),
+    }),
+
+    yearStart: z.object({
+        value: z.number({ invalid_type_error: 'Campo obligatorio' }).min(1, 'Campo obligatorio').optional().nullable(),
+        label: z.number().optional().nullable(),
+    }),
 };
 
 export const projectSchema = z.object(projectShape);

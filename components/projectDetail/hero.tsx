@@ -519,9 +519,38 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                 pt="5px"
                                                 h="full"
                                             >
-                                                <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
-                                                    {FinanceGoal(project?.finance_goal)} (CLP)
-                                                </Text>
+                                                {project.current_goal === 'fundraising' ? (
+                                                    <Text fontSize={{ base: 'xl', md: '3xl' }} fontWeight="medium">
+                                                        {FinanceGoal(project?.finance_goal)} (CLP)
+                                                    </Text>
+                                                ) : project.fundraising_start_month ? (
+                                                    <Text
+                                                        fontSize={{ base: 'xl', md: '24px' }}
+                                                        fontWeight="medium"
+                                                        lineHeight="130%"
+                                                    >
+                                                        {project.organization.name} no está en búsqueda de
+                                                        financiamiento, comenzará en{' '}
+                                                        {new Date(
+                                                            project?.fundraising_start_month + 'T00:00:00-03:00',
+                                                        ).toLocaleDateString('es-CL', {
+                                                            month: 'long',
+                                                            timeZone: 'UTC',
+                                                        })}{' '}
+                                                        {new Date(
+                                                            project?.fundraising_start_month + 'T00:00:00-03:00',
+                                                        ).getFullYear()}
+                                                    </Text>
+                                                ) : (
+                                                    <Text
+                                                        fontSize={{ base: 'xl', md: '24px' }}
+                                                        fontWeight="medium"
+                                                        lineHeight="130%"
+                                                    >
+                                                        {project.organization.name} no está en búsqueda de
+                                                        financiamiento actualmente.
+                                                    </Text>
+                                                )}
 
                                                 <Stack
                                                     alignItems={{ base: 'center', md: 'start' }}

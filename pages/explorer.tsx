@@ -59,6 +59,7 @@ import { useInterest } from 'services/api/lib/interest';
 import ChangePhoneModal from 'components/explorer/changePhoneModal';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import NavProfile from 'components/explorer/navProfile';
+import CurrentGoalModal from 'components/creator/currentGoalModal';
 
 const Explorer: NextPage = ({ user: initialData }) => {
     // filter orderBy
@@ -71,6 +72,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
     const [hasMore, setHasMore] = useState(true);
     const { isOpen: isOpenExperience, onOpen: openExperience, onClose: closeExperience } = useDisclosure();
     const { isOpen: isOpenPhone, onOpen: openPhone, onClose: closePhone } = useDisclosure();
+    const { isOpen: isOpenGoal, onOpen: openGoal, onClose: closeGoal } = useDisclosure();
 
     const router = useRouter();
 
@@ -230,7 +232,11 @@ const Explorer: NextPage = ({ user: initialData }) => {
 
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
                 {orga !== undefined &&
-                    (orga?.gsg_project_id ? <StatusProject project={project?.data?.gsg_project} /> : <NotProject />)}
+                    (orga?.gsg_project_id ? (
+                        <StatusProject project={project?.data?.gsg_project} />
+                    ) : (
+                        <NotProject openGoal={openGoal} />
+                    ))}
 
                 {orga && (
                     <HStack bg="gray.700" p="20px" rounded="8px" mb="40px" justifyContent="space-between">
@@ -1392,6 +1398,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
 
             <FilterExperienceModal isOpen={isOpenExperience} onClose={closeExperience} />
             <ChangePhoneModal isOpen={isOpenPhone} onClose={closePhone} />
+            <CurrentGoalModal isOpen={isOpenGoal} onClose={closeGoal} />
         </>
     );
 };

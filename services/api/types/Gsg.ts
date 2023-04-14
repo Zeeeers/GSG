@@ -39,6 +39,8 @@ export interface Gsg {
     relations: Relations;
     status: string;
     last_status_updated: string;
+    fundraising_start_month?: string;
+    current_goal: 'visibility' | 'fundraising' | null;
 }
 
 export interface GsgFormated {
@@ -63,4 +65,5 @@ export interface GsgFormated {
     members: Array<Members>;
     status: string;
     progress: number;
+    current_goal: 'visibility' | 'fundraising';
 }

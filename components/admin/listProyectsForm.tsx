@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Badge,
     Button,
@@ -7,6 +8,7 @@ import {
     Select,
     Stack,
     Table,
+    TableContainer,
     Tbody,
     Td,
     Text,
@@ -15,18 +17,33 @@ import {
     Tr,
     useToast,
     VStack,
+    Tooltip,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverArrow,
+    Portal,
+    ListItem,
+    UnorderedList,
+    Icon,
 } from '@chakra-ui/react';
+
 import { Pagination } from 'common/pagination';
 
 import Stage from 'components/projectDetail/formatText/stage';
 import React, { useState } from 'react';
+import { BsInfoCircleFill } from 'react-icons/bs';
 import { useAdminGsg } from 'services/api/lib/gsg/gsg.calls';
-import SelectComponent from './selectComponenet';
+import ContentTable from './projectTable/contentTable';
+import SelectComponent from './projectTable/selectComponenet';
 
 const ListProyectsForm = (props: any) => {
     const { data, mutate } = useAdminGsg();
-    const [deleteProduct, setDeleteProduct] = useState(false);
+
     const [paginationIndex, setPagination] = useState(0);
+
     const toast = useToast();
 
     const gsgFilterData = data?.data?.projects
@@ -41,6 +58,7 @@ const ListProyectsForm = (props: any) => {
                 return new Date(a.last_status_updated) - new Date(b.last_status_updated);
             }
         });
+
     const handleStatus = async (id: number, e: any) => {
         const { updateStatusGsgProject } = await import('../../services/api/lib/gsg');
 
@@ -69,111 +87,169 @@ const ListProyectsForm = (props: any) => {
         }
     };
 
-    const handleDelete = async (id: number) => {
-        setDeleteProduct(true);
-        const { deleteGsgProject } = await import('../../services/api/lib/gsg');
-        const { ok } = await deleteGsgProject(id);
-
-        if (ok) {
-            setDeleteProduct(false);
-            toast({
-                title: 'Proyecto eliminado',
-                description: `Se ha eliminado el proyecto exitosamente.`,
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-
-            mutate();
-        } else {
-            setDeleteProduct(false);
-            toast({
-                title: 'Error al eliminar',
-                description: 'Ha ocurrido un error al intentar eliminar el proyecto, porfavor intentelo de nuevo.',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: 'top-right',
-            });
-        }
-    };
-
     return (
         <>
-            <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
-                <Thead>
-                    <Tr>
-                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
-                            Fecha
-                        </Th>
-                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
-                            Nombre del proyecto
-                        </Th>
-                        <Th pl={0} fontWeight="bold" fontFamily="inter" fontSize="18px" color="gray.50" border="none">
-                            Empresa
-                        </Th>
-                        <Th
-                            pl="40px"
-                            fontWeight="bold"
-                            fontFamily="inter"
-                            fontSize="18px"
-                            color="gray.50"
-                            border="none"
-                        >
-                            Status
-                        </Th>
-                        <Th pl={0} border="none"></Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {gsgFilterData
-                        ?.map((proyect) => (
-                            <Tr key={proyect.id}>
-                                <Td fontFamily="inter" pl={0} py="30px" w="13%">
-                                    {new Date(proyect?.last_status_updated).toLocaleString('es-CL', {
-                                        day: 'numeric',
-                                        month: 'numeric',
-                                        year: 'numeric',
-                                    })}
-                                </Td>
-                                <Td fontFamily="inter" pl={0} py="30px">
-                                    {proyect?.title}
-                                </Td>
-                                <Td fontFamily="inter" pl={0}>
-                                    {proyect?.organization.name}
-                                </Td>
+            <TableContainer maxW="1300px">
+                <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
+                    <Thead>
+                        <Tr>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Fecha
+                            </Th>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Nombre del proyecto
+                            </Th>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Empresa
+                            </Th>
+                            <Th
+                                pl={0}
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                <HStack spacing={0} align="center" p={0}>
+                                    <Text>Objetivo</Text>
+                                    <Popover placement="bottom" p={0}>
+                                        {() => (
+                                            <>
+                                                <PopoverTrigger>
+                                                    <Button w="18px" h="18px" p={0} m={0}>
+                                                        <Icon as={BsInfoCircleFill} w="18px" h="18px" />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <Portal>
+                                                    <PopoverContent
+                                                        bg="gray.700"
+                                                        border="none"
+                                                        py="30px"
+                                                        px="20px"
+                                                        w="full"
+                                                        maxW="380px"
+                                                    >
+                                                        <PopoverHeader
+                                                            fontSize="24px"
+                                                            fontWeight="bold"
+                                                            bg="blue.800"
+                                                            px="10px"
+                                                            py={0}
+                                                            border="none"
+                                                            textTransform="uppercase"
+                                                        >
+                                                            Descripción de cada objetivo
+                                                        </PopoverHeader>
 
-                                <Td fontFamily="inter" pl="40px">
-                                    <SelectComponent project={proyect} handleStatus={handleStatus} />
-                                </Td>
-                                <Td fontFamily="inter" pl="50px">
-                                    <HStack spacing="20px">
-                                        <Link
-                                            href={`/project/${proyect?.id}-${proyect?.title
-                                                .toLowerCase()
-                                                .replaceAll(' ', '-')}`}
-                                            target="_blank"
-                                        >
-                                            <Button variant="solid">Ver proyecto</Button>
-                                        </Link>
-                                        <Button
-                                            type="button"
-                                            isLoading={deleteProduct}
-                                            loadingText="Eliminando producto"
-                                            onClick={() => handleDelete(proyect?.id)}
-                                            variant="solid"
-                                            colorScheme="red"
-                                        >
-                                            Eliminar
-                                        </Button>
-                                    </HStack>
-                                </Td>
-                            </Tr>
-                        ))
-                        .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
-                </Tbody>
-            </Table>
+                                                        <PopoverArrow bg="gray.700" border="none" w="50px" h="50px" />
+
+                                                        <PopoverBody border="none">
+                                                            <UnorderedList
+                                                                spacing="20px"
+                                                                fontFamily="inter"
+                                                                lineHeight="140%"
+                                                                fontSize="14px"
+                                                                color="gray.300"
+                                                            >
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text
+                                                                            as="span"
+                                                                            fontWeight="bold"
+                                                                            fontFamily="inter"
+                                                                        >
+                                                                            Financiamiento:{' '}
+                                                                        </Text>
+                                                                        La empresa busca levantar financiamiento
+                                                                    </Text>
+                                                                </ListItem>
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text as="span" fontWeight="bold">
+                                                                            Visibilidad (Negro):{' '}
+                                                                        </Text>
+                                                                        Empresa busca visibilidad sin buscar
+                                                                        financiamiento
+                                                                    </Text>
+                                                                </ListItem>
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text as="span" fontWeight="bold">
+                                                                            Visibilidad (Azul):{' '}
+                                                                        </Text>
+                                                                        Empresa busca visibilidad, ha determinado una
+                                                                        fecha en la que quiere levantar financiamiento y
+                                                                        está dentro del plazo
+                                                                    </Text>
+                                                                </ListItem>
+                                                                <ListItem>
+                                                                    <Text>
+                                                                        <Text as="span" fontWeight="bold">
+                                                                            Visibilidad (rojo):{' '}
+                                                                        </Text>
+                                                                        Empresa busca visibilidad, ha determinado una
+                                                                        fecha en la que quiere levantar financiamiento y
+                                                                        el plazo ha expirado, hay que comunicarse con
+                                                                        ellos
+                                                                    </Text>
+                                                                </ListItem>
+                                                            </UnorderedList>
+                                                        </PopoverBody>
+                                                    </PopoverContent>
+                                                </Portal>
+                                            </>
+                                        )}
+                                    </Popover>
+                                </HStack>
+                            </Th>
+                            <Th
+                                pl="40px"
+                                fontWeight="bold"
+                                fontFamily="inter"
+                                fontSize="18px"
+                                color="gray.50"
+                                border="none"
+                            >
+                                Status
+                            </Th>
+                            <Th pl={0} border="none"></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {gsgFilterData
+                            ?.map((proyect) => (
+                                <ContentTable
+                                    key={proyect?.id}
+                                    proyect={proyect}
+                                    handleStatus={handleStatus}
+                                    mutate={mutate}
+                                />
+                            ))
+                            .slice((paginationIndex - 1) * 12, (paginationIndex - 1) * 12 + 12)}
+                    </Tbody>
+                </Table>
+            </TableContainer>
 
             <Stack align="flex-start" w="full" pt="30px">
                 <Pagination
@@ -263,9 +339,7 @@ const ListProyectsForm = (props: any) => {
                                     </Link>
                                     <Button
                                         type="button"
-                                        isLoading={deleteProduct}
                                         loadingText="Eliminando producto"
-                                        onClick={() => handleDelete(project.id)}
                                         variant="solid"
                                         colorScheme="red"
                                     >

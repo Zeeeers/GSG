@@ -29,6 +29,9 @@ export interface ProjectForm {
     business_web?: string;
     additional_document?: string;
 
+    current_goal?: 'visibility' | 'fundraising' | null;
+    fundraising_start_month?: Date;
+
     status: string;
 }
 
@@ -111,7 +114,7 @@ export type UpdateGsgProjectCall = (payload: UpdateGsgProjectRequest) => Promise
 //Update
 
 export interface UpdateProjectRequest {
-    project: Gsg;
+    project: ProjectForm;
     idProject: number;
 }
 
