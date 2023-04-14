@@ -13,7 +13,7 @@ const OrganizationProfile: NextPage = () => {
     return (
         <>
             <NextSeo title="Perfil de la organización - MATCH" />
-            <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
+            <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
             <Navbar />
 
