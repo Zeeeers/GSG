@@ -41,6 +41,13 @@ export interface Gsg {
     last_status_updated: string;
     fundraising_start_month?: string;
     current_goal: 'visibility' | 'fundraising' | null;
+    accelerator: {
+        id: number;
+        name: string;
+        icon: string;
+        email: string;
+        phone: string;
+    };
 }
 
 export interface GsgFormated {

@@ -9,7 +9,7 @@ const acceleratorFetchAll = async (endpoint: string) => {
         cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
     });
 
-    const { data } = await api.post<GetAcceleratorsResponse>(endpoint, {}, headers(token));
+    const { data } = await api.get<GetAcceleratorsResponse>(endpoint, {}, headers(token));
     return data;
 };
 

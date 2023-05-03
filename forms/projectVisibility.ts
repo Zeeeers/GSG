@@ -45,6 +45,11 @@ export interface IProjectForm {
         value?: number;
         label?: number;
     };
+
+    accelerator_id: {
+        value?: number;
+        label?: number;
+    };
 }
 
 // Schema
@@ -112,6 +117,11 @@ const projectShape: ZodShape<IProjectForm> = {
     yearStart: z.object({
         value: z.number({ invalid_type_error: 'Campo obligatorio' }).min(1, 'Campo obligatorio').optional().nullable(),
         label: z.number().optional().nullable(),
+    }),
+
+    accelerator_id: z.object({
+        value: z.number().optional(),
+        label: z.number().optional(),
     }),
 };
 
