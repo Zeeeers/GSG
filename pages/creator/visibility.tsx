@@ -23,6 +23,7 @@ import {
     useToast,
     VStack,
     Select,
+    Progress,
     Collapse,
 } from '@chakra-ui/react';
 import TooltipPrettie from 'common/tooltip';
@@ -61,6 +62,9 @@ import { useRouter } from 'next/router';
 import { IProjectForm, projectSchema } from 'forms/projectVisibility';
 import CurrentGoalModal from 'components/creator/currentGoalModal';
 import EmailCopyModal from 'components/explorer/statusProject/emailCopyModal';
+import { useAccelerators } from 'services/api/lib/accelerator';
+import Navbar from 'components/creator/navbar';
+import ProgressBar from 'common/progressBar';
 
 // Page
 const Visibility: NextPage = ({ project, quality }) => {
@@ -69,9 +73,23 @@ const Visibility: NextPage = ({ project, quality }) => {
         file: File;
     };
 
+    const setMember = useCreateGsgProjectStore((s) => s.setMember);
+
     const [baseImgMain, setBaseImgMain] = useState<string>(project?.main_image);
     const [baseSocialPdf, setBaseSocialPdf] = useState<basePDFType | undefined>(project?.social_impact);
     const [baseAdditional, setBaseAdditional] = useState<basePDFType | undefined>(project?.additional_document);
+    const [isDate, setIsDate] = useState(null);
+
+    const [createProyect, setCreateProyect] = useState(false);
+    const [saveDraft, setSaveDraft] = useState(false);
+
+    const [selectedOptions, setSelectedOptions] = useState();
+    const [otherDescription, setOtherDescription] = useState('');
+
+    const [isActiveItem, setIsActiveItem] = useState({
+        description: true,
+        other: false,
+    });
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
@@ -81,24 +99,9 @@ const Visibility: NextPage = ({ project, quality }) => {
 
     const { isOpen: isOpenGoal, onOpen: openGoal, onClose: closeGoal } = useDisclosure();
 
-    const [isDate, setIsDate] = useState(null);
-
-    const [createProyect, setCreateProyect] = useState(false);
-    const [saveDraft, setSaveDraft] = useState(false);
-
-    const setMember = useCreateGsgProjectStore((s) => s.setMember);
-
-    const [selectedOptions, setSelectedOptions] = useState();
-    const [otherDescription, setOtherDescription] = useState('');
-
-    const router = useRouter();
-
-    const [isActiveItem, setIsActiveItem] = useState({
-        description: true,
-        other: false,
-    });
-
     const { data: members, mutate } = useMembers();
+    const { data: accelerators } = useAccelerators();
+    const router = useRouter();
     const toast = useToast({});
 
     const optionsQuality = quality?.map((item) => ({
@@ -549,45 +552,7 @@ const Visibility: NextPage = ({ project, quality }) => {
             <NextSeo title="Creador de proyecto - MATCH" noindex />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
-            <HStack
-                align="flex-start"
-                justify="flex-start"
-                position="fixed"
-                bg="gray.800"
-                w="full"
-                py={{ base: '15px', md: '14px' }}
-                zIndex={20}
-            >
-                <Container
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    maxWidth="1250px"
-                    px={{ base: '16px', xl: '50px' }}
-                    marginLeft={{ base: '0px', lg: 'auto' }}
-                >
-                    <HStack spacing="10px">
-                        <Img
-                            src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
-                            w="133px"
-                            h="35px"
-                        />
-                    </HStack>
-
-                    <Button
-                        onClick={() => handleDraft({}, true)}
-                        variant="solid"
-                        background="blue.700"
-                        leftIcon={<IoMdEye />}
-                        fontSize="14px"
-                        _hover={{ background: 'blue.600' }}
-                        isLoading={saveDraft}
-                        loadingText="Cargando vista previa"
-                    >
-                        Vista previa
-                    </Button>
-                </Container>
-            </HStack>
+            <Navbar handleDraft={handleDraft} saveDraft={saveDraft} />
 
             <HStack align="flex-start" w="full">
                 <Container
@@ -1576,16 +1541,11 @@ const Visibility: NextPage = ({ project, quality }) => {
                             </Text>
                         </HStack>
 
-                        <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
-                            <Stack
-                                w={`${Math.round(
-                                    ((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8),
-                                )}%`}
-                                h="full"
-                                background="teal.400"
-                                rounded="20px"
-                            ></Stack>
-                        </Stack>
+                        <ProgressBar
+                            value={`${Math.round(
+                                ((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8),
+                            )}%`}
+                        />
                     </VStack>
 
                     <VStack align="flex-start" fontSize="16px" fontFamily="inter" w="full">
