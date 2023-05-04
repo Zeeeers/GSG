@@ -583,7 +583,13 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                 </Container>
             </Flex>
 
-            <ContactModal isOpen={isOpen} onClose={onClose} project={project?.organization} web={project?.contacts} />
+            <ContactModal
+                isOpen={isOpen}
+                onClose={onClose}
+                project={project?.organization}
+                web={project?.contacts}
+                acelerator={project?.accelerator}
+            />
         </>
     );
 };

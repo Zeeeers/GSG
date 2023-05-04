@@ -16,12 +16,15 @@ import {
     Icon,
     Wrap,
     WrapItem,
+    Avatar,
+    Image,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { OrganizationFormat } from 'services/api/types/Organization';
 import { BsFiles, BsFilesAlt, BsFileSlides } from 'react-icons/bs';
 import { IoLogoFacebook, IoLogoInstagram, IoLogoLinkedin, IoLogoYoutube } from 'react-icons/io';
 import { AiOutlineGlobal } from 'react-icons/ai';
+import { Accelerator } from 'services/api/types/Accelerator';
 
 // Types
 interface Props {
@@ -29,9 +32,10 @@ interface Props {
     onClose(): void;
     project: OrganizationFormat | undefined;
     web: string;
+    acelerator?: Accelerator;
 }
 
-const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
+const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web, acelerator }) => {
     const toast = useToast();
     const [copyEmail, setCopyEmail] = useState({
         value: '',
@@ -46,8 +50,19 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                 <ModalBody w="full" p={0} mb={6} pt={0}>
                     <VStack w="full" alignItems="flex-start" spacing="20px" px="30px" py="40px">
                         <Heading fontSize="30px" lineHeight="32px" textTransform="uppercase">
-                            CONTACTO DE {project?.name}
+                            CONTACTO DE {acelerator ? acelerator?.name : project?.name}
                         </Heading>
+                        {acelerator && (
+                            <Image
+                                src={acelerator?.icon}
+                                w="60px"
+                                h="60px"
+                                objectFit="cover"
+                                objectPosition="center"
+                                alt={acelerator?.name}
+                            />
+                        )}
+
                         <HStack w="full" align="center" justify="space-between">
                             <VStack alignItems="flex-start" spacing={0} w="full" overflow="hidden">
                                 <Text fontSize="16px" color="gray.400">
@@ -58,7 +73,9 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                     textOverflow="ellipsis"
                                     fontFamily="inter"
                                 >
-                                    {project?.legal_representative_email ?? 'No hay correo'}
+                                    {acelerator
+                                        ? acelerator?.email
+                                        : project?.legal_representative_email ?? 'No hay correo'}
                                 </Text>
                             </VStack>
 
@@ -93,7 +110,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                     Teléfono
                                 </Text>
                                 <Text fontSize={{ base: '20px', md: '24px' }} fontFamily="inter">
-                                    +569 {project?.legal_representative_phone}
+                                    +569 {acelerator ? acelerator?.phone : project?.legal_representative_phone}
                                 </Text>
                             </VStack>
 
@@ -101,7 +118,11 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web }) => {
                                 <Button
                                     onClick={() =>
                                         navigator.clipboard
-                                            .writeText(`+569${project?.legal_representative_phone}`)
+                                            .writeText(
+                                                `+569${
+                                                    acelerator ? acelerator?.phone : project?.legal_representative_phone
+                                                }`,
+                                            )
                                             .then(() =>
                                                 toast({
                                                     title: 'Teléfono guardado en portapapeles.',
