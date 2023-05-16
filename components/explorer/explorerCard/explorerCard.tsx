@@ -1,5 +1,5 @@
 // Dependencies
-import { Box, Button, HStack, Image, Img, Link, Stack, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Button, HStack, Image, Img, Link, Stack, Text, Tooltip, VStack } from '@chakra-ui/react';
 import Stage from 'components/projectDetail/formatText/stage';
 import { Gsg } from 'services/api/types/Gsg';
 import { User } from 'services/api/types/User';
@@ -25,14 +25,51 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
             transitionProperty="common"
             transitionDuration="normal"
         >
-            <Image
-                src={project?.main_image ?? 'images/earth.jpg'}
-                alt="cover"
-                objectFit="cover"
-                w="full"
-                h="165px"
-                roundedTop="18px"
-            />
+            <VStack pos="relative">
+                <Image
+                    src={project?.main_image ?? 'images/earth.jpg'}
+                    alt="cover"
+                    objectFit="cover"
+                    w="full"
+                    h="165px"
+                    roundedTop="18px"
+                />
+
+                {user && project?.accelerator?.id && (
+                    <HStack
+                        pos="absolute"
+                        bottom={0}
+                        w="full"
+                        h="49px"
+                        bg="rgba(4, 145, 216, 0.8)"
+                        roundedTop="12px"
+                        zIndex={1}
+                        backdropFilter="blur(2.5px)"
+                        px="15px"
+                        py="8px"
+                        spacing="10px"
+                    >
+                        <Stack pos="relative">
+                            <Avatar src={project?.accelerator?.icon} w="32px" h="32px" />
+                            <Image
+                                src="/images/icons/checked.svg"
+                                alt="check"
+                                pos="absolute"
+                                right="-4px"
+                                bottom="0"
+                                w="13px"
+                                h="13px"
+                            />
+                        </Stack>
+                        <Text fontFamily="barlow" fontSize="14px" lineHeight="140%">
+                            Recomendado por{' '}
+                            <Text as="span" fontWeight="bold" textTransform="uppercase">
+                                {project?.accelerator?.name ?? 'aceleradora'}
+                            </Text>
+                        </Text>
+                    </HStack>
+                )}
+            </VStack>
             <Box display={'flex'} flexDirection="column" justifyContent={'space-between'} h="283px" px="20px" py="18px">
                 <VStack align="flex-start">
                     <HStack w="full" justify="space-between">

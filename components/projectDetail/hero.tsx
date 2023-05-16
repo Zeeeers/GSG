@@ -357,6 +357,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                 align={{ base: 'center', xl: 'flex-end', '2xl': 'center' }}
                             >
                                 <Flex
+                                    pos="relative"
+                                    roundedTop="16px"
                                     alignItems="center"
                                     justifyContent="center"
                                     h={{ base: '140px', md: '20rem' }}
@@ -369,16 +371,83 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                         objectFit="cover"
                                         borderRadius={{ base: 0, md: '2xl' }}
                                     />
+
+                                    {(user && project?.accelerator?.id) ||
+                                        ((orga?.gsg_project_id === project?.id || adminCookie) && (
+                                            <HStack
+                                                pos="absolute"
+                                                bottom="80px"
+                                                w="full"
+                                                h="66px"
+                                                bg="rgba(4, 145, 216, 0.75)"
+                                                roundedTop="12px"
+                                                zIndex={1}
+                                                backdropFilter="blur(2.5px)"
+                                                px="40px"
+                                                py="12px"
+                                                spacing="10px"
+                                                align="center"
+                                            >
+                                                <Stack pos="relative">
+                                                    <Avatar src={project?.accelerator?.icon} w="42px" h="42px" />
+                                                    <Img
+                                                        src="/images/icons/checked.svg"
+                                                        alt="check"
+                                                        pos="absolute"
+                                                        right="-4px"
+                                                        bottom="0"
+                                                        w="16px"
+                                                        h="16px"
+                                                    />
+                                                </Stack>
+                                                <Stack
+                                                    align="center"
+                                                    direction={{ base: 'column', md: 'row' }}
+                                                    spacing="4px"
+                                                >
+                                                    <Text
+                                                        fontFamily="barlow"
+                                                        fontWeight="normal"
+                                                        fontSize="18px"
+                                                        lineHeight="140%"
+                                                    >
+                                                        Este proyecto viene recomendado por
+                                                    </Text>
+                                                    <Text
+                                                        fontFamily="barlow"
+                                                        fontWeight="bold"
+                                                        fontSize="24px"
+                                                        textTransform="uppercase"
+                                                        lineHeight="120%"
+                                                    >
+                                                        {project?.accelerator?.name ?? 'acceleradora'}
+                                                    </Text>
+                                                </Stack>
+                                            </HStack>
+                                        ))}
                                 </Flex>
 
-                                <VStack marginTop={{ base: 0, md: '-5rem' }} justifyContent="center" h="fit-content">
+                                <VStack
+                                    pos="relative"
+                                    marginTop={{ base: 0, md: '-5rem' }}
+                                    justifyContent="center"
+                                    h="fit-content"
+                                >
                                     <VStack
                                         bg="gray.800"
                                         w={{ base: 'full', xl: 903, '2xl': 898 }}
                                         h={{ base: 'full', md: 'fit-content' }}
                                         justifyContent="start"
                                         alignItems="start"
-                                        rounded={{ base: 0, md: '2xl' }}
+                                        rounded={{
+                                            base: 0,
+                                            md:
+                                                (user && project?.accelerator?.id) ||
+                                                orga?.gsg_project_id === project?.id ||
+                                                adminCookie
+                                                    ? '0'
+                                                    : '2xl',
+                                        }}
                                         px={{ base: '24px', md: '40px' }}
                                         py={{ base: '24px', md: '30px' }}
                                         spacing={0}
