@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://gitlab.com/company-pitch/company-pitch-client/compare/v1.7.0...v1.8.0) (2023-05-17)
+
+
+### Features
+
+* **admin:** add objetive projects ([941e77d](https://gitlab.com/company-pitch/company-pitch-client/commit/941e77d2602fb1c36b30d3ebc9c90a52b7ffa4db))
+* **admin:** add popover description objetive ([e189b65](https://gitlab.com/company-pitch/company-pitch-client/commit/e189b65f86b367c263284324856fca6fdc60d134))
+* **creator:** add modal swith between view ([a7bf951](https://gitlab.com/company-pitch/company-pitch-client/commit/a7bf951eb0a7c244d71fe1ad1ead2f544a19048c))
+* **creator:** add new router for publish project not investor ([6144e42](https://gitlab.com/company-pitch/company-pitch-client/commit/6144e421d4610b229bec975357f6d8cde8b3300a))
+* **creator:** add news field for date foundraising ([cdffc49](https://gitlab.com/company-pitch/company-pitch-client/commit/cdffc49c4c875a5711b1b3d29684c307de210fa2))
+* **creator:** add update if change option project ([7d57de3](https://gitlab.com/company-pitch/company-pitch-client/commit/7d57de3e11023e2c17f48e4cf417bebe1e6b71f6))
+* **creator:** ajust percent progress and remove better project ([1b31c18](https://gitlab.com/company-pitch/company-pitch-client/commit/1b31c180da7af724fc3679b3c8986df5f5f08c2f))
+* **explorer && admin:** added to notify modification and confirmation alert for delete project ([90aa921](https://gitlab.com/company-pitch/company-pitch-client/commit/90aa921716453b1dfc3f9119ed833cb4d7db3385))
+* **global:** change to new logo ([e618540](https://gitlab.com/company-pitch/company-pitch-client/commit/e61854004b8a7471e4c49c2f492c35635162c4d9))
+* **project-detail:** applied new format with fields objetive projects ([4e2bff8](https://gitlab.com/company-pitch/company-pitch-client/commit/4e2bff87a910b799dd467582dd9613df010da57a))
+
+
+### Bug Fixes
+
+* **admin:** ajust distance projects ([81599aa](https://gitlab.com/company-pitch/company-pitch-client/commit/81599aaa53ee3cb58054691f9ff5545ea93f6efc))
+* **creator:** correct points QA 2 ([9caf71c](https://gitlab.com/company-pitch/company-pitch-client/commit/9caf71c6d3e196ec0bfb599bc4ace53d2e3b56f7))
+* **profile:** not read cookie pymes, logout to login ([2c383db](https://gitlab.com/company-pitch/company-pitch-client/commit/2c383db68d1af97d71f1d3151fac022dc7fba20a))
+* **project-detail:** not load data correctly ([88077cf](https://gitlab.com/company-pitch/company-pitch-client/commit/88077cf6cccbbd8a9c3e4305aa8c9d1c0fb3d487))
+* **project:** not styles description for administrator ([4d9208e](https://gitlab.com/company-pitch/company-pitch-client/commit/4d9208e1665f4698a0d1ead812cfa655011aa55c))
+
 ## [1.7.0](https://gitlab.com/company-pitch/company-pitch-client/compare/v1.6.1...v1.7.0) (2023-04-05)
 
 
