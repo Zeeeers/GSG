@@ -39,9 +39,9 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
                         <Link href="/explorer">
                             <HStack mb="20px" spacing={3} alignItems="start" justify="start" cursor="pointer">
                                 <Img
-                                    src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
-                                    w="133px"
-                                    h="35px"
+                                    src="https://bucket-company-pitch.s3.amazonaws.com/img/logo_impact_matching.png"
+                                    w="170px"
+                                    h="45px"
                                 />
                             </HStack>
                         </Link>

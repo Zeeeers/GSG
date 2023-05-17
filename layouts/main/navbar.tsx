@@ -78,9 +78,9 @@ const Navbar: React.FC = () => {
                     <Link href="/explorer" passHref>
                         <HStack spacing={{ base: 2, lg: 3 }} alignItems="center" cursor="pointer">
                             <Img
-                                src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
-                                w="130px"
-                                h="35px"
+                                src="https://bucket-company-pitch.s3.amazonaws.com/img/logo_impact_matching.png"
+                                w="170px"
+                                h="45px"
                             />
                         </HStack>
                     </Link>

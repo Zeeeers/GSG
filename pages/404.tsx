@@ -31,9 +31,9 @@ const Custom404 = () => {
                     spacing="30px"
                 >
                     <Img
-                        src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
-                        w="136.62px"
-                        h="35.9px"
+                        src="https://bucket-company-pitch.s3.amazonaws.com/img/logo_impact_matching.png"
+                        w="170px"
+                        h="45px"
                     />
                     <VStack spacing="25px">
                         <Text fontWeight="700" fontSize="60px" lineHeight="60px">
