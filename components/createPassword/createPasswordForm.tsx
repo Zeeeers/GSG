@@ -11,7 +11,7 @@ import { createNewPassword } from 'services/api/lib/auth';
 type Props = {
     token: string;
     jwt: string;
-    kind: string;
+    kind?: string;
     isRecovery?: boolean;
 };
 

@@ -36,11 +36,11 @@ export const sendInterest: SendInterestCall = async ({ token, id }) => {
 };
 
 // READ
-export const userFetcher = async (req?: IncomingMessage) => {
+export const userFetcher = async (req?: IncomingMessage, jwt?: string) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
     const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!, req: req });
 
-    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(token));
+    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(jwt ?? token));
 
     return response.data;
 };

@@ -1,16 +1,18 @@
 // Dependencies
-//@ts-nocheck
 import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { Flex, HStack, Img, Link, Text, VStack } from '@chakra-ui/react';
 import CreatePasswordForm from 'components/createPassword/createPasswordForm';
+import { userFetcher } from 'services/api/lib/user';
+import { User } from 'services/api/types/User';
 
 type Props = {
     token: string;
     jwt: string;
+    user: User;
 };
 // Page
-const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
+const ChangePassword: NextPage<Props> = ({ token, jwt, user }) => {
     return (
         <>
             <NextSeo title="Crear contraseña - MATCH" />
@@ -48,7 +50,7 @@ const ChangePassword: NextPage<Props> = ({ token, jwt }) => {
                         <VStack w="full" alignItems="flex-start" spacing="12px">
                             <VStack w="full" spacing="4px" alignItems="flex-start" lineHeight="31.2px">
                                 <Text fontSize="24px" textAlign="start">
-                                    ¡Hola!
+                                    ¡Hola {user?.name}!
                                 </Text>
                                 <Text fontSize="24px" textAlign="start">
                                     Te damos la bienvenida a GSG
@@ -83,10 +85,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     }
 
+    const response = await userFetcher(context.req, jwt as string);
+
     return {
         props: {
             token,
             jwt,
-        }, // will be passed to the page component as props
+            user: response?.user,
+        },
     };
 };
