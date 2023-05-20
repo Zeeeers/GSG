@@ -21,7 +21,7 @@ const AdminLogin: NextPage = () => {
                 alignItems="center"
                 bgImage="/images/nasa.jpg"
                 bgSize="cover"
-                height="1080px"
+                height="100vh"
                 w="full"
                 bgPosition="center"
                 bgAttachment="scroll"
@@ -40,20 +40,10 @@ const AdminLogin: NextPage = () => {
                     >
                         <HStack mb="20px" spacing={3} alignItems="center" cursor="pointer">
                             <Img
-                                src="https://clycme-images.s3.us-east-2.amazonaws.com/images/logo/logo_match.png"
-                                w="40px"
-                                h="40px"
+                                src="https://bucket-company-pitch.s3.amazonaws.com/img/logo_impact_matching.png"
+                                w="170px"
+                                h="45px"
                             />
-                            <Text
-                                fontSize="3xl"
-                                textAlign="start"
-                                fontWeight="bold"
-                                color="primary.500"
-                                pt={1}
-                                cursor="pointer"
-                            >
-                                MATCH
-                            </Text>
                         </HStack>
                         <VStack maxW="504px" alignItems="center">
                             <Text fontSize="30px" fontWeight="bold" textTransform="uppercase" textAlign="center">
