@@ -125,6 +125,32 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                     </VStack>
                 </VStack>
 
+                {(user && project?.accelerator?.id) ||
+                    ((orga?.gsg_project_id === project?.id || isAdmin) && (
+                        <VStack align="flex-start">
+                            <VStack align="flex-start" spacing="5px">
+                                <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
+                                    Este proyecto viene reconocido y recomendado por:
+                                </Text>
+
+                                <HStack spacing="10px">
+                                    <Image
+                                        src={project?.accelerator?.icon}
+                                        alt={project?.accelerator?.name}
+                                        w="40px"
+                                        h="40px"
+                                        rounded="full"
+                                        objectFit="cover"
+                                        objectPosition="center"
+                                    />
+                                    <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
+                                        {project?.accelerator?.name}
+                                    </Text>
+                                </HStack>
+                            </VStack>
+                        </VStack>
+                    ))}
+
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize={'md'} color="gray.400">
                         Medición de resultados asociados al impacto social y/o mediambiental

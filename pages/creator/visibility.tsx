@@ -23,7 +23,14 @@ import {
     useToast,
     VStack,
     Select,
+    Progress,
     Collapse,
+    Flex,
+    Menu,
+    MenuButton,
+    MenuItemOption,
+    MenuList,
+    MenuOptionGroup,
 } from '@chakra-ui/react';
 import TooltipPrettie from 'common/tooltip';
 import { PrivatePage } from '@clyc/next-route-manager';
@@ -39,7 +46,7 @@ import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FaTrash } from 'react-icons/fa';
+import { FaChevronDown, FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
 import {
     IoIosArrowDown,
@@ -61,7 +68,9 @@ import { useRouter } from 'next/router';
 import { IProjectForm, projectSchema } from 'forms/projectVisibility';
 import CurrentGoalModal from 'components/creator/currentGoalModal';
 import EmailCopyModal from 'components/explorer/statusProject/emailCopyModal';
-
+import { useAccelerators } from 'services/api/lib/accelerator';
+import Navbar from 'components/creator/navbar';
+import ProgressBar from 'common/progressBar';
 // Page
 const Visibility: NextPage = ({ project, quality }) => {
     type basePDFType = {
@@ -69,9 +78,23 @@ const Visibility: NextPage = ({ project, quality }) => {
         file: File;
     };
 
+    const setMember = useCreateGsgProjectStore((s) => s.setMember);
+
     const [baseImgMain, setBaseImgMain] = useState<string>(project?.main_image);
     const [baseSocialPdf, setBaseSocialPdf] = useState<basePDFType | undefined>(project?.social_impact);
     const [baseAdditional, setBaseAdditional] = useState<basePDFType | undefined>(project?.additional_document);
+    const [isDate, setIsDate] = useState(null);
+
+    const [createProyect, setCreateProyect] = useState(false);
+    const [saveDraft, setSaveDraft] = useState(false);
+
+    const [selectedOptions, setSelectedOptions] = useState();
+    const [otherDescription, setOtherDescription] = useState('');
+
+    const [isActiveItem, setIsActiveItem] = useState({
+        description: true,
+        other: false,
+    });
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure();
@@ -81,29 +104,19 @@ const Visibility: NextPage = ({ project, quality }) => {
 
     const { isOpen: isOpenGoal, onOpen: openGoal, onClose: closeGoal } = useDisclosure();
 
-    const [isDate, setIsDate] = useState(null);
-
-    const [createProyect, setCreateProyect] = useState(false);
-    const [saveDraft, setSaveDraft] = useState(false);
-
-    const setMember = useCreateGsgProjectStore((s) => s.setMember);
-
-    const [selectedOptions, setSelectedOptions] = useState();
-    const [otherDescription, setOtherDescription] = useState('');
-
-    const router = useRouter();
-
-    const [isActiveItem, setIsActiveItem] = useState({
-        description: true,
-        other: false,
-    });
-
     const { data: members, mutate } = useMembers();
+    const { data: accelerators } = useAccelerators();
+    const router = useRouter();
     const toast = useToast({});
 
     const optionsQuality = quality?.map((item) => ({
         value: item.id,
         label: `${item.id}) ${'  '} ${item.icon.name}`,
+    }));
+
+    const optionsAccelerators = accelerators?.data?.accelerators?.map((item) => ({
+        value: item.id,
+        label: item.name,
     }));
 
     const general_description = useRef<HTMLBodyElement>(null);
@@ -114,6 +127,8 @@ const Visibility: NextPage = ({ project, quality }) => {
         formState: { errors, isValid, isSubmitted },
         reset,
         setValue,
+        getValues,
+
         handleSubmit,
         control,
         watch,
@@ -169,6 +184,8 @@ const Visibility: NextPage = ({ project, quality }) => {
                         ? new Date(project?.fundraising_start_month + 'T00:00:00-03:00').getFullYear()
                         : null,
             },
+
+            accelerator_id: { label: project?.accelerator?.name ?? '', value: project?.accelerator?.id ?? '' },
         },
     });
 
@@ -369,6 +386,8 @@ const Visibility: NextPage = ({ project, quality }) => {
                 fundraising_start_month: data.yearStart?.value
                     ? new Date(data.yearStart?.value, data.monthStart?.value - 1)
                     : null,
+
+                accelerator_id: data?.accelerator_id?.value,
             },
             qualities: selectedOptions?.map((item) => item.value).join(';;'),
             members: JSON.stringify({ members: members?.map((item) => ({ id: item.id })) } ?? {}),
@@ -444,6 +463,8 @@ const Visibility: NextPage = ({ project, quality }) => {
                     watch('yearStart').value || watch('monthStart').value
                         ? new Date(watch('yearStart').value, watch('monthStart').value - 1)
                         : null,
+
+                accelerator_id: getValues('accelerator_id')?.value,
             },
             qualities:
                 selectedOptions?.map((item) => item.value).join(';;') ??
@@ -549,45 +570,7 @@ const Visibility: NextPage = ({ project, quality }) => {
             <NextSeo title="Creador de proyecto - MATCH" noindex />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
-            <HStack
-                align="flex-start"
-                justify="flex-start"
-                position="fixed"
-                bg="gray.800"
-                w="full"
-                py={{ base: '15px', md: '14px' }}
-                zIndex={20}
-            >
-                <Container
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    maxWidth="1250px"
-                    px={{ base: '16px', xl: '20px' }}
-                    marginLeft={{ base: '0px', lg: 'auto' }}
-                >
-                    <HStack spacing="10px">
-                        <Img
-                            src="https://bucket-company-pitch.s3.amazonaws.com/img/logo_impact_matching.png"
-                            w="170px"
-                            h="45px"
-                        />
-                    </HStack>
-
-                    <Button
-                        onClick={() => handleDraft({}, true)}
-                        variant="solid"
-                        background="blue.700"
-                        leftIcon={<IoMdEye />}
-                        fontSize="14px"
-                        _hover={{ background: 'blue.600' }}
-                        isLoading={saveDraft}
-                        loadingText="Cargando vista previa"
-                    >
-                        Vista previa
-                    </Button>
-                </Container>
-            </HStack>
+            <Navbar handleDraft={handleDraft} saveDraft={saveDraft} />
 
             <HStack align="flex-start" w="full">
                 <Container
@@ -876,7 +859,15 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 name="sector"
                                 control={control}
                                 render={({ field }) => (
-                                    <CharkaSelect {...field} useBasicStyles options={optionsSector} />
+                                    <CharkaSelect
+                                        {...field}
+                                        tagVariant="solid"
+                                        colorScheme="teal"
+                                        isOptionDisabled={() => selectedOptions?.length >= 3}
+                                        onChange={(o) => setSelectedOptions(o)}
+                                        useBasicStyles
+                                        options={optionsQuality}
+                                    />
                                 )}
                             />
 
@@ -890,13 +881,87 @@ const Visibility: NextPage = ({ project, quality }) => {
                             </FormErrorMessage>
                         </FormControl>
 
+                        <FormControl id="accelerator_id" w={{ base: '100%', md: '60%' }}>
+                            <FormLabel m={0} lineHeight="140%">
+                                6. ¿Tu proyecto viene recomendado por alguna plataforma de inversión/aceleradora?
+                            </FormLabel>
+
+                            <Controller
+                                name="accelerator_id"
+                                control={control}
+                                render={() => (
+                                    <Menu closeOnSelect={false} matchWidth>
+                                        <MenuButton
+                                            as={Button}
+                                            bg="white"
+                                            whiteSpace="break-spaces"
+                                            textAlign="left"
+                                            w="full"
+                                            h="40px"
+                                            mt="15px"
+                                        >
+                                            <Flex alignItems="center" justify="space-between" px="15px">
+                                                <Text color="gray.800">{getValues('accelerator_id')?.label ?? ''}</Text>
+                                                <Icon as={FaChevronDown} color="gray.800" w="13px" h="13px" />
+                                            </Flex>
+                                        </MenuButton>
+
+                                        <MenuList
+                                            w="full"
+                                            overflowY="auto"
+                                            maxHeight="55vh"
+                                            className="custom-scroll"
+                                            bg="gray.800"
+                                        >
+                                            <MenuOptionGroup>
+                                                {accelerators?.data?.accelerators?.map((accelerator) => (
+                                                    <MenuItemOption
+                                                        w="full"
+                                                        key={`${accelerator.id}-Accelerator`}
+                                                        onClick={() =>
+                                                            setValue('accelerator_id', {
+                                                                label: accelerator.name,
+                                                                value: accelerator.id,
+                                                            })
+                                                        }
+                                                        rounded="none"
+                                                        fontWeight="medium"
+                                                        icon={<></>}
+                                                        iconSpacing={'unset'}
+                                                    >
+                                                        <Flex align="center" justify="flex-start" w="full">
+                                                            <Image
+                                                                rounded="full"
+                                                                Width={32}
+                                                                Height={32}
+                                                                mr={4}
+                                                                src={accelerator.icon}
+                                                                alt={accelerator.name}
+                                                            />
+
+                                                            {accelerator.name}
+                                                        </Flex>
+                                                    </MenuItemOption>
+                                                ))}
+                                            </MenuOptionGroup>
+                                        </MenuList>
+                                    </Menu>
+                                )}
+                            />
+
+                            <FormHelperText color="gray.300" fontFamily="inter" fontSize="14px" lineHeight="140%">
+                                Solo debes seleccionar una alternativa si actualmente te encuentras y fuiste recomendado
+                                por alguna de las plataformas disponibles{' '}
+                            </FormHelperText>
+                        </FormControl>
+
                         <FormControl
                             id="third_parties"
                             isInvalid={!!errors.third_parties}
                             w={{ base: '100%', md: '60%' }}
                         >
                             <FormLabel lineHeight="140%">
-                                6. ¿Cuentas con respaldo o reconocimiento de una organización externa? Selecciona una
+                                7. ¿Cuentas con respaldo o reconocimiento de una organización externa? Selecciona una
                                 opción <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Controller
@@ -929,7 +994,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '60%' }}>
                             <HStack align="flex-start" spacing="0px">
                                 <FormLabel lineHeight="140%">
-                                    7. ¿Miden resultados de impacto? <span style={{ color: '#4FD1C5' }}>*</span>
+                                    8. ¿Miden resultados de impacto? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
 
                                 <TooltipPrettie>
@@ -975,7 +1040,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <VStack w="100%" align="flex-start" spacing="10px">
                             <FormControl id="social_impact">
                                 <FormLabel lineHeight="140%">
-                                    8. Validación del impacto social/medioambiental: Por favor adjunta material (PDF)
+                                    9. Validación del impacto social/medioambiental: Por favor adjunta material (PDF)
                                     que valide la medición de resultados. (Tamaño máximo 2MB) (Opcional)
                                 </FormLabel>
 
@@ -1076,7 +1141,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <VStack w="100%" align="flex-start" spacing="10px">
                             <VStack w="100%" align="flex-start" spacing="5px" mb="10px">
                                 <Text fontSize="2xl" fontWeight="24px">
-                                    9. Miembros del equipo
+                                    10. Miembros del equipo
                                 </Text>
                                 <Text fontSize="14px" fontWeight="normal" color="gray.300" fontFamily="inter">
                                     Máximo 10 miembros
@@ -1147,7 +1212,7 @@ const Visibility: NextPage = ({ project, quality }) => {
 
                         <VStack>
                             <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                10. Copia y pega la URL de la/las plataformas/redes sociales que consideras pueden ser
+                                11. Copia y pega la URL de la/las plataformas/redes sociales que consideras pueden ser
                                 relevantes para que inversionistas conozcan mejor tu proyecto (Opcional)
                             </Text>
 
@@ -1217,7 +1282,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                         <VStack w="100%" align="flex-start" spacing="10px">
                             <FormControl name="additional_info" isInvalid={!!errors.additional_info}>
                                 <FormLabel lineHeight="140%">
-                                    11. Información Complementaria: Agrega cualquier descripción o comentario que
+                                    12. Información Complementaria: Agrega cualquier descripción o comentario que
                                     consideres necesario para que el inversionista comprenda mejor tu proyecto{' '}
                                     <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
@@ -1263,7 +1328,7 @@ const Visibility: NextPage = ({ project, quality }) => {
 
                         <FormControl id="additional_document">
                             <FormLabel lineHeight="140%">
-                                12. ¿Tienes algún archivo (PDF) que consideres necesario subir como información
+                                13. ¿Tienes algún archivo (PDF) que consideres necesario subir como información
                                 complementaria para que sea vista por el inversionista? (Tamaño máximo 2MB) (Opcional)
                             </FormLabel>
 
@@ -1576,16 +1641,11 @@ const Visibility: NextPage = ({ project, quality }) => {
                             </Text>
                         </HStack>
 
-                        <Stack position="relative" w="full" h="10px" background="gray.100" rounded="20px">
-                            <Stack
-                                w={`${Math.round(
-                                    ((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8),
-                                )}%`}
-                                h="full"
-                                background="teal.400"
-                                rounded="20px"
-                            ></Stack>
-                        </Stack>
+                        <ProgressBar
+                            value={`${Math.round(
+                                ((percentDescription() + percentOther()) * 100) / (isDate ? 11 : 8),
+                            )}%`}
+                        />
                     </VStack>
 
                     <VStack align="flex-start" fontSize="16px" fontFamily="inter" w="full">

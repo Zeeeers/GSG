@@ -31,6 +31,12 @@ import {
     UnorderedList,
     ListItem,
     Highlight,
+    Flex,
+    Menu,
+    MenuButton,
+    MenuItemOption,
+    MenuList,
+    MenuOptionGroup,
 } from '@chakra-ui/react';
 import TooltipPrettie from 'common/tooltip';
 import { PrivatePage } from '@clyc/next-route-manager';
@@ -54,7 +60,7 @@ import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FaCheck, FaCheckCircle, FaTrash } from 'react-icons/fa';
+import { FaCheck, FaCheckCircle, FaChevronDown, FaTrash } from 'react-icons/fa';
 import { FiPaperclip } from 'react-icons/fi';
 import {
     IoIosArrowDown,
@@ -79,6 +85,7 @@ import Router, { useRouter } from 'next/router';
 import InputDisabled from 'common/inputDisabled';
 import CurrentGoalModal from 'components/creator/currentGoalModal';
 import EmailCopyModal from 'components/explorer/statusProject/emailCopyModal';
+import { useAccelerators } from 'services/api/lib/accelerator';
 
 // Page
 const Fundraising: NextPage = ({ project, quality }) => {
@@ -134,6 +141,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
     };
 
     const { data: members, mutate } = useMembers();
+    const { data: accelerators } = useAccelerators();
     const toast = useToast({});
 
     const optionsQuality = quality?.map((item) => ({
@@ -151,6 +159,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
         reset,
         setValue,
         handleSubmit,
+        getValues,
         control,
         watch,
     } = useForm<IProjectForm>({
@@ -216,6 +225,8 @@ const Fundraising: NextPage = ({ project, quality }) => {
             facebookForm: project?.contacts && project?.contacts[2],
             youtubeForm: project?.contacts && project?.contacts[3],
             webForm: project?.contacts && project?.contacts[4],
+
+            accelerator_id: { label: project?.accelerator?.name ?? '', value: project?.accelerator?.id ?? '' },
         },
     });
 
@@ -568,6 +579,8 @@ const Fundraising: NextPage = ({ project, quality }) => {
 
                 contacts: `${data.linkedinForm};;${data.instagramForm};;${data.facebookForm};;${data.youtubeForm};;${data.webForm}`,
 
+                accelerator_id: data?.accelerator_id?.value,
+
                 investment_type:
                     postulationProject && !postulationEmployee
                         ? 'Un proyecto específico dentro de la empresa'
@@ -678,6 +691,8 @@ const Fundraising: NextPage = ({ project, quality }) => {
                 contacts: `${watch('linkedinForm')};;${watch('instagramForm')};;${watch('facebookForm')};;${watch(
                     'youtubeForm',
                 )};;${watch('webForm')}`,
+
+                accelerator_id: getValues('accelerator_id')?.value,
             },
             qualities:
                 selectedOptions?.map((item) => item.value).join(';;') ??
@@ -1150,13 +1165,87 @@ const Fundraising: NextPage = ({ project, quality }) => {
                             </FormErrorMessage>
                         </FormControl>
 
+                        <FormControl id="accelerator_id" w={{ base: '100%', md: '60%' }}>
+                            <FormLabel m={0} lineHeight="140%">
+                                6. ¿Tu proyecto viene recomendado por alguna plataforma de inversión/aceleradora?
+                            </FormLabel>
+
+                            <Controller
+                                name="accelerator_id"
+                                control={control}
+                                render={() => (
+                                    <Menu closeOnSelect={false} matchWidth>
+                                        <MenuButton
+                                            as={Button}
+                                            bg="white"
+                                            whiteSpace="break-spaces"
+                                            textAlign="left"
+                                            w="full"
+                                            h="40px"
+                                            mt="15px"
+                                        >
+                                            <Flex alignItems="center" justify="space-between" px="15px">
+                                                <Text color="gray.800">{getValues('accelerator_id')?.label ?? ''}</Text>
+                                                <Icon as={FaChevronDown} color="gray.800" w="13px" h="13px" />
+                                            </Flex>
+                                        </MenuButton>
+
+                                        <MenuList
+                                            w="full"
+                                            overflowY="auto"
+                                            maxHeight="55vh"
+                                            className="custom-scroll"
+                                            bg="gray.800"
+                                        >
+                                            <MenuOptionGroup>
+                                                {accelerators?.data?.accelerators?.map((accelerator) => (
+                                                    <MenuItemOption
+                                                        w="full"
+                                                        key={`${accelerator.id}-Accelerator`}
+                                                        onClick={() =>
+                                                            setValue('accelerator_id', {
+                                                                label: accelerator.name,
+                                                                value: accelerator.id,
+                                                            })
+                                                        }
+                                                        rounded="none"
+                                                        fontWeight="medium"
+                                                        icon={<></>}
+                                                        iconSpacing={'unset'}
+                                                    >
+                                                        <Flex align="center" justify="flex-start" w="full">
+                                                            <Image
+                                                                rounded="full"
+                                                                Width={32}
+                                                                Height={32}
+                                                                mr={4}
+                                                                src={accelerator.icon}
+                                                                alt={accelerator.name}
+                                                            />
+
+                                                            {accelerator.name}
+                                                        </Flex>
+                                                    </MenuItemOption>
+                                                ))}
+                                            </MenuOptionGroup>
+                                        </MenuList>
+                                    </Menu>
+                                )}
+                            />
+
+                            <FormHelperText color="gray.300" fontFamily="inter" fontSize="14px" lineHeight="140%">
+                                Solo debes seleccionar una alternativa si actualmente te encuentras y fuiste recomendado
+                                por alguna de las plataformas disponibles{' '}
+                            </FormHelperText>
+                        </FormControl>
+
                         <FormControl
                             id="third_parties"
                             isInvalid={!!errors.third_parties}
                             w={{ base: '100%', md: '60%' }}
                         >
                             <FormLabel lineHeight="140%">
-                                6. ¿Cuentas con respaldo o reconocimiento de una organización externa? Selecciona una
+                                7. ¿Cuentas con respaldo o reconocimiento de una organización externa? Selecciona una
                                 opción <span style={{ color: '#4FD1C5' }}>*</span>
                             </FormLabel>
                             <Controller
@@ -1189,7 +1278,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                         <FormControl id="more_info" isInvalid={!!errors.more_info} w={{ base: '100%', md: '60%' }}>
                             <HStack align="flex-start" spacing="0px">
                                 <FormLabel lineHeight="140%">
-                                    7. ¿Miden resultados de impacto? <span style={{ color: '#4FD1C5' }}>*</span>
+                                    8. ¿Miden resultados de impacto? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </FormLabel>
 
                                 <TooltipPrettie>
@@ -1235,7 +1324,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                         <VStack w="100%" align="flex-start" spacing="10px">
                             <FormControl id="social_impact">
                                 <FormLabel lineHeight="140%">
-                                    8. Validación del impacto social/medioambiental: Por favor adjunta material (PDF)
+                                    9. Validación del impacto social/medioambiental: Por favor adjunta material (PDF)
                                     que valide la medición de resultados. (Tamaño máximo 2MB) (Opcional)
                                 </FormLabel>
 
@@ -1346,7 +1435,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                         <VStack w={'full'} align="flex-start" spacing="40px">
                             <VStack align="flex-start" spacing="15px">
                                 <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                    9. ¿Buscas capital para un proyecto específico dentro de tu empresa o para tu
+                                    10. ¿Buscas capital para un proyecto específico dentro de tu empresa o para tu
                                     empresa? <span style={{ color: '#4FD1C5' }}>*</span>
                                 </Text>
                                 <HStack justify="start" w="full">
@@ -1394,7 +1483,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                             <VStack align="flex-start" w="full" spacing="20px">
                                 <VStack spacing="5px" align="flex-start" w="full">
                                     <Text fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                        10. ¿Qué tipo de financiamiento buscas?
+                                        11. ¿Qué tipo de financiamiento buscas?
                                     </Text>
                                     <Text textColor="gray.300" fontFamily="inter">
                                         Puedes elegir seleccionar capital, deuda o ambos
@@ -1437,7 +1526,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                 <VStack w={'full'} align="flex-start" spacing="40px">
                                     <FormControl id="capital_stage" w={{ base: '100%', md: '60%' }}>
                                         <FormLabel fontSize="16px" fontFamily="inter" color="gray.50" lineHeight="140%">
-                                            11. Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
+                                            12. Financiamiento de capital <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
                                         <Controller
                                             name="capital_stage"
@@ -1466,7 +1555,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                     <FormControl id="investment_types" w={{ base: '100%', md: '60%' }}>
                                         <HStack align="flex-start" spacing="0px">
                                             <FormLabel lineHeight="140%">
-                                                12. ¿Qué tipo de inversionista buscas?{' '}
+                                                13. ¿Qué tipo de inversionista buscas?{' '}
                                                 <span style={{ color: '#4FD1C5' }}>*</span>
                                             </FormLabel>
 
@@ -1566,7 +1655,7 @@ const Fundraising: NextPage = ({ project, quality }) => {
 
                                     <FormControl id="expected_rentability" w={{ base: '100%', md: '60%' }}>
                                         <FormLabel lineHeight="140%">
-                                            13. ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
+                                            14. ¿Cuál es la rentabilidad que esperas para tu proyecto?{' '}
                                             <span style={{ color: '#4FD1C5' }}>*</span>
                                         </FormLabel>
 
