@@ -81,8 +81,8 @@ const CurrentGoalModal = ({ isOpen, onClose, isCreated = true, projectId }: Curr
                             </Text>
                             <Text color="gray.50" lineHeight="140%">
                                 De acuerdo a tu elección se habilitarán campos distintos que tendrás que completar para
-                                subir tu proyecto en Match. Así mismo, se le hará saber a inversionistas si tu proyecto
-                                busca financiamiento o no.
+                                subir tu proyecto en Impact Matching. Así mismo, se le hará saber a inversionistas si tu
+                                proyecto busca financiamiento o no.
                             </Text>
                         </VStack>
 

@@ -332,12 +332,13 @@ const Explorer: NextPage = ({ user: initialData }) => {
                                     </Heading>
                                     {userResponse?.user ? (
                                         <Text>
-                                            A continuación se visualizan todos los proyectos activos dentro de Match.
-                                            Puedes filtrarlos según lo requieras.
+                                            A continuación se visualizan todos los proyectos activos dentro de Impact
+                                            Matching. Puedes filtrarlos según lo requieras.
                                         </Text>
                                     ) : (
                                         <Text>
-                                            A continuación se visualizan todos los proyectos activos dentro de Match.
+                                            A continuación se visualizan todos los proyectos activos dentro de Impact
+                                            Matching.
                                         </Text>
                                     )}
                                 </VStack>

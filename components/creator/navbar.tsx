@@ -28,10 +28,10 @@ const Navbar = ({ handleDraft, saveDraft }: NavbarProps) => {
             >
                 <HStack spacing="10px">
                     <Image
-                        alt="match_logo"
-                        src="https://skala-chile.s3.us-east-2.amazonaws.com/production/match_logo_V.2.png"
-                        w="133px"
-                        h="35px"
+                        alt="impact_logo"
+                        src="https://bucket-company-pitch.s3.amazonaws.com/img/logo_impact_matching.png"
+                        w="170px"
+                        h="45px"
                     />
                 </HStack>
 

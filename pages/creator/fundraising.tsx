@@ -1411,8 +1411,8 @@ const Fundraising: NextPage = ({ project, quality }) => {
                             <Text fontFamily="inter" fontSize="16px" lineHeight="22.4px">
                                 <span style={{ fontWeight: 'bold' }}>Importante:</span> La información descrita de aquí
                                 en adelante (Descripción financiera e información complementaria), solo podrá ser
-                                visualizada por inversionistas y el equipo de Match. Otras empresas y público en general
-                                no podrán visualizarla.
+                                visualizada por inversionistas y el equipo de Impact Matching. Otras empresas y público
+                                en general no podrán visualizarla.
                             </Text>
                         </HStack>
 
