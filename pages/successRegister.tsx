@@ -22,7 +22,7 @@ const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 const RecoveryPassword: NextPage = () => {
     return (
         <>
-            <NextSeo title="Cuenta creada en MATCH" />
+            <NextSeo title="Cuenta creada en Impact Matching" />
 
             <Flex
                 flexDirection="column"

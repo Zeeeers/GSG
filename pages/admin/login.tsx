@@ -14,7 +14,7 @@ const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 const AdminLogin: NextPage = () => {
     return (
         <>
-            <NextSeo title="Iniciar sesión administrador - MATCH" />
+            <NextSeo title="Iniciar sesión administrador - Impact Matching" />
             <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dashboard" />
             <Flex
                 flexDirection="column"

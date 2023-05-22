@@ -33,7 +33,7 @@ const PublicChallenge: NextPage = ({ project }: Props) => {
     return (
         <>
             <NextSeo
-                title={`${project?.data.gsg_project.title} - GSG MATCH`}
+                title={`${project?.data.gsg_project.title} - Impact Matching`}
                 description={project?.data.gsg_project.description}
                 canonical="https://www.gsg-match.com/"
                 openGraph={{
@@ -46,7 +46,7 @@ const PublicChallenge: NextPage = ({ project }: Props) => {
                             alt: project?.data.gsg_project.title,
                         },
                     ],
-                    site_name: 'GSG MATCH',
+                    site_name: 'Impact Matching',
                 }}
                 twitter={{
                     handle: '@handle',

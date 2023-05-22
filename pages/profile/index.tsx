@@ -32,7 +32,7 @@ const UserProfile: NextPage = () => {
 
     return (
         <>
-            <NextSeo title="Perfil de usuario - MATCH" />
+            <NextSeo title="Perfil de usuario - Impact Matching" />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
 
             <Navbar />

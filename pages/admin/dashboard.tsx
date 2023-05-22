@@ -71,7 +71,7 @@ const Panel: NextPage = () => {
 
     return (
         <>
-            <NextSeo title="Dashboard - Administrador MATCH" />
+            <NextSeo title="Dashboard - Administrador Impact Matching" />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/login" />
 
             <VStack position="relative" w="full" h="100vh">

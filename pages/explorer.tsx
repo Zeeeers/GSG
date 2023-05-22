@@ -227,7 +227,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
 
     return (
         <>
-            <NextSeo title={'Explorador - MATCH'} />
+            <NextSeo title={'Explorador - Impact Matching'} />
             <Navbar />
 
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">

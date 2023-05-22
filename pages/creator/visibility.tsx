@@ -567,7 +567,7 @@ const Visibility: NextPage = ({ project, quality }) => {
 
     return (
         <>
-            <NextSeo title="Creador de proyecto - MATCH" noindex />
+            <NextSeo title="Creador de proyecto - Impact Matching" noindex />
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_PYMES_COOKIE_NAME!} fallbackUrl="/login" />
 
             <Navbar handleDraft={handleDraft} saveDraft={saveDraft} />

@@ -13,7 +13,7 @@ type Props = {
 const NewPassword: NextPage<Props> = ({ token, jwt, kind }) => {
     return (
         <>
-            <NextSeo title="Crear contraseña - MATCH" />
+            <NextSeo title="Crear contraseña - Impact Matching" />
             <Flex
                 flexDirection="column"
                 alignItems="center"

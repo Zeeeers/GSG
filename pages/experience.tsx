@@ -32,7 +32,7 @@ const Experience = () => {
     return (
         <>
             <PrivatePage cookieName={process.env.NEXT_PUBLIC_COOKIE_NAME!} fallbackUrl="/login" />
-            <NextSeo title="Bienvenidos a MATCH" />
+            <NextSeo title="Bienvenidos a Impact Matching" />
 
             <Container
                 display="flex"
