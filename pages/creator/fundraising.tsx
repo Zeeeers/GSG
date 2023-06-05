@@ -1198,6 +1198,23 @@ const Fundraising: NextPage = ({ project, quality }) => {
                                             bg="gray.800"
                                         >
                                             <MenuOptionGroup>
+                                                <MenuItemOption
+                                                    w="full"
+                                                    key={`${0}-Accelerator`}
+                                                    onClick={() =>
+                                                        setValue('accelerator_id', {
+                                                            label: 'Ninguno',
+                                                            value: null,
+                                                        })
+                                                    }
+                                                    rounded="none"
+                                                    fontWeight="medium"
+                                                    icon={<></>}
+                                                    iconSpacing={'unset'}
+                                                >
+                                                    <Text>Ninguno</Text>
+                                                </MenuItemOption>
+
                                                 {accelerators?.data?.accelerators?.map((accelerator) => (
                                                     <MenuItemOption
                                                         w="full"

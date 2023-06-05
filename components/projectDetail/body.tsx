@@ -125,8 +125,8 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                     </VStack>
                 </VStack>
 
-                {(user && project?.accelerator?.id) ||
-                    ((orga?.gsg_project_id === project?.id || isAdmin) && (
+                {(user || orga?.gsg_project_id === project?.id || isAdmin) &&
+                    !Object.values(project?.accelerator).includes(null) && (
                         <VStack align="flex-start">
                             <VStack align="flex-start" spacing="5px">
                                 <Text as="p" fontFamily="inter" fontSize="md" color="gray.400" lineHeight="140%">
@@ -149,7 +149,7 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                                 </HStack>
                             </VStack>
                         </VStack>
-                    ))}
+                    )}
 
                 <VStack align="flex-start" spacing="5px">
                     <Text as="p" fontFamily="inter" fontSize={'md'} color="gray.400">

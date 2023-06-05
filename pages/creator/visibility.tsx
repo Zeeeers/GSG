@@ -859,15 +859,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 name="sector"
                                 control={control}
                                 render={({ field }) => (
-                                    <CharkaSelect
-                                        {...field}
-                                        tagVariant="solid"
-                                        colorScheme="teal"
-                                        isOptionDisabled={() => selectedOptions?.length >= 3}
-                                        onChange={(o) => setSelectedOptions(o)}
-                                        useBasicStyles
-                                        options={optionsQuality}
-                                    />
+                                    <CharkaSelect {...field} useBasicStyles options={optionsSector} />
                                 )}
                             />
 
@@ -914,6 +906,22 @@ const Visibility: NextPage = ({ project, quality }) => {
                                             bg="gray.800"
                                         >
                                             <MenuOptionGroup>
+                                                <MenuItemOption
+                                                    w="full"
+                                                    key={`${0}-Accelerator`}
+                                                    onClick={() =>
+                                                        setValue('accelerator_id', {
+                                                            label: 'Ninguno',
+                                                            value: null,
+                                                        })
+                                                    }
+                                                    rounded="none"
+                                                    fontWeight="medium"
+                                                    icon={<></>}
+                                                    iconSpacing={'unset'}
+                                                >
+                                                    <Text>Ninguno</Text>
+                                                </MenuItemOption>
                                                 {accelerators?.data?.accelerators?.map((accelerator) => (
                                                     <MenuItemOption
                                                         w="full"

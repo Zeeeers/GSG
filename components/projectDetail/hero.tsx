@@ -372,8 +372,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                         borderRadius={{ base: 0, md: '2xl' }}
                                     />
 
-                                    {(user && project?.accelerator?.id) ||
-                                        ((orga?.gsg_project_id === project?.id || adminCookie) && (
+                                    {(user || orga?.gsg_project_id === project?.id || adminCookie) &&
+                                        !Object.values(project?.accelerator).includes(null) && (
                                             <HStack
                                                 pos="absolute"
                                                 bottom="80px"
@@ -424,7 +424,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     </Text>
                                                 </Stack>
                                             </HStack>
-                                        ))}
+                                        )}
                                 </Flex>
 
                                 <VStack
