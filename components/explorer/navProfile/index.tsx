@@ -69,7 +69,7 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
             setStepPage(0);
         }
 
-        if (!isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone)) {
+        if (!isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '0')) {
             setStep([
                 {
                     name: 'Perfil',
@@ -82,14 +82,14 @@ const NavProfile = ({ userResponse, getInterest, openPhone, reloadUser, setVisib
         }
 
         if (
-            !isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone) &&
+            !isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '0') &&
             !userResponse?.user?.newsletter
         ) {
             setStep(stepSteps);
         }
 
         if (
-            isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone) &&
+            isValidPhoneNumber(userResponse?.user?.organization?.legal_representative_phone ?? '0') &&
             userResponse?.user?.newsletter
         ) {
             setVisible(false);
