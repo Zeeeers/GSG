@@ -88,6 +88,24 @@ export const useMyGsgProject = (token?: string) => {
     return useSWR([token ? ENDPOINT.OWN : null, token], getMyGsgProject);
 };
 
+export const getGsgProjectView = async (id: number, origin: string) => {
+    console.log({ id, origin });
+    const { data } = await api.post<GetGsgProjectResponse>(
+        ENDPOINT.PROJECT_VIEW,
+
+        {
+            id,
+            origin,
+        },
+        {
+            headers: {
+                metrics: 'fjh2478hrdjq982@#%&ewf',
+            },
+        },
+    );
+    return data;
+};
+
 // Update
 export const updateStatusGsgProject: UpdateGsgProjectCall = async ({ idProject, gsgProject }) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
@@ -143,6 +161,7 @@ const gsgCalls = {
     deleteGsgProject,
     create,
     createInterest,
+    getGsgProjectView,
 };
 
 // Export

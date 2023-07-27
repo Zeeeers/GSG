@@ -8,6 +8,7 @@ const GsgEndpoints = {
     STATUS: (projectId: number): string => `/admin/users/publish_project/${projectId}`,
     CREATE: '/gsg/create',
     CREATE_INTEREST: '/relations',
+    PROJECT_VIEW: '/project_view',
 };
 
 // Export

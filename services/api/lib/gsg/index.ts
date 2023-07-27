@@ -8,4 +8,5 @@ export {
     deleteGsgProject,
     updateGsgProject,
     createInterest,
+    getGsgProjectView,
 } from './gsg.calls';

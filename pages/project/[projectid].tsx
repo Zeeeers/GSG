@@ -6,7 +6,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getGsgProject, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
+import { getGsgProject, getGsgProjectView, useGsgProject } from 'services/api/lib/gsg/gsg.calls';
 import { GetGsgProjectResponse } from 'services/api/lib/gsg/gsg.types';
 import { useOrganization } from 'services/api/lib/organization';
 import { useUser } from 'services/api/lib/user';
@@ -89,6 +89,7 @@ export default PublicChallenge;
 export const getServerSideProps: GetServerSideProps<Props> = async ({ params, req }) => {
     try {
         const projectId = params?.projectid as string | undefined;
+        const response = await getGsgProjectView(Number.parseInt(projectId), 'social');
 
         const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, Number.parseInt(projectId));
 

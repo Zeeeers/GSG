@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { HStack, Link } from '@chakra-ui/react';
 import {
     Modal,
     ModalOverlay,
@@ -34,8 +34,8 @@ const EmailCopyModal = ({ isOpen, onClose }: EmailCopyModalProps) => {
             isCentered
         >
             <ModalOverlay />
-            <ModalContent rounded="16px" maxW="425px">
-                <ModalBody px="24px" py="32px">
+            <ModalContent rounded="16px" maxW="460px">
+                <ModalBody px="36px" py="48px">
                     <VStack spacing="16px" align="start">
                         <Heading fontSize="30px" lineHeight="120%" textTransform="uppercase">
                             Actualizar mi proyecto
@@ -54,7 +54,13 @@ const EmailCopyModal = ({ isOpen, onClose }: EmailCopyModalProps) => {
                                 stylePosition="outside"
                             >
                                 <ListItem>
-                                    Enviar correo ahora, se te redireccionará a tu correo con un mensaje predeterminado.
+                                    <Link
+                                        textDecoration="underline"
+                                        href="mailto:contacto@gsg-match.com?Subject=Solicitud%20modificación%20del%20proyecto"
+                                    >
+                                        Enviar correo ahora
+                                    </Link>
+                                    , se te redireccionará a tu correo con un mensaje predeterminado.
                                 </ListItem>
                                 <ListItem>Copiar el correo y redactar mensaje</ListItem>
                             </OrderedList>
