@@ -227,7 +227,24 @@ const Explorer: NextPage = ({ user: initialData }) => {
 
     return (
         <>
-            <NextSeo title={'Explorador - Impact Matching'} />
+            <NextSeo
+                title={'Explorador - Impact Matching'}
+                description="Te conectamos con proyectos de alto impacto que promueven el desarrollo de modelos sostenibles y con impacto en el tiempo. Navega por nuestro catálogo y descubre cómo puedes hacer una diferencia"
+                openGraph={{
+                    type: 'website',
+                    description:
+                        'Te conectamos con proyectos de alto impacto que promueven el desarrollo de modelos sostenibles y con impacto en el tiempo. Navega por nuestro catálogo y descubre cómo puedes hacer una diferencia',
+                    title: 'Explorador - Impact Matching',
+                    site_name: 'Impact Matching',
+                    url: 'https://www.gsg-match.com/explorer',
+                    images: [
+                        {
+                            url: '/images/earth.jpg',
+                            alt: 'impact',
+                        },
+                    ],
+                }}
+            />
             <Navbar />
 
             <Container maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }} mb="124px" mt="120px">
