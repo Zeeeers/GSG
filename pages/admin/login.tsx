@@ -14,7 +14,24 @@ const SideBackground = dynamic(() => import('layouts/guest/sideBackground'));
 const AdminLogin: NextPage = () => {
     return (
         <>
-            <NextSeo title="Iniciar sesión administrador - Impact Matching" />
+            <NextSeo
+                title="Iniciar sesión administrador - Impact Matching"
+                description="Te conectamos con proyectos de alto impacto que promueven el desarrollo de modelos sostenibles y con impacto en el tiempo. Navega por nuestro catálogo y descubre cómo puedes hacer una diferencia"
+                openGraph={{
+                    type: 'website',
+                    description:
+                        'Te conectamos con proyectos de alto impacto que promueven el desarrollo de modelos sostenibles y con impacto en el tiempo. Navega por nuestro catálogo y descubre cómo puedes hacer una diferencia',
+                    title: 'Iniciar sesión - Impact Matching',
+                    site_name: 'Iniciar sesión administrador - Impact Matching',
+                    url: 'https://www.gsg-match.com/admin/login',
+                    images: [
+                        {
+                            url: '/images/earth.jpg',
+                            alt: 'impact',
+                        },
+                    ],
+                }}
+            />
             <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dashboard" />
             <Flex
                 flexDirection="column"

@@ -54,7 +54,24 @@ const LoginPage: NextPage = ({ token }) => {
 
     return (
         <>
-            <NextSeo title={'Iniciar sesión - Impact Matching'} />
+            <NextSeo
+                title={'Iniciar sesión - Impact Matching'}
+                description="Te conectamos con proyectos de alto impacto que promueven el desarrollo de modelos sostenibles y con impacto en el tiempo. Navega por nuestro catálogo y descubre cómo puedes hacer una diferencia"
+                openGraph={{
+                    type: 'website',
+                    description:
+                        'Te conectamos con proyectos de alto impacto que promueven el desarrollo de modelos sostenibles y con impacto en el tiempo. Navega por nuestro catálogo y descubre cómo puedes hacer una diferencia',
+                    title: 'Iniciar sesión - Impact Matching',
+                    site_name: 'Impact Matching',
+                    url: 'https://www.gsg-match.com/login',
+                    images: [
+                        {
+                            url: '/images/earth.jpg',
+                            alt: 'impact',
+                        },
+                    ],
+                }}
+            />
 
             {process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME && (
                 <PublicPage cookieName={process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME!} fallbackUrl="/admin/dashboard" />
