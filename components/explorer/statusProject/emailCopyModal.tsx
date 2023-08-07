@@ -56,7 +56,7 @@ const EmailCopyModal = ({ isOpen, onClose }: EmailCopyModalProps) => {
                                 <ListItem>
                                     <Link
                                         textDecoration="underline"
-                                        href="mailto:contacto@gsg-match.com?Subject=Solicitud%20modificación%20del%20proyecto"
+                                        href="mailto:contacto@impactmatching.org?Subject=Solicitud%20modificación%20del%20proyecto"
                                     >
                                         Enviar correo ahora
                                     </Link>
@@ -74,7 +74,7 @@ const EmailCopyModal = ({ isOpen, onClose }: EmailCopyModalProps) => {
                                     color="gray.50"
                                     fontSize="21px"
                                     lineHeight="152%"
-                                    value="Contacto@gsg-match.com"
+                                    value="contacto@impactmatching.org"
                                     isReadOnly
                                     _hover={{ bg: 'gray.800' }}
                                     _focus={{ bg: 'gray.800' }}
@@ -90,7 +90,7 @@ const EmailCopyModal = ({ isOpen, onClose }: EmailCopyModalProps) => {
                                     <Button
                                         onClick={() =>
                                             navigator.clipboard
-                                                .writeText('contacto@gsg-match.com')
+                                                .writeText('contacto@impactmatching.org')
                                                 .then(() => setIsActive(true))
                                         }
                                         pos="absolute"
