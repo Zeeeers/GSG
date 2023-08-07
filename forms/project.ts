@@ -54,6 +54,11 @@ export interface IProjectForm {
     webForm?: string;
 
     members: Array<IMember>;
+
+    accelerator_id: {
+        value?: number;
+        label?: string;
+    };
 }
 
 // Schema
@@ -132,6 +137,11 @@ const projectShape: ZodShape<IProjectForm> = {
         .optional(),
 
     members: z.array(z.object(memberShape)).nonempty('Debe agregar al menos un miembro'),
+
+    accelerator_id: z.object({
+        value: z.number().optional(),
+        label: z.string().optional(),
+    }),
 };
 
 export const projectSchema = z.object(projectShape);

@@ -48,7 +48,7 @@ export interface IProjectForm {
 
     accelerator_id: {
         value?: number;
-        label?: number;
+        label?: string;
     };
 }
 
@@ -121,7 +121,7 @@ const projectShape: ZodShape<IProjectForm> = {
 
     accelerator_id: z.object({
         value: z.number().optional(),
-        label: z.number().optional(),
+        label: z.string().optional(),
     }),
 };
 

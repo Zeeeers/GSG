@@ -189,6 +189,8 @@ const Visibility: NextPage = ({ project, quality }) => {
         },
     });
 
+    console.log(errors);
+
     const proyectTitle = watch('title', project?.title ?? '');
     const proyectDescription = watch('description', project?.description ?? '');
     const proyectParties = watch('third_parties');
