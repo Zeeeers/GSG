@@ -41,7 +41,7 @@ const ExplorerCard: React.FC<Props> = ({ project, user }) => {
                         bottom={0}
                         w="full"
                         h="49px"
-                        bg="rgba(4, 145, 216, 0.8)"
+                        bg="rgba(4, 145, 216, 0.5)"
                         roundedTop="12px"
                         zIndex={1}
                         backdropFilter="blur(2.5px)"

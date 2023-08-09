@@ -376,7 +376,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                         !Object.values(project?.accelerator).includes(null) && (
                                             <HStack
                                                 pos="absolute"
-                                                bottom="80px"
+                                                bottom={{ base: 0, md: '80px' }}
                                                 w="full"
                                                 h="66px"
                                                 bg="rgba(4, 145, 216, 0.75)"
@@ -385,7 +385,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                 backdropFilter="blur(2.5px)"
                                                 px="40px"
                                                 py="12px"
-                                                spacing="10px"
+                                                spacing="12px"
                                                 align="center"
                                             >
                                                 <Stack pos="relative">
@@ -401,9 +401,10 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     />
                                                 </Stack>
                                                 <Stack
-                                                    align="center"
+                                                    align={{ base: 'flex-start', md: 'center' }}
                                                     direction={{ base: 'column', md: 'row' }}
-                                                    spacing="4px"
+                                                    spacing={{ base: 0, md: '4px' }}
+                                                    pt={{ base: 0, md: '10px' }}
                                                 >
                                                     <Text
                                                         fontFamily="barlow"
@@ -411,7 +412,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                         fontSize="18px"
                                                         lineHeight="140%"
                                                     >
-                                                        Este proyecto viene recomendado por
+                                                        Proyecto recomendado por
                                                     </Text>
                                                     <Text
                                                         fontFamily="barlow"

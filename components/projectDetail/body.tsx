@@ -134,15 +134,27 @@ const Body = forwardRef<any, any>(({ project, user, orga, onOpenLogin }, ref) =>
                                 </Text>
 
                                 <HStack spacing="10px">
-                                    <Image
-                                        src={project?.accelerator?.icon}
-                                        alt={project?.accelerator?.name}
-                                        w="40px"
-                                        h="40px"
-                                        rounded="full"
-                                        objectFit="cover"
-                                        objectPosition="center"
-                                    />
+                                    <Stack pos="relative">
+                                        <Image
+                                            src={project?.accelerator?.icon}
+                                            alt={project?.accelerator?.name}
+                                            w="40px"
+                                            h="40px"
+                                            rounded="full"
+                                            objectFit="cover"
+                                            objectPosition="center"
+                                        />
+                                        <Image
+                                            src="/images/icons/checked.svg"
+                                            alt="check"
+                                            pos="absolute"
+                                            right="-4px"
+                                            bottom="0"
+                                            w="15px"
+                                            h="15px"
+                                        />
+                                    </Stack>
+
                                     <Text as="p" fontSize={{ base: '20px', md: '24px' }} fontWeight="medium">
                                         {project?.accelerator?.name}
                                     </Text>

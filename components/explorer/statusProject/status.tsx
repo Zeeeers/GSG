@@ -133,7 +133,11 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                             _hover={{ bg: 'blue.600' }}
                             h="40px"
                             variant="solid"
-                            onClick={() => router.push(`/projectDetail/${project?.id}`)}
+                            onClick={() =>
+                                router.push(
+                                    `/project/${project?.id}-${project?.title.toLowerCase().replaceAll(' ', '-')}`,
+                                )
+                            }
                         >
                             Ver proyecto
                         </Button>
@@ -185,7 +189,9 @@ const StatusProject: React.FC<StatusProps> = ({ project }) => {
                         _hover={{ bg: 'blue.600' }}
                         h="40px"
                         variant="solid"
-                        onClick={() => router.push(`/projectDetail/${project?.id}`)}
+                        onClick={() =>
+                            router.push(`/project/${project?.id}-${project?.title.toLowerCase().replaceAll(' ', '-')}`)
+                        }
                     >
                         Ver proyecto
                     </Button>
