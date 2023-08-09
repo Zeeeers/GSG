@@ -17,7 +17,6 @@ import {
     UpdateUserStatusResponse,
 } from './user.types';
 import { User } from 'services/api/types/User';
-import { IncomingMessage } from 'http';
 
 // POST
 export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
