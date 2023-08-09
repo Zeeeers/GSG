@@ -884,7 +884,7 @@ const Visibility: NextPage = ({ project, quality }) => {
                                 name="accelerator_id"
                                 control={control}
                                 render={() => (
-                                    <Menu closeOnSelect={false} matchWidth>
+                                    <Menu closeOnSelect={true} matchWidth>
                                         <MenuButton
                                             as={Button}
                                             bg="white"
