@@ -89,7 +89,7 @@ const ListProyectsForm = (props: any) => {
 
     return (
         <>
-            <TableContainer maxW="1300px">
+            <TableContainer maxW="1300px" display="flex" justifyContent="center">
                 <Table display={{ base: 'none', lg: 'block' }} size="lg" pt="40px" w="full">
                     <Thead>
                         <Tr>

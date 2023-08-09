@@ -337,7 +337,13 @@ const Panel: NextPage = () => {
                                     <Icon as={FaArrowRight} color="gray.700" />
                                 </Button>
                             </Stack>
-                            <Container display="flex" flexDirection="column" maxW="1200px" alignItems="center">
+                            <Container
+                                display="flex"
+                                flexDirection="column"
+                                maxW="1200px"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
                                 <VStack w="fit-content">
                                     <Stack w="full" align="flex-end">
                                         <Menu direction="rtl">
@@ -420,7 +426,13 @@ const Panel: NextPage = () => {
                             </Container>
                         </TabPanel>
 
-                        <TabPanel pr={{ base: '25px', '2xl': '400px' }}>
+                        <TabPanel
+                            pr={{ base: '25px', '2xl': '300px' }}
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            w="full"
+                        >
                             <Stack pos="fixed" display="block" h="100vh" bg="gray.800" left={0} top={0} w="50px">
                                 <Button
                                     display="flex"
@@ -442,8 +454,9 @@ const Panel: NextPage = () => {
                                 display="flex"
                                 flexDirection="column"
                                 alignItems="center"
+                                justifyContent="center"
                             >
-                                <HStack w="full" justify="flex-end" align="center" h="fit-content">
+                                <HStack w="full" justify="end" align="center" h="fit-content">
                                     <Menu direction="rtl">
                                         {({ isOpen }) => (
                                             <>
@@ -457,7 +470,7 @@ const Panel: NextPage = () => {
                                         )}
                                     </Menu>
                                 </HStack>
-                                <VStack w="fit-content">
+                                <VStack w="fit-content" align="center" justify="center">
                                     <Stack
                                         pt="40px"
                                         w="full"
