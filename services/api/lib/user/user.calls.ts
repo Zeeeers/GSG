@@ -17,7 +17,6 @@ import {
     UpdateUserStatusResponse,
 } from './user.types';
 import { User } from 'services/api/types/User';
-import { IncomingMessage } from 'http';
 
 // POST
 export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
@@ -36,20 +35,16 @@ export const sendInterest: SendInterestCall = async ({ token, id }) => {
 };
 
 // READ
-export const userFetcher = async (req?: IncomingMessage, jwt?: string) => {
+export const userFetcher = async () => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
-    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!, req: req });
-
-    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(jwt ?? token));
+    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! });
+    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(token));
 
     return response.data;
 };
 
-export const useUser = (
-    req?: IncomingMessage,
-    config?: SWRConfiguration,
-): SWRResponse<InvestorResponse | undefined, unknown> => {
-    return useSWR([req, ENDPOINT.BASE], userFetcher, config);
+export const useUser = (config?: SWRConfiguration): SWRResponse<InvestorResponse | undefined, unknown> => {
+    return useSWR([ENDPOINT.BASE], userFetcher, config);
 };
 
 // FETCH

@@ -31,7 +31,7 @@ import NotProject from 'components/explorer/statusProject/notProject';
 import StatusProject from 'components/explorer/statusProject/status';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from 'layouts/main/navbar';
-import { GetServerSideProps, GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
@@ -61,7 +61,7 @@ import { isValidPhoneNumber } from 'libphonenumber-js';
 import NavProfile from 'components/explorer/navProfile';
 import CurrentGoalModal from 'components/creator/currentGoalModal';
 
-const Explorer: NextPage = ({ user: initialData }) => {
+const Explorer: NextPage = () => {
     // filter orderBy
     const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('desc');
     const [isVisible, setIsVisible] = useState(true);
@@ -79,10 +79,7 @@ const Explorer: NextPage = ({ user: initialData }) => {
     // data proyects
     const { data: gsg } = useGsg();
     const { data: orga } = useOrganization(true);
-    const { data: userResponse, mutate: userReload } = useUser(undefined, {
-        revalidateOnFocus: true,
-        initialData: initialData,
-    });
+    const { data: userResponse, mutate: userReload } = useUser();
     const { data: project } = useGsgProject(orga?.gsg_project_id);
     const { data: qualities } = useQualityList();
     const { data: getInterest } = useInterest();
@@ -1421,20 +1418,4 @@ const Explorer: NextPage = ({ user: initialData }) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
-    try {
-        const response = await userFetcher(req);
-
-        return {
-            props: {
-                user: response,
-            },
-        };
-    } catch (error) {
-        return {
-            props: {},
-        };
-    }
-};
-
-export default Explorer;
+export default Explorer
