@@ -361,13 +361,13 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                     roundedTop="16px"
                                     alignItems="center"
                                     justifyContent="center"
-                                    h={{ base: '140px', md: '20rem' }}
+                                    h={{ base: '200px', md: '20rem' }}
                                     overflow="hidden"
                                 >
                                     <Img
                                         src={project?.main_image}
                                         alt="Imagen del proyecto"
-                                        w={{ base: 'full', '2xl': 898 }}
+                                        w={{ base: 'full', md: 903, '2xl': 898 }}
                                         objectFit="cover"
                                         borderRadius={{ base: 0, md: '2xl' }}
                                     />
@@ -401,15 +401,15 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     />
                                                 </Stack>
                                                 <Stack
-                                                    align={{ base: 'flex-start', md: 'center' }}
+                                                    align={{ base: 'flex-start', md: 'baseline' }}
                                                     direction={{ base: 'column', md: 'row' }}
                                                     spacing={{ base: 0, md: '4px' }}
-                                                    pt={{ base: 0, md: '10px' }}
+                                                    pt={{ base: 0, md: '5px' }}
                                                 >
                                                     <Text
-                                                        fontFamily="barlow"
+                                                        fontFamily="inter"
                                                         fontWeight="normal"
-                                                        fontSize="18px"
+                                                        fontSize={{ base: '14px', md: '18px' }}
                                                         lineHeight="140%"
                                                     >
                                                         Proyecto recomendado por
@@ -417,7 +417,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                                     <Text
                                                         fontFamily="barlow"
                                                         fontWeight="bold"
-                                                        fontSize="24px"
+                                                        fontSize={{ base: '20px', md: '24px' }}
                                                         textTransform="uppercase"
                                                         lineHeight="120%"
                                                     >
@@ -436,7 +436,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                 >
                                     <VStack
                                         bg="gray.800"
-                                        w={{ base: 'full', xl: 903, '2xl': 898 }}
+                                        w={{ base: 'full', md: 'full', xl: 903, '2xl': 898 }}
                                         h={{ base: 'full', md: 'fit-content' }}
                                         justifyContent="start"
                                         alignItems="start"
