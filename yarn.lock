@@ -627,10 +627,10 @@
   resolved "https://gitlab.com/api/v4/projects/20632473/packages/npm/@clyc/api-wrapper/-/@clyc/api-wrapper-3.21.1.tgz"
   integrity sha1-rqXkHYOtX/i/G6VJ2lmSf0Lgp/s=
 
-"@clyc/next-route-manager@^1.8.2":
-  version "1.8.4"
-  resolved "https://gitlab.com/api/v4/projects/20632617/packages/npm/@clyc/next-route-manager/-/@clyc/next-route-manager-1.8.4.tgz"
-  integrity sha1-K9aGfoVPiWtPQMm3zkBHMAT1z1s=
+"@clyc/next-route-manager@1.9.0":
+  version "1.9.0"
+  resolved "https://gitlab.com/api/v4/projects/20632617/packages/npm/@clyc/next-route-manager/-/@clyc/next-route-manager-1.9.0.tgz#38ba39ca1190d6e76be933c5041088521f3e2852"
+  integrity sha1-OLo5yhGQ1udr6TPFBBCIUh8+KFI=
   dependencies:
     jwt-decode "^3.1.2"
     universal-cookie "^4.0.4"

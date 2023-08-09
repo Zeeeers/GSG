@@ -17,6 +17,7 @@ import {
     UpdateUserStatusResponse,
 } from './user.types';
 import { User } from 'services/api/types/User';
+import { IncomingMessage } from 'http';
 
 // POST
 export const createInvestor: CreateInvestorCall = async ({ token, data }) => {
@@ -35,10 +36,15 @@ export const sendInterest: SendInterestCall = async ({ token, id }) => {
 };
 
 // READ
-export const userFetcher = async () => {
+export const userFetcher = async (req?: any, jwt?: string) => {
     const AuthManager = await import('@clyc/next-route-manager/libs/AuthManager').then((a) => a.default);
-    const { token } = new AuthManager({ cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME! });
-    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(token));
+
+    const { token } = new AuthManager({
+        cookieName: process.env.NEXT_PUBLIC_COOKIE_NAME!,
+        req: req === '/user' ? undefined : req,
+    });
+
+    const response = await api.get<UserResponse>(ENDPOINT.BASE, '', headers(jwt ?? token));
 
     return response.data;
 };
