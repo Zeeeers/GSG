@@ -170,12 +170,14 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
             <Flex w="full" h="90px" position="absolute" ref={description_general}>
                 <Container
                     maxWidth={{ base: 'full', md: '4xl', lg: '5xl', xl: '6xl' }}
+                    h="full"
                     pb={16}
                     px={{ base: 0, md: 4, lg: 12, xl: 6 }}
                 >
                     <Stack
                         display={{ base: 'none', xl: 'flex' }}
                         position={sticky ? 'fixed' : 'absolute'}
+                        h="full"
                         alignItems="end"
                         spacing="30px"
                         zIndex={30}
@@ -367,7 +369,8 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                     <Img
                                         src={project?.main_image}
                                         alt="Imagen del proyecto"
-                                        w={{ base: 'full', md: 903, '2xl': 898 }}
+                                        w={{ base: 'full', '2xl': 898 }}
+                                        maxW="903px"
                                         objectFit="cover"
                                         borderRadius={{ base: 0, md: '2xl' }}
                                     />
@@ -438,6 +441,7 @@ const HeaderHero: React.FC<Props> = ({ project, user, orga, mutate, isValidating
                                         bg="gray.800"
                                         w={{ base: 'full', md: 'full', xl: 903, '2xl': 898 }}
                                         h={{ base: 'full', md: 'fit-content' }}
+                                        maxW="903px"
                                         justifyContent="start"
                                         alignItems="start"
                                         rounded={{

@@ -15,6 +15,7 @@ const config: ThemeConfig = {
 export const theme = {
     direction,
     ...foundations,
+
     components,
     styles,
     config,
