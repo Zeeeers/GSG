@@ -89,7 +89,6 @@ export const useMyGsgProject = (token?: string) => {
 };
 
 export const getGsgProjectView = async (id: number, origin: string) => {
-    console.log({ id, origin });
     const { data } = await api.post<GetGsgProjectResponse>(
         ENDPOINT.PROJECT_VIEW,
 

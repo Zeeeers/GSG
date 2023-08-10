@@ -86,10 +86,10 @@ const PublicChallenge: NextPage = ({ project }: Props) => {
 
 export default PublicChallenge;
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ params, req }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ params, query, req }) => {
     try {
         const projectId = params?.projectid as string | undefined;
-        const response = await getGsgProjectView(Number.parseInt(projectId), 'social');
+        const response = await getGsgProjectView(Number.parseInt(projectId), query?.view ? query?.view : 'direct');
 
         const data = await getGsgProject(process.env.NEXT_PUBLIC_API_URL!, Number.parseInt(projectId));
 
