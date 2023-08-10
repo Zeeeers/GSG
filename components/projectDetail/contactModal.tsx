@@ -36,6 +36,8 @@ interface Props {
 }
 
 const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web, acelerator }) => {
+    console.log(acelerator);
+
     const toast = useToast();
     const [copyEmail, setCopyEmail] = useState({
         value: '',
@@ -50,9 +52,9 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web, acelerat
                 <ModalBody w="full" p={0} mb={6} pt={0}>
                     <VStack w="full" alignItems="flex-start" spacing="20px" px="30px" py="40px">
                         <Heading fontSize="30px" lineHeight="32px" textTransform="uppercase">
-                            CONTACTO DE {acelerator ? acelerator?.name : project?.name}
+                            CONTACTO DE {acelerator?.id ? acelerator?.name : project?.name}
                         </Heading>
-                        {acelerator && (
+                        {acelerator?.id && (
                             <Image
                                 src={acelerator?.icon}
                                 w="60px"
@@ -73,7 +75,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web, acelerat
                                     textOverflow="ellipsis"
                                     fontFamily="inter"
                                 >
-                                    {acelerator
+                                    {acelerator?.id
                                         ? acelerator?.email
                                         : project?.legal_representative_email ?? 'No hay correo'}
                                 </Text>
@@ -110,7 +112,7 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web, acelerat
                                     Teléfono
                                 </Text>
                                 <Text fontSize={{ base: '20px', md: '24px' }} fontFamily="inter">
-                                    +569 {acelerator ? acelerator?.phone : project?.legal_representative_phone}
+                                    +569 {acelerator?.id ? acelerator?.phone : project?.legal_representative_phone}
                                 </Text>
                             </VStack>
 
@@ -120,7 +122,9 @@ const ContactModal: React.FC<Props> = ({ isOpen, onClose, project, web, acelerat
                                         navigator.clipboard
                                             .writeText(
                                                 `+569${
-                                                    acelerator ? acelerator?.phone : project?.legal_representative_phone
+                                                    acelerator?.id
+                                                        ? acelerator?.phone
+                                                        : project?.legal_representative_phone
                                                 }`,
                                             )
                                             .then(() =>
